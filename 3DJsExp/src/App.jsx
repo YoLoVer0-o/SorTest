@@ -14,6 +14,7 @@ function App() {
     const [x, y] = d3.pointer(event);
     setData(data.slice(-200).concat(Math.atan2(x, y)));
   }
+  
   return (
     <>
      <div>
