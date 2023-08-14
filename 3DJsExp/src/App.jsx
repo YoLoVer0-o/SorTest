@@ -2,6 +2,9 @@ import "./App.css";
 import { bankData } from "./assets/MOCK_DATA";
 import Pie from "./components/Pie";
 
+import BarChart from './components/Bar';
+
+
 function App() {
   console.log("app started");
 
@@ -17,7 +20,12 @@ function App() {
           outerRadius={100}
         />
       </div>
+      <div>
+      <BarChart />
+      </div>
     </div>
+       
+    
   )
 
 }
