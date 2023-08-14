@@ -1,14 +1,12 @@
 import "./App.css";
 import { bankData } from "./assets/MOCK_DATA";
 import Pie from "./components/Pie";
-
 import BarChart from './components/Bar';
 
 
 function App() {
   console.log("app started");
-
-
+  
   return (
     <div>
       <div>
@@ -21,11 +19,9 @@ function App() {
         />
       </div>
       <div>
-      <BarChart />
+        <BarChart />
       </div>
     </div>
-       
-    
   )
 
 }

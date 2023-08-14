@@ -7,7 +7,7 @@ const Arc = ({ data, index, createArc, colors, displayText, displayValue }) => {
         <g key={index} className="arc">
             <path className="arc" d={createArc(data)} fill={colors(index)} />
             <text
-                transform={`translate(${createArc.centroid(data)[0]}, ${createArc.centroid(data)[1] + 10})`} // Slight vertical adjustment
+                transform={`translate(${createArc.centroid(data)[0]}, ${createArc.centroid(data)[1] + 10})`}
                 textAnchor="middle"
                 alignmentBaseline="text-after-edge"
                 fill="white"
@@ -18,7 +18,7 @@ const Arc = ({ data, index, createArc, colors, displayText, displayValue }) => {
             </text>
             <br />
             <text
-                transform={`translate(${createArc.centroid(data)[0]}, ${createArc.centroid(data)[1] + 10})`} // Slight vertical adjustment
+                transform={`translate(${createArc.centroid(data)[0]}, ${createArc.centroid(data)[1] + 10})`}
                 textAnchor="middle"
                 alignmentBaseline="mathematical"
                 fill="white"
