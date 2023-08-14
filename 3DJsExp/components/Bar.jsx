@@ -1,29 +1,3 @@
-// import * as d3 from "d3";
-// import { useRef, useEffect } from "react";
-
-// export default function Bar({
-//   width = 928,
-//   height = 500,
-//   marginTop = 30,
-//   marginRight = 0,
-//   marginBottom = 30,
-//   marginLeft = 40,
-// }) {
-//   const gx = useRef();
-//   const gy = useRef();
-//   const x = d3.scaleLinear(
-//     [0, data.length - 1],
-//     [marginLeft, width - marginRight]
-//   );
-//   const y = d3.scaleLinear(d3.extent(data), [height - marginBottom, marginTop]);
-//   return (
-//     <svg width={width} height={height}>
-//       <g ref={gx} transform={`translate(0,${height - marginBottom})`} />
-//       <g ref={gy} transform={`translate(${marginLeft},0)`} />
-//     </svg>
-//   );
-// }
-
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 
@@ -38,7 +12,6 @@ const BarChart = () => {
       { name: "D", value: 7 },
       { name: "E", value: 2 },
       { name: "F", value: 4 },
-      // ... add more data
     ];
     ///////////////////////Width Height Bar//////////////////////////////
     const margin = { top: 20, right: 30, bottom: 40, left: 40 };
@@ -76,10 +49,10 @@ const BarChart = () => {
       .attr("height", (d) => height - y(d.value))
       .style("fill", "steelblue")
       .on("mouseover", function () {
-        d3.select(this).style("fill", "orange"); // Change color on hover
+        d3.select(this).style("fill", "orange");
       })
       .on("mouseout", function () {
-        d3.select(this).style("fill", "steelblue"); // Revert color on hover out
+        d3.select(this).style("fill", "steelblue");
       });
 
     svg
@@ -90,7 +63,7 @@ const BarChart = () => {
 
     svg.append("g").attr("class", "y-axis").call(d3.axisLeft(y));
 
-    
+
   }, []);
 
   return (
