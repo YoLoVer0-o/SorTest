@@ -20,6 +20,7 @@ function App() {
       </div>
       <div>
         <BarChart />
+        <div className="text-red-900">dadsadsdad</div>
       </div>
     </div>
   )
