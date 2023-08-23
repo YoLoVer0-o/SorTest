@@ -1,7 +1,8 @@
 function MainPage() {
-    return (  
+
+    return (
         <div>
-        
+
         </div>
     );
 }
