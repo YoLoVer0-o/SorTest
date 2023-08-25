@@ -69,7 +69,7 @@ const MainPage = () => {
                             background: colorBgContainer,
                         }}
                     >
-                       <Dashboard/>
+                        <Dashboard />
                     </div>
                 </Content>
                 <Footer
