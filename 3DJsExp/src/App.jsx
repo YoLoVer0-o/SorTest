@@ -1,27 +1,21 @@
 import "./App.css";
-import { bankData } from "./assets/MOCK_DATA";
-import Pie from "./components/Pie";
-import BarChart from './components/Bar';
-
+import Login from "./pages/LoginPage";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import MainPage from "./pages/MainPage";
 
 function App() {
   console.log("app started");
-  
+
   return (
-    <div>
-      <div>
-        <Pie
-          data={bankData}
-          width={200}
-          height={200}
-          innerRadius={60}
-          outerRadius={100}
-        />
-      </div>
-      <div>
-        <BarChart />
-        <div className="text-red-900">dadsadsdad</div>
-      </div>
+    <div className="tw-h-screen tw-w-screen">
+      <Router basename={"/"}>
+        <Routes>
+          <Route path="/" exact element={<Login />} />
+          <Route path="/main" element={<MainPage />} />
+        </Routes>
+      </Router>
+
+
     </div>
   )
 
