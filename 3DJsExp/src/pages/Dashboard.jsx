@@ -12,10 +12,12 @@ function Dashboard() {
                     innerRadius={60}
                     outerRadius={100} />
             </div> */}
-            <div>
-
+            <div className='tw-text-center tw-m-3'>
+                <h1 className='tw-font-extrabold tw-text-2xl'>Overall DashBoard</h1>
+                <p>ไทย</p>
+                <p>english</p>
             </div>
-            <div>
+            <div className='tw-my-6'>
                 <Bar />
             </div>
 

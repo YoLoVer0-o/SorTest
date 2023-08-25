@@ -15,6 +15,8 @@ function Login() {
             <div className='tw-flex tw-flex-col tw-flex-wrap tw-h-full tw-w-full tw-max-w-full tw-max-h-full tw-content-center tw-justify-center tw-align-middle tw-text-center'>
                 <h1 className='tw-text-lg tw-font-extrabold'>HELLO!</h1>
                 <p className='tw-m-4'>Sign up to get started</p>
+                <p>ไทย</p>
+                <p>english</p>
                 <Form
                     name="normal_login"
                     className="login-form tw-max-w-full tw-max-h-full tw-align-middle tw-self-center tw-m-4"

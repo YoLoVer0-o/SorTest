@@ -29,7 +29,7 @@ const items = [
     getItem('Files', '9', <FileOutlined />),
 ];
 const MainPage = () => {
-    const [collapsed, setCollapsed] = useState(false);
+    const [collapsed, setCollapsed] = useState(true);
     const {
         token: { colorBgContainer },
     } = theme.useToken();
@@ -68,6 +68,7 @@ const MainPage = () => {
                             minHeight: 360,
                             background: colorBgContainer,
                         }}
+                        className='tw-flex tw-justify-center'
                     >
                         <Dashboard />
                     </div>
