@@ -1,22 +1,29 @@
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 
-const BarChart = () => {
+const BarChart = props => {
   const svgRef = useRef(null);
+
   //////////////////////////Data///////////////////////////////////////
   useEffect(() => {
-    const data = [
-      { name: "A", value: 1 },
-      { name: "B", value: 5 },
-      { name: "C", value: 3 },
-      { name: "D", value: 7 },
-      { name: "E", value: 2 },
-      { name: "F", value: 4 },
-    ];
+    // const data = [
+    //   { name: "A", value: 1 },
+    //   { name: "B", value: 5 },
+    //   { name: "C", value: 3 },
+    //   { name: "D", value: 7 },
+    //   { name: "E", value: 2 },
+    //   { name: "F", value: 4 },
+    // ];
+    const data = props.data;
+    console.log(data);
     ///////////////////////Width Height Bar//////////////////////////////
     const margin = { top: 20, right: 30, bottom: 40, left: 40 };
-    const width = 740 - margin.left - margin.right;
-    const height = 460 - margin.top - margin.bottom;
+    // const width = 740 - margin.left - margin.right;
+    // const height = 460 - margin.top - margin.bottom;
+    const width = props.width - margin.left - margin.right;
+    console.log(width);
+    const height = props.height - margin.top - margin.bottom;
+    console.log(height);
 
     const svg = d3
       .select(svgRef.current)
@@ -64,7 +71,7 @@ const BarChart = () => {
     svg.append("g").attr("class", "y-axis").call(d3.axisLeft(y));
 
 
-  }, []);
+  }, [props.data, props.height, props.width]);
 
   return (
     <div>

@@ -1,6 +1,6 @@
-// import Pie from '../components/Pie'
-// import { bankData } from "../assets/MOCK_DATA";
-import Bar from '../components/Bar'
+import { BarChart } from '../components';
+import { sentimentAll } from '../mock';
+
 function Dashboard() {
 
     return (
@@ -18,7 +18,11 @@ function Dashboard() {
                 <p>english</p>
             </div>
             <div className='tw-my-6'>
-                <Bar />
+                <BarChart
+                    data={sentimentAll}
+                    width={740}
+                    height={460}
+                />
             </div>
 
         </div>
