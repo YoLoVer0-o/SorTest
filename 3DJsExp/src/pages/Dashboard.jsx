@@ -4,7 +4,7 @@ import { sentimentAll } from '../mock';
 function Dashboard() {
 
     return (
-        <div >
+        <div className='tw-max-w-fit tw-max-h-full tw-object-contain' >
             {/* <div>
                 <Pie data={bankData}
                     width={200}
@@ -12,12 +12,12 @@ function Dashboard() {
                     innerRadius={60}
                     outerRadius={100} />
             </div> */}
-            <div className='tw-text-center tw-m-3'>
+            <div className='tw-text-center tw-max-w-fitl tw-max-h-full tw-m-3 tw-object-contain'>
                 <h1 className='tw-font-extrabold tw-text-2xl'>Overall DashBoard</h1>
                 <p>ไทย</p>
                 <p>english</p>
             </div>
-            <div className='tw-my-6'>
+            <div className='tw-my-6 tw-max-w-fit tw-max-h-full tw-object-contain'>
                 <BarChart
                     data={sentimentAll}
                     width={740}

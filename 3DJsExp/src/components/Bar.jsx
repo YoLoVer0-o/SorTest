@@ -6,20 +6,10 @@ const BarChart = props => {
 
   //////////////////////////Data///////////////////////////////////////
   useEffect(() => {
-    // const data = [
-    //   { name: "A", value: 1 },
-    //   { name: "B", value: 5 },
-    //   { name: "C", value: 3 },
-    //   { name: "D", value: 7 },
-    //   { name: "E", value: 2 },
-    //   { name: "F", value: 4 },
-    // ];
     const data = props.data;
     console.log(data);
     ///////////////////////Width Height Bar//////////////////////////////
     const margin = { top: 20, right: 30, bottom: 40, left: 40 };
-    // const width = 740 - margin.left - margin.right;
-    // const height = 460 - margin.top - margin.bottom;
     const width = props.width - margin.left - margin.right;
     console.log(width);
     const height = props.height - margin.top - margin.bottom;

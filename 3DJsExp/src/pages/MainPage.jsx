@@ -7,7 +7,8 @@ import {
     UserOutlined,
 } from '@ant-design/icons';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
-import Dashboard from './Dashboard';
+import { Outlet } from "react-router-dom"
+
 const { Header, Content, Footer, Sider } = Layout;
 function getItem(label, key, icon, children) {
     return {
@@ -51,6 +52,7 @@ const MainPage = () => {
                     }}
                 />
                 <Content
+                    className='tw-max-w-fit'
                     style={{
                         margin: '0 16px',
                     }}
@@ -60,7 +62,8 @@ const MainPage = () => {
                             margin: '16px 0',
                         }}
                     >
-                        <Breadcrumb.Item>Bill</Breadcrumb.Item>
+                        <Breadcrumb.Item>Breadcrumb1</Breadcrumb.Item>
+                        <Breadcrumb.Item>Breadcrumb2</Breadcrumb.Item>
                     </Breadcrumb>
                     <div
                         style={{
@@ -68,9 +71,9 @@ const MainPage = () => {
                             minHeight: 360,
                             background: colorBgContainer,
                         }}
-                        className='tw-flex tw-justify-center'
+                        className='tw-flex tw-justify-center tw-object-contain'
                     >
-                        <Dashboard />
+                        <Outlet />
                     </div>
                 </Content>
                 <Footer

@@ -1,4 +1,5 @@
 import sentimentAll from "./sentimentAll";
-import sentimentType from "./sentimentType";
+import sentimentPos from "./sentimentPos";
+import sentimentNega from "./sentimentNega";
 
-export { sentimentAll, sentimentType };
+export { sentimentAll, sentimentPos, sentimentNega};
