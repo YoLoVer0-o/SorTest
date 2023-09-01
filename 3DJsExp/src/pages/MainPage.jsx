@@ -52,7 +52,7 @@ const MainPage = () => {
                     }}
                 />
                 <Content
-                    className='tw-max-w-fit'
+                    className='tw-w-full'
                     style={{
                         margin: '0 16px',
                     }}
@@ -71,9 +71,9 @@ const MainPage = () => {
                             minHeight: 360,
                             background: colorBgContainer,
                         }}
-                        className='tw-flex tw-justify-center tw-object-contain'
+                        className='tw-flex tw-h-full tw-w-full tw-flex-wrap tw-justify-center tw-object-contain tw-content-center tw-place-self-center tw-justify-self-center'
                     >
-                        <Outlet />
+                        <Outlet className={"tw-flex tw-justify-center tw-object-contain tw-content-center"} />
                     </div>
                 </Content>
                 <Footer

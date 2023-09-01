@@ -1,5 +1,5 @@
 import BarChart from "./Bar";
 import Pie from "./Pie";
-import Modal from "./Modal";
+import FeedbackModal from "./FeedbackModal";
 
-export { BarChart, Pie, Modal };
+export { BarChart, Pie, FeedbackModal };
