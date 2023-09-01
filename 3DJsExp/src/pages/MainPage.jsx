@@ -31,50 +31,47 @@ const items = [
 ];
 const MainPage = () => {
     const [collapsed, setCollapsed] = useState(true);
-    const {
-        token: { colorBgContainer },
-    } = theme.useToken();
+    // const {
+    //     token: { colorBgContainer },
+    // } = theme.useToken();
     return (
         <Layout
             style={{
-                minHeight: '100vh',
+                maxHeight: '100%',
             }}
         >
-            <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
+            <Sider
+                style={{
+                    position: 'sticky',
+                }}
+                collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
                 <div className="demo-logo-vertical" />
                 <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
             </Sider>
             <Layout>
-                <Header
-                    style={{
-                        padding: 0,
-                        background: colorBgContainer,
-                    }}
-                />
+                <Header className='tw-grid tw-grid-cols-2'>
+                    <div><h1 className='tw-text-white'>your logo</h1></div>
+                    <div></div>
+                </Header>
                 <Content
-                    className='tw-w-full'
+                    className='tw-w-full tw-max-w-full tw-max-h-full'
                     style={{
-                        margin: '0 16px',
+                        margin: '1rem 0',
                     }}
                 >
                     <Breadcrumb
                         style={{
-                            margin: '16px 0',
+                            margin: '1rem 1rem',
                         }}
                     >
                         <Breadcrumb.Item>Breadcrumb1</Breadcrumb.Item>
                         <Breadcrumb.Item>Breadcrumb2</Breadcrumb.Item>
                     </Breadcrumb>
-                    <div
-                        style={{
-                            padding: 24,
-                            minHeight: 360,
-                            background: colorBgContainer,
-                        }}
-                        className='tw-flex tw-h-full tw-w-full tw-flex-wrap tw-justify-center tw-object-contain tw-content-center tw-place-self-center tw-justify-self-center'
+                    {/* <div
+                        className='tw-flex tw-h-full tw-w-full tw-flex-wrap tw-justify-center tw-content-center tw-justify-self-center'
                     >
-                        <Outlet className={"tw-flex tw-justify-center tw-object-contain tw-content-center"} />
-                    </div>
+                        <Outlet />
+                    </div> */}
                 </Content>
                 <Footer
                     style={{
