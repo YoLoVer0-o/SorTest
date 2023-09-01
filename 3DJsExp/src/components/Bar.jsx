@@ -44,12 +44,26 @@ const BarChart = props => {
       .attr("y", (d) => y(d.value))
       .attr("width", x.bandwidth())
       .attr("height", (d) => height - y(d.value))
-      .style("fill", "steelblue")
+      .style("fill", function (d) {
+        if (d.commentType == "positive") {
+          return "green";
+        } else if (d.commentType == "negative") {
+          return "red";
+        }
+        return "yellow";
+      })
       .on("mouseover", function () {
         d3.select(this).style("fill", "orange");
       })
       .on("mouseout", function () {
-        d3.select(this).style("fill", "steelblue");
+        d3.select(this).style("fill", function (d) {
+          if (d.commentType == "positive") {
+            return "green";
+          } else if (d.commentType == "negative") {
+            return "red";
+          }
+          return "yellow";
+        });
       });
 
     svg
