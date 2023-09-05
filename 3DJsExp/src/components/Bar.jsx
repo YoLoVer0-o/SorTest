@@ -4,6 +4,12 @@ import * as d3 from "d3";
 const BarChart = props => {
   const svgRef = useRef(null);
 
+  // const returnBarData = (bData) => {
+  //   console.log(bData.commentType);
+  // }
+
+  let onBarClick = props.onBarClick;
+
   //////////////////////////Data///////////////////////////////////////
   useEffect(() => {
     const data = props.data;
@@ -40,6 +46,12 @@ const BarChart = props => {
       .enter()
       .append("rect")
       .attr("class", "bar")
+
+      .on("click", function (event, d) {
+        // console.log(d);
+        onBarClick(d);
+      })
+      
       .attr("x", (d) => x(d.name))
       .attr("y", (d) => y(d.value))
       .attr("width", x.bandwidth())
@@ -78,8 +90,8 @@ const BarChart = props => {
   }, [props.data, props.height, props.width]);
 
   return (
-    <div>
-      <svg ref={svgRef}></svg>
+    <div className="tw-flex tw-max-h-fit tw-max-w-fit">
+      <svg className="tw-flex tw-max-h-fit tw-max-w-fit tw-m-4" ref={svgRef}></svg>
     </div>
   );
 };

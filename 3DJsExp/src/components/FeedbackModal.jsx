@@ -1,4 +1,5 @@
 import { useState } from 'react';
+
 import { Button, Modal } from 'antd';
 const FeedbackModal = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -13,9 +14,9 @@ const FeedbackModal = () => {
     };
     return (
         <>
-            <Button type="primary" onClick={showModal}>
+            {/* <Button type="primary" onClick={showModal}>
                 Open Modal
-            </Button>
+            </Button> */}
             <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
                 <p>Some contents...</p>
                 <p>Some contents...</p>

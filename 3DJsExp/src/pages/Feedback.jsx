@@ -1,7 +1,10 @@
-import { BarChart } from '../components';
-import { sentimentPos } from '../mock';
+import { BarChart, FeedbackModal } from '../components';
+import { useLocation } from 'react-router-dom';
 
 function Feedback() {
+
+    const location = useLocation();
+    const feedback = location.state;
 
     return (
         <div className='tw-max-w-fit tw-max-h-full tw-object-contain' >
@@ -10,10 +13,11 @@ function Feedback() {
             </div>
             <div className='tw-my-6 tw-max-w-fit tw-max-h-full tw-object-contain'>
                 <BarChart
-                    data={sentimentPos}
+                    data={feedback}
                     width={740}
                     height={460}
                 />
+                <FeedbackModal />
             </div>
 
         </div>

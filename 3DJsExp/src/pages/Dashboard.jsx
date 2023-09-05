@@ -1,10 +1,26 @@
 import { BarChart } from '../components';
-import { sentimentAll } from '../mock';
+import { sentimentAll, sentimentPos, sentimentNega } from '../mock';
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
 
+    const negative = useNavigate();
+
+    const redirect = (data) => {
+        if (data.commentType == "positive") {
+            console.log(data.commentType);
+            negative('feedback', { state: sentimentPos });
+
+        } else if (data.commentType == "negative") {
+            console.log(data.commentType);
+            negative('feedback', { state: sentimentNega });
+        } else {
+            console.log("Unknown comment type");
+        }
+    };
+
     return (
-        <div className='tw-max-w-fit tw-max-h-full tw-object-contain' >
+        <div className='tw-flex tw-flex-col tw-max-w-fit tw-max-h-fit tw-w-fit tw-h-fit tw-object-contain' >
             {/* <div>
                 <Pie data={bankData}
                     width={200}
@@ -12,16 +28,16 @@ function Dashboard() {
                     innerRadius={60}
                     outerRadius={100} />
             </div> */}
-            <div className='tw-text-center tw-max-w-fitl tw-max-h-full tw-m-3 tw-object-contain'>
+            <div className='tw-flex tw-text-center tw-max-w-fit tw-max-h-fit tw-m-3 tw-object-contain tw-self-center'>
                 <h1 className='tw-font-extrabold tw-text-2xl'>Overall DashBoard</h1>
-                <p>ไทย</p>
-                <p>english</p>
             </div>
-            <div className='tw-my-6 tw-max-w-fit tw-max-h-full tw-object-contain'>
+            <div className='tw-flex tw-my-6 tw-max-w-fit tw-max-h-fit tw-object-contain'>
                 <BarChart
+                    className={"tw-flex tw-h-fit tw-w-fit"}
                     data={sentimentAll}
                     width={740}
                     height={460}
+                    onBarClick={redirect}
                 />
             </div>
 

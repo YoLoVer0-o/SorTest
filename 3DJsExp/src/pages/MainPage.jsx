@@ -1,77 +1,81 @@
 import { useState } from 'react';
 import {
-    DesktopOutlined,
-    FileOutlined,
-    PieChartOutlined,
-    TeamOutlined,
+    MenuFoldOutlined,
+    MenuUnfoldOutlined,
+    UploadOutlined,
     UserOutlined,
+    VideoCameraOutlined,
 } from '@ant-design/icons';
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
-import { Outlet } from "react-router-dom"
-
-const { Header, Content, Footer, Sider } = Layout;
-function getItem(label, key, icon, children) {
-    return {
-        key,
-        icon,
-        children,
-        label,
-    };
-}
-const items = [
-    getItem('Option 1', '1', <PieChartOutlined />),
-    getItem('Option 2', '2', <DesktopOutlined />),
-    getItem('User', 'sub1', <UserOutlined />, [
-        getItem('Tom', '3'),
-        getItem('Bill', '4'),
-        getItem('Alex', '5'),
-    ]),
-    getItem('Team', 'sub2', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
-    getItem('Files', '9', <FileOutlined />),
-];
+import { Layout, Menu, Button, theme, Breadcrumb } from 'antd';
+import { Outlet } from 'react-router-dom';
+import { Footer } from 'antd/es/layout/layout';
+const { Header, Sider, Content } = Layout;
 const MainPage = () => {
-    const [collapsed, setCollapsed] = useState(true);
-    // const {
-    //     token: { colorBgContainer },
-    // } = theme.useToken();
+    const [collapsed, setCollapsed] = useState(false);
+    const {
+        token: { colorBgContainer },
+    } = theme.useToken();
     return (
-        <Layout
-            style={{
-                maxHeight: '100%',
-            }}
-        >
-            <Sider
-                style={{
-                    position: 'sticky',
-                }}
-                collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
+        <Layout className='tw-max-w-full tw-max-h-full'>
+            <Sider trigger={null} collapsible collapsed={collapsed}>
                 <div className="demo-logo-vertical" />
-                <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
+                <Menu
+                    theme="dark"
+                    mode="inline"
+                    defaultSelectedKeys={['1']}
+                    items={[
+                        {
+                            key: '1',
+                            icon: <UserOutlined />,
+                            label: 'nav 1',
+                        },
+                        {
+                            key: '2',
+                            icon: <VideoCameraOutlined />,
+                            label: 'nav 2',
+                        },
+                        {
+                            key: '3',
+                            icon: <UploadOutlined />,
+                            label: 'nav 3',
+                        },
+                    ]}
+                />
             </Sider>
             <Layout>
-                <Header className='tw-grid tw-grid-cols-2'>
-                    <div><h1 className='tw-text-white'>your logo</h1></div>
-                    <div></div>
-                </Header>
-                <Content
-                    className='tw-w-full tw-max-w-full tw-max-h-full'
+                <Header
                     style={{
-                        margin: '1rem 0',
+                        padding: 0,
+                        background: colorBgContainer,
                     }}
+
                 >
-                    <Breadcrumb
+                    <Button
+                        type="text"
+                        icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                        onClick={() => setCollapsed(!collapsed)}
                         style={{
-                            margin: '1rem 1rem',
+                            fontSize: '16px',
+                            width: '4rem',
+                            height: '4rem',
                         }}
-                    >
-                        <Breadcrumb.Item>Breadcrumb1</Breadcrumb.Item>
-                        <Breadcrumb.Item>Breadcrumb2</Breadcrumb.Item>
-                    </Breadcrumb>
-                    {/* <div
-                        className='tw-flex tw-h-full tw-w-full tw-flex-wrap tw-justify-center tw-content-center tw-justify-self-center'
-                    >
-                        <Outlet />
-                    </div> */}
+                    />
+
+                </Header>
+                <Breadcrumb className='tw-pl-4'>
+                    <Breadcrumb.Item>test1</Breadcrumb.Item>
+                    <Breadcrumb.Item>test2</Breadcrumb.Item>
+                </Breadcrumb>
+
+                <Content
+                    style={{
+                        margin: '1.5rem 1rem',
+                        padding: '1.5rem',
+                        background: colorBgContainer,
+                    }}
+                    className='tw-flex tw-flex-wrap tw-max-w-full tw-max-h-full tw-content-center tw-justify-center tw-object-contain'
+                >
+                    <Outlet className="tw-flex tw-max-h-fit tw-max-w-fit tw-object-contain" />
                 </Content>
                 <Footer
                     style={{
@@ -81,7 +85,9 @@ const MainPage = () => {
                     Ant Design ©2023 Created by Ant UED
                 </Footer>
             </Layout>
+
         </Layout>
+
     );
 };
 export default MainPage;
