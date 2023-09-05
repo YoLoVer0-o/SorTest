@@ -7,14 +7,38 @@ import {
     VideoCameraOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu, Button, theme, Breadcrumb } from 'antd';
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import { Footer } from 'antd/es/layout/layout';
+
 const { Header, Sider, Content } = Layout;
+
 const MainPage = () => {
+
+    const breadcrumbNameMap = {
+        '/main': 'main',
+        '/main/overall': 'overall',
+        '/main/overall/feedback': 'Feedback',
+    };
+
+    const location = useLocation();
+    const pathSnippets = location.pathname.split('/').filter((i) => i);
+
+    const extraBreadcrumbItems = pathSnippets.map((_, index) => {
+        const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
+        console.log(url);
+        return {
+            key: url,
+            title: <Link to={url}>{breadcrumbNameMap[url]}</Link>,
+        };
+    });
+    const breadcrumbItems = [].concat(extraBreadcrumbItems);
+
     const [collapsed, setCollapsed] = useState(false);
+
     const {
         token: { colorBgContainer },
     } = theme.useToken();
+
     return (
         <Layout className='tw-max-w-full tw-max-h-full'>
             <Sider trigger={null} collapsible collapsed={collapsed}>
@@ -62,11 +86,7 @@ const MainPage = () => {
                     />
 
                 </Header>
-                <Breadcrumb className='tw-pl-4'>
-                    <Breadcrumb.Item>test1</Breadcrumb.Item>
-                    <Breadcrumb.Item>test2</Breadcrumb.Item>
-                </Breadcrumb>
-
+                <Breadcrumb className='tw-pl-4' items={breadcrumbItems} />
                 <Content
                     style={{
                         margin: '1.5rem 1rem',

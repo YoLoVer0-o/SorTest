@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard";
 import Feedback from "./pages/Feedback";
 
 function App() {
+
   console.log("app started");
 
   return (
@@ -29,8 +30,6 @@ function App() {
           </Routes>
         </Router>
       </ConfigProvider>
-
-
     </div>
   )
 

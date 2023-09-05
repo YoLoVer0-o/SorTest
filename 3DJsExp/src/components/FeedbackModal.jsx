@@ -1,26 +1,35 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Modal } from 'antd';
 
-import { Button, Modal } from 'antd';
-const FeedbackModal = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const showModal = () => {
-        setIsModalOpen(true);
-    };
-    const handleOk = () => {
-        setIsModalOpen(false);
-    };
-    const handleCancel = () => {
-        setIsModalOpen(false);
-    };
+const FeedbackModal = props => {
+
+    const modalToggle = props.modalToggle;
+    const handleCancel = props.handleCancel;
+    const modalData = props.modalData;
+
+    const [isModalOpen, setIsModalOpen] = useState(modalToggle);
+    const [data, setData] = useState(modalData);
+
+    useEffect(() => {
+        setData(modalData);
+    }, [modalData]);
+
+    useEffect(() => {
+        setIsModalOpen(modalToggle);
+    }, [modalToggle]);
+
     return (
         <>
-            {/* <Button type="primary" onClick={showModal}>
-                Open Modal
-            </Button> */}
-            <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-                <p>Some contents...</p>
-                <p>Some contents...</p>
-                <p>Some contents...</p>
+            <Modal title="Comment Modal" open={isModalOpen} onCancel={handleCancel} footer={null}>
+                <div>
+                    {data.map((d, index) => (
+                        <div key={index}>
+                            <p>{d.userName}</p>
+                            <p>{d.message}</p>
+                        </div>
+                    ))}
+                    {/* <p>Some contents...</p> */}
+                </div>
             </Modal>
         </>
     );

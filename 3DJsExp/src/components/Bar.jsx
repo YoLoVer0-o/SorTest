@@ -2,18 +2,14 @@ import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 
 const BarChart = props => {
-  const svgRef = useRef(null);
 
-  // const returnBarData = (bData) => {
-  //   console.log(bData.commentType);
-  // }
+  const svgRef = useRef(null);
 
   let onBarClick = props.onBarClick;
 
   //////////////////////////Data///////////////////////////////////////
   useEffect(() => {
     const data = props.data;
-    console.log(data);
     ///////////////////////Width Height Bar//////////////////////////////
     const margin = { top: 20, right: 30, bottom: 40, left: 40 };
     const width = props.width - margin.left - margin.right;
@@ -48,10 +44,9 @@ const BarChart = props => {
       .attr("class", "bar")
 
       .on("click", function (event, d) {
-        // console.log(d);
         onBarClick(d);
       })
-      
+
       .attr("x", (d) => x(d.name))
       .attr("y", (d) => y(d.value))
       .attr("width", x.bandwidth())

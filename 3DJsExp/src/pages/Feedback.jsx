@@ -1,10 +1,25 @@
 import { BarChart, FeedbackModal } from '../components';
 import { useLocation } from 'react-router-dom';
+import { useState } from 'react';
 
 function Feedback() {
 
     const location = useLocation();
-    const feedback = location.state;
+    const rawFeedback = location.state;
+    const sortedFeedback = rawFeedback.sort((a, b) => b.value - a.value);
+
+    const [modalToggle, setModalToggle] = useState(false);
+    const [comment, setComment] = useState([]);
+
+    const showModal = (data) => {
+        // console.log(data.Comment);
+        setComment(data.Comment);
+        setModalToggle(true);
+    };
+
+    const handleCancel = () => {
+        setModalToggle(false);
+    };
 
     return (
         <div className='tw-max-w-fit tw-max-h-full tw-object-contain' >
@@ -13,11 +28,12 @@ function Feedback() {
             </div>
             <div className='tw-my-6 tw-max-w-fit tw-max-h-full tw-object-contain'>
                 <BarChart
-                    data={feedback}
+                    data={sortedFeedback}
                     width={740}
                     height={460}
+                    onBarClick={showModal}
                 />
-                <FeedbackModal />
+                <FeedbackModal modalToggle={modalToggle} handleCancel={handleCancel} modalData={comment} />
             </div>
 
         </div>
