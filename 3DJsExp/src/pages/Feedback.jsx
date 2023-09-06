@@ -12,8 +12,7 @@ function Feedback() {
     const [comment, setComment] = useState([]);
 
     const showModal = (data) => {
-        // console.log(data.Comment);
-        setComment(data.Comment);
+        setComment(data);
         setModalToggle(true);
     };
 

@@ -20,7 +20,7 @@ function Dashboard() {
     };
 
     return (
-        <div className='tw-flex tw-flex-col tw-max-w-fit tw-max-h-fit tw-w-fit tw-h-fit tw-object-contain' >
+        <div className='tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-w-min tw-h-min tw-object-contain'>
             {/* <div>
                 <Pie data={bankData}
                     width={200}
@@ -33,7 +33,7 @@ function Dashboard() {
             </div>
             <div className='tw-flex tw-my-6 tw-max-w-fit tw-max-h-fit tw-object-contain'>
                 <BarChart
-                    className={"tw-flex tw-h-fit tw-w-fit"}
+                    className={"tw-flex tw-h-fit tw-w-fit tw-max-w-fit tw-max-h-fit"}
                     data={sentimentAll}
                     width={740}
                     height={460}

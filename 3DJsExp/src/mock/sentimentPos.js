@@ -47,6 +47,12 @@ const sentimentPos = [
       { userName: "A", message: "hello world" },
       { userName: "B", message: "hello world" },
       { userName: "C", message: "hello world" },
+      { userName: "B", message: "hello world" },
+      { userName: "C", message: "hello world" },
+      { userName: "B", message: "hello world" },
+      { userName: "C", message: "hello world" },
+      { userName: "B", message: "hello world" },
+      { userName: "C", message: "hello world" },
     ],
   },
   {

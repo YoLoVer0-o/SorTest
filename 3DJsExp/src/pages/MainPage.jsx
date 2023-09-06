@@ -6,6 +6,7 @@ import {
     UserOutlined,
     VideoCameraOutlined,
 } from '@ant-design/icons';
+
 import { Layout, Menu, Button, theme, Breadcrumb } from 'antd';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { Footer } from 'antd/es/layout/layout';
@@ -93,9 +94,9 @@ const MainPage = () => {
                         padding: '1.5rem',
                         background: colorBgContainer,
                     }}
-                    className='tw-flex tw-flex-wrap tw-max-w-full tw-max-h-full tw-content-center tw-justify-center tw-object-contain'
+                    className='tw-flex tw-flex-wrap tw-max-w-full tw-max-h-fit tw-justify-center tw-object-contain'
                 >
-                    <Outlet className="tw-flex tw-max-h-fit tw-max-w-fit tw-object-contain" />
+                    <Outlet className="tw-flex tw-max-h-fit tw-max-w-fit tw-object-contain tw-justify-center" />
                 </Content>
                 <Footer
                     style={{
