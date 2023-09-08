@@ -1,5 +1,7 @@
-import BarChart from "./Bar";
-import Pie from "./Pie";
+import MainLayout from "./MainLayout";
+import LogTable from "./LogTable";
+import Dashboard from "./Dashboard";
+import Feedback from "./Feedback";
 import FeedbackModal from "./FeedbackModal";
 
-export { BarChart, Pie, FeedbackModal };
+export { MainLayout, LogTable, Dashboard, Feedback, FeedbackModal };

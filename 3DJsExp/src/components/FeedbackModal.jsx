@@ -16,8 +16,6 @@ const FeedbackModal = props => {
         setVisibleComments(visibleComments + 5);
     };
 
-    // console.log(data.Comment);
-
     useEffect(() => {
         console.log("data selected");
         setData(modalData);

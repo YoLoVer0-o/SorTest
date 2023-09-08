@@ -1,4 +1,4 @@
-import { BarChart } from '../components';
+import { BarChart } from '../utilities';
 import { sentimentAll, sentimentPos, sentimentNega } from '../mock';
 import { useNavigate } from "react-router-dom";
 

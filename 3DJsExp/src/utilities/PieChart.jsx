@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import * as d3 from "d3";
 
 const Arc = ({ data, index, createArc, colors, displayText, displayValue }) => {
@@ -31,7 +30,7 @@ const Arc = ({ data, index, createArc, colors, displayText, displayValue }) => {
     );
 };
 
-const Pie = props => {
+const PieChart = props => {
     const createPie = d3
         .pie()
         .value(d => d.money_current)
@@ -62,4 +61,4 @@ const Pie = props => {
     );
 };
 
-export default Pie;
+export default PieChart;

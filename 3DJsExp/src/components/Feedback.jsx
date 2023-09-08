@@ -1,4 +1,5 @@
-import { BarChart, FeedbackModal } from '../components';
+import { BarChart } from '../utilities';
+import { FeedbackModal } from '../components'
 import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
 

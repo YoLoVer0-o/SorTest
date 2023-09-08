@@ -1,9 +1,8 @@
-// import React from 'react';
 import { LockOutlined, UserOutlined, MailOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
 import background from '../assets/loginBG.jpg';
 
-function Login() {
+function LoginPage() {
     const onFinish = (values) => {
         console.log('Received values of form: ', values);
     };
@@ -73,4 +72,4 @@ function Login() {
         </div>
     );
 }
-export default Login;
+export default LoginPage;
