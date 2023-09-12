@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
@@ -8,20 +8,25 @@ import {
 } from '@ant-design/icons';
 
 import { Layout, Menu, Button, theme, Breadcrumb } from 'antd';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Footer } from 'antd/es/layout/layout';
-
 const { Header, Sider, Content } = Layout;
 
-const MainLayout = () => {
+const MainLayout = props => {
+
 
     const breadcrumbNameMap = {
         '/main': 'main',
         '/main/overall': 'overall',
         '/main/overall/feedback': 'Feedback',
+        '/postlog': 'postlog',
     };
+    const navigate = useNavigate();
 
     const location = useLocation();
+
+
+
     const pathSnippets = location.pathname.split('/').filter((i) => i);
 
     const extraBreadcrumbItems = pathSnippets.map((_, index) => {
@@ -34,11 +39,27 @@ const MainLayout = () => {
     });
     const breadcrumbItems = [].concat(extraBreadcrumbItems);
 
+    const handleMenuClick = ({ key }) => {
+        if (key) {
+            navigate(key);
+            console.log(key);
+        }
+    };
+
     const [collapsed, setCollapsed] = useState(false);
 
     const {
         token: { colorBgContainer },
     } = theme.useToken();
+
+    useEffect(() => {
+        if (location.pathname == '/') {
+            console.log("blank url");
+            navigate('/main')
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [location.pathname]);
+
 
     return (
         <Layout className='tw-max-w-full tw-max-h-full'>
@@ -47,17 +68,18 @@ const MainLayout = () => {
                 <Menu
                     theme="dark"
                     mode="inline"
-                    defaultSelectedKeys={['1']}
+                    onClick={handleMenuClick}
+                    selectedKeys={props.pageKey}
                     items={[
                         {
-                            key: '1',
+                            key: '/main',
                             icon: <UserOutlined />,
-                            label: 'nav 1',
+                            label: 'main',
                         },
                         {
-                            key: '2',
+                            key: '/postlog',
                             icon: <VideoCameraOutlined />,
-                            label: 'nav 2',
+                            label: 'DataLog',
                         },
                         {
                             key: '3',

@@ -1,10 +1,11 @@
 import "./App.css";
 import '@fontsource/noto-sans';
 import '@fontsource-variable/noto-sans-thai';
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./routes";
 import { ConfigProvider } from "antd";
-import { LoginPage, MainPage } from "./pages";
-import { Dashboard, LogTable, Feedback } from "./components";
+// import { LoginPage, MainPage } from "./pages";
+// import { Dashboard, LogTable, Feedback } from "./components";
 
 function App() {
 
@@ -18,7 +19,7 @@ function App() {
           ,
         }}
       >
-        <Router basename={"/"}>
+        {/* <Router basename={"/"}>
           <Routes>
             <Route path="/" exact element={<LoginPage />} />
             <Route path="main" element={<MainPage />} >
@@ -27,7 +28,8 @@ function App() {
               <Route path='overall/feedback' element={<Feedback />} />
             </Route>
           </Routes>
-        </Router>
+        </Router> */}
+        <RouterProvider router={router} />
       </ConfigProvider>
     </div>
   )

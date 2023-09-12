@@ -3,7 +3,7 @@ import { MainLayout } from "../components";
 const MainPage = () => {
     return (
         <div>
-            <MainLayout />
+            <MainLayout pageKey={['/main']} />
         </div>
     );
 }

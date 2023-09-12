@@ -1,8 +1,8 @@
-import React from 'react'
-
 const LogTable = () => {
     return (
-        <div>LogTable</div>
+        <div>
+            LogTable
+        </div>
     )
 }
 
