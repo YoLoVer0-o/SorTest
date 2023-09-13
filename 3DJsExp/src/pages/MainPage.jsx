@@ -2,7 +2,7 @@ import { MainLayout } from "../components";
 
 const MainPage = () => {
     return (
-        <div>
+        <div className="tw-h-full">
             <MainLayout pageKey={['/main']} />
         </div>
     );

@@ -62,7 +62,7 @@ const MainLayout = props => {
 
 
     return (
-        <Layout className='tw-max-w-full tw-max-h-full'>
+        <Layout className='tw-max-w-full tw-max-h-full tw-h-[100%]'>
             <Sider trigger={null} collapsible collapsed={collapsed}>
                 <div className="demo-logo-vertical" />
                 <Menu
