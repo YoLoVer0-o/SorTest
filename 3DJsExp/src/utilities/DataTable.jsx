@@ -10,7 +10,7 @@ const DataTable = props => {
 
   return (
     <div className='tw-w-full tw-object-contain tw-max tw-h-full'>
-      <Table rowClassName={"tw-h-[10px]"} scroll={{  y: "25em" }}  tableLayout={'fixed'} columns={columns} dataSource={data} onChange={onChange} className={"tw-max-w-full tw-max-h-full  tw-object-contain"} />
+      <Table rowClassName={"tw-h-[10px]"} scroll={{ y: "25em" }} tableLayout={'fixed'} columns={columns} dataSource={data} onChange={onChange} className={"tw-max-w-full tw-max-h-full  tw-object-contain"} />
     </div>
   )
 }

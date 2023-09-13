@@ -43,7 +43,7 @@ const onChange = (value) => {
 
 const onSearch = (value, _e, info) => console.log(info?.source, value);
 
-const SearchBar = () => (
+const SearchBar = props => (
     <div>
 
         <Search placeholder="input search text" onSearch={onSearch} enterButton />
