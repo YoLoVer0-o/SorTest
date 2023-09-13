@@ -2,7 +2,7 @@ import { MainLayout } from "../components";
 
 const PostDataPage = () => {
     return (
-        <div>
+        <div className="tw-h-full">
             <MainLayout pageKey={['/postlog']} />
         </div>
     );
