@@ -5,8 +5,7 @@ const SearchBar = props => {
 
     const receviedData = props.data;
     const onChangeSearch = props.onChangeSearch;
-    // const onChangeFilter = props.onChangeFilter;
-
+    const onChangeFilter = props.onChangeFilter;
 
     // const options = [
     //     {
@@ -57,32 +56,36 @@ const SearchBar = props => {
         value: tag,
     }));
 
-    // const onTagChange = (value) => {
-    //     console.log(value);
-    //     onChangeFilter();
-    // };
-
     const onTextChange = (e) => {
-        console.log(e.target.value);
+        // console.log(e.target.value);
         onChangeSearch(e.target.value);
     };
 
+    const onTagChange = (value) => {
+        // console.log(value);
+        const searchTag = value.map((e) => {
+            return e;
+        })
+        // console.log(searchTag);
+        onChangeFilter(searchTag);
+    };
 
     return (
-
         <div>
-            <Input addonBefore={<SearchOutlined />} placeholder="พิมพ์สิ่งที่ต้องการค้นหา" onChange={onTextChange} />
-
+            <Input
+                addonBefore={<SearchOutlined />}
+                placeholder="พิมพ์สิ่งที่ต้องการค้นหา"
+                onChange={onTextChange}
+            />
             <Cascader
                 style={{
                     width: '100%',
                 }}
                 options={uniqueTagsArray}
-                // onChange={onTagChange}
+                onChange={onTagChange}
                 multiple
                 maxTagCount="responsive"
             />
-
         </div>
     );
 };
