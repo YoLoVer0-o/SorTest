@@ -52,7 +52,7 @@ const PostTable = () => {
     ];
 
     return (
-        <div className='tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-object-contain'>
+        <div className='tw-flex tw-flex-col tw-max-w-full tw-max-h-full'>
             PostTable
             <SearchBar
                 data={postMock}

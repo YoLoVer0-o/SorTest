@@ -77,7 +77,7 @@ const MainLayout = props => {
 
 
     return (
-        <Layout className='tw-max-w-full tw-max-h-full tw-h-[100%]'>
+        <Layout className='tw-max-w-full tw-max-h-full tw-h-full'>
             <Sider trigger={null} collapsible collapsed={collapsed}>
                 <div className="demo-logo-vertical" />
                 <Menu
@@ -124,10 +124,9 @@ const MainLayout = props => {
                     />
 
                 </Header>
-                <Breadcrumb className='tw-pl-4' items={breadcrumbItems} />
+                <Breadcrumb className='tw-pl-4 tw-m-4' items={breadcrumbItems} />
                 <Content
                     style={{
-                        margin: '1.5rem 1rem',
                         padding: '1.5rem',
                         background: colorBgContainer,
                     }}

@@ -10,15 +10,15 @@ const DataTable = props => {
   };
 
   return (
-    <div className='tw-w-full tw-object-contain tw-max tw-h-full'>
+    <div className='tw-w-full tw-max-h-96 tw-mb-28'>
       <Table
-        rowClassName={"tw-h-[10px]"}
+        rowClassName={"tw-max-h-2.5"}
         scroll={{ y: "25em" }}
         tableLayout={'fixed'}
         columns={columns}
         dataSource={receviedData}
         onChange={onChange}
-        className={"tw-max-w-full tw-max-h-full tw-object-contain"}
+        className={"tw-max-w-full tw-max-h-96"}
       />
     </div>
   );
