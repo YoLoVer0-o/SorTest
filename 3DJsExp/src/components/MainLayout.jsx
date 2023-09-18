@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
@@ -6,11 +7,25 @@ import {
     UserOutlined,
     VideoCameraOutlined,
 } from '@ant-design/icons';
-
-import { Layout, Menu, Button, theme, Breadcrumb } from 'antd';
-import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import {
+    Layout,
+    Menu,
+    Button,
+    theme,
+    Breadcrumb
+} from 'antd';
+import {
+    Link,
+    Outlet,
+    useLocation,
+    useNavigate
+} from 'react-router-dom';
 import { Footer } from 'antd/es/layout/layout';
-const { Header, Sider, Content } = Layout;
+
+const { Header,
+    Sider,
+    Content
+} = Layout;
 
 const MainLayout = props => {
 
@@ -31,7 +46,7 @@ const MainLayout = props => {
 
     const extraBreadcrumbItems = pathSnippets.map((_, index) => {
         const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
-        console.log(url);
+        // console.log(url);
         return {
             key: url,
             title: <Link to={url}>{breadcrumbNameMap[url]}</Link>,
@@ -42,7 +57,7 @@ const MainLayout = props => {
     const handleMenuClick = ({ key }) => {
         if (key) {
             navigate(key);
-            console.log(key);
+            // console.log(key);
         }
     };
 
@@ -54,7 +69,7 @@ const MainLayout = props => {
 
     useEffect(() => {
         if (location.pathname == '/') {
-            console.log("blank url");
+            // console.log("blank url");
             navigate('/main')
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -133,4 +148,9 @@ const MainLayout = props => {
 
     );
 };
+
+MainLayout.propTypes = {
+    pageKey: PropTypes.array.isRequired,
+}
+
 export default MainLayout;

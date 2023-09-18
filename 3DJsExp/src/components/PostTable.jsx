@@ -18,7 +18,6 @@ const PostTable = () => {
                 String(record?.key).toLowerCase().includes(value.toLowerCase())
                 || String(record?.post).toLowerCase().includes(value.toLowerCase())
                 || String(record?.creator).toLowerCase().includes(value.toLowerCase())
-                || String(record?.link).toLowerCase().includes(value.toLowerCase())
                 || String(record?.update).toLowerCase().includes(value.toLowerCase())
             ),
         },
@@ -29,9 +28,7 @@ const PostTable = () => {
             className: 'tw-truncate tw-w-[30%]',
             filteredValue: [searchTag],
             onFilter: (value, record) => (
-                // String(record?.tag).includes((value.split(",")))
                 (value.split(",")).every(tag => String(record?.tag).includes(tag))
-                // String(record?.tag).toLowerCase().includes(value.toLowerCase())
             ),
         },
         {

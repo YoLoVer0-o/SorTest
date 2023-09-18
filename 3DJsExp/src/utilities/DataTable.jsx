@@ -1,4 +1,5 @@
 import { Table } from 'antd';
+import PropTypes from 'prop-types';
 
 const DataTable = props => {
   const columns = props.columns;
@@ -22,5 +23,10 @@ const DataTable = props => {
     </div>
   );
 };
+
+DataTable.propTypes = {
+  columns: PropTypes.array,
+  data: PropTypes.array,
+}
 
 export default DataTable;

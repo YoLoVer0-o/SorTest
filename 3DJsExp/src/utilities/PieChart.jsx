@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import PropTypes from 'prop-types';
 
 const Arc = ({ data, index, createArc, colors, displayText, displayValue }) => {
 
@@ -60,5 +61,24 @@ const PieChart = props => {
         </svg>
     );
 };
+
+PieChart.propTypes = {
+    data: PropTypes.array,
+    innerRadius: PropTypes.number,
+    outerRadius: PropTypes.number,
+    width: PropTypes.number,
+    height: PropTypes.number,
+
+}
+
+Arc.propTypes = {
+    data: PropTypes.array,
+    index: PropTypes.number,
+    createArc: PropTypes.func,
+    colors: PropTypes.func,
+    displayText: PropTypes.string,
+    displayValue: PropTypes.string,
+    centroid: PropTypes.func,
+}
 
 export default PieChart;

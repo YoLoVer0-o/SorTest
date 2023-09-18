@@ -1,5 +1,6 @@
 import { Input, Cascader } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
+import PropTypes from 'prop-types';
 
 const SearchBar = props => {
 
@@ -57,16 +58,13 @@ const SearchBar = props => {
     }));
 
     const onTextChange = (e) => {
-        // console.log(e.target.value);
         onChangeSearch(e.target.value);
     };
 
     const onTagChange = (value) => {
-        // console.log(value);
         const searchTag = value.map((e) => {
             return e;
         })
-        // console.log(searchTag);
         onChangeFilter(searchTag);
     };
 
@@ -89,5 +87,11 @@ const SearchBar = props => {
         </div>
     );
 };
+
+SearchBar.propTypes = {
+    data: PropTypes.array.isRequired,
+    onChangeFilter: PropTypes.func,
+    onChangeSearch: PropTypes.func,
+}
 
 export default SearchBar;
