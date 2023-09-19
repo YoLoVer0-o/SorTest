@@ -35,6 +35,7 @@ const MainLayout = props => {
         '/main/overall': 'overall',
         '/main/overall/feedback': 'Feedback',
         '/postlog': 'postlog',
+        '/postlog/report': 'report',
     };
     const navigate = useNavigate();
 

@@ -1,11 +1,13 @@
 import { DataTable, SearchBar } from "../utilities";
 import { postMock } from "../mock";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const PostTable = () => {
 
     const [searchVal, setSearchVal] = useState('');
     const [searchTag, setSearchTag] = useState([]);
+    const navigate = useNavigate();
 
     const columns = [
         {
@@ -51,6 +53,10 @@ const PostTable = () => {
         },
     ];
 
+    const toReport = (data) => {
+        navigate("/postlog/report", { state: data })
+    }
+
     return (
         <div className='tw-flex tw-flex-col tw-max-w-full tw-max-h-full'>
             PostTable
@@ -62,6 +68,7 @@ const PostTable = () => {
             <DataTable
                 data={postMock}
                 columns={columns}
+                onRowClick={toReport}
             />
         </div>
     );
