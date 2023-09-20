@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Dashboard, Feedback, LogTable, PostTable } from "../components";
+import { Dashboard, Feedback, LogTable, PostTable, PostReport } from "../components";
 import { LoginPage, MainPage, PostDataPage } from "../pages";
 
 
@@ -33,6 +33,10 @@ export const router = createBrowserRouter([
       {
         path: "",
         element: <PostTable />,
+      },
+      {
+        path: "/postlog/report",
+        element: <PostReport />,
       },
     ],
   }

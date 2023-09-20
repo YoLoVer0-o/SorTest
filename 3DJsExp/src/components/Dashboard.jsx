@@ -4,16 +4,16 @@ import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
 
-    const negative = useNavigate();
+    const navigate = useNavigate();
 
     const redirect = (data) => {
         if (data.commentType == "positive") {
             console.log(data.commentType);
-            negative('feedback', { state: sentimentPos });
+            navigate('feedback', { state: sentimentPos });
 
         } else if (data.commentType == "negative") {
             console.log(data.commentType);
-            negative('feedback', { state: sentimentNega });
+            navigate('feedback', { state: sentimentNega });
         } else {
             console.log("Unknown comment type");
         }
