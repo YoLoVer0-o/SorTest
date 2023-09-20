@@ -12,7 +12,7 @@ const DataTable = props => {
     <div className='tw-w-full tw-object-contain tw-max tw-h-full'>
       <Table
         rowClassName={"tw-h-[10px]"}
-        scroll={{ y: "25em" }}
+        scroll={{ x: "content-fit",y: '20em' }}  
         tableLayout={'fixed'}
         columns={columns}
         dataSource={receviedData}
