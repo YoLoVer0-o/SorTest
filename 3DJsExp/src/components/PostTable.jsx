@@ -2,11 +2,14 @@ import { DataTable, SearchBar } from "../utilities";
 import { postMock } from "../mock";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
 
 const PostTable = () => {
 
     const [searchVal, setSearchVal] = useState('');
     const [searchTag, setSearchTag] = useState([]);
+    const [searchDate, setSearchDate] = useState([]);
+
     const navigate = useNavigate();
 
     const columns = [
@@ -50,9 +53,15 @@ const PostTable = () => {
             dataIndex: 'update',
             key: 'update',
             className: 'tw-w-[15%]',
+            filteredValue: [searchDate],
+            onFilter: (value, record) => (
+                //new Date(record?.update) >= new Date(dayjs(searchDate[0]).format('DD/MM/YYYY')) && new Date(record?.update) <= new Date(dayjs(searchDate[1]).format('DD/MM/YYYY'))
+                // time1 <= record <= time2
+                console.log(value)
+            ),
         },
     ];
-
+    
     const toReport = (data) => {
         navigate("/postlog/report", { state: data })
     }
@@ -64,6 +73,7 @@ const PostTable = () => {
                 data={postMock}
                 onChangeSearch={setSearchVal}
                 onChangeFilter={setSearchTag}
+                onChangeDate={setSearchDate}
             />
             <DataTable
                 data={postMock}
