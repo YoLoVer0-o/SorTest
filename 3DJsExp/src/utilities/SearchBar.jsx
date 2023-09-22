@@ -1,7 +1,7 @@
 import { Input, Cascader, DatePicker } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
-import dayjs from 'dayjs'; 
+import dayjs from 'dayjs';
 
 const SearchBar = props => {
 
@@ -76,7 +76,7 @@ const SearchBar = props => {
     const onTimeChange = (value) => {
         // console.log(dayjs(value[0]).format('DD/MM/YYYY'));
         // console.log(dayjs(value[1]).format('DD/MM/YYYY'));
-        const times = value.map((e) =>{
+        const times = value?.map((e) => {
             return (dayjs(e).format('DD/MM/YYYY'));
         })
         // console.log(times)
@@ -89,7 +89,7 @@ const SearchBar = props => {
                 addonBefore={<SearchOutlined />}
                 placeholder="พิมพ์สิ่งที่ต้องการค้นหา"
                 onChange={onTextChange}
-            /> 
+            />
             <Cascader
                 style={{
                     width: '100%',

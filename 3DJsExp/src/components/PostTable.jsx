@@ -55,13 +55,13 @@ const PostTable = () => {
             className: 'tw-w-[15%]',
             filteredValue: [searchDate],
             onFilter: (value, record) => (
-                //new Date(record?.update) >= new Date(dayjs(searchDate[0]).format('DD/MM/YYYY')) && new Date(record?.update) <= new Date(dayjs(searchDate[1]).format('DD/MM/YYYY'))
+                new Date(dayjs(searchDate[0]).format('DD/MM/YYYY')) >= new Date(record?.update) <= new Date(dayjs(searchDate[1]).format('DD/MM/YYYY'))
                 // time1 <= record <= time2
-                console.log(value)
+                //console.log(value.split(","))
             ),
         },
     ];
-    
+
     const toReport = (data) => {
         navigate("/postlog/report", { state: data })
     }
