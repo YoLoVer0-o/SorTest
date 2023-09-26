@@ -59,24 +59,23 @@ const PostTable = () => {
             className: 'tw-w-[15%]',
             filteredValue: [searchDate],
             onFilter: (value, record) => {
-                if (value == "" || value == []) {
-                    console.log("Invalid");
-                    return record?.update;
-                } else if (value != "") {
+                if (value != undefined && value != null && value != "" && value != 'undefined') {
+                    // console.log(value);
+                    // console.log("update");
                     let startDate = String(value?.split(",")[0])
                     let endDate = String(value?.split(",")[1])
                     let recordDate = dayjs(record?.update).format('YYYY-MM-DD')
-                    // console.log("value: " + value);
-                    // console.log("rec: ", record?.update);
-                    // console.log("f: ", recordDate);
                     if (dayjs(recordDate).isSameOrBefore(endDate) && dayjs(recordDate).isSameOrAfter(startDate)) {
-                        console.log("pass");
-                        console.log(record?.update);
+                        // console.log("pass");
                         return record?.update
                     }
-                }
-                else {
-                    return record?.update;
+                    // else {
+                    //     console.log("clean");
+                    //     return record?.update
+                    // }
+                } else {
+                    // console.log("reset");
+                    return record?.update
                 }
             },
         },
