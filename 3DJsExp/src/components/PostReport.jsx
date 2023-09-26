@@ -55,8 +55,8 @@ const PostReport = (props) => {
     //         </div>
     //     </div>
     // </div>
-    <div className="tw-flex tw-h-[100%] tw-w-full ">
-      <div className="tw-flex tw-flex-col tw-bg-[#7dcbb7] tw-max-h-max tw-h-full tw-w-[20%]  tw-flex-wrap ">
+    <div className="tw-flex  tw-h-[100%] tw-w-full ">
+      <div className="tw-flex tw-flex-col tw-bg-[#7dcbb7] tw-max-h-max tw-h-full tw-w-[15%]  tw-flex-wrap ">
         <div className="tw-flex tw-flex-col tw-flex-wrap tw-content-center tw-h-[80%]">
           <div className="tw-flex tw-bg-[#163881] tw-self-center	 tw-rounded-b-full tw-w-max tw-h-max tw-p-2">
             <img
@@ -82,10 +82,34 @@ const PostReport = (props) => {
         </div>
       </div>
 
-      <div className="tw-flex  tw-flex-col tw-w-[80%] tw-content-center tw-justify-center">
-        <div className="  ">
-         <CarouselReport className="tw-flex tw-w-[50em] "/>
-         </div>
+      <div className="tw-flex tw-flex-col tw-w-[85%] tw-h-[100%] tw-pl-10 tw-overflow-y-auto">
+        <div className="tw-flex tw-text-center tw-self-center tw-text-2xl tw-text-red-500">
+          ลับมาก
+        </div>
+        <div className="tw-flex tw-flex-row tw-justify-center tw-gap-12">
+          <div className="tw-flex tw-flex-col tw-w-40 tw-border-[2px] tw-border-black tw-rounded-xl tw-p-2">
+            <div className="tw-flex">แพลต์ฟอร์ม:Facebook</div>
+            <div className="tw-flex">กลุ่ม:NGO</div>
+            <div className="tw-flex">ชื่อกลุ่ม:iLaeFX</div>
+            <div className="tw-flex">ผู้ติดตาม:460K</div>
+            <div className="tw-flex">ช่องทาง FB:iLawClub</div>
+          </div>
+          <div className="tw-flex tw-flex-col tw-w-64 tw-border-[2px] tw-border-black tw-rounded-xl tw-p-2">
+            <div className="tw-flex">ถูกใจ:46K</div>
+            <div className="tw-flex">แชร์:403</div>
+            <div className="tw-flex">ความคิดเห็น:123</div>
+            <div className="tw-flex">สร้างโพส:3 มิ.ย.2023 เวลา 19.45น.</div>
+            <div className="tw-flex">อัพเดทข้อมูล FB:5 มิ.ย.2023 เวลา 15.45น.</div>
+          </div>
+        </div>
+        <div className="tw-flex tw-mt-4 tw-justify-center">
+          <CarouselReport />
+        </div>
+        <div  
+        className="tw-flex  tw-justify-start tw-self-start tw-text-3xl tw-bg-gradient-to-r 
+        tw-from-indigo-500 tw-from-10% tw-via-sky-500 tw-via-30% tw-to-white 
+        tw-text-white tw-w-72 tw-h-max">
+          <p>สรุปความเคลื่อนไหว</p></div>
       </div>
     </div>
   );

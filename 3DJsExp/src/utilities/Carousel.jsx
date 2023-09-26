@@ -4,7 +4,7 @@ import carouselPic from "../assets/carouselPic.jpg";
 import poster from "../assets/poster.jpg";
 
 // const contentStyle = {
-//   height: "360px",
+//   height: "460px",
 //   width: "720px",
 //   color: "#fff",
 //   lineHeight: "160px",
@@ -12,18 +12,19 @@ import poster from "../assets/poster.jpg";
 //   background: "#364d79",
 // };
 const CarouselReport = () => (
-  <Carousel autoplay className="tw-flex tw-justify-center  tw-object-contain tw-bg-red-900 ">
+
+  <Carousel autoplay className="tw-flex tw-w-[30rem] tw-justify-self-center tw-content-center  tw-justify-center  tw-bg-red-900 ">
     <div className="tw-flex tw-justify-center tw-object-center  tw-max-w-80 tw-max-h-80	">
       <img
-        className="tw-flex tw-justify-center tw-max-w-[inherit] object-contain tw-max-h-[inherit]" 
-        // style={contentStyle }
+        className="tw-flex tw-justify-center tw-w-[30rem] tw-h-[20rem] tw-max-w-[inherit] object-contain tw-max-h-[inherit]" 
         src={carouselPic}
       />
     </div>
-    <div className="tw-flex tw-justify-center tw-object-center  tw-max-w-80 tw-max-h-80">
+    <div className=" tw-flex tw-justify-center tw-object-center  tw-max-w-80 tw-max-h-80">
       <img  src={poster}
-            className="tw-flex tw-justify-center tw-max-w-[inherit] object-contain tw-max-h-[inherit]"
-            />
+            className="tw-flex tw-justify-center tw-w-[30rem] tw-h-[20rem] tw-max-w-[inherit] object-contain tw-max-h-[inherit]"
+           
+           />
     </div>
     {/* <div className="tw-flex tw-justify-center tw-w-[20rem] tw-h-[20rem]">
       <img 
