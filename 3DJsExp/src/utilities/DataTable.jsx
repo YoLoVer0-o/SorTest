@@ -6,6 +6,7 @@ const DataTable = props => {
   const receviedData = props.data;
   const onRowClick = props.onRowClick;
   const pageSize = props.setPageSize;
+  const sendRows = props.onRowsSelected;
 
   const onChange = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
@@ -23,9 +24,11 @@ const DataTable = props => {
     },
     onSelect: (record, selected, selectedRows) => {
       console.log(record, selected, selectedRows);
+      sendRows(selectedRows)
     },
     onSelectAll: (selected, selectedRows, changeRows) => {
       console.log(selected, selectedRows, changeRows);
+      sendRows(selectedRows)
     },
   };
 

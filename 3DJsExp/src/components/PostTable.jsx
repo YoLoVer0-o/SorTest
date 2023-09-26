@@ -14,6 +14,7 @@ const PostTable = () => {
     const [searchVal, setSearchVal] = useState('');
     const [searchTag, setSearchTag] = useState([]);
     const [searchDate, setSearchDate] = useState([]);
+    const [selectedRows, setSelectedRows] = useState([]);
     const [pageSize, setPageSize] = useState(10);
 
     const navigate = useNavigate();
@@ -87,6 +88,9 @@ const PostTable = () => {
         navigate("/postlog/report", { state: data })
     }
 
+    const downloadPDF = (rows) => {
+        console.log("get:", rows);
+    }
     return (
         <div className='tw-flex tw-flex-col tw-max-w-full tw-max-h-full'>
             PostTable
@@ -101,10 +105,12 @@ const PostTable = () => {
                 columns={columns}
                 onRowClick={toReport}
                 setPageSize={pageSize}
+                onRowsSelected={setSelectedRows}
             />
             <div className=" tw-flex tw-flex-row">
                 <Button onClick={() => setPageSize(20)} >show more</Button>
                 <Button onClick={() => setPageSize(10)} >show less</Button>
+                <Button onClick={() => downloadPDF(selectedRows)} >download</Button>
             </div>
         </div>
     );
