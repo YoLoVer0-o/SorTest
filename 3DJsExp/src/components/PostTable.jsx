@@ -2,7 +2,11 @@ import { DataTable, SearchBar } from "../utilities";
 import { postMock } from "../mock";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import dayjs from "dayjs";
+import dayjs from 'dayjs';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+dayjs.extend(isSameOrBefore)
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+dayjs.extend(isSameOrAfter)
 
 const PostTable = () => {
 
@@ -54,11 +58,27 @@ const PostTable = () => {
             key: 'update',
             className: 'tw-w-[15%]',
             filteredValue: [searchDate],
-            onFilter: (value, record) => (
-                new Date(dayjs(searchDate[0]).format('DD/MM/YYYY')) >= new Date(record?.update) <= new Date(dayjs(searchDate[1]).format('DD/MM/YYYY'))
-                // time1 <= record <= time2
-                //console.log(value.split(","))
-            ),
+            onFilter: (value, record) => {
+                if (value == "" || value == []) {
+                    console.log("Invalid");
+                    return record?.update;
+                } else if (value != "") {
+                    let startDate = String(value?.split(",")[0])
+                    let endDate = String(value?.split(",")[1])
+                    let recordDate = dayjs(record?.update).format('YYYY-MM-DD')
+                    // console.log("value: " + value);
+                    // console.log("rec: ", record?.update);
+                    // console.log("f: ", recordDate);
+                    if (dayjs(recordDate).isSameOrBefore(endDate) && dayjs(recordDate).isSameOrAfter(startDate)) {
+                        console.log("pass");
+                        console.log(record?.update);
+                        return record?.update
+                    }
+                }
+                else {
+                    return record?.update;
+                }
+            },
         },
     ];
 

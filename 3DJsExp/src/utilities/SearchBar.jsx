@@ -10,42 +10,6 @@ const SearchBar = props => {
     const onChangeFilter = props.onChangeFilter;
     const onChangeDate = props.onChangeDate;
 
-    // const options = [
-    //     {
-    //         label: 'Light',
-    //         value: 'light',
-    //         children: new Array(20).fill(null).map((_, index) => ({
-    //             label: `Number ${index}`,
-    //             value: index,
-    //         })),
-    //     },
-    //     {
-    //         label: 'Bamboo',
-    //         value: 'bamboo',
-    //         children: [
-    //             {
-    //                 label: 'Little',
-    //                 value: 'little',
-    //                 children: [
-    //                     {
-    //                         label: 'Toy Fish',
-    //                         value: 'fish',
-    //                         disableCheckbox: true,
-    //                     },
-    //                     {
-    //                         label: 'Toy Cards',
-    //                         value: 'cards',
-    //                     },
-    //                     {
-    //                         label: 'Toy Bird',
-    //                         value: 'bird',
-    //                     },
-    //                 ],
-    //             },
-    //         ],
-    //     },
-    // ];
-
     const { RangePicker } = DatePicker;
     const dateFormat = 'DD/MM/YYYY';
 
@@ -74,12 +38,11 @@ const SearchBar = props => {
     };
 
     const onTimeChange = (value) => {
-        // console.log(dayjs(value[0]).format('DD/MM/YYYY'));
-        // console.log(dayjs(value[1]).format('DD/MM/YYYY'));
+
         const times = value?.map((e) => {
-            return (dayjs(e).format('DD/MM/YYYY'));
+            return (dayjs(e).format('YYYY-MM-DD'));
         })
-        // console.log(times)
+
         onChangeDate(times);
     };
 
@@ -100,7 +63,6 @@ const SearchBar = props => {
                 maxTagCount="responsive"
             />
             <RangePicker
-                // allowClear
                 onChange={onTimeChange}
                 format={dateFormat}
             />
