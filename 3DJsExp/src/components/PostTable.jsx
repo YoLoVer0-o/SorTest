@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 dayjs.extend(isSameOrBefore)
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import { Button } from "antd";
 dayjs.extend(isSameOrAfter)
 
 const PostTable = () => {
@@ -13,6 +14,7 @@ const PostTable = () => {
     const [searchVal, setSearchVal] = useState('');
     const [searchTag, setSearchTag] = useState([]);
     const [searchDate, setSearchDate] = useState([]);
+    const [pageSize, setPageSize] = useState(10);
 
     const navigate = useNavigate();
 
@@ -98,7 +100,12 @@ const PostTable = () => {
                 data={postMock}
                 columns={columns}
                 onRowClick={toReport}
+                setPageSize={pageSize}
             />
+            <div className=" tw-flex tw-flex-row">
+                <Button onClick={() => setPageSize(20)} >show more</Button>
+                <Button onClick={() => setPageSize(10)} >show less</Button>
+            </div>
         </div>
     );
 };

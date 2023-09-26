@@ -5,6 +5,7 @@ const DataTable = props => {
   const columns = props.columns;
   const receviedData = props.data;
   const onRowClick = props.onRowClick;
+  const pageSize = props.setPageSize;
 
   const onChange = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
@@ -29,7 +30,7 @@ const DataTable = props => {
   };
 
   return (
-    <div className='tw-w-full tw-max-h-96 tw-mb-28'>
+    <div className='tw-w-full tw-max-h-96 tw-mb-10'>
       <Table
         rowClassName={"tw-max-h-2.5"}
         scroll={{ y: "25em" }}
@@ -37,6 +38,10 @@ const DataTable = props => {
         columns={columns}
         dataSource={receviedData}
         onChange={onChange}
+        pagination={{
+          defaultPageSize: 10,
+          pageSize: pageSize,
+        }}
         className={"tw-max-w-full tw-max-h-96"}
         onRow={(record, rowIndex) => ({
           onClick: () => {
@@ -53,6 +58,7 @@ DataTable.propTypes = {
   columns: PropTypes.array,
   data: PropTypes.array,
   onRowClick: PropTypes.func,
+  setPageSize: PropTypes.number,
 }
 
 export default DataTable;
