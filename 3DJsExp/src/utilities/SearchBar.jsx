@@ -47,7 +47,7 @@ const SearchBar = props => {
     };
 
     return (
-        <div className='tw-flex tw-flex-row tw-my-2'>
+        <div className='tw-flex tw-flex-row tw-my-2 tw-gap-2    '>
             <Tooltip title="พิมพ์สิ่งที่ต้องการค้นหา">
                 <div
                     style={{

@@ -118,19 +118,19 @@ const PostTable = () => {
             />
             <div className=" tw-flex tw-flex-row tw-my-6 tw-gap-4">
                 <Tooltip title="แสดงเพิ่มเติม">
-                    <Button className="tw-border-black tw-border-2 tw-bg-green-400 tw-drop-shadow-md hover:tw-bg-white hover:tw-border-green-400 hover:tw-text-green-400"
+                    <Button className="tw-border-black tw-border-2 tw-bg-green-400 tw-drop-shadow-md hover:tw-bg-white hover:tw-border-green-600 hover:tw-text-green-600"
                         onClick={() => setPageSize(20)} >
                         show more
                     </Button>
                 </Tooltip>
                 <Tooltip title="แสดงน้อยลง">
-                    <Button className="tw-border-black tw-border-2 tw-bg-yellow-400 tw-drop-shadow-md hover:tw-bg-white hover:tw-border-yellow-400 hover:tw-text-yellow-400"
+                    <Button className="tw-border-black tw-border-2 tw-bg-yellow-400 tw-drop-shadow-md hover:tw-bg-white hover:tw-border-yellow-600 hover:tw-text-yellow-600"
                         onClick={() => setPageSize(5)} >
                         show less
                     </Button>
                 </Tooltip>
                 <Tooltip title="ดาวน์โหลดรายงาน(.PDF)">
-                    <Button className="tw-border-black tw-border-2 tw-bg-red-400 tw-drop-shadow-md hover:tw-bg-white hover:tw-border-red-400 hover:tw-text-red-400"
+                    <Button className="tw-border-black tw-border-2 tw-bg-red-400 tw-drop-shadow-md hover:tw-bg-white hover:tw-border-red-600 hover:tw-text-red-600"
                         onClick={() => downloadPDF(selectedRows)} >
                         download PDF
                     </Button>
