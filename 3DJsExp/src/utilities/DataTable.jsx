@@ -46,7 +46,7 @@ const DataTable = props => {
           defaultPageSize: 5,
           pageSize: pageSize,
         }}
-        className={"tw-w-full tw-h-full tw-overflow-auto"}
+        className={"tw-w-full tw-max-h-[inherit] tw-overflow-auto"}
         onRow={(record, rowIndex) => ({
           onClick: () => {
             handleRowClick(record, rowIndex)

@@ -1,4 +1,4 @@
-import { Input, Cascader, DatePicker } from 'antd';
+import { Input, Cascader, DatePicker, Tooltip } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
@@ -48,34 +48,59 @@ const SearchBar = props => {
 
     return (
         <div className='tw-flex tw-flex-row tw-my-2'>
-            <Input
-                style={{
-                    width: '100%',
-                }}
-                addonBefore={<SearchOutlined />}
-                placeholder="พิมพ์สิ่งที่ต้องการค้นหา"
-                onChange={onTextChange}
-                className='tw-border-2 tw-rounded-lg tw-border-sky-500 tw-mx-2 tw-drop-shadow-md'
-            />
-            <Cascader
-                style={{
-                    width: '100%',
-                }}
-                options={uniqueTagsArray}
-                onChange={onTagChange}
-                multiple
-                maxTagCount="responsive"
-                placeholder="เลือกหมวดหมู่ที่ต้องการค้นหา"
-                className='tw-border-2 tw-rounded-lg tw-border-sky-500 tw-mx-2 tw-drop-shadow-md'
-            />
-            <RangePicker
-                style={{
-                    width: '100%',
-                }}
-                onChange={onTimeChange}
-                format={dateFormat}
-                className='tw-border-2 tw-rounded-lg tw-border-sky-500 tw-mx-2 tw-drop-shadow-md'
-            />
+            <Tooltip title="พิมพ์สิ่งที่ต้องการค้นหา">
+                <div
+                    style={{
+                        width: '100%',
+                    }}
+                >
+                    <Input
+                        style={{
+                            width: '100%',
+                        }}
+                        addonBefore={<SearchOutlined />}
+                        placeholder="พิมพ์สิ่งที่ต้องการค้นหา"
+                        onChange={onTextChange}
+                        className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-mx-2 tw-drop-shadow-md hover:tw-border-sky-700'
+                    />
+                </div>
+            </Tooltip>
+            <Tooltip title="เลือกหมวดหมู่ที่ต้องการค้นหา">
+                <div
+                    style={{
+                        width: '100%',
+                    }}
+                >
+                    <Cascader
+                        style={{
+                            width: '100%',
+                        }}
+                        options={uniqueTagsArray}
+                        onChange={onTagChange}
+                        multiple
+                        maxTagCount="responsive"
+                        placeholder="เลือกหมวดหมู่ที่ต้องการค้นหา"
+                        className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-mx-2 tw-drop-shadow-md hover:tw-border-sky-700 '
+                    />
+                </div>
+            </Tooltip>
+            <Tooltip title="เลือกช่วงเวลาที่ต้องการค้นหา">
+                <div
+                    style={{
+                        width: '100%',
+                    }}
+                >
+
+                    <RangePicker
+                        style={{
+                            width: '100%',
+                        }}
+                        onChange={onTimeChange}
+                        format={dateFormat}
+                        className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-mx-2 tw-drop-shadow-md hover:tw-border-sky-700 '
+                    />
+                </div>
+            </Tooltip>
         </div>
     );
 };
