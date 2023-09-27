@@ -15,7 +15,7 @@ const PostTable = () => {
     const [searchTag, setSearchTag] = useState([]);
     const [searchDate, setSearchDate] = useState([]);
     const [selectedRows, setSelectedRows] = useState([]);
-    const [pageSize, setPageSize] = useState(10);
+    const [pageSize, setPageSize] = useState(5);
 
     const navigate = useNavigate();
 
@@ -92,8 +92,8 @@ const PostTable = () => {
         console.log("get:", rows);
     }
     return (
-        <div className='tw-flex tw-flex-col tw-max-w-full tw-max-h-full'>
-            PostTable
+        <div className='tw-flex tw-flex-col tw-max-w-[inherit] tw-max-h-[inherit] tw-flex-nowrap'>
+            <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">PostTable</p>
             <SearchBar
                 data={postMock}
                 onChangeSearch={setSearchVal}
@@ -107,10 +107,10 @@ const PostTable = () => {
                 setPageSize={pageSize}
                 onRowsSelected={setSelectedRows}
             />
-            <div className=" tw-flex tw-flex-row">
-                <Button onClick={() => setPageSize(20)} >show more</Button>
-                <Button onClick={() => setPageSize(10)} >show less</Button>
-                <Button onClick={() => downloadPDF(selectedRows)} >download</Button>
+            <div className=" tw-flex tw-flex-row tw-my-6 tw-gap-4">
+                <Button className="tw-border-black tw-border-2 tw-bg-green-400 tw-drop-shadow-md hover:tw-bg-white hover:tw-border-green-400 hover:tw-text-green-400" onClick={() => setPageSize(20)} >show more</Button>
+                <Button className="tw-border-black tw-border-2 tw-bg-yellow-400 tw-drop-shadow-md hover:tw-bg-white hover:tw-border-yellow-400 hover:tw-text-yellow-400" onClick={() => setPageSize(5)} >show less</Button>
+                <Button className="tw-border-black tw-border-2 tw-bg-red-400 tw-drop-shadow-md hover:tw-bg-white hover:tw-border-red-400 hover:tw-text-red-400" onClick={() => downloadPDF(selectedRows)} >download PDF</Button>
             </div>
         </div>
     );

@@ -47,11 +47,15 @@ const SearchBar = props => {
     };
 
     return (
-        <div>
+        <div className='tw-flex tw-flex-row tw-my-2'>
             <Input
+                style={{
+                    width: '100%',
+                }}
                 addonBefore={<SearchOutlined />}
                 placeholder="พิมพ์สิ่งที่ต้องการค้นหา"
                 onChange={onTextChange}
+                className='tw-border-2 tw-rounded-lg tw-border-sky-500 tw-mx-2 tw-drop-shadow-md'
             />
             <Cascader
                 style={{
@@ -61,10 +65,16 @@ const SearchBar = props => {
                 onChange={onTagChange}
                 multiple
                 maxTagCount="responsive"
+                placeholder="เลือกหมวดหมู่ที่ต้องการค้นหา"
+                className='tw-border-2 tw-rounded-lg tw-border-sky-500 tw-mx-2 tw-drop-shadow-md'
             />
             <RangePicker
+                style={{
+                    width: '100%',
+                }}
                 onChange={onTimeChange}
                 format={dateFormat}
+                className='tw-border-2 tw-rounded-lg tw-border-sky-500 tw-mx-2 tw-drop-shadow-md'
             />
         </div>
     );

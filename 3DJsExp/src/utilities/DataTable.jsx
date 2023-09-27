@@ -33,19 +33,20 @@ const DataTable = props => {
   };
 
   return (
-    <div className='tw-w-full tw-max-h-96 tw-mb-10'>
+    <div className='tw-max-w-[inherit] tw-max-h-[inherit] tw-overflow-auto'>
       <Table
-        rowClassName={"tw-max-h-2.5"}
-        scroll={{ y: "25em" }}
+        rowClassName={"tw-max-w-md tw-max-h-2.5"}
+        // scroll={{ y: "16.5rem" }}
+        // onWheel={(e) => e.preventDefault()}
         tableLayout={'fixed'}
         columns={columns}
         dataSource={receviedData}
         onChange={onChange}
         pagination={{
-          defaultPageSize: 10,
+          defaultPageSize: 5,
           pageSize: pageSize,
         }}
-        className={"tw-max-w-full tw-max-h-96"}
+        className={"tw-w-full tw-h-full tw-overflow-auto"}
         onRow={(record, rowIndex) => ({
           onClick: () => {
             handleRowClick(record, rowIndex)
@@ -61,6 +62,7 @@ DataTable.propTypes = {
   columns: PropTypes.array,
   data: PropTypes.array,
   onRowClick: PropTypes.func,
+  onRowsSelected: PropTypes.func,
   setPageSize: PropTypes.number,
 }
 
