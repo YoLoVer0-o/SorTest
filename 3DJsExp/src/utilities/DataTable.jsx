@@ -5,6 +5,8 @@ const DataTable = props => {
   const columns = props.columns;
   const receviedData = props.data;
   const onRowClick = props.onRowClick;
+  const pageSize = props.setPageSize;
+  const sendRows = props.onRowsSelected;
 
   const onChange = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
@@ -22,22 +24,29 @@ const DataTable = props => {
     },
     onSelect: (record, selected, selectedRows) => {
       console.log(record, selected, selectedRows);
+      sendRows(selectedRows)
     },
     onSelectAll: (selected, selectedRows, changeRows) => {
       console.log(selected, selectedRows, changeRows);
+      sendRows(selectedRows)
     },
   };
 
   return (
-    <div className='tw-w-full tw-max-h-96 tw-mb-28'>
+    <div className='tw-max-w-full tw-max-h-full tw-overflow-auto'>
       <Table
-        rowClassName={"tw-max-h-2.5"}
-        scroll={{ x: "content-fit",y: '20em' }}  
+        rowClassName={"tw-max-w-md tw-max-h-2.5"}
+        // scroll={{ y: "16.5rem" }}
+        // onWheel={(e) => e.preventDefault()}
         tableLayout={'fixed'}
         columns={columns}
         dataSource={receviedData}
         onChange={onChange}
-        className={"tw-max-w-full tw-max-h-96"}
+        pagination={{
+          defaultPageSize: 5,
+          pageSize: pageSize,
+        }}
+        className={"tw-max-w-full tw-max-h-full tw-overflow-auto"}
         onRow={(record, rowIndex) => ({
           onClick: () => {
             handleRowClick(record, rowIndex)
@@ -53,6 +62,8 @@ DataTable.propTypes = {
   columns: PropTypes.array,
   data: PropTypes.array,
   onRowClick: PropTypes.func,
+  onRowsSelected: PropTypes.func,
+  setPageSize: PropTypes.number,
 }
 
 export default DataTable;

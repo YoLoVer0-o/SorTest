@@ -132,9 +132,9 @@ const MainLayout = props => {
                        
                         background: colorBgContainer,
                     }}
-                    className='tw-flex tw-flex-wrap tw-max-w-full tw-justify-center tw-object-contain tw-p-5 sm:tw-pb-5  tw-pb-24'
+                    className='tw-flex tw-max-w-full tw-max-h-full tw-justify-center tw-overflow-auto'
                 >
-                    <Outlet className="tw-flex tw-max-h-fit tw-max-w-fit tw-object-contain tw-justify-center" />
+                    <Outlet className="tw-flex tw-max-h-full tw-max-w-full tw-justify-center " />
                 </Content>
                 <Footer className='tw-h-[5%]'
                     style={{
