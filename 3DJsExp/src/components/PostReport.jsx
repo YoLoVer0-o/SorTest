@@ -1,19 +1,24 @@
 import PropTypes from "prop-types";
 import { useLocation } from "react-router-dom";
 import { useRef } from "react";
+import { Form } from "antd";
 import logo from "../assets/logo.jpg";
 import poster from "../assets/poster.jpg";
 import CarouselReport from "../utilities/Carousel";
 import FButton from "../utilities/FolatButton";
+import DateDisplay from "../utilities/Date";
+import InputCol from "../utilities/InputCol";
+
+
 const PostReport = (props) => {
   const location = useLocation();
   const postData = location.state;
-  
+
   const topRef = useRef(null);
   const scrollToTop = () => {
-    topRef?.current?.scrollIntoView({ behavior: 'smooth' });
+    topRef?.current?.scrollIntoView({ behavior: "smooth" });
   };
-  
+
   const summarizeContent = useRef(null);
   const focusSummarize = () => {
     if (summarizeContent.current) {
@@ -106,8 +111,11 @@ const PostReport = (props) => {
       </div>
 
       <div className="tw-flex tw-flex-col tw-w-[85%] tw-h-[100%] tw-pl-10 tw-overflow-y-auto">
-        <div ref={topRef} tabIndex={0}
-         className="tw-flex tw-text-center tw-self-center tw-text-2xl tw-text-red-500">
+        <div
+          ref={topRef}
+          tabIndex={0}
+          className="tw-flex tw-text-center tw-self-center tw-text-2xl tw-text-red-500"
+        >
           ลับมาก
         </div>
         <div className="tw-flex tw-flex-row tw-justify-center tw-gap-12">
@@ -196,7 +204,7 @@ const PostReport = (props) => {
         tw-from-indigo-500 tw-from-10% tw-via-sky-500 tw-via-30% tw-to-white 
         tw-text-white tw-w-72 tw-h-max"
         >
-          <p>สรุปวิเคราะห์</p>
+          <p >สรุปวิเคราะห์</p>
         </div>
         <div className="tw-flex tw-h-full tw-w-[100%] tw-p-6">
           <textarea
@@ -208,9 +216,13 @@ const PostReport = (props) => {
             rows={5}
           ></textarea>
         </div>
-          <div  >
-          <FButton onClick={scrollToTop}/>
-          </div>
+        <div className=" tw-flex tw-flex-col tw-p-6">
+          <DateDisplay />
+          <InputCol />
+          <div className="tw-text-xl">สถานการณ์ในห้วงต่อไป</div>
+          <InputCol />
+          <FButton onClick={scrollToTop} />
+        </div>
       </div>
     </div>
   );
