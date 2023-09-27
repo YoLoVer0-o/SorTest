@@ -101,7 +101,7 @@ const PostTable = () => {
         console.log("get:", rows);
     }
     return (
-        <div className='tw-flex tw-flex-col tw-max-w-[inherit] tw-max-h-[inherit] tw-flex-nowrap'>
+        <div className='tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-flex-nowrap'>
             <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">PostTable</p>
             <SearchBar
                 data={postMock}

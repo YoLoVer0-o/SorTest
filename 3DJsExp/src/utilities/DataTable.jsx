@@ -33,7 +33,7 @@ const DataTable = props => {
   };
 
   return (
-    <div className='tw-max-w-[inherit] tw-max-h-[inherit] tw-overflow-auto'>
+    <div className='tw-max-w-full tw-max-h-full tw-overflow-auto'>
       <Table
         rowClassName={"tw-max-w-md tw-max-h-2.5"}
         // scroll={{ y: "16.5rem" }}
@@ -46,7 +46,7 @@ const DataTable = props => {
           defaultPageSize: 5,
           pageSize: pageSize,
         }}
-        className={"tw-w-full tw-max-h-[inherit] tw-overflow-auto"}
+        className={"tw-max-w-full tw-max-h-full tw-overflow-auto"}
         onRow={(record, rowIndex) => ({
           onClick: () => {
             handleRowClick(record, rowIndex)
