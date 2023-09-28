@@ -24,7 +24,7 @@ const PostTable = () => {
             title: 'ID',
             dataIndex: 'key',
             key: 'key',
-            className: 'tw-w-[10%] tw-text-red-600 tw-font-bold',
+            className: 'tw-w-[5%] tw-text-red-600 tw-font-bold tw-text-justify',
             filteredValue: [searchVal],
             onFilter: (value, record) => (
                 String(record?.key).toLowerCase().includes(value.toLowerCase())
@@ -37,7 +37,7 @@ const PostTable = () => {
             title: 'post',
             dataIndex: 'post',
             key: 'post',
-            className: 'tw-truncate tw-w-[30%]',
+            className: 'tw-truncate tw-w-[25%] tw-text-justify',
             filteredValue: [searchTag],
             onFilter: (value, record) => (
                 (value.split(",")).every(tag => String(record?.tag).includes(tag))
@@ -47,13 +47,13 @@ const PostTable = () => {
             title: 'creator',
             dataIndex: 'creator',
             key: 'creator',
-            className: 'tw-w-[15%] tw-text-amber-600',
+            className: 'tw-w-[15%] tw-text-amber-600 tw-text-justify',
         },
         {
             title: 'tag',
             dataIndex: 'tag',
             key: 'tag',
-            className: 'tw-w-[15%] tw-text-violet-600',
+            className: 'tw-w-[10%] tw-text-violet-600 tw-text-justify',
             render: (text, record) => (
                 <div className="tw-flex tw-flex-row tw-gap-1">
                     {record?.tag.map(tag => (
@@ -70,13 +70,13 @@ const PostTable = () => {
             title: 'link',
             dataIndex: 'link',
             key: 'link',
-            className: 'tw-w-[30%] tw-h-[10%] tw-truncate tw-text-sky-700',
+            className: 'tw-w-[25%] tw-h-[10%] tw-truncate tw-text-sky-700 tw-text-justify',
         },
         {
             title: 'update',
             dataIndex: 'update',
             key: 'update',
-            className: 'tw-w-[15%] tw-text-lime-600',
+            className: 'tw-w-[10%] tw-text-lime-600 tw-text-justify',
             filteredValue: [searchDate],
             onFilter: (value, record) => {
                 if (value != undefined && value != null && value != "" && value != 'undefined') {
@@ -99,9 +99,10 @@ const PostTable = () => {
 
     const downloadPDF = (rows) => {
         console.log("get:", rows);
+        console.log(selectedRows);
     }
     return (
-        <div className='tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-flex-nowrap'>
+        <div className='tw-flex tw-flex-col tw-max-w-full tw-max-h-full'>
             <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">PostTable</p>
             <SearchBar
                 data={postMock}
@@ -133,12 +134,14 @@ const PostTable = () => {
                         </Button>
                     </Tooltip>
                 )}
-                <Tooltip title="ดาวน์โหลดรายงาน(.PDF)">
-                    <Button className="tw-border-black tw-border-2 tw-bg-red-400 tw-drop-shadow-md hover:tw-bg-white hover:tw-border-red-600 hover:tw-text-red-600"
-                        onClick={() => downloadPDF(selectedRows)} >
-                        download PDF
-                    </Button>
-                </Tooltip>
+                {selectedRows.length > 0 && (
+                    <Tooltip title="ดาวน์โหลดรายงาน(.PDF)">
+                        <Button className="tw-border-black tw-border-2 tw-bg-red-400 tw-drop-shadow-md hover:tw-bg-white hover:tw-border-red-600 hover:tw-text-red-600"
+                            onClick={() => downloadPDF(selectedRows)} >
+                            download PDF
+                        </Button>
+                    </Tooltip>
+                )}
             </div>
         </div>
     );

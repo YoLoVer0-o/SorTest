@@ -129,17 +129,16 @@ const MainLayout = props => {
                 <Content
                     style={{
                         margin: '1.5rem 1rem',
-                       
                         background: colorBgContainer,
                     }}
-                    className='tw-flex tw-max-w-full tw-max-h-full tw-justify-center tw-overflow-auto'
+                    className='tw-flex tw-max-w-full tw-max-h-full tw-justify-center tw-overflow-y-auto'
                 >
-                    <Outlet className="tw-flex tw-max-h-full tw-max-w-full tw-justify-center " />
+                    <Outlet className="tw-flex tw-max-h-full tw-max-w-full tw-justify-center" />
                 </Content>
                 <Footer className='tw-h-[5%]'
                     style={{
                         textAlign: 'center',
-                       alignContent: 'center',
+                        alignContent: 'center',
                     }}
                 >
                     Ant Design ©2023 Created by Ant UED
