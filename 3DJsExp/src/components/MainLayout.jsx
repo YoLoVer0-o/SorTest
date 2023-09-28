@@ -11,7 +11,7 @@ import {
     MenuUnfoldOutlined,
     UploadOutlined,
     UserOutlined,
-    VideoCameraOutlined,
+    ContainerOutlined,
 } from '@ant-design/icons';
 import {
     Layout,
@@ -88,7 +88,7 @@ const MainLayout = props => {
                         },
                         {
                             key: '/postlog',
-                            icon: <VideoCameraOutlined />,
+                            icon: <ContainerOutlined />,
                             label: 'DataLog',
                         },
                         {

@@ -3,6 +3,11 @@ import { postMock } from "../mock";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Tooltip } from "antd";
+import {
+    ColumnHeightOutlined,
+    VerticalAlignMiddleOutlined,
+    FilePdfOutlined,
+} from '@ant-design/icons';
 import dayjs from 'dayjs';
 
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
@@ -124,15 +129,20 @@ const PostTable = () => {
                 {pageSize < 20 && (
                     <Tooltip title="แสดงเพิ่มเติม">
                         <Button className="tw-border-black tw-border-2 tw-bg-green-400 tw-drop-shadow-md hover:tw-bg-white hover:tw-border-green-600 hover:tw-text-green-600"
-                            onClick={() => setPageSize(20)} >
+                            onClick={() => setPageSize(20)}
+                            icon={<ColumnHeightOutlined />}
+                        >
                             show more
+
                         </Button>
                     </Tooltip>
                 )}
                 {pageSize >= 20 && (
                     <Tooltip title="แสดงน้อยลง">
                         <Button className="tw-border-black tw-border-2 tw-bg-yellow-400 tw-drop-shadow-md hover:tw-bg-white hover:tw-border-yellow-600 hover:tw-text-yellow-600"
-                            onClick={() => setPageSize(5)} >
+                            onClick={() => setPageSize(5)}
+                            icon={<VerticalAlignMiddleOutlined />}
+                        >
                             show less
                         </Button>
                     </Tooltip>
@@ -140,7 +150,9 @@ const PostTable = () => {
                 {selectedRows.length > 0 && (
                     <Tooltip title="ดาวน์โหลดรายงาน(.PDF)">
                         <Button className="tw-border-black tw-border-2 tw-bg-red-400 tw-drop-shadow-md hover:tw-bg-white hover:tw-border-red-600 hover:tw-text-red-600"
-                            onClick={() => downloadPDF(selectedRows)} >
+                            onClick={() => downloadPDF(selectedRows)}
+                            icon={<FilePdfOutlined />}
+                        >
                             download PDF
                         </Button>
                     </Tooltip>
