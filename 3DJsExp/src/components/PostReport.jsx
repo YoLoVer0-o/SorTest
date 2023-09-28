@@ -1,19 +1,26 @@
 import PropTypes from "prop-types";
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 import { useRef } from "react";
-import { Form } from "antd";
 import logo from "../assets/logo.jpg";
-import poster from "../assets/poster.jpg";
 import CarouselReport from "../utilities/Carousel";
 import FButton from "../utilities/FolatButton";
 import DateDisplay from "../utilities/Date";
 import InputCol from "../utilities/InputCol";
 import PicModal from "../utilities/PicModal";
 import { useState } from "react";
+import { Layout, Button } from "antd"
+import { MenuFoldOutlined, MenuUnfoldOutlined, } from '@ant-design/icons';
+
+const { Sider } = Layout;
+
 const PostReport = (props) => {
-  const location = useLocation();
-  const postData = location.state;
+
+
+
+  // const location = useLocation();
+  // const postData = location.state;
   const [modalToggle, setModalToggle] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
 
   const topRef = useRef(null);
   const scrollToTop = () => {
@@ -41,52 +48,9 @@ const PostReport = (props) => {
   };
 
   return (
-    // <div className='tw-grid tw-grid-flow-row tw-max-w-full tw-max-h-full tw-w-full tw-h-full tw-overflow-y-auto tw-gap-10'>
-    //     <div className='tw-grid tw-grid-flow-row tw-gap-4'>
-    //         <div className='tw-grid tw-grid-flow-col tw-justify-between' >
-    //             <div className='tw-rounded-full tw-border-8 tw-border-black tw-w-36 tw-h-36 tw-overflow-hidden'>
-    //                 <img className='object-scale-down' src={logo} />
-    //             </div>
-    //             <div className='tw-grid tw-border-4 tw-border-black tw-align-middle tw-items-center tw-justify-start tw-p-4'>
-    //                 <p className='tw-text-md'>กลุ่ม:</p>
-    //                 <p className='tw-text-md'>ชื่อผู้ใช้:{postData.creator}</p>
-    //                 <p className='tw-text-md'>ช่องทาง:</p>
-    //             </div>
-    //             <div className='tw-grid tw-border-4 tw-border-black tw-align-middle tw-items-center tw-justify-start tw-p-4'>
-    //                 <p className='tw-text-md'>ยอดผู้ติดตาม:</p>
-    //                 <p className='tw-text-md'>ยอดวิว/รีทวิต:</p>
-    //                 <p className='tw-text-md'>คอมเมนต์:</p>
-    //             </div>
-    //         </div>
-    //         <div className='tw-grid tw-grid-flow-col tw-justify-between tw-max-h-fit tw-max-w-fit tw-gap-4'>
-    //             <div className='tw-grid tw-border-4 tw-border-black tw-max-h-80'>
-    //                 <p>
-    //                     {postData.post}
-    //                 </p>
-    //             </div>
-    //             <div className='tw-grid tw-border-4 tw-border-black tw-max-w-sm tw-max-h-80 tw-overflow-hidden'>
-    //                 <img className='object-contain tw-max-h-[inherit] tw-max-w-[inherit]' src={poster} />
-    //             </div>
-    //         </div>
-    //     </div>
-    //     <div className='tw-grid tw-grid-flow-row tw-max-h-fit tw-max-w-fit'>
-    //         <div className='tw-border-4 tw-border-black tw-text-center'>สรุปความเคลื่อนไหว</div>
-    //         <div className='tw-grid tw-border-4 tw-border-black tw-max-h-80'>
-    //             <p>
-    //                 {postData.post}
-    //             </p>
-    //         </div>
-    //     </div>
-    //     <div className='tw-grid tw-grid-flow-row tw-max-h-fit tw-max-w-fit'>
-    //         <div className='tw-border-4 tw-border-black tw-text-center'>สรุปวิเคราะห์</div>
-    //         <div className='tw-grid tw-border-4 tw-border-black tw-max-h-80'>
-    //             <p>
-    //                 {postData.post}
-    //             </p>
-    //         </div>
-    //     </div>
-    // </div>
-    <div className="tw-flex  tw-h-[100%] tw-w-full ">
+    <div className="tw-flex tw-h-[100%] tw-w-full ">
+
+      {/* <Sider trigger={null} collapsible collapsed={collapsed}> */}
       <div className="tw-flex tw-flex-col tw-bg-[#7dcbb7] tw-max-h-max tw-h-full tw-w-[15%]  ">
         <div className="tw-flex tw-flex-col   tw-h-[80%]">
           <div className="tw-flex tw-bg-[#163881] tw-self-center	 tw-rounded-b-full tw-w-max tw-h-max tw-p-2">
@@ -118,6 +82,18 @@ const PostReport = (props) => {
           </button>
         </div>
       </div>
+      {/* </Sider> */}
+
+      {/* <Button
+        type="text"
+        icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+        onClick={() => setCollapsed(!collapsed)}
+        style={{
+          fontSize: '16px',
+          width: '4rem',
+          height: '4rem',
+        }}
+      /> */}
 
       <div className="tw-flex tw-flex-col tw-w-[85%] tw-h-[100%] tw-pl-10 tw-overflow-y-auto">
         <div
@@ -146,10 +122,10 @@ const PostReport = (props) => {
           </div>
         </div>
         <div>
-       
+
         </div>
         <div className="tw-flex  tw-mt-4 tw-justify-center tw-items-center">
-        {/* <button onClick={showModal} className=" tw-flex tw-bg-gray-100/90 tw-rounded-md tw-h-8 tw-text-xl tw-m-6 tw-w-max">รูปภาพทั้งหมด</button> */}
+          {/* <button onClick={showModal} className=" tw-flex tw-bg-gray-100/90 tw-rounded-md tw-h-8 tw-text-xl tw-m-6 tw-w-max">รูปภาพทั้งหมด</button> */}
           <CarouselReport onClick={showModal} className="" />
           <PicModal modalToggle={modalToggle} handleCancel={handleCancel} />
         </div>
@@ -165,7 +141,6 @@ const PostReport = (props) => {
           ref={summarizeContent}
           tabIndex={0}
         >
-          {/* {postData.post} */}
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
           volutpat dolor eu ex ornare sodales. Phasellus dapibus vitae tortor ut
           posuere. Donec ipsum arcu, ultricies faucibus nisl nec, aliquet dictum
@@ -223,9 +198,7 @@ const PostReport = (props) => {
         <div className="tw-flex tw-h-full tw-w-[100%] tw-p-6">
           <textarea
             type="text"
-            className="tw-w-[100%] tw-h-40 tw-rounded-md tw-bg-gray-100 tw-p-2 tw-border-solid
-             tw-border-neutral-400
-              tw-border-2 "
+            className="tw-w-[100%] tw-h-40 tw-rounded-md tw-bg-gray-100 tw-p-2 tw-border-solid tw-border-neutral-400 tw-border-2 "
             ref={inputRef}
             rows={5}
           ></textarea>
@@ -242,6 +215,8 @@ const PostReport = (props) => {
   );
 };
 
-PostReport.propTypes = {};
+PostReport.propTypes = {
+
+};
 
 export default PostReport;
