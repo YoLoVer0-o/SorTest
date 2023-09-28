@@ -2,6 +2,7 @@ import { Table } from 'antd';
 import PropTypes from 'prop-types';
 
 const DataTable = props => {
+
   const columns = props.columns;
   const receviedData = props.data;
   const onRowClick = props.onRowClick;

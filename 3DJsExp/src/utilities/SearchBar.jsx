@@ -38,11 +38,9 @@ const SearchBar = props => {
     };
 
     const onTimeChange = (value) => {
-
         const times = value?.map((e) => {
             return (dayjs(e).format('YYYY-MM-DD'));
         })
-
         onChangeDate(times);
     };
 
@@ -90,7 +88,6 @@ const SearchBar = props => {
                         width: '100%',
                     }}
                 >
-
                     <RangePicker
                         style={{
                             width: '100%',

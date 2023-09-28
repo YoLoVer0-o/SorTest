@@ -2,11 +2,13 @@ import { DataTable, SearchBar } from "../utilities";
 import { postMock } from "../mock";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Button, Tooltip } from "antd";
 import dayjs from 'dayjs';
+
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 dayjs.extend(isSameOrBefore)
+
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import { Button, Tooltip } from "antd";
 dayjs.extend(isSameOrAfter)
 
 const PostTable = () => {
@@ -101,6 +103,7 @@ const PostTable = () => {
         console.log("get:", rows);
         console.log(selectedRows);
     }
+
     return (
         <div className='tw-flex tw-flex-col tw-max-w-full tw-max-h-full'>
             <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">PostTable</p>
