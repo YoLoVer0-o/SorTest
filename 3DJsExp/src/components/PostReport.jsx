@@ -8,11 +8,12 @@ import CarouselReport from "../utilities/Carousel";
 import FButton from "../utilities/FolatButton";
 import DateDisplay from "../utilities/Date";
 import InputCol from "../utilities/InputCol";
-
-
+import PicModal from "../utilities/PicModal";
+import { useState } from "react";
 const PostReport = (props) => {
   const location = useLocation();
   const postData = location.state;
+  const [modalToggle, setModalToggle] = useState(false);
 
   const topRef = useRef(null);
   const scrollToTop = () => {
@@ -30,6 +31,14 @@ const PostReport = (props) => {
   function handleClick() {
     inputRef.current.focus();
   }
+
+  const showModal = () => {
+    setModalToggle(true);
+  };
+
+  const handleCancel = () => {
+    setModalToggle(false);
+  };
 
   return (
     // <div className='tw-grid tw-grid-flow-row tw-max-w-full tw-max-h-full tw-w-full tw-h-full tw-overflow-y-auto tw-gap-10'>
@@ -118,8 +127,8 @@ const PostReport = (props) => {
         >
           ลับมาก
         </div>
-        <div className="tw-flex tw-flex-row tw-justify-center tw-gap-12">
-          <div className="tw-flex tw-flex-col tw-w-40 tw-border-[2px] tw-border-black tw-rounded-xl tw-p-2">
+        <div className="tw-flex tw-flex-row tw-justify-center tw-gap-12 ">
+          <div className="tw-flex tw-flex-col tw-w-40 tw-border-[2px] tw-border-black tw-rounded-xl tw-p-2  ">
             <div className="tw-flex">แพลต์ฟอร์ม:Facebook</div>
             <div className="tw-flex">กลุ่ม:NGO</div>
             <div className="tw-flex">ชื่อกลุ่ม:iLaeFX</div>
@@ -136,8 +145,13 @@ const PostReport = (props) => {
             </div>
           </div>
         </div>
-        <div className="tw-flex tw-mt-4 tw-justify-center">
-          <CarouselReport />
+        <div>
+       
+        </div>
+        <div className="tw-flex  tw-mt-4 tw-justify-center tw-items-center">
+        {/* <button onClick={showModal} className=" tw-flex tw-bg-gray-100/90 tw-rounded-md tw-h-8 tw-text-xl tw-m-6 tw-w-max">รูปภาพทั้งหมด</button> */}
+          <CarouselReport onClick={showModal} className="" />
+          <PicModal modalToggle={modalToggle} handleCancel={handleCancel} />
         </div>
         <div
           className="tw-flex  tw-justify-start tw-self-start tw-text-3xl tw-bg-gradient-to-r 
@@ -204,7 +218,7 @@ const PostReport = (props) => {
         tw-from-indigo-500 tw-from-10% tw-via-sky-500 tw-via-30% tw-to-white 
         tw-text-white tw-w-72 tw-h-max"
         >
-          <p >สรุปวิเคราะห์</p>
+          <p>สรุปวิเคราะห์</p>
         </div>
         <div className="tw-flex tw-h-full tw-w-[100%] tw-p-6">
           <textarea
