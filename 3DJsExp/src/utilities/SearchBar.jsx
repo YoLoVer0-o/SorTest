@@ -38,16 +38,14 @@ const SearchBar = props => {
     };
 
     const onTimeChange = (value) => {
-
         const times = value?.map((e) => {
             return (dayjs(e).format('YYYY-MM-DD'));
         })
-
         onChangeDate(times);
     };
 
     return (
-        <div className='tw-flex tw-flex-row tw-my-2 tw-gap-2    '>
+        <div className='tw-flex tw-flex-row tw-my-2 tw-gap-2 tw-max-w-max'>
             <Tooltip title="พิมพ์สิ่งที่ต้องการค้นหา">
                 <div
                     style={{
@@ -90,7 +88,6 @@ const SearchBar = props => {
                         width: '100%',
                     }}
                 >
-
                     <RangePicker
                         style={{
                             width: '100%',

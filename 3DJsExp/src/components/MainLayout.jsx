@@ -1,4 +1,10 @@
 import { useEffect, useState } from 'react';
+import {
+    Link,
+    Outlet,
+    useLocation,
+    useNavigate
+} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
     MenuFoldOutlined,
@@ -14,12 +20,6 @@ import {
     theme,
     Breadcrumb
 } from 'antd';
-import {
-    Link,
-    Outlet,
-    useLocation,
-    useNavigate
-} from 'react-router-dom';
 import { Footer } from 'antd/es/layout/layout';
 
 const { Header,
@@ -28,7 +28,6 @@ const { Header,
 } = Layout;
 
 const MainLayout = props => {
-
 
     const breadcrumbNameMap = {
         '/main': 'main',
@@ -40,11 +39,7 @@ const MainLayout = props => {
     const navigate = useNavigate();
 
     const location = useLocation();
-
-
-
     const pathSnippets = location.pathname.split('/').filter((i) => i);
-
     const extraBreadcrumbItems = pathSnippets.map((_, index) => {
         const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
         // console.log(url);
@@ -75,7 +70,6 @@ const MainLayout = props => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.pathname]);
-
 
     return (
         <Layout className='tw-max-w-full tw-max-h-full tw-h-full'>
@@ -129,17 +123,16 @@ const MainLayout = props => {
                 <Content
                     style={{
                         margin: '1.5rem 1rem',
-                       
                         background: colorBgContainer,
                     }}
-                    className='tw-flex tw-max-w-full tw-max-h-full tw-justify-center tw-overflow-auto'
+                    className='tw-flex tw-max-w-full tw-max-h-full tw-justify-center tw-overflow-y-auto'
                 >
-                    <Outlet className="tw-flex tw-max-h-full tw-max-w-full tw-justify-center " />
+                    <Outlet className="tw-flex tw-max-h-full tw-max-w-full tw-justify-center" />
                 </Content>
                 <Footer className='tw-h-[5%]'
                     style={{
                         textAlign: 'center',
-                       alignContent: 'center',
+                        alignContent: 'center',
                     }}
                 >
                     Ant Design ©2023 Created by Ant UED
