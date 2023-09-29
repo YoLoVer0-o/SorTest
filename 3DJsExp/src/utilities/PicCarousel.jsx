@@ -1,18 +1,12 @@
-import React from "react";
 import { Carousel } from "antd";
 import carouselPic from "../assets/carouselPic.jpg";
 import poster from "../assets/poster.jpg";
+import PropTypes from "prop-types";
 
-// const contentStyle = {
-//   height: "460px",
-//   width: "720px",
-//   color: "#fff",
-//   lineHeight: "160px",
-//   textAlign: "center",
-//   background: "#364d79",
-// };
-const CarouselReport = (props) => {
+const PicCarousel = (props) => {
+
   const showAll = props.onClick
+
   return (
     <div className=" tw-relative tw-flex tw-flex-col">
       <button onClick={showAll} className="tw-absolute tw-mt-1 tw-mr-1 tw-justify-center tw-items-center tw-flex tw-self-end tw-bg-gray-100/80 tw-rounded-md tw-h-8 tw-text-lg tw-z-10">รูปภาพทั้งหมด</button>
@@ -50,4 +44,9 @@ const CarouselReport = (props) => {
     </div>
   );
 };
-export default CarouselReport;
+
+PicCarousel.propTypes = {
+  onClick: PropTypes.func
+}
+
+export default PicCarousel;

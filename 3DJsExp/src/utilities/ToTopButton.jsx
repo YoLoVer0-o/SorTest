@@ -1,9 +1,11 @@
-import React from "react";
 import { FloatButton } from "antd";
 import { UpCircleOutlined } from "@ant-design/icons";
+import PropTypes from "prop-types";
 
-const FButton = (props) => {
+const ToTopButton = props => {
+
   const clickHandler = props.onClick;
+
   return (
     <button onClick={() => clickHandler()}>
       <FloatButton
@@ -13,4 +15,9 @@ const FButton = (props) => {
     </button>
   );
 };
-export default FButton;
+
+ToTopButton.propTypes = {
+  onClick: PropTypes.func
+}
+
+export default ToTopButton;

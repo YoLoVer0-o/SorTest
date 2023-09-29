@@ -1,33 +1,30 @@
-import PropTypes from "prop-types";
+
+import { useState, useRef } from "react";
+import ReportSideBar from "./ReportSideBar";
+import { ListInput, PicCarousel, PicModal, ToTopButton } from "../utilities";
+import dayjs from "dayjs";
+import "dayjs/locale/th";
+import buddhistEra from "dayjs/plugin/buddhistEra";
+dayjs.extend(buddhistEra);
+
 // import { useLocation } from "react-router-dom";
-import { useRef } from "react";
-import logo from "../assets/logo.jpg";
-import CarouselReport from "../utilities/Carousel";
-import FButton from "../utilities/FolatButton";
-import DateDisplay from "../utilities/Date";
-import InputCol from "../utilities/InputCol";
-import PicModal from "../utilities/PicModal";
-import { useState } from "react";
-import { Layout, Button } from "antd"
-import { MenuFoldOutlined, MenuUnfoldOutlined, } from '@ant-design/icons';
+// import PropTypes from "prop-types";
 
-const { Sider } = Layout;
+const PostReport = () => {
 
-const PostReport = (props) => {
-
-
-
+  const [modalToggle, setModalToggle] = useState(false);
+  // const [collapsed, setCollapsed] = useState(false);
   // const location = useLocation();
   // const postData = location.state;
-  const [modalToggle, setModalToggle] = useState(false);
-  const [collapsed, setCollapsed] = useState(false);
 
   const topRef = useRef(null);
+  const summarizeContent = useRef(null);
+
   const scrollToTop = () => {
     topRef?.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const summarizeContent = useRef(null);
+
   const focusSummarize = () => {
     if (summarizeContent.current) {
       summarizeContent.current.focus();
@@ -47,53 +44,17 @@ const PostReport = (props) => {
     setModalToggle(false);
   };
 
+  const THDate = () => {
+    const date = new Date();
+    dayjs.locale("th");
+    const logDay = dayjs(date).format("DD MMMM BBBB");
+    return logDay;
+  };
+
   return (
     <div className="tw-flex tw-h-[100%] tw-w-full ">
 
-      {/* <Sider trigger={null} collapsible collapsed={collapsed}> */}
-      <div className="tw-flex tw-flex-col tw-bg-[#7dcbb7] tw-max-h-max tw-h-full tw-w-[15%]  ">
-        <div className="tw-flex tw-flex-col   tw-h-[80%]">
-          <div className="tw-flex tw-bg-[#163881] tw-self-center	 tw-rounded-b-full tw-w-max tw-h-max tw-p-2">
-            <img
-              className="tw-rounded-full tw-border-[6px]  tw-border-black tw-w-24 tw-h-24 "
-              src={logo}
-            />
-          </div>
-          <div className="tw-flex tw-self-center tw-mt-8">
-            <button
-              className="tw-bg-white tw-h-8 tw-w-32 tw-rounded-lg"
-              onClick={focusSummarize}
-            >
-              สรุปความเคลื่อนไหว
-            </button>
-          </div>
-          <div className="tw-flex tw-self-center tw-mt-4">
-            <button
-              className="tw-bg-white tw-h-8 tw-w-32 tw-rounded-lg"
-              onClick={handleClick}
-            >
-              สรุปวิเคราะห์
-            </button>
-          </div>
-        </div>
-        <div className="tw-flex tw-h-[20%] tw-self-end tw-pb-4 tw-pr-4 ">
-          <button className="tw-bg-white tw-h-8 tw-w-24 tw-rounded-lg tw-self-end">
-            SAVE PDF
-          </button>
-        </div>
-      </div>
-      {/* </Sider> */}
-
-      {/* <Button
-        type="text"
-        icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-        onClick={() => setCollapsed(!collapsed)}
-        style={{
-          fontSize: '16px',
-          width: '4rem',
-          height: '4rem',
-        }}
-      /> */}
+      <ReportSideBar focusSummarize={focusSummarize} handleClick={handleClick} />
 
       <div className="tw-flex tw-flex-col tw-w-[85%] tw-h-[100%] tw-pl-10 tw-overflow-y-auto">
         <div
@@ -121,12 +82,9 @@ const PostReport = (props) => {
             </div>
           </div>
         </div>
-        <div>
-
-        </div>
+        <div></div>
         <div className="tw-flex  tw-mt-4 tw-justify-center tw-items-center">
-          {/* <button onClick={showModal} className=" tw-flex tw-bg-gray-100/90 tw-rounded-md tw-h-8 tw-text-xl tw-m-6 tw-w-max">รูปภาพทั้งหมด</button> */}
-          <CarouselReport onClick={showModal} className="" />
+          <PicCarousel onClick={showModal} className="" />
           <PicModal modalToggle={modalToggle} handleCancel={handleCancel} />
         </div>
         <div
@@ -204,19 +162,19 @@ const PostReport = (props) => {
           ></textarea>
         </div>
         <div className=" tw-flex tw-flex-col tw-p-6">
-          <DateDisplay />
-          <InputCol />
+          <div className="tw-text-xl">
+            สถานการณ์ล่าสุดใน <THDate />
+          </div>
+          <ListInput />
           <div className="tw-text-xl">สถานการณ์ในห้วงต่อไป</div>
-          <InputCol />
-          <FButton onClick={scrollToTop} />
+          <ListInput />
+          <ToTopButton onClick={scrollToTop} />
         </div>
       </div>
     </div>
   );
 };
 
-PostReport.propTypes = {
-
-};
+PostReport.propTypes = {};
 
 export default PostReport;

@@ -1,9 +1,8 @@
 import { Input, Form, Button } from "antd";
-import { useState } from "react";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
-function InputCol() {
-  const [form] = Form.useForm();
+// import PropTypes from "prop-types";
 
+const ListInput = () => {
   const formItemLayoutWithOutLabel = {
     wrapperCol: {
       xs: {
@@ -16,44 +15,32 @@ function InputCol() {
       },
     },
   };
+
   const onFinish = (values) => {
     console.log("Received values of form:", values);
-    //   const [column, setColumn] = useState([{ key: 0 }]);
-    //   const addArray = () => {
-    //     setColumn([...column, { key: 1 }]);
-    //   };
-    //   const deleteArray = (index) => {
-    //     // const newCol = column.splice(index, 1);
-    //     // console.log(newCol);
-    //     setColumn((column) => {
-    //       return column.filter((_, i) => i !== index);
-    //     });
-    //   };
-    //   const addData =(index,value)=> {
-    //   let cloneArray = [...column]
-    //   }
   };
+
   return (
     <div>
       <Form
         name="dynamic_form_item"
         {...formItemLayoutWithOutLabel}
         onFinish={onFinish}
-        // style={{
-        //   maxWidth: 600,
-        // }}
+      // style={{
+      //   maxWidth: 600,
+      // }}
       >
         <Form.List
           name="names"
-          //   rules={[
-          //     {
-          //       validator: async (_, names) => {
-          //         if (!names || names.length < 2) {
-          //           return Promise.reject(new Error("At least 2 passengers"));
-          //         }
-          //       },
-          //     },
-          //   ]}
+        //   rules={[
+        //     {
+        //       validator: async (_, names) => {
+        //         if (!names || names.length < 2) {
+        //           return Promise.reject(new Error("At least 2 passengers"));
+        //         }
+        //       },
+        //     },
+        //   ]}
         >
           {(fields, { add, remove }, { errors }) => (
             <>
@@ -84,32 +71,32 @@ function InputCol() {
                     {...field}
                     validateTrigger={["onChange", "onBlur"]}
                     className="tw-flex tw-flex-nowrap tw-flex-row tw-w-full"
-                    // rules={[
-                    //   {
-                    //     required: true,
-                    //     whitespace: false,
-                    //     message:
-                    //       "Please input passenger's name or delete this field.",
-                    //   },
-                    // ]}
-                    // noStyle
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     whitespace: false,
+                  //     message:
+                  //       "Please input passenger's name or delete this field.",
+                  //   },
+                  // ]}
+                  // noStyle
                   >
                     <div className="tw-flex tw-flex-row tw-gap-8">
-                    <div >
-                    <Input
-                      className="tw-flex tw-w-[32vw]"
-                      //   placeholder="passenger name"
-                      //   style={{
-                      //     width: "100%",
-                      //   }}
-                    />
-                     </div>
-                     <div className="tw-flex ">
-                    <MinusCircleOutlined
-                      className="dynamic-delete-button tw-text-xl tw-text-red-600"
-                      onClick={() => remove(field.name)}
-                    />
-                    </div>
+                      <div >
+                        <Input
+                          className="tw-flex tw-w-[32vw]"
+                        //   placeholder="passenger name"
+                        //   style={{
+                        //     width: "100%",
+                        //   }}
+                        />
+                      </div>
+                      <div className="tw-flex ">
+                        <MinusCircleOutlined
+                          className="dynamic-delete-button tw-text-xl tw-text-red-600"
+                          onClick={() => remove(field.name)}
+                        />
+                      </div>
                     </div>
                   </Form.Item>
                 </Form.Item>
@@ -127,4 +114,6 @@ function InputCol() {
   );
 }
 
-export default InputCol;
+ListInput.propTypes = {}
+
+export default ListInput;

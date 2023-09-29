@@ -5,6 +5,7 @@ import Dashboard from "./Dashboard";
 import Feedback from "./Feedback";
 import FeedbackModal from "./FeedbackModal";
 import PostReport from "./PostReport";
+import ReportSideBar from "./ReportSideBar";
 
 export {
   MainLayout,
@@ -14,4 +15,5 @@ export {
   Feedback,
   FeedbackModal,
   PostReport,
+  ReportSideBar,
 };
