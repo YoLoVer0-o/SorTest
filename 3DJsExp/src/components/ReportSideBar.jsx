@@ -24,7 +24,7 @@ const ReportSideBar = props => {
         <div className="tw-flex tw-flex-row tw-max-h-max tw-h-full tw-w-max">
             <div {...getCollapseProps()}>
                 <div className="tw-flex tw-flex-col tw-bg-[#7dcbb7] tw-max-h-max tw-h-full tw-w-full">
-                    <div className="tw-flex tw-flex-col   tw-h-[80%]">
+                    <div className="tw-flex tw-flex-col tw-w-44 tw-h-[80%]">
                         <div className="tw-flex tw-bg-[#163881] tw-self-center	 tw-rounded-b-full tw-w-max tw-h-max tw-p-2">
                             <img
                                 className="tw-rounded-full tw-border-[6px]  tw-border-black tw-w-24 tw-h-24 "
