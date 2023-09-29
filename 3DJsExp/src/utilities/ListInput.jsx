@@ -1,5 +1,6 @@
 import { Input, Form, Button } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import "dayjs/locale/th";
 // import PropTypes from "prop-types";
 
 const ListInput = () => {
@@ -23,7 +24,7 @@ const ListInput = () => {
   return (
     <div>
       <Form
-        name="dynamic_form_item"
+        // name="dynamic_form_item"
         {...formItemLayoutWithOutLabel}
         onFinish={onFinish}
       // style={{
@@ -31,7 +32,7 @@ const ListInput = () => {
       // }}
       >
         <Form.List
-          name="names"
+          name='data'
         //   rules={[
         //     {
         //       validator: async (_, names) => {

@@ -1,6 +1,5 @@
-
 import { useState, useRef } from "react";
-import ReportSideBar from "./ReportSideBar";
+import { ReportSideBar } from "../components";
 import { ListInput, PicCarousel, PicModal, ToTopButton } from "../utilities";
 import dayjs from "dayjs";
 import "dayjs/locale/th";
@@ -19,11 +18,11 @@ const PostReport = () => {
 
   const topRef = useRef(null);
   const summarizeContent = useRef(null);
+  const inputRef = useRef(null);
 
   const scrollToTop = () => {
     topRef?.current?.scrollIntoView({ behavior: "smooth" });
   };
-
 
   const focusSummarize = () => {
     if (summarizeContent.current) {
@@ -31,7 +30,6 @@ const PostReport = () => {
     }
   };
 
-  const inputRef = useRef(null);
   function handleClick() {
     inputRef.current.focus();
   }
@@ -52,11 +50,11 @@ const PostReport = () => {
   };
 
   return (
-    <div className="tw-flex tw-h-[100%] tw-w-full ">
+    <div className="tw-flex tw-flex-row tw-h-full tw-w-full ">
 
       <ReportSideBar focusSummarize={focusSummarize} handleClick={handleClick} />
 
-      <div className="tw-flex tw-flex-col tw-w-[85%] tw-h-[100%] tw-pl-10 tw-overflow-y-auto">
+      <div className="tw-flex tw-flex-col tw-w-full tw-h-full tw-overflow-y-auto">
         <div
           ref={topRef}
           tabIndex={0}

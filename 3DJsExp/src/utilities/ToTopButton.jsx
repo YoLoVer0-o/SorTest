@@ -7,12 +7,11 @@ const ToTopButton = props => {
   const clickHandler = props.onClick;
 
   return (
-    <button onClick={() => clickHandler()}>
-      <FloatButton
-        className="tw-flex justify-end tw-mb-6 tw-mr-4"
-        icon={<UpCircleOutlined />}
-      />
-    </button>
+    <FloatButton
+      className="tw-flex tw-mb-6 tw-mr-4 tw-bottom-14"
+      icon={<UpCircleOutlined />}
+      onClick={() => clickHandler()}
+    />
   );
 };
 
