@@ -8,7 +8,7 @@ const ToTopButton = props => {
 
   return (
     <FloatButton
-      className="tw-flex tw-mr-4"
+      className="tw-flex tw-mr-2 tw-mb-14 "
       icon={<UpCircleOutlined />}
       onClick={() => clickHandler()}
     />

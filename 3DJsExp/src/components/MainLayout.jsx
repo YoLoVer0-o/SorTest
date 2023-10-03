@@ -104,7 +104,7 @@ const MainLayout = props => {
                         }}
                     />
                 </Header>
-                <Breadcrumb className='tw-pl-4 tw-m-2' items={breadcrumbItems} />
+                <Breadcrumb className='tw-px-4 tw-my-4' items={breadcrumbItems} />
                 <Content
                     className='tw-flex tw-max-w-full tw-max-h-full tw-justify-center tw-m-1 tw-bg-white tw-object-contain'
                 >

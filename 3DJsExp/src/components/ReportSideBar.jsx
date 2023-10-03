@@ -7,7 +7,7 @@ const ReportSideBar = props => {
     const handleClick = props.handleClick
 
     return (
-        <div className="tw-flex tw-max-h-full tw-h-full tw-w-max">
+        <div className="tw-flex tw-max-h-full tw-h-full tw-w-max tw-object-contain">
             <div className="tw-flex tw-flex-col tw-bg-[#7dcbb7] tw-max-h-max tw-h-full tw-w-full">
                 <div className="tw-flex tw-flex-col   tw-h-[80%]">
                     <div className="tw-flex tw-bg-[#163881] tw-self-center	 tw-rounded-b-full tw-w-max tw-h-max tw-p-2">

@@ -12,9 +12,10 @@ import {
   MenuUnfoldOutlined,
 } from '@ant-design/icons';
 import { useCollapse } from 'react-collapsed';
+import { useCheck } from "../globalFunc/useCheck";
 
 const PostReport = () => {
-
+  const [isDesktopOrLaptop, isBigScreen, isTabletOrMobile, isPortrait, isRetina] = useCheck();
   const [modalToggle, setModalToggle] = useState(false);
 
   const topRef = useRef(null);
@@ -22,7 +23,11 @@ const PostReport = () => {
   const inputRef = useRef(null);
 
   const [isExpanded, setExpanded] = useState(true);
-  const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded });
+  const { getCollapseProps, getToggleProps } = useCollapse({
+    isExpanded,
+    collapsedHeight: 0,
+    duration: 300,
+  });
 
   function handleOnClick() {
     setExpanded(!isExpanded);
@@ -57,27 +62,27 @@ const PostReport = () => {
     return logDay;
   };
 
+
   return (
-    <div className="tw-flex tw-flex-row tw-h-full tw-w-full">
+    <div className="tw-flex tw-flex-row tw-h-full tw-w-full tw-object-contain">
       <div {...getCollapseProps()}>
         <ReportSideBar handleClick={handleClick} focusSummarize={focusSummarize} />
       </div>
       <div className="tw-flex tw-flex-row">
         <FloatButton
-          className="tw-flex tw-mb-6 tw-ml-4 tw-sticky "
+          className="tw-flex tw-mt-4 tw-ml-2 tw-sticky "
           {...getToggleProps({ onClick: handleOnClick })}
           icon={isExpanded ? < MenuFoldOutlined /> : < MenuUnfoldOutlined />}
         />
-        <div className="tw-flex tw-flex-col tw-w-full tw-h-full tw-overflow-y-auto tw-px-10">
+        <div className="tw-flex tw-flex-col tw-w-full tw-h-full tw-overflow-y-auto tw-px-8">
           <div
             className="tw-flex tw-text-center tw-self-center tw-text-2xl tw-text-red-500"
-          >
-            ลับมาก
-          </div>
-          <div className="tw-flex tw-flex-col tw-justify-center tw-my-6 tw-p-6"
             ref={topRef}
             tabIndex={0}
           >
+            ลับมาก
+          </div>
+          <div className="tw-flex tw-flex-col tw-justify-center tw-my-6 tw-p-6" >
             <div className="tw-flex tw-flex-row tw-justify-center tw-gap-12 ">
               <div className="tw-flex tw-flex-col tw-w-40 tw-border-[2px] tw-border-black tw-rounded-xl tw-p-2  ">
                 <div className="tw-flex">แพลต์ฟอร์ม:Facebook</div>
