@@ -1,5 +1,7 @@
 import { Table } from 'antd';
 import PropTypes from 'prop-types';
+import classNames from "classnames";
+import { useResponsive } from "../hooks";
 
 const DataTable = props => {
 
@@ -8,6 +10,8 @@ const DataTable = props => {
   const onRowClick = props.onRowClick;
   const pageSize = props.setPageSize;
   const sendRows = props.onRowsSelected;
+
+  const [isDesktopOrLaptop, isBigScreen, isTabletOrMobile, isPortrait, isRetina] = useResponsive();
 
   const onChange = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
@@ -34,9 +38,10 @@ const DataTable = props => {
   };
 
   return (
-    <div className=' tw-max-h-max tw-overflow-y-auto tw-overflow-x-auto'>
+    // <div className='tw-max-h-max tw-overflow-y-auto tw-overflow-x-auto'>
+    <div className={classNames("tw-max-h-full tw-max-w-full tw-overflow-auto", {})}>
       <Table
-        rowClassName={"tw-max-w-md tw-max-h-2.5"}
+        rowClassName={"tw-w-full tw-h-full"}
         tableLayout={'fixed'}
         columns={columns}
         dataSource={receviedData}
@@ -45,7 +50,10 @@ const DataTable = props => {
           defaultPageSize: 5,
           pageSize: pageSize,
         }}
-        className={"tw-max-h-max tw-min-w-[900px] tw-overflow-y-auto tw-overflow-x-auto"}
+        className={classNames("tw-overflow-auto tw-min-h-full tw-min-w-screen", {
+          // "tw-max-h-full tw-max-w-full": isDesktopOrLaptop,
+          // "tw-min-h-full tw-min-w-full": isTabletOrMobile&&isPortrait,
+        })}
         onRow={(record, rowIndex) => ({
           onClick: () => {
             handleRowClick(record, rowIndex)
