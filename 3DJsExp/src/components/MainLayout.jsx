@@ -17,7 +17,6 @@ import {
     Layout,
     Menu,
     Button,
-    theme,
     Breadcrumb
 } from 'antd';
 import { Footer } from 'antd/es/layout/layout';
@@ -42,7 +41,6 @@ const MainLayout = props => {
     const pathSnippets = location.pathname.split('/').filter((i) => i);
     const extraBreadcrumbItems = pathSnippets.map((_, index) => {
         const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
-        // console.log(url);
         return {
             key: url,
             title: <Link to={url}>{breadcrumbNameMap[url]}</Link>,
@@ -53,19 +51,13 @@ const MainLayout = props => {
     const handleMenuClick = ({ key }) => {
         if (key) {
             navigate(key);
-            // console.log(key);
         }
     };
 
     const [collapsed, setCollapsed] = useState(false);
 
-    const {
-        token: { colorBgContainer },
-    } = theme.useToken();
-
     useEffect(() => {
         if (location.pathname == '/') {
-            // console.log("blank url");
             navigate('/main')
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -100,13 +92,7 @@ const MainLayout = props => {
                 />
             </Sider>
             <Layout>
-                <Header
-                    style={{
-                        padding: 0,
-                        background: colorBgContainer,
-                    }}
-
-                >
+                <Header className='tw-p-0 tw-bg-white' >
                     <Button
                         type="text"
                         icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
@@ -117,30 +103,18 @@ const MainLayout = props => {
                             height: '4rem',
                         }}
                     />
-
                 </Header>
-                <Breadcrumb className='tw-pl-4 tw-m-4' items={breadcrumbItems} />
+                <Breadcrumb className='tw-px-4 tw-my-4' items={breadcrumbItems} />
                 <Content
-                    style={{
-                        margin: '1.5rem 1rem',
-                        background: colorBgContainer,
-                    }}
-                    className='tw-flex tw-max-w-full tw-max-h-full tw-justify-center tw-overflow-y-auto'
+                    className='tw-flex tw-max-w-full tw-max-h-full tw-justify-center tw-m-1 tw-bg-white tw-object-contain'
                 >
-                    <Outlet className="tw-flex tw-max-h-full tw-max-w-full tw-justify-center" />
+                    <Outlet className="tw-flex tw-max-h-full tw-max-w-full tw-justify-center tw-object-contain" />
                 </Content>
-                <Footer className='tw-h-[5%]'
-                    style={{
-                        textAlign: 'center',
-                        alignContent: 'center',
-                    }}
-                >
+                <Footer className='tw-h-6 tw-text-center tw-content-center tw-my-4'>
                     Ant Design ©2023 Created by Ant UED
                 </Footer>
             </Layout>
-
         </Layout>
-
     );
 };
 
