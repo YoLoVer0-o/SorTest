@@ -12,10 +12,10 @@ import {
   MenuUnfoldOutlined,
 } from '@ant-design/icons';
 import { useCollapse } from 'react-collapsed';
-import { useCheck } from "../globalFunc/useCheck";
+import { useResponsive } from "../hooks";
 
 const PostReport = () => {
-  const [isDesktopOrLaptop, isBigScreen, isTabletOrMobile, isPortrait, isRetina] = useCheck();
+  const [isDesktopOrLaptop, isBigScreen, isTabletOrMobile, isPortrait, isRetina] = useResponsive();
   const [modalToggle, setModalToggle] = useState(false);
 
   const topRef = useRef(null);

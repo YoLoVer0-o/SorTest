@@ -1,6 +1,6 @@
 import { useMediaQuery } from "react-responsive";
 
-const useCheck = () => {
+const useResponsive = () => {
   const isDesktopOrLaptop = useMediaQuery({
     query: "(min-width: 1224px)",
   });
@@ -18,4 +18,4 @@ const useCheck = () => {
   ];
 };
 
-export { useCheck };
+export { useResponsive };
