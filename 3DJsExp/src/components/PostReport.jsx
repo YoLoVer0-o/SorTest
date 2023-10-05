@@ -12,6 +12,7 @@ import {
   MenuUnfoldOutlined,
 } from '@ant-design/icons';
 import { useCollapse } from 'react-collapsed';
+import classNames from "classnames";
 import { useResponsive } from "../hooks";
 
 const PostReport = () => {
@@ -76,7 +77,12 @@ const PostReport = () => {
         />
         <div className="tw-flex tw-flex-col tw-w-full tw-h-full tw-overflow-y-auto tw-px-8">
           <div
-            className="tw-flex tw-text-center tw-self-center tw-text-2xl tw-text-red-500"
+            // className="tw-flex tw-text-center tw-self-center tw-text-2xl tw-text-red-500"
+            className={classNames("tw-flex tw-text-center tw-self-center tw-text-2xl tw-text-red-500", {
+              "tw-text-red-500": isDesktopOrLaptop,
+              "tw-text-green-500": isTabletOrMobile,
+
+            })}
             ref={topRef}
             tabIndex={0}
           >
