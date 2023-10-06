@@ -31,7 +31,9 @@ const PostTable = () => {
             title: 'ID',
             dataIndex: 'key',
             key: 'key',
-            className: 'tw-min-w-fit tw-text-red-600 tw-font-bold tw-text-justify',
+            align: "center",
+            width: 150,
+            className: 'tw-text-red-600 tw-font-bold',
             filteredValue: [searchVal],
             onFilter: (value, record) => (
                 String(record?.key).toLowerCase().includes(value.toLowerCase())
@@ -44,7 +46,9 @@ const PostTable = () => {
             title: 'post',
             dataIndex: 'post',
             key: 'post',
-            className: 'tw-truncate tw-min-w-fit tw-text-justify',
+            align: "center",
+            width: 150,
+            className: 'tw-truncate',
             filteredValue: [searchTag],
             onFilter: (value, record) => (
                 (value.split(",")).every(tag => String(record?.tag).includes(tag))
@@ -54,13 +58,17 @@ const PostTable = () => {
             title: 'creator',
             dataIndex: 'creator',
             key: 'creator',
-            className: 'tw-min-w-fit tw-text-amber-600 tw-text-justify',
+            align: "center",
+            width: 150,
+            className: 'tw-text-amber-600',
         },
         {
             title: 'tag',
             dataIndex: 'tag',
             key: 'tag',
-            className: 'tw-min-w-fit tw-text-violet-600 tw-text-justify',
+            align: "center",
+            width: 150,
+            className: 'tw-text-violet-600',
             render: (text, record) => (
                 <div className="tw-flex tw-flex-row tw-gap-1">
                     {record?.tag.map(tag => (
@@ -77,13 +85,17 @@ const PostTable = () => {
             title: 'link',
             dataIndex: 'link',
             key: 'link',
-            className: 'tw-min-w-fit tw-h-[10%] tw-truncate tw-text-sky-700 tw-text-justify',
+            align: "center",
+            width: 150,
+            className: 'tw-truncate tw-text-sky-700',
         },
         {
             title: 'update',
             dataIndex: 'update',
             key: 'update',
-            className: 'tw-min-w-fit tw-text-lime-600 tw-text-justify',
+            align: "center",
+            width: 150,
+            className: 'tw-text-lime-600',
             filteredValue: [searchDate],
             onFilter: (value, record) => {
                 if (value != undefined && value != null && value != "" && value != 'undefined') {

@@ -9,13 +9,13 @@ const useResponsive = () => {
   const isPortrait = useMediaQuery({ query: "(orientation: portrait)" });
   const isRetina = useMediaQuery({ query: "(min-resolution: 2dppx)" });
 
-  return [
+  return {
     isDesktopOrLaptop,
     isBigScreen,
     isTabletOrMobile,
     isPortrait,
     isRetina,
-  ];
+  };
 };
 
 export { useResponsive };

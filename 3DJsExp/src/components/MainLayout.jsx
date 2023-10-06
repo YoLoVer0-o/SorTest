@@ -16,13 +16,13 @@ import { useResponsive } from "../hooks";
 const { Header, Sider, Content } = Layout;
 
 const MainLayout = (props) => {
-  const [
+  const {
     isDesktopOrLaptop,
     isBigScreen,
     isTabletOrMobile,
     isPortrait,
     isRetina,
-  ] = useResponsive();
+  } = useResponsive();
   const breadcrumbNameMap = {
     "/main": "main",
     "/main/overall": "overall",
