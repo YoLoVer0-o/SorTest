@@ -68,19 +68,12 @@ const MainLayout = (props) => {
         collapsible
         collapsed={isTabletOrMobile && isPortrait ? !collapsed : collapsed}
         collapsedWidth={isTabletOrMobile && isPortrait ? 0 : 80}
-        className={classNames("  tw-opacity-90", {
-          "": isDesktopOrLaptop,
-          " tw-absolute  tw-w-full tw-h-screen tw-z-10 ":
-            isTabletOrMobile && isPortrait,
+        className={classNames("tw-opacity-90", {
+          "tw-absolute  tw-w-full tw-h-screen tw-z-10 ": isTabletOrMobile && isPortrait,
         })}
       >
         {isTabletOrMobile && isPortrait && (
-          <div
-            className={classNames("tw-w-full tw-grid tw-p-2 ", {
-              // "tw-hidden": isTabletOrMobile && isLandscape  ,
-              // ' tw-hidden': isDesktopOrLaptop,
-            })}
-          >
+          <div className={classNames("tw-w-full tw-grid tw-p-2 ", {})}>
             <Button
               className="tw-text-white tw-flex tw-right-0  tw-z-20 tw-justify-center tw-items-center tw-justify-self-end"
               icon={<CloseOutlined />}
@@ -117,15 +110,18 @@ const MainLayout = (props) => {
       </Sider>
       <Layout>
         <Header className="tw-p-0 tw-bg-white">
-          <Button
-            className={classNames(" tw-h-16 tw-w-16 tw-z-10 tw-text-lg 	", {
-              "": isDesktopOrLaptop,
-              "tw-hidden ": isTabletOrMobile && isPortrait && collapsed,
-            })}
-            type="text"
-            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            onClick={() => setCollapsed(!collapsed)}
-          />
+          {!(isTabletOrMobile && isPortrait && collapsed) && (
+            <Button
+              className={classNames(" tw-h-16 tw-w-16 tw-z-10 tw-text-lg", {
+                // "tw-hidden ": isTabletOrMobile && isPortrait && collapsed,
+              })}
+              type="text"
+              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+              onClick={() => setCollapsed(!collapsed)}
+            />
+          )}
+
+
         </Header>
         <Breadcrumb className="tw-px-4 tw-my-4" items={breadcrumbItems} />
         <Content className="tw-flex tw-max-w-full tw-max-h-full tw-justify-center tw-m-1 tw-bg-white tw-object-contain">
