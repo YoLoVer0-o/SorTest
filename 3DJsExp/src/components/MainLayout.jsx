@@ -22,6 +22,7 @@ const MainLayout = (props) => {
     isBigScreen,
     isTabletOrMobile,
     isPortrait,
+    isLandscape,
     isRetina,
   } = useResponsive();
   const breadcrumbNameMap = {
@@ -73,11 +74,12 @@ const MainLayout = (props) => {
             isTabletOrMobile && isPortrait,
         })}
       >
-        <div className="tw-w-full tw-grid">
+        <div className={classNames("tw-w-full tw-grid tw-p-2 ",{
+            "tw-hidden": isTabletOrMobile && isLandscape  ,
+            ' tw-hidden': isDesktopOrLaptop,
+        })}>
           <Button
-            className={classNames("tw-text-white tw-flex tw-right-0  tw-z-20 tw-justify-center tw-items-center tw-justify-self-end",{
-              "tw-hiddin": isDesktopOrLaptop,
-            })}
+            className="tw-text-white tw-flex tw-right-0  tw-z-20 tw-justify-center tw-items-center tw-justify-self-end"
             icon={<CloseOutlined />}
             onClick={() => setCollapsed(!collapsed)}
             shape="circle"
@@ -118,12 +120,6 @@ const MainLayout = (props) => {
             type="text"
             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             onClick={() => setCollapsed(!collapsed)}
-            // style={{
-            //   fontSize: "16px",
-            //   width: "4rem",
-            //   height: "4rem",
-            //   zIndex: "10",
-            // }}
           />
         </Header>
         <Breadcrumb className="tw-px-4 tw-my-4" items={breadcrumbItems} />
