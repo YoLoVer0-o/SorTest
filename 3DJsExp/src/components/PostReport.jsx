@@ -16,7 +16,7 @@ import classNames from "classnames";
 import { useResponsive } from "../hooks";
 
 const PostReport = () => {
-  const [isDesktopOrLaptop, isBigScreen, isTabletOrMobile, isPortrait, isRetina] = useResponsive();
+  const {isDesktopOrLaptop, isBigScreen, isTabletOrMobile, isPortrait, isRetina} = useResponsive();
   const [modalToggle, setModalToggle] = useState(false);
 
   const topRef = useRef(null);
