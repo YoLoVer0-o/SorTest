@@ -11,7 +11,7 @@ const DataTable = props => {
   const pageSize = props.setPageSize;
   const sendRows = props.onRowsSelected;
 
-  const { isDesktopOrLaptop, isBigScreen, isTabletOrMobile, isPortrait, isRetina } = useResponsive();
+  const { isDesktopOrLaptop, isBigScreen, isTabletOrMobile, isPortrait, isLandscape } = useResponsive();
 
   const onChange = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
@@ -38,9 +38,11 @@ const DataTable = props => {
   };
 
   return (
-    <div className={classNames("tw-min-h-fit tw-min-w-full tw-overflow-y-auto tw-overflow-x-visible", {})}>
+    <div className={classNames("tw-min-h-fit tw-min-w-full tw-overflow-y-auto tw-overflow-x-visible", {
+      "tw-min-h-screen": isTabletOrMobile && isLandscape,
+    })}>
       <Table
-        rowClassName={"tw-h-fit tw-min-w-full tw-overflow-auto"}
+        rowClassName={"tw-min-h-fit tw-min-w-full tw-overflow-auto"}
         tableLayout={'fixed'}
         columns={columns}
         // sticky={{ offsetScroll: 4, }}
