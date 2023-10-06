@@ -3,12 +3,23 @@ import { SearchOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
 
+import classNames from "classnames";
+import { useResponsive } from "../hooks";
+
 const SearchBar = props => {
 
     const receviedData = props.data;
     const onChangeSearch = props.onChangeSearch;
     const onChangeFilter = props.onChangeFilter;
     const onChangeDate = props.onChangeDate;
+
+    const {
+        isDesktopOrLaptop,
+        isBigScreen,
+        isTabletOrMobile,
+        isPortrait,
+        isLandscape,
+    } = useResponsive();
 
     const { RangePicker } = DatePicker;
     const dateFormat = 'DD/MM/YYYY';
@@ -45,7 +56,9 @@ const SearchBar = props => {
     };
 
     return (
-        <div className='tw-flex tw-flex-col md:tw-flex-row tw-my-2 tw-gap-2 tw-max-w-max'>
+        <div className={classNames('tw-flex tw-flex-row tw-my-2 tw-gap-2 tw-max-w-max', {
+            "tw-flex-col tw-self-center": isTabletOrMobile && isPortrait,
+        })}>
             <Tooltip title="พิมพ์สิ่งที่ต้องการค้นหา">
                 <div
                     style={{

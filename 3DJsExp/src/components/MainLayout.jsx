@@ -23,7 +23,6 @@ const MainLayout = (props) => {
     isTabletOrMobile,
     isPortrait,
     isLandscape,
-    isRetina,
   } = useResponsive();
   const breadcrumbNameMap = {
     "/main": "main",
@@ -61,15 +60,19 @@ const MainLayout = (props) => {
   }, [location.pathname]);
 
   return (
-    <Layout className="tw-max-w-full tw-max-h-full tw-h-full">
+    <Layout className={classNames("tw-max-w-full", {
+      "tw-min-h-screen": isTabletOrMobile && isLandscape,
+      "tw-min-h-full tw-h-full tw-max-h-full": isDesktopOrLaptop || isTabletOrMobile,
+    })}>
       <Sider
         trigger={null}
-        width={isTabletOrMobile && isPortrait ? "100%" : "200px"}
+        width={isTabletOrMobile && isPortrait ? "100%" : 200}
         collapsible
-        collapsed={isTabletOrMobile && isPortrait ? !collapsed : collapsed}
+        collapsed={isTabletOrMobile ? !collapsed : collapsed}
         collapsedWidth={isTabletOrMobile && isPortrait ? 0 : 80}
-        className={classNames("tw-opacity-90", {
-          "tw-absolute  tw-w-full tw-h-screen tw-z-10 ": isTabletOrMobile && isPortrait,
+        className={classNames("tw-opacity-90 tw-min-h-screen", {
+          "tw-absolute tw-w-full tw-h-full tw-z-10": isTabletOrMobile && isPortrait,
+          "tw-sticky tw-top-0 tw-w-full tw-min-h-screen tw-z-10": isTabletOrMobile && isLandscape,
         })}
       >
         {isTabletOrMobile && isPortrait && (
@@ -85,6 +88,9 @@ const MainLayout = (props) => {
 
         <div className="demo-logo-vertical" />
         <Menu
+          className={classNames("", {
+            "tw-sticky tw-top-0 ": isTabletOrMobile && isLandscape,
+          })}
           theme="dark"
           mode="inline"
           onClick={handleMenuClick}
@@ -109,25 +115,30 @@ const MainLayout = (props) => {
         />
       </Sider>
       <Layout>
-        <Header className="tw-p-0 tw-bg-white">
+        <Header className={classNames("tw-p-0 tw-bg-white tw-object-contain", {
+          "tw-sticky tw-top-0 tw-z-10": isTabletOrMobile && !isPortrait,
+        })}>
           {!(isTabletOrMobile && isPortrait && collapsed) && (
             <Button
-              className={classNames(" tw-h-16 tw-w-16 tw-z-10 tw-text-lg", {
-                // "tw-hidden ": isTabletOrMobile && isPortrait && collapsed,
-              })}
+              className={classNames("tw-h-16 tw-w-16 tw-text-lg", {})}
               type="text"
               icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
               onClick={() => setCollapsed(!collapsed)}
             />
           )}
-
-
         </Header>
         <Breadcrumb className="tw-px-4 tw-my-4" items={breadcrumbItems} />
-        <Content className="tw-flex tw-max-w-full tw-max-h-full tw-justify-center tw-m-1 tw-bg-white tw-object-contain">
-          <Outlet className="tw-flex tw-max-h-full tw-max-w-full tw-justify-center tw-object-contain" />
+        <Content className={classNames("tw-flex tw-max-w-full tw-max-h-full tw-justify-center tw-m-1 tw-bg-white tw-object-contain", {
+          "tw-overflow-auto": isTabletOrMobile && isLandscape,
+        })}>
+          <Outlet className={classNames("tw-flex tw-max-h-full tw-h-full tw-max-w-full tw-justify-center tw-object-contain", {
+
+          })} />
         </Content>
-        <Footer className="tw-h-6 tw-text-center tw-content-center tw-my-4">
+        <Footer className={classNames("tw-text-center tw-content-center", {
+          "tw-h-6 tw-my-4": isDesktopOrLaptop,
+          "tw-h-2 tw-my-2": isTabletOrMobile,
+        })}>
           Ant Design ©2023 Created by Ant UED
         </Footer>
       </Layout>
