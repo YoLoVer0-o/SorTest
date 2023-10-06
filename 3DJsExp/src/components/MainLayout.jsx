@@ -68,9 +68,9 @@ const MainLayout = (props) => {
         collapsible
         collapsed={isTabletOrMobile && isPortrait ? !collapsed : collapsed}
         collapsedWidth={isTabletOrMobile && isPortrait ? 0 : 80}
-        className={classNames("  tw-opacity-90", {
+        className={classNames(" tw-z-50 tw-opacity-90", {
           "": isDesktopOrLaptop,
-          " tw-absolute  tw-w-full tw-h-screen tw-z-10 ":
+          " tw-absolute  tw-w-full tw-h-screen  ":
             isTabletOrMobile && isPortrait,
         })}
       >
