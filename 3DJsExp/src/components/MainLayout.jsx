@@ -64,7 +64,7 @@ const MainLayout = (props) => {
         trigger={null}
         width={isTabletOrMobile && isPortrait ? "100%" : '200px'}
         collapsible
-        collapsed={collapsed}
+        collapsed={isTabletOrMobile && isPortrait ? !collapsed : collapsed}
         collapsedWidth={isTabletOrMobile && isPortrait ? 0 : 80}
         className={classNames(" tw-opacity-90", {
           "": isDesktopOrLaptop,
