@@ -74,17 +74,21 @@ const MainLayout = (props) => {
             isTabletOrMobile && isPortrait,
         })}
       >
-        <div className={classNames("tw-w-full tw-grid tw-p-2 ",{
-            "tw-hidden": isTabletOrMobile && isLandscape  ,
-            ' tw-hidden': isDesktopOrLaptop,
-        })}>
-          <Button
-            className="tw-text-white tw-flex tw-right-0  tw-z-20 tw-justify-center tw-items-center tw-justify-self-end"
-            icon={<CloseOutlined />}
-            onClick={() => setCollapsed(!collapsed)}
-            shape="circle"
-          ></Button>
-        </div>
+        {isTabletOrMobile && isPortrait && (
+            <div
+              className={classNames("tw-w-full tw-grid tw-p-2 ", {
+                // "tw-hidden": isTabletOrMobile && isLandscape,
+                // " tw-hidden": isDesktopOrLaptop,
+              })}
+            >
+              <Button
+                className="tw-text-white tw-flex tw-right-0  tw-z-20 tw-justify-center tw-items-center tw-justify-self-end"
+                icon={<CloseOutlined />}
+                onClick={() => setCollapsed(!collapsed)}
+                shape="circle"
+              ></Button>
+            </div>
+            )}
         <div className="demo-logo-vertical" />
         <Menu
           theme="dark"
@@ -115,7 +119,7 @@ const MainLayout = (props) => {
           <Button
             className={classNames(" tw-h-16 tw-w-16 tw-z-10 tw-text-lg 	", {
               "": isDesktopOrLaptop,
-              "tw-hidden ":isTabletOrMobile && isPortrait && collapsed,
+              "tw-hidden ": isTabletOrMobile && isPortrait && collapsed,
             })}
             type="text"
             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
