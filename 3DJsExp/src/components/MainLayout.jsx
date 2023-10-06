@@ -7,6 +7,7 @@ import {
   UploadOutlined,
   UserOutlined,
   ContainerOutlined,
+  CloseOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, Button, Breadcrumb } from "antd";
 import { Footer } from "antd/es/layout/layout";
@@ -62,16 +63,26 @@ const MainLayout = (props) => {
     <Layout className="tw-max-w-full tw-max-h-full tw-h-full">
       <Sider
         trigger={null}
-        width={isTabletOrMobile && isPortrait ? "100%" : '200px'}
+        width={isTabletOrMobile && isPortrait ? "100%" : "200px"}
         collapsible
         collapsed={isTabletOrMobile && isPortrait ? !collapsed : collapsed}
         collapsedWidth={isTabletOrMobile && isPortrait ? 0 : 80}
-        className={classNames(" tw-opacity-90", {
+        className={classNames("  tw-opacity-90", {
           "": isDesktopOrLaptop,
           " tw-absolute  tw-w-full tw-h-screen tw-z-10 ":
             isTabletOrMobile && isPortrait,
         })}
       >
+        <div className="tw-w-full tw-grid">
+          <Button
+            className={classNames("tw-text-white tw-flex tw-right-0  tw-z-20 tw-justify-center tw-items-center tw-justify-self-end",{
+              "tw-hiddin": isDesktopOrLaptop,
+            })}
+            icon={<CloseOutlined />}
+            onClick={() => setCollapsed(!collapsed)}
+            shape="circle"
+          ></Button>
+        </div>
         <div className="demo-logo-vertical" />
         <Menu
           theme="dark"
@@ -100,15 +111,19 @@ const MainLayout = (props) => {
       <Layout>
         <Header className="tw-p-0 tw-bg-white">
           <Button
+            className={classNames(" tw-h-16 tw-w-16 tw-z-10 tw-text-lg 	", {
+              "": isDesktopOrLaptop,
+              "tw-hidden ":isTabletOrMobile && isPortrait && collapsed,
+            })}
             type="text"
             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             onClick={() => setCollapsed(!collapsed)}
-            style={{
-              fontSize: "16px",
-              width: "4rem",
-              height: "4rem",
-              zIndex: "10",
-            }}
+            // style={{
+            //   fontSize: "16px",
+            //   width: "4rem",
+            //   height: "4rem",
+            //   zIndex: "10",
+            // }}
           />
         </Header>
         <Breadcrumb className="tw-px-4 tw-my-4" items={breadcrumbItems} />
