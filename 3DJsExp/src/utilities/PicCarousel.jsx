@@ -8,7 +8,7 @@ const PicCarousel = (props) => {
   const showAll = props.onClick
 
   return (
-    <div className=" tw-relative tw-flex tw-flex-col">
+    <div className=" tw-relative tw-flex tw-flex-col ">
       <button onClick={showAll} className="tw-absolute tw-mt-1 tw-mr-1 tw-justify-center tw-items-center tw-flex tw-self-end tw-bg-gray-100/80 tw-rounded-md tw-h-8 tw-text-lg tw-z-10">รูปภาพทั้งหมด</button>
       <Carousel
         autoplay
