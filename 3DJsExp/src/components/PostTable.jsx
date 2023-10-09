@@ -28,7 +28,7 @@ const PostTable = () => {
 
     const navigate = useNavigate();
 
-    const { isDesktopOrLaptop, isBigScreen, isTabletOrMobile, isPortrait, isRetina } = useResponsive();
+    const { isDesktopOrLaptop, isBigScreen, isTabletOrMobile, isPortrait, isLandscape } = useResponsive();
 
     const columns = [
         {
@@ -127,7 +127,7 @@ const PostTable = () => {
 
     return (
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full', {
-            // "tw-overflow-auto": isTabletOrMobile,
+            // "tw-min-h-screen": isTabletOrMobile && isLandscape,
         })}>
             <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">PostTable</p>
             <SearchBar
