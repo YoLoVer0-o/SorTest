@@ -60,10 +60,13 @@ const MainLayout = (props) => {
   }, [location.pathname]);
 
   return (
-    <Layout className={classNames("tw-max-w-full", {
-      "tw-min-h-screen": isTabletOrMobile && isLandscape,
-      "tw-min-h-full tw-h-full tw-max-h-full": isDesktopOrLaptop || isTabletOrMobile,
-    })}>
+    <Layout
+      className={classNames("tw-max-w-full", {
+        "tw-min-h-screen": isTabletOrMobile && isLandscape,
+        "tw-min-h-full tw-h-full tw-max-h-full":
+          isDesktopOrLaptop || isTabletOrMobile,
+      })}
+    >
       <Sider
         trigger={null}
         width={isTabletOrMobile && isPortrait ? "100%" : 200}
@@ -71,8 +74,10 @@ const MainLayout = (props) => {
         collapsed={isTabletOrMobile ? !collapsed : collapsed}
         collapsedWidth={isTabletOrMobile && isPortrait ? 0 : 80}
         className={classNames("tw-opacity-90 tw-min-h-screen tw-z-50", {
-          "tw-absolute tw-w-full tw-h-full tw-z-50": isTabletOrMobile && isPortrait,
-          "tw-sticky tw-top-0 tw-w-full tw-min-h-screen tw-z-50 ": isTabletOrMobile && isLandscape,
+          "tw-absolute tw-w-full tw-h-full tw-z-50":
+            isTabletOrMobile && isPortrait,
+          "tw-sticky tw-top-0 tw-w-full tw-min-h-screen tw-z-50 ":
+            isTabletOrMobile && isLandscape,
         })}
       >
         {isTabletOrMobile && isPortrait && (
@@ -115,9 +120,11 @@ const MainLayout = (props) => {
         />
       </Sider>
       <Layout>
-        <Header className={classNames("tw-p-0 tw-bg-white tw-object-contain", {
-          "tw-sticky tw-top-0 tw-z-10": isTabletOrMobile && !isPortrait,
-        })}>
+        <Header
+          className={classNames("tw-p-0 tw-bg-white tw-object-contain", {
+            "tw-sticky tw-top-0 tw-z-10": isTabletOrMobile && !isPortrait,
+          })}
+        >
           {!(isTabletOrMobile && isPortrait && collapsed) && (
             <Button
               className={classNames("tw-h-16 tw-w-16 tw-text-lg", {})}
@@ -128,17 +135,27 @@ const MainLayout = (props) => {
           )}
         </Header>
         <Breadcrumb className="tw-px-4 tw-my-4" items={breadcrumbItems} />
-        <Content className={classNames("tw-flex tw-max-w-full tw-max-h-full tw-justify-center tw-m-1 tw-bg-white tw-object-contain", {
-          "tw-overflow-auto": isTabletOrMobile && isLandscape,
-        })}>
-          <Outlet className={classNames("tw-flex tw-max-h-full tw-h-full tw-max-w-full tw-justify-center tw-object-contain", {
-
-          })} />
+        <Content
+          className={classNames(
+            "tw-flex tw-max-w-full tw-max-h-full tw-justify-center tw-m-1 tw-bg-white tw-object-contain",
+            {
+              "tw-overflow-auto": isTabletOrMobile && isLandscape,
+            }
+          )}
+        >
+          <Outlet
+            className={classNames(
+              "tw-flex tw-max-h-full tw-h-full tw-max-w-full tw-justify-center tw-object-contain",
+              {}
+            )}
+          />
         </Content>
-        <Footer className={classNames("tw-text-center tw-content-center", {
-          "tw-h-6 tw-my-4": isDesktopOrLaptop,
-          "tw-h-2 tw-my-2": isTabletOrMobile,
-        })}>
+        <Footer
+          className={classNames("tw-text-center tw-content-center", {
+            "tw-h-6 tw-my-4": isDesktopOrLaptop,
+            "tw-h-2 tw-my-2": isTabletOrMobile,
+          })}
+        >
           Ant Design ©2023 Created by Ant UED
         </Footer>
       </Layout>

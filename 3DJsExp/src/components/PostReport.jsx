@@ -17,6 +17,7 @@ const PostReport = () => {
     isDesktopOrLaptop,
     isBigScreen,
     isTabletOrMobile,
+    isMobile,
     isPortrait,
     isRetina,
   } = useResponsive();
@@ -83,7 +84,7 @@ const PostReport = () => {
       </div>
       <FloatButton
         className={classNames("tw-flex tw-z-30  ", {
-          "tw-sticky":isDesktopOrLaptop,
+          "tw-sticky": isDesktopOrLaptop,
           "tw-top-0 tw-left-0 tw-absolute tw-bg-white ":
             isTabletOrMobile && isPortrait,
         })}
@@ -114,8 +115,23 @@ const PostReport = () => {
             ลับมาก
           </div>
           <div className="tw-flex tw-flex-col tw-justify-center tw-my-6 tw-p-6">
-            <div className="tw-flex tw-flex-row tw-justify-center tw-gap-12 ">
-              <div className="tw-flex tw-flex-col tw-w-40 tw-border-[2px] tw-border-black tw-rounded-xl tw-p-2  ">
+            <div
+              className={classNames(
+                "tw-flex tw-flex-row tw-justify-center tw-gap-12",
+                {
+                  "tw-flex tw-justify-center tw-items-center tw-flex-col tw-gap-y-4":
+                    isMobile && isPortrait,
+                }
+              )}
+            >
+              <div
+                className={classNames(
+                  "tw-flex tw-flex-col tw-w-40 tw-border-[2px] tw-border-black tw-rounded-xl tw-p-2",
+                  {
+                    "tw-w-64": isMobile && isPortrait,
+                  }
+                )}
+              >
                 <div className="tw-flex">แพลต์ฟอร์ม:Facebook</div>
                 <div className="tw-flex">กลุ่ม:NGO</div>
                 <div className="tw-flex">ชื่อกลุ่ม:iLaeFX</div>
@@ -146,7 +162,7 @@ const PostReport = () => {
             <div
               className="tw-flex  tw-justify-start tw-self-start tw-text-3xl tw-bg-gradient-to-r 
         tw-from-indigo-500 tw-from-10% tw-via-sky-500 tw-via-30% tw-to-white 
-        tw-text-white tw-w-72 tw-h-max"
+        tw-text-white tw-w-full tw-h-max"
             >
               <p>สรุปความเคลื่อนไหว</p>
             </div>
@@ -209,7 +225,7 @@ const PostReport = () => {
             <div
               className="tw-flex  tw-justify-start tw-self-start tw-text-3xl tw-bg-gradient-to-r 
         tw-from-indigo-500 tw-from-10% tw-via-sky-500 tw-via-30% tw-to-white 
-        tw-text-white tw-w-72 tw-h-max"
+        tw-text-white tw-w-full tw-h-max"
             >
               <p>สรุปวิเคราะห์</p>
             </div>

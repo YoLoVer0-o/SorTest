@@ -18,7 +18,8 @@ const ReportSideBar = (props) => {
       className={classNames(
         "tw-flex tw-max-h-full tw-h-full tw-w-max tw-object-contain ",
         {
-          "tw-absolute tw-h-full tw-overflow-y-auto tw-z-20  tw-w-screen ": isTabletOrMobile && isPortrait ,
+          "tw-absolute tw-h-full tw-overflow-y-auto tw-z-20  tw-w-screen ":
+            isTabletOrMobile && isPortrait,
         }
       )}
     >

@@ -14,7 +14,7 @@ const PicCarousel = (props) => {
         autoplay
         className="tw-flex  tw-w-[30rem] tw-justify-self-center tw-content-center tw-justify-center  tw-bg-red-900 tw-z-0"
       >
-        <div className="tw-flex tw-justify-center tw-object-center  tw-max-w-80 tw-max-h-80 	">
+        <div className="tw-flex tw-justify-center tw-object-center  	">
           <img
             className="tw-flex tw-justify-center tw-w-[30rem] tw-h-[20rem] tw-max-w-[inherit] object-contain tw-max-h-[inherit]"
             src={carouselPic}
