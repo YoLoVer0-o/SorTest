@@ -17,6 +17,7 @@ const PostReport = () => {
     isDesktopOrLaptop,
     isBigScreen,
     isTabletOrMobile,
+    isTablet,
     isMobile,
     isPortrait,
     isRetina,
@@ -31,7 +32,7 @@ const PostReport = () => {
   const { getCollapseProps, getToggleProps } = useCollapse({
     isExpanded,
     collapsedHeight: 0,
-    duration: 300,
+    duration: 500,
   });
 
   function handleOnClick() {
@@ -85,6 +86,7 @@ const PostReport = () => {
       <FloatButton
         className={classNames("tw-flex tw-z-30  ", {
           "tw-sticky": isDesktopOrLaptop,
+          "tw-sticky ":isTablet,
           "tw-top-0 tw-left-0 tw-absolute tw-bg-white ":
             isTabletOrMobile && isPortrait,
         })}

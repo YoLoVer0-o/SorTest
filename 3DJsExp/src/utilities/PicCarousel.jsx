@@ -4,26 +4,34 @@ import poster from "../assets/poster.jpg";
 import PropTypes from "prop-types";
 
 const PicCarousel = (props) => {
-
-  const showAll = props.onClick
+  const showAll = props.onClick;
 
   return (
     <div className=" tw-relative tw-flex tw-flex-col ">
-      <button onClick={showAll} className="tw-absolute tw-mt-1 tw-mr-1 tw-justify-center tw-items-center tw-flex tw-self-end tw-bg-gray-100/80 tw-rounded-md tw-h-8 tw-text-lg tw-z-10">รูปภาพทั้งหมด</button>
+      <button
+        onClick={showAll}
+        className="tw-absolute tw-mt-1 tw-mr-1 tw-justify-center tw-items-center 
+      tw-flex tw-self-end tw-bg-gray-100/80 tw-rounded-md tw-h-8 tw-text-lg tw-z-10"
+      >
+        รูปภาพทั้งหมด
+      </button>
       <Carousel
         autoplay
-        className="tw-flex  tw-w-[30rem] tw-justify-self-center tw-content-center tw-justify-center  tw-bg-red-900 tw-z-0"
+        className="tw-flex  tw-w-[30rem] tw-justify-self-center tw-content-center tw-justify-center 
+         tw-bg-red-900 tw-z-0"
       >
         <div className="tw-flex tw-justify-center tw-object-center  	">
           <img
-            className="tw-flex tw-justify-center tw-w-[30rem] tw-h-[20rem] tw-max-w-[inherit] object-contain tw-max-h-[inherit]"
+            className="tw-flex tw-justify-center tw-w-[30rem] tw-h-[20rem] tw-max-w-[inherit] 
+            object-contain tw-max-h-[inherit]"
             src={carouselPic}
           />
         </div>
         <div className=" tw-flex tw-justify-center tw-object-center  tw-max-w-80 tw-max-h-80">
           <img
             src={poster}
-            className="tw-flex tw-justify-center tw-w-[30rem] tw-h-[20rem] tw-max-w-[inherit] object-contain tw-max-h-[inherit]"
+            className="tw-flex tw-justify-center tw-w-[30rem] tw-h-[20rem] tw-max-w-[inherit]
+             object-contain tw-max-h-[inherit]"
           />
         </div>
         {/* <div className="tw-flex tw-justify-center tw-w-[20rem] tw-h-[20rem]">
@@ -46,7 +54,7 @@ const PicCarousel = (props) => {
 };
 
 PicCarousel.propTypes = {
-  onClick: PropTypes.func
-}
+  onClick: PropTypes.func,
+};
 
 export default PicCarousel;

@@ -60,6 +60,108 @@ const MainLayout = (props) => {
   }, [location.pathname]);
 
   return (
+    // <Layout
+    //   className={classNames("tw-max-w-full", {
+    //     "tw-min-h-screen": isTabletOrMobile && isLandscape,
+    //     "tw-min-h-full tw-h-full tw-max-h-full":
+    //       isDesktopOrLaptop || isTabletOrMobile,
+    //   })}
+    // >
+    //   <Sider
+    //     trigger={null}
+    //     width={isTabletOrMobile && isPortrait ? "100%" : 200}
+    //     collapsible
+    //     collapsed={isTabletOrMobile ? !collapsed : collapsed}
+    //     collapsedWidth={isTabletOrMobile && isPortrait ? 0 : 80}
+    //     className={classNames("tw-opacity-90 tw-min-h-screen tw-z-50", {
+    //       "tw-absolute tw-w-full tw-h-full tw-z-50":
+    //         isTabletOrMobile && isPortrait,
+    //       "tw-sticky tw-top-0 tw-w-full tw-min-h-screen tw-z-50 ":
+    //         isTabletOrMobile && isLandscape,
+    //     })}
+    //   >
+    //     {isTabletOrMobile && isPortrait && (
+    //       <div className={classNames("tw-w-full tw-grid tw-p-2 ", {})}>
+    //         <Button
+    //           className="tw-text-white tw-flex tw-right-0  tw-z-20 tw-justify-center tw-items-center tw-justify-self-end"
+    //           icon={<CloseOutlined />}
+    //           onClick={() => setCollapsed(!collapsed)}
+    //           shape="circle"
+    //         ></Button>
+    //       </div>
+    //     )}
+
+    //     <div className="demo-logo-vertical" />
+    //     <Menu
+    //       className={classNames("", {
+    //         "tw-sticky tw-top-0 ": isTabletOrMobile && isLandscape,
+    //       })}
+    //       theme="dark"
+    //       mode="inline"
+    //       onClick={handleMenuClick}
+    //       selectedKeys={props.pageKey}
+    //       items={[
+    //         {
+    //           key: "/main",
+    //           icon: <UserOutlined />,
+    //           label: "main",
+    //         },
+    //         {
+    //           key: "/postlog",
+    //           icon: <ContainerOutlined />,
+    //           label: "DataLog",
+    //         },
+    //         {
+    //           key: "3",
+    //           icon: <UploadOutlined />,
+    //           label: "nav 3",
+    //         },
+    //       ]}
+    //     />
+    //   </Sider>
+    //   <Layout>
+    //     <Header
+    //       className={classNames("tw-p-0 tw-flex tw-bg-sky-600 tw-object-contain", {
+    //         "tw-sticky tw-top-0 tw-z-10": isTabletOrMobile && !isPortrait,
+    //       })}
+    //     >
+    //       {!(isTabletOrMobile && isPortrait && collapsed) && (
+    //         <Button
+    //           className={classNames("tw-h-16 tw-w-16 tw-text-lg", {})}
+    //           type="text"
+    //           icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+    //           onClick={() => setCollapsed(!collapsed)}
+    //         />
+    //       )}
+    //       <div className="tw-bg-blue-600  tw-h-12 tw-rotate-90 tw-w-16 tw-flex tw-text-center tw-justify-center	">test</div>
+    //     </Header>
+    //     <Breadcrumb className="tw-px-4 tw-my-4" items={breadcrumbItems} />
+
+    //     <Content
+    //       className={classNames(
+    //         "tw-flex tw-max-w-full tw-max-h-full tw-justify-center tw-m-1 tw-bg-white tw-object-contain",
+    //         {
+    //           "tw-overflow-auto": isTabletOrMobile && isLandscape,
+    //         }
+    //       )}
+    //     >
+    //       <Outlet
+    //         className={classNames(
+    //           "tw-flex tw-max-h-full tw-h-full tw-max-w-full tw-justify-center tw-object-contain",
+    //           {}
+    //         )}
+    //       />
+    //     </Content>
+    //     <Footer
+    //       className={classNames("tw-text-center tw-content-center", {
+    //         "tw-h-6 tw-my-4": isDesktopOrLaptop,
+    //         "tw-h-2 tw-my-2": isTabletOrMobile,
+    //       })}
+    //     >
+    //       Ant Design ©2023 Created by Ant UED
+    //     </Footer>
+    //   </Layout>
+    // </Layout>
     <Layout
       className={classNames("tw-max-w-full", {
         "tw-min-h-screen": isTabletOrMobile && isLandscape,
@@ -67,98 +169,117 @@ const MainLayout = (props) => {
           isDesktopOrLaptop || isTabletOrMobile,
       })}
     >
-      <Sider
-        trigger={null}
-        width={isTabletOrMobile && isPortrait ? "100%" : 200}
-        collapsible
-        collapsed={isTabletOrMobile ? !collapsed : collapsed}
-        collapsedWidth={isTabletOrMobile && isPortrait ? 0 : 80}
-        className={classNames("tw-opacity-90 tw-min-h-screen tw-z-50", {
-          "tw-absolute tw-w-full tw-h-full tw-z-50":
-            isTabletOrMobile && isPortrait,
-          "tw-sticky tw-top-0 tw-w-full tw-min-h-screen tw-z-50 ":
-            isTabletOrMobile && isLandscape,
-        })}
-      >
-        {isTabletOrMobile && isPortrait && (
-          <div className={classNames("tw-w-full tw-grid tw-p-2 ", {})}>
-            <Button
-              className="tw-text-white tw-flex tw-right-0  tw-z-20 tw-justify-center tw-items-center tw-justify-self-end"
-              icon={<CloseOutlined />}
-              onClick={() => setCollapsed(!collapsed)}
-              shape="circle"
-            ></Button>
-          </div>
-        )}
-
-        <div className="demo-logo-vertical" />
-        <Menu
-          className={classNames("", {
-            "tw-sticky tw-top-0 ": isTabletOrMobile && isLandscape,
-          })}
-          theme="dark"
-          mode="inline"
-          onClick={handleMenuClick}
-          selectedKeys={props.pageKey}
-          items={[
-            {
-              key: "/main",
-              icon: <UserOutlined />,
-              label: "main",
-            },
-            {
-              key: "/postlog",
-              icon: <ContainerOutlined />,
-              label: "DataLog",
-            },
-            {
-              key: "3",
-              icon: <UploadOutlined />,
-              label: "nav 3",
-            },
-          ]}
-        />
-      </Sider>
-      <Layout>
-        <Header
-          className={classNames("tw-p-0 tw-bg-white tw-object-contain", {
+      <Header
+        className={classNames(
+          "tw-p-0 tw-flex tw-bg-sky-400 tw-object-contain",
+          {
             "tw-sticky tw-top-0 tw-z-10": isTabletOrMobile && !isPortrait,
-          })}
-        >
-          {!(isTabletOrMobile && isPortrait && collapsed) && (
-            <Button
-              className={classNames("tw-h-16 tw-w-16 tw-text-lg", {})}
-              type="text"
-              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-              onClick={() => setCollapsed(!collapsed)}
-            />
-          )}
-        </Header>
-        <Breadcrumb className="tw-px-4 tw-my-4" items={breadcrumbItems} />
-        <Content
+          }
+        )}
+      >
+        {!(isTabletOrMobile && isPortrait && collapsed) && (
+          <Button
+            className={classNames("tw-h-16 tw-w-16 tw-text-lg", {})}
+            type="text"
+            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            onClick={() => setCollapsed(!collapsed)}
+          />
+        )}
+      </Header>
+
+      <Layout>
+        <Sider
+          trigger={null}
+          width={isTabletOrMobile && isPortrait ? "100%" : 200}
+          collapsible
+          collapsed={isTabletOrMobile ? !collapsed : collapsed}
+          collapsedWidth={isTabletOrMobile && isPortrait ? 0 : 80}
           className={classNames(
-            "tw-flex tw-max-w-full tw-max-h-full tw-justify-center tw-m-1 tw-bg-white tw-object-contain",
+            "tw-relative tw-opacity-90 tw-min-h-screen tw-z-50",
             {
-              "tw-overflow-auto": isTabletOrMobile && isLandscape,
+              // "tw-absolute tw-w-full tw-h-full tw-z-50":
+              //   isTabletOrMobile && isPortrait,
+              // "tw-sticky tw-top-0 tw-w-full tw-min-h-screen tw-z-50 ":
+              //   isTabletOrMobile && isLandscape,
             }
           )}
         >
-          <Outlet
-            className={classNames(
-              "tw-flex tw-max-h-full tw-h-full tw-max-w-full tw-justify-center tw-object-contain",
-              {}
-            )}
+          {isTabletOrMobile && isPortrait && (
+            <div className={classNames("tw-w-full tw-grid tw-p-2 ", {})}>
+              <Button
+                className="tw-text-white tw-flex tw-right-0  tw-z-20 tw-justify-center tw-items-center tw-justify-self-end"
+                icon={<CloseOutlined />}
+                onClick={() => setCollapsed(!collapsed)}
+                shape="circle"
+              ></Button>
+            </div>
+          )}
+
+          <div className="demo-logo-vertical" />
+          <Menu
+            className={classNames("", {
+              "tw-sticky tw-top-0 ": isTabletOrMobile && isLandscape,
+            })}
+            theme="dark"
+            mode="inline"
+            onClick={handleMenuClick}
+            selectedKeys={props.pageKey}
+            items={[
+              {
+                key: "/main",
+                icon: <UserOutlined />,
+                label: "main",
+              },
+              {
+                key: "/postlog",
+                icon: <ContainerOutlined />,
+                label: "DataLog",
+              },
+              {
+                key: "3",
+                icon: <UploadOutlined />,
+                label: "nav 3",
+              },
+            ]}
           />
-        </Content>
-        <Footer
-          className={classNames("tw-text-center tw-content-center", {
-            "tw-h-6 tw-my-4": isDesktopOrLaptop,
-            "tw-h-2 tw-my-2": isTabletOrMobile,
-          })}
-        >
-          Ant Design ©2023 Created by Ant UED
-        </Footer>
+        </Sider>
+
+        <Layout>
+          <Breadcrumb className="tw-px-4 tw-my-4" items={breadcrumbItems} />
+          {!(isTabletOrMobile && isPortrait && collapsed) && (
+            <div
+              className="tw-sticky tw-bg-blue-600 tw-h-24 tw-items-center  
+         tw-w-8 tw-flex tw-text-center tw-justify-center tw-rounded-r-lg	"
+              onClick={() => setCollapsed(!collapsed)}
+            >
+              <a className="tw-rotate-90 tw-text-white">Menu</a>
+            </div>
+          )}
+          <Content
+            className={classNames(
+              "tw-flex tw-max-w-full tw-max-h-full tw-justify-center  tw-m-4 tw-bg-white tw-object-contain",
+              {
+                "tw-overflow-auto": isTabletOrMobile && isLandscape,
+              }
+            )}
+          >
+            <Outlet
+              className={classNames(
+                "tw-flex tw-max-h-full tw-h-full tw-max-w-full tw-justify-center tw-object-contain",
+                {}
+              )}
+            />
+          </Content>
+        </Layout>
       </Layout>
+      <Footer
+        className={classNames("tw-text-center tw-content-center", {
+          "tw-h-6 tw-my-4": isDesktopOrLaptop,
+          "tw-h-2 tw-my-2": isTabletOrMobile,
+        })}
+      >
+        Ant Design ©2023 Created by Ant UED
+      </Footer>
     </Layout>
   );
 };
