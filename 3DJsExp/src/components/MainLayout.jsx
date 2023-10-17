@@ -21,6 +21,8 @@ const MainLayout = (props) => {
     isDesktopOrLaptop,
     isBigScreen,
     isTabletOrMobile,
+    isMobile,
+    isTablet,
     isPortrait,
     isLandscape,
   } = useResponsive();
@@ -194,15 +196,9 @@ const MainLayout = (props) => {
           collapsible
           collapsed={isTabletOrMobile ? !collapsed : collapsed}
           collapsedWidth={isTabletOrMobile && isPortrait ? 0 : 80}
-          className={classNames(
-            "tw-relative tw-opacity-90 tw-min-h-screen tw-z-50",
-            {
-              // "tw-absolute tw-w-full tw-h-full tw-z-50":
-              //   isTabletOrMobile && isPortrait,
-              // "tw-sticky tw-top-0 tw-w-full tw-min-h-screen tw-z-50 ":
-              //   isTabletOrMobile && isLandscape,
-            }
-          )}
+          className={classNames(" tw-opacity-90 tw-min-h-screen tw-z-50", {
+            "tw-absolute": isMobile && isPortrait,
+          })}
         >
           {isTabletOrMobile && isPortrait && (
             <div className={classNames("tw-w-full tw-grid tw-p-2 ", {})}>
@@ -248,8 +244,7 @@ const MainLayout = (props) => {
           <Breadcrumb className="tw-px-4 tw-my-4" items={breadcrumbItems} />
           {!(isTabletOrMobile && isPortrait && collapsed) && (
             <div
-              className="tw-sticky tw-bg-blue-600 tw-h-24 tw-items-center  
-         tw-w-8 tw-flex tw-text-center tw-justify-center tw-rounded-r-lg	"
+              className="tw-sticky tw-bg-blue-600 tw-h-[10rem] tw-items-center tw-w-8 tw-flex tw-text-center tw-justify-center tw-rounded-r-lg	"
               onClick={() => setCollapsed(!collapsed)}
             >
               <a className="tw-rotate-90 tw-text-white">Menu</a>
