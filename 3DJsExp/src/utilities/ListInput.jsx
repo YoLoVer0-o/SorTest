@@ -50,7 +50,7 @@ const ListInput = () => {
                   type="dashed"
                   onClick={() => add()}
                   style={{
-                    width: "60%",
+                    width: "40%",
                   }}
                   icon={<PlusOutlined />}
                 >

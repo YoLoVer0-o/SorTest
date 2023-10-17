@@ -197,13 +197,14 @@ const MainLayout = (props) => {
           collapsed={isTabletOrMobile ? !collapsed : collapsed}
           collapsedWidth={isTabletOrMobile && isPortrait ? 0 : 80}
           className={classNames(" tw-opacity-90 tw-min-h-screen tw-z-50", {
-            "tw-absolute": isMobile && isPortrait,
+            "tw-absolute": isMobile,
           })}
         >
           {isTabletOrMobile && isPortrait && (
             <div className={classNames("tw-w-full tw-grid tw-p-2 ", {})}>
               <Button
-                className="tw-text-white tw-flex tw-right-0  tw-z-20 tw-justify-center tw-items-center tw-justify-self-end"
+                className="tw-text-white tw-flex tw-right-0  
+                tw-z-20 tw-justify-center tw-items-center tw-justify-self-end"
                 icon={<CloseOutlined />}
                 onClick={() => setCollapsed(!collapsed)}
                 shape="circle"
@@ -241,15 +242,19 @@ const MainLayout = (props) => {
         </Sider>
 
         <Layout>
+          
           <Breadcrumb className="tw-px-4 tw-my-4" items={breadcrumbItems} />
           {!(isTabletOrMobile && isPortrait && collapsed) && (
             <div
-              className="tw-sticky tw-bg-blue-600 tw-h-[10rem] tw-items-center tw-w-8 tw-flex tw-text-center tw-justify-center tw-rounded-r-lg	"
+              className="tw-sticky tw-bg-blue-600 tw-h-20 tw-items-center tw-w-8 tw-flex 
+              tw-text-center tw-justify-center tw-rounded-r-lg"
               onClick={() => setCollapsed(!collapsed)}
             >
               <a className="tw-rotate-90 tw-text-white">Menu</a>
             </div>
           )}
+          
+         
           <Content
             className={classNames(
               "tw-flex tw-max-w-full tw-max-h-full tw-justify-center  tw-m-4 tw-bg-white tw-object-contain",
