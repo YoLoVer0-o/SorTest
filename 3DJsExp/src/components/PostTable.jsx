@@ -126,23 +126,27 @@ const PostTable = () => {
     }
 
     return (
-        <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full', {
+        <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto', {
             // "tw-min-h-screen": isTabletOrMobile && isLandscape,
         })}>
             <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">PostTable</p>
-            <SearchBar
-                data={postMock}
-                onChangeSearch={setSearchVal}
-                onChangeFilter={setSearchTag}
-                onChangeDate={setSearchDate}
-            />
-            <DataTable
-                data={postMock}
-                columns={columns}
-                onRowClick={toReport}
-                setPageSize={pageSize}
-                onRowsSelected={setSelectedRows}
-            />
+            <div>
+                <SearchBar
+                    data={postMock}
+                    onChangeSearch={setSearchVal}
+                    onChangeFilter={setSearchTag}
+                    onChangeDate={setSearchDate}
+                />
+            </div>
+            <div>
+                <DataTable
+                    data={postMock}
+                    columns={columns}
+                    onRowClick={toReport}
+                    setPageSize={pageSize}
+                    onRowsSelected={setSelectedRows}
+                />
+            </div>
             <div className=" tw-flex tw-flex-row tw-my-6 tw-gap-4">
                 {pageSize < 20 && (
                     <Tooltip title="แสดงเพิ่มเติม">
