@@ -252,7 +252,47 @@ const PostReport = () => {
     //     <ToTopButton onClick={scrollToTop} />
     //   </div>
     // </div>
-    <div className="tw-w-screen">
+    <div className="tw-w-screen tw-p-2">
+      <a>สรุปรายงานจากโพสต์:</a>
+      <div className="tw-flex tw-flex-row ">
+        <div className="tw-w-20 tw-h-20 tw-border-2 tw-border-black tw-rounded-full">
+          <img className="tw-rounded-full" src={iLaw}></img>
+        </div>
+        <div className="tw-flex tw-justify-around tw-w-full">
+          <a>
+            กลุ่ม :
+            <div className="tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-w-44 tw-border-solid tw-border-black">
+              {" "}
+              NGO
+            </div>
+          </a>
+          <a>
+            ชื่อกลุ่ม :
+            <div className="tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-w-44 tw-border-solid tw-border-black">
+              {" "}
+              iLawFX
+            </div>
+          </a>
+          <a>
+            ช่องทาง :
+            <div className="tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-w-44 tw-border-solid tw-border-black">
+              {" "}
+              Facebook
+            </div>
+          </a>
+          <a>
+            ผู้ติดตาม :
+            <div className="tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-w-44 tw-border-solid tw-border-black">
+              {" "}
+              460,000
+            </div>
+          </a>
+        </div>
+      </div>
+      <ReportTable 
+      checkStrictly={false}
+      fixed={false}
+      />
       <div className="tw-p-4">
         <div>บทวิเคราะห์ :</div>
         <div className="tw-border-solid tw-border-gray-300 tw-border-2">
@@ -266,42 +306,6 @@ const PostReport = () => {
           </div>
         </div>
       </div>
-      <div className="tw-flex tw-flex-row  ">
-        <div className="tw-w-24 tw-h-24 tw-border-2 tw-border-black tw-rounded-full">
-          <img className="tw-rounded-full" src={iLaw}></img>
-        </div>
-        <div className="tw-flex tw-justify-around tw-w-full">
-          <a>
-            กลุ่ม :
-            <div className=" tw-border-2 tw-rounded-md tw-h-8 tw-w-32 tw-border-solid tw-border-black">
-              {" "}
-              NGO
-            </div>
-          </a>
-          <a>
-            ชื่อกลุ่ม :
-            <div className=" tw-border-2 tw-rounded-md tw-h-8 tw-w-32 tw-border-solid tw-border-black">
-              {" "}
-              iLawFX
-            </div>
-          </a>
-          <a>
-            ช่องทาง :
-            <div className=" tw-border-2 tw-rounded-md tw-h-8 tw-w-32 tw-border-solid tw-border-black">
-              {" "}
-              Facebook
-            </div>
-          </a>
-          <a>
-            ผู้ติดตาม :
-            <div className=" tw-border-2 tw-rounded-md tw-h-8 tw-w-32 tw-border-solid tw-border-black">
-              {" "}
-              460,000
-            </div>
-          </a>
-        </div>
-      </div>
-      <ReportTable />
     </div>
   );
 };

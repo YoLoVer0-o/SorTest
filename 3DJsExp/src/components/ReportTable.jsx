@@ -9,7 +9,7 @@ const ReportTable = () => {
             key: 'post',
             align: "center",
             width: 150,
-            className: 'tw-truncate',
+            className: 'tw-text-white tw-bg-[#303c6c]',
            
           
         },
@@ -19,7 +19,7 @@ const ReportTable = () => {
             key: 'creator',
             align: "center",
             width: 150,
-            className: 'tw-text-amber-600',
+            className: 'tw-text-white tw-bg-[#303c6c]',
         },
         {
             title: 'วันที่โพสต์ / อัปเดต',
@@ -27,7 +27,7 @@ const ReportTable = () => {
             key: 'link',
             align: "center",
             width: 150,
-            className: 'tw-truncate tw-text-sky-700',
+            className: 'tw-text-white tw-text-sky-700 tw-bg-[#303c6c]',
         },
         {
             title: 'การมีส่วนร่วม',
@@ -35,7 +35,7 @@ const ReportTable = () => {
             key: 'update',
             align: "center",
             width: 150,
-            className: 'tw-text-lime-600',
+            className: 'tw-text-white tw-bg-[#303c6c]',
         
         },
     ];

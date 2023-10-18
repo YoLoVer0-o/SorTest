@@ -173,7 +173,7 @@ const MainLayout = (props) => {
     >
       <Header
         className={classNames(
-          "tw-p-0 tw-flex tw-bg-sky-400 tw-object-contain",
+          "tw-p-0 tw-flex tw-bg-[#303c6c] tw-object-contain",
           {
             "tw-sticky tw-top-0 tw-z-10": isTabletOrMobile && isLandscape,
           }
