@@ -145,6 +145,7 @@ const PostTable = () => {
                     onRowClick={toReport}
                     setPageSize={pageSize}
                     onRowsSelected={setSelectedRows}
+                    useRowSelection={true}
                 />
             </div>
             <div className=" tw-flex tw-flex-row tw-my-6 tw-gap-4">

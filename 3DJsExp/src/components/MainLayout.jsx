@@ -10,7 +10,6 @@ import {
   CloseOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, Button, Breadcrumb } from "antd";
-import { Footer } from "antd/es/layout/layout";
 import classNames from "classnames";
 import { useResponsive } from "../hooks";
 
@@ -181,69 +180,69 @@ const MainLayout = (props) => {
       >
       </Header>
 
-      <Layout>
-        {/* <div className={classNames("tw-flex tw-h-full tw-flex-row tw-sticky tw-z-40", {
+      <Layout className={"tw-relative"}>
+        <div className={classNames("tw-flex tw-h-full tw-flex-row tw-absolute tw-z-40", {
           "tw-w-full": isMobile && isPortrait,
-        })}> */}
-        <Sider
-          trigger={null}
-          width={isTabletOrMobile && isPortrait ? "100%" : 200}
-          collapsible
-          collapsed={isTabletOrMobile ? !collapsed : collapsed}
-          // collapsedWidth={isTabletOrMobile && isPortrait ? 0 : 80}
-          collapsedWidth={0}
-          className={classNames("tw-opacity-90 tw-min-h-full tw-z-40", {
-            "tw-absolute tw-top-0": isMobile && isPortrait,
-          })}
-        >
-          {isTabletOrMobile && isPortrait && (
-            <div className={classNames("tw-w-full tw-grid tw-p-2", {})}>
-              <Button
-                className="tw-text-white tw-flex tw-right-0 tw-z-40 tw-justify-center tw-items-center tw-justify-self-end"
-                icon={<CloseOutlined />}
-                onClick={() => setCollapsed(!collapsed)}
-                shape="circle"
-              ></Button>
+        })}>
+          <Sider
+            trigger={null}
+            width={isTabletOrMobile && isPortrait ? "100%" : 200}
+            collapsible
+            collapsed={isTabletOrMobile ? !collapsed : collapsed}
+            // collapsedWidth={isTabletOrMobile && isPortrait ? 0 : 80}
+            collapsedWidth={0}
+            className={classNames(" tw-opacity-90 tw-min-h-full tw-z-40", {
+              "tw-absolute tw-top-0": isMobile && isPortrait,
+            })}
+          >
+            {isTabletOrMobile && isPortrait && (
+              <div className={classNames("tw-w-full tw-grid tw-p-2", {})}>
+                <Button
+                  className="tw-text-white tw-flex tw-right-0 tw-z-40 tw-justify-center tw-items-center tw-justify-self-end"
+                  icon={<CloseOutlined />}
+                  onClick={() => setCollapsed(!collapsed)}
+                  shape="circle"
+                ></Button>
+              </div>
+            )}
+
+            <div className="demo-logo-vertical" />
+            <Menu
+              className={classNames("", {
+                "tw-sticky tw-top-0 ": isTabletOrMobile && isLandscape,
+              })}
+              theme="dark"
+              mode="inline"
+              onClick={handleMenuClick}
+              selectedKeys={props.pageKey}
+              items={[
+                {
+                  key: "/main",
+                  icon: <UserOutlined />,
+                  label: "main",
+                },
+                {
+                  key: "/postlog",
+                  icon: <ContainerOutlined />,
+                  label: "DataLog",
+                },
+                {
+                  key: "3",
+                  icon: <UploadOutlined />,
+                  label: "nav 3",
+                },
+              ]}
+            />
+          </Sider>
+          {!(isTabletOrMobile && isPortrait && collapsed) && (
+            <div
+              className="tw-sticky tw-bg-blue-600 tw-h-[10rem] tw-z-40 tw-items-center tw-w-8 tw-flex tw-text-center tw-justify-center tw-self-center"
+              onClick={() => setCollapsed(!collapsed)}
+            >
+              <p className="tw-rotate-90 tw-text-white">Menu</p>
             </div>
           )}
-
-          <div className="demo-logo-vertical" />
-          <Menu
-            className={classNames("", {
-              "tw-sticky tw-top-0 ": isTabletOrMobile && isLandscape,
-            })}
-            theme="dark"
-            mode="inline"
-            onClick={handleMenuClick}
-            selectedKeys={props.pageKey}
-            items={[
-              {
-                key: "/main",
-                icon: <UserOutlined />,
-                label: "main",
-              },
-              {
-                key: "/postlog",
-                icon: <ContainerOutlined />,
-                label: "DataLog",
-              },
-              {
-                key: "3",
-                icon: <UploadOutlined />,
-                label: "nav 3",
-              },
-            ]}
-          />
-        </Sider>
-        {!(isTabletOrMobile && isPortrait && collapsed) && (
-          <div
-            className="tw-sticky tw-bg-blue-600 tw-h-[10rem] tw-z-40 tw-items-center tw-w-8 tw-flex tw-text-center tw-justify-center tw-self-center"
-            onClick={() => setCollapsed(!collapsed)}
-          >
-            <p className="tw-rotate-90 tw-text-white">Menu</p>
-          </div>
-        )}
-        {/* </div> */}
+        </div>
 
         <Layout>
           <Breadcrumb className="tw-px-4 tw-my-4" items={breadcrumbItems} />

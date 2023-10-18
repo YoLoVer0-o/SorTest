@@ -10,6 +10,7 @@ const DataTable = props => {
   const onRowClick = props.onRowClick;
   const pageSize = props.setPageSize;
   const sendRows = props.onRowsSelected;
+  const useRowSelection = props.useRowSelection;
 
   const { isDesktopOrLaptop, isBigScreen, isTabletOrMobile, isMobile, isPortrait, isLandscape } = useResponsive();
 
@@ -57,7 +58,7 @@ const DataTable = props => {
             handleRowClick(record, rowIndex)
           }
         })}
-        rowSelection={handleRowSelection}
+        rowSelection={useRowSelection ? handleRowSelection : false}
       />
     </div>
   );
@@ -69,6 +70,7 @@ DataTable.propTypes = {
   onRowClick: PropTypes.func,
   onRowsSelected: PropTypes.func,
   setPageSize: PropTypes.number,
+  useRowSelection: PropTypes.bool,
 }
 
 export default DataTable;
