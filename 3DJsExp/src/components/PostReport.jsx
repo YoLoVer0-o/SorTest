@@ -261,35 +261,43 @@ const PostReport = () => {
         <div className="tw-flex tw-justify-around tw-w-full">
           <a>
             กลุ่ม :
-            <div className="tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-w-44 tw-border-solid tw-border-black">
+            <div className={classNames("tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-w-44 tw-border-solid tw-border-black",{
+              "tw-w-max":isMobile && isPortrait
+            })}>
               {" "}
               NGO
             </div>
           </a>
           <a>
             ชื่อกลุ่ม :
-            <div className="tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-w-44 tw-border-solid tw-border-black">
+            <div className={classNames("tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-w-44 tw-border-solid tw-border-black",{
+              "tw-w-max":isMobile && isPortrait
+            })}>
               {" "}
               iLawFX
             </div>
           </a>
           <a>
             ช่องทาง :
-            <div className="tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-w-44 tw-border-solid tw-border-black">
+            <div className={classNames("tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-w-44 tw-border-solid tw-border-black",{
+              "tw-w-max":isMobile && isPortrait
+            })}>
               {" "}
               Facebook
             </div>
           </a>
           <a>
             ผู้ติดตาม :
-            <div className="tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-w-44 tw-border-solid tw-border-black">
+            <div className={classNames("tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-w-44 tw-border-solid tw-border-black",{
+              "tw-w-max":isMobile && isPortrait
+            })}>
               {" "}
               460,000
             </div>
           </a>
         </div>
       </div>
-      <ReportTable checkStrictly={false} fixed={false} />
+      <ReportTable checkStrictly={false} fixed={false}  />
       <div className="tw-p-4" ref={topRef} tabIndex={0}>
         <div>บทวิเคราะห์ :</div>
         <div className="tw-border-solid tw-border-gray-300 tw-border-2 tw-p-2">

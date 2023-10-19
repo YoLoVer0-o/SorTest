@@ -178,12 +178,22 @@ const MainLayout = (props) => {
           }
         )}
       >
+        {/* <div className="tw-flex tw-flex-col tw-text-white tw-h-full">
+          <div className="tw-flex ">หน่วย</div>
+          <div className="tw-flex">หน่วย</div>
+        </div> */}
+        <div className="tw-text-white tw-flex tw-jsutify-self-center">Project</div>
       </Header>
 
       <Layout className={"tw-relative"}>
-        <div className={classNames("tw-flex tw-h-full tw-flex-row tw-absolute tw-z-40", {
-          "tw-w-full": isMobile && isPortrait,
-        })}>
+        <div
+          className={classNames(
+            "tw-flex tw-h-full tw-flex-row tw-absolute tw-z-40",
+            {
+              "tw-w-full": isMobile && isPortrait,
+            }
+          )}
+        >
           <Sider
             trigger={null}
             width={isTabletOrMobile && isPortrait ? "100%" : 200}
@@ -191,9 +201,12 @@ const MainLayout = (props) => {
             collapsed={isTabletOrMobile ? !collapsed : collapsed}
             // collapsedWidth={isTabletOrMobile && isPortrait ? 0 : 80}
             collapsedWidth={0}
-            className={classNames(" tw-opacity-90 tw-min-h-full tw-z-40 tw-bg-[#0874c4]", {
-              "tw-absolute tw-top-0": isMobile && isPortrait,
-            })}
+            className={classNames(
+              " tw-opacity-90 tw-min-h-full tw-z-40 tw-bg-[#0874c4]",
+              {
+                "tw-absolute tw-top-0": isMobile && isPortrait,
+              }
+            )}
           >
             {isTabletOrMobile && isPortrait && (
               <div className={classNames("tw-w-full tw-grid tw-p-2", {})}>
@@ -220,19 +233,18 @@ const MainLayout = (props) => {
                   key: "/main",
                   icon: <UserOutlined />,
                   label: "main",
-                  
                 },
                 {
                   key: "/postlog",
                   icon: <ContainerOutlined />,
                   label: "DataLog",
-                  className:"",
+                  className: "",
                 },
                 {
                   key: "3",
                   icon: <UploadOutlined />,
                   label: "nav 3",
-                  className:"",
+                  className: "",
                 },
               ]}
             />
@@ -240,7 +252,9 @@ const MainLayout = (props) => {
           {!(isTabletOrMobile && isPortrait && collapsed) && (
             <button
               className="tw-sticky tw-bg-[#0874c4] tw-h-[10rem] tw-z-40 tw-items-center tw-w-8 tw-flex tw-text-center 
-              tw-justify-center tw-self-center tw-opacity-90"
+              tw-justify-center tw-self-center tw-opacity-90 tw-rounded-r-lg
+
+              "
               onClick={() => setCollapsed(!collapsed)}
             >
               <p className="tw-rotate-90 tw-text-white">Menu</p>
@@ -249,7 +263,6 @@ const MainLayout = (props) => {
         </div>
 
         <Layout>
-          
           <Breadcrumb className="tw-px-4 tw-my-4" items={breadcrumbItems} />
           <Content
             className={classNames(

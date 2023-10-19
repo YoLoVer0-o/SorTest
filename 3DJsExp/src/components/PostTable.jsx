@@ -126,7 +126,7 @@ const PostTable = () => {
     }
 
     return (
-        <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto', {
+        <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-y-auto', {
             // "tw-min-h-screen": isTabletOrMobile && isLandscape,
         })}>
             <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">PostTable</p>

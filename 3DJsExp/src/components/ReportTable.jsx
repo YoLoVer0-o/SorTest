@@ -40,7 +40,7 @@ const ReportTable = () => {
         },
     ];
     return ( 
-        <div>
+        <div className="tw-overflow-auto">
             <DataTable 
             columns={columns}/>
         </div>
