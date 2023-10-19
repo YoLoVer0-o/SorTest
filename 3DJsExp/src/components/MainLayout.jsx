@@ -51,7 +51,7 @@ const MainLayout = (props) => {
     }
   };
 
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
 
   useEffect(() => {
     if (location.pathname == "/") {
@@ -186,19 +186,14 @@ const MainLayout = (props) => {
       </Header>
 
       <Layout className={"tw-relative"}>
-        <div
-          className={classNames(
-            "tw-flex tw-h-full tw-flex-row tw-absolute tw-z-40",
-            {
-              "tw-w-full": isMobile && isPortrait,
-            }
-          )}
-        >
+        <div className={classNames("tw-flex tw-h-full tw-flex-row tw-absolute tw-z-40", {
+          "tw-w-full": isMobile && isPortrait && !collapsed,
+        })}>
           <Sider
             trigger={null}
             width={isTabletOrMobile && isPortrait ? "100%" : 200}
             collapsible
-            collapsed={isTabletOrMobile ? !collapsed : collapsed}
+            collapsed={collapsed}
             // collapsedWidth={isTabletOrMobile && isPortrait ? 0 : 80}
             collapsedWidth={0}
             className={classNames(
@@ -249,7 +244,7 @@ const MainLayout = (props) => {
               ]}
             />
           </Sider>
-          {!(isTabletOrMobile && isPortrait && collapsed) && (
+          {(isDesktopOrLaptop || isTablet || (collapsed === true && isMobile)) && (
             <button
               className="tw-sticky tw-bg-[#0874c4] tw-h-[10rem] tw-z-40 tw-items-center tw-w-8 tw-flex tw-text-center 
               tw-justify-center tw-self-center tw-opacity-90 tw-rounded-r-lg

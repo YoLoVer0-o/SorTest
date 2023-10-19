@@ -6,7 +6,7 @@ import { Button, Tooltip } from "antd";
 import {
     ColumnHeightOutlined,
     VerticalAlignMiddleOutlined,
-    FilePdfOutlined,
+    FileTextOutlined,
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
 
@@ -32,68 +32,6 @@ const PostTable = () => {
 
     const columns = [
         {
-            title: 'ID',
-            dataIndex: 'key',
-            key: 'key',
-            align: "center",
-            width: 150,
-            className: 'tw-text-red-600 tw-font-bold',
-            filteredValue: [searchVal],
-            onFilter: (value, record) => (
-                String(record?.key).toLowerCase().includes(value.toLowerCase())
-                || String(record?.post).toLowerCase().includes(value.toLowerCase())
-                || String(record?.creator).toLowerCase().includes(value.toLowerCase())
-                || String(record?.update).toLowerCase().includes(value.toLowerCase())
-            ),
-        },
-        {
-            title: 'post',
-            dataIndex: 'post',
-            key: 'post',
-            align: "center",
-            width: 150,
-            className: 'tw-truncate',
-            filteredValue: [searchTag],
-            onFilter: (value, record) => (
-                (value.split(",")).every(tag => String(record?.tag).includes(tag))
-            ),
-        },
-        {
-            title: 'creator',
-            dataIndex: 'creator',
-            key: 'creator',
-            align: "center",
-            width: 150,
-            className: 'tw-text-amber-600',
-        },
-        {
-            title: 'tag',
-            dataIndex: 'tag',
-            key: 'tag',
-            align: "center",
-            width: 150,
-            className: 'tw-text-violet-600',
-            render: (text, record) => (
-                <div className="tw-flex tw-flex-row tw-gap-1">
-                    {record?.tag.map(tag => (
-                        <Tooltip key={tag} title={tag}>
-                            <div className="tw-rounded-md tw-border-2 tw-border-black tw-w-6 tw-text-center tw-text-white tw-bg-violet-600" >
-                                {tag}
-                            </div>
-                        </Tooltip>
-                    ))}
-                </div>
-            ),
-        },
-        {
-            title: 'link',
-            dataIndex: 'link',
-            key: 'link',
-            align: "center",
-            width: 150,
-            className: 'tw-truncate tw-text-sky-700',
-        },
-        {
             title: 'update',
             dataIndex: 'update',
             key: 'update',
@@ -114,15 +52,81 @@ const PostTable = () => {
                 }
             },
         },
+        {
+            title: 'post',
+            dataIndex: 'post',
+            key: 'post',
+            align: "center",
+            width: 150,
+            className: 'tw-truncate',
+            filteredValue: [searchTag],
+            onFilter: (value, record) => (
+                (value.split(",")).every(tag => String(record?.tag).includes(tag))
+            ),
+        },
+        {
+            title: 'creator',
+            dataIndex: 'creator',
+            key: 'creator',
+            align: "center",
+            width: 150,
+            className: 'tw-text-amber-600',
+            filteredValue: [searchVal],
+            onFilter: (value, record) => (
+                String(record?.post).toLowerCase().includes(value.toLowerCase())
+                || String(record?.creator).toLowerCase().includes(value.toLowerCase())
+                || String(record?.update).toLowerCase().includes(value.toLowerCase())
+            ),
+        },
+        {
+            title: 'tag',
+            dataIndex: 'tag',
+            key: 'tag',
+            align: "center",
+            width: 150,
+            className: 'tw-text-violet-600',
+            render: (text, record) => (
+                <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
+                    {record?.tag.map(tag => (
+                        <Tooltip key={tag} title={tag}>
+                            <div className="tw-rounded-md tw-border-2 tw-border-black tw-w-6 tw-text-center tw-text-white tw-bg-violet-600" >
+                                {tag}
+                            </div>
+                        </Tooltip>
+                    ))}
+                </div>
+            ),
+        },
+        {
+            title: 'link',
+            dataIndex: 'link',
+            key: 'link',
+            align: "center",
+            width: 150,
+            className: 'tw-truncate tw-text-sky-700',
+            render: (text, record) => (
+                <div className="tw-flex tw-justify-center">
+                    <Tooltip title="กดเพื่อไปที่โพสต์">
+                        <a href={record?.link} target="blank">
+                            <div className="tw-rounded-md tw-w-full tw-border-2 tw-border-black tw-text-center tw-text-white tw-bg-sky-600" >
+                                <p className="tw-m-2">Link</p>
+                            </div>
+                        </a>
+                    </Tooltip>
+                </div>
+            ),
+        },
+
     ];
 
     const toReport = (data) => {
         navigate("/postlog/report", { state: data })
     }
 
-    const downloadPDF = (rows) => {
-        console.log("get:", rows);
+    const genReport = (rows) => {
+        // console.log("get:", rows);
         console.log(selectedRows);
+        toReport(selectedRows);
     }
 
     return (
@@ -138,11 +142,13 @@ const PostTable = () => {
                     onChangeDate={setSearchDate}
                 />
             </div>
-            <div>
+            <div className={classNames("", {
+                "tw-overflow-auto": isTabletOrMobile && isPortrait,
+            })}>
                 <DataTable
                     data={postMock}
                     columns={columns}
-                    onRowClick={toReport}
+                    // onRowClick={toReport}
                     setPageSize={pageSize}
                     onRowsSelected={setSelectedRows}
                     useRowSelection={true}
@@ -171,12 +177,12 @@ const PostTable = () => {
                     </Tooltip>
                 )}
                 {selectedRows.length > 0 && (
-                    <Tooltip title="ดาวน์โหลดรายงาน(.PDF)">
-                        <Button className="tw-border-black tw-border-2 tw-bg-red-400 tw-drop-shadow-md hover:tw-bg-white hover:tw-border-red-600 hover:tw-text-red-600"
-                            onClick={() => downloadPDF(selectedRows)}
-                            icon={<FilePdfOutlined />}
+                    <Tooltip title="สร้างรายงาน">
+                        <Button className="tw-border-black tw-border-2 tw-bg-sky-400 tw-drop-shadow-md hover:tw-bg-white hover:tw-border-sky-600 hover:tw-text-sky-600"
+                            onClick={() => genReport(selectedRows)}
+                            icon={<FileTextOutlined />}
                         >
-                            download PDF
+                            สร้างรายงาน
                         </Button>
                     </Tooltip>
                 )}

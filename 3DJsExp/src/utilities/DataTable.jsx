@@ -25,9 +25,9 @@ const DataTable = props => {
   }
 
   const handleRowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-    },
+    // onChange: (selectedRowKeys, selectedRows) => {
+    //   console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+    // },
     onSelect: (record, selected, selectedRows) => {
       console.log(record, selected, selectedRows);
       sendRows(selectedRows)
@@ -53,11 +53,11 @@ const DataTable = props => {
           defaultPageSize: 5,
           pageSize: pageSize,
         }}
-        onRow={(record, rowIndex) => ({
-          onClick: () => {
-            handleRowClick(record, rowIndex)
-          }
-        })}
+        // onRow={(record, rowIndex) => ({
+        //   onClick: () => {
+        //     handleRowClick(record, rowIndex)
+        //   }
+        // })}
         rowSelection={useRowSelection ? handleRowSelection : false}
       />
     </div>
