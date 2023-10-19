@@ -5,12 +5,13 @@ import dayjs from "dayjs";
 import "dayjs/locale/th";
 import buddhistEra from "dayjs/plugin/buddhistEra";
 dayjs.extend(buddhistEra);
-
+import iLaw from "../assets/iLaw.png";
 import { FloatButton } from "antd";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { useCollapse } from "react-collapsed";
 import classNames from "classnames";
 import { useResponsive } from "../hooks";
+import ReportTable from "./ReportTable";
 
 const PostReport = () => {
   const {
@@ -69,187 +70,240 @@ const PostReport = () => {
   };
 
   return (
-    <div
-      className={classNames(
-        "tw-flex tw-flex-row tw-h-full tw-w-full  tw-object-contain",
-        {
-          "tw-relative": isTabletOrMobile && isPortrait,
-        }
-      )}
-    >
-      <div {...getCollapseProps()}>
-        <ReportSideBar
-          handleClick={handleClick}
-          focusSummarize={focusSummarize}
-        />
-      </div>
-      <FloatButton
-        className={classNames("tw-flex tw-z-30  ", {
-          "tw-sticky": isDesktopOrLaptop,
-          "tw-sticky ":isTablet,
-          "tw-top-0 tw-left-0 tw-absolute tw-bg-white ":
-            isTabletOrMobile && isPortrait,
-        })}
-        {...getToggleProps({ onClick: handleOnClick })}
-        icon={isExpanded ? <MenuFoldOutlined /> : <MenuUnfoldOutlined />}
-      />
-      <div className="tw-flex tw-w-full tw-flex-row">
-        <div
-          className={classNames(
-            "tw-flex tw-flex-col tw-w-full tw-h-full tw-overflow-y-auto tw-px-8",
-            {
-              "tw-px-0": isTabletOrMobile && isPortrait,
-            }
-          )}
-        >
-          <div
-            // className="tw-flex tw-text-center tw-self-center tw-text-2xl tw-text-red-500"
-            className={classNames(
-              "tw-flex tw-text-center tw-self-center tw-text-2xl",
-              {
-                "tw-text-red-500": isDesktopOrLaptop,
-                "tw-text-green-500": isTabletOrMobile,
-              }
-            )}
-            ref={topRef}
-            tabIndex={0}
-          >
-            ลับมาก
-          </div>
-          <div className="tw-flex tw-flex-col tw-justify-center tw-my-6 tw-p-6">
-            <div
-              className={classNames(
-                "tw-flex tw-flex-row tw-justify-center tw-gap-12",
-                {
-                  "tw-flex tw-justify-center tw-items-center tw-flex-col tw-gap-y-4":
-                    isMobile && isPortrait,
-                }
-              )}
-            >
-              <div
-                className={classNames(
-                  "tw-flex tw-flex-col tw-w-40 tw-border-[2px] tw-border-black tw-rounded-xl tw-p-2",
-                  {
-                    "tw-w-64": isMobile && isPortrait,
-                  }
-                )}
-              >
-                <div className="tw-flex">แพลต์ฟอร์ม:Facebook</div>
-                <div className="tw-flex">กลุ่ม:NGO</div>
-                <div className="tw-flex">ชื่อกลุ่ม:iLaeFX</div>
-                <div className="tw-flex">ผู้ติดตาม:460K</div>
-                <div className="tw-flex">ช่องทาง FB:iLawClub</div>
-              </div>
-              <div className="tw-flex tw-flex-col tw-w-64 tw-border-[2px] tw-border-black tw-rounded-xl tw-p-2">
-                <div className="tw-flex">ถูกใจ:46K</div>
-                <div className="tw-flex">แชร์:403</div>
-                <div className="tw-flex">ความคิดเห็น:123</div>
-                <div className="tw-flex">สร้างโพส:3 มิ.ย.2023 เวลา 19.45น.</div>
-                <div className="tw-flex">
-                  อัพเดทข้อมูล FB:5 มิ.ย.2023 เวลา 15.45น.
-                </div>
-              </div>
-            </div>
-            <div className="tw-flex  tw-mt-4 tw-justify-center tw-items-center">
-              <PicCarousel onClick={showModal} className="" />
-              <PicModal modalToggle={modalToggle} handleCancel={handleCancel} />
-            </div>
-          </div>
+    // <div
+    //   className={classNames(
+    //     "tw-flex tw-flex-row tw-h-full tw-w-full  tw-object-contain",
+    //     {
+    //       "tw-relative": isTabletOrMobile && isPortrait,
+    //     }
+    //   )}
+    // >
+    //   <div {...getCollapseProps()}>
+    //     <ReportSideBar
+    //       handleClick={handleClick}
+    //       focusSummarize={focusSummarize}
+    //     />
+    //   </div>
+    //   <FloatButton
+    //     className={classNames("tw-flex tw-z-30  ", {
+    //       "tw-sticky": isDesktopOrLaptop,
+    //       "tw-sticky ":isTablet,
+    //       "tw-top-0 tw-left-0 tw-absolute tw-bg-white ":
+    //         isTabletOrMobile && isPortrait,
+    //     })}
+    //     {...getToggleProps({ onClick: handleOnClick })}
+    //     icon={isExpanded ? <MenuFoldOutlined /> : <MenuUnfoldOutlined />}
+    //   />
+    //   <div className="tw-flex tw-w-full tw-flex-row">
+    //     <div
+    //       className={classNames(
+    //         "tw-flex tw-flex-col tw-w-full tw-h-full tw-overflow-y-auto tw-px-8",
+    //         {
+    //           "tw-px-0": isTabletOrMobile && isPortrait,
+    //         }
+    //       )}
+    //     >
+    //       <div
+    //         // className="tw-flex tw-text-center tw-self-center tw-text-2xl tw-text-red-500"
+    //         className={classNames(
+    //           "tw-flex tw-text-center tw-self-center tw-text-2xl",
+    //           {
+    //             "tw-text-red-500": isDesktopOrLaptop,
+    //             "tw-text-green-500": isTabletOrMobile,
+    //           }
+    //         )}
+    //         ref={topRef}
+    //         tabIndex={0}
+    //       >
+    //         ลับมาก
+    //       </div>
+    //       <div className="tw-flex tw-flex-col tw-justify-center tw-my-6 tw-p-6">
+    //         <div
+    //           className={classNames(
+    //             "tw-flex tw-flex-row tw-justify-center tw-gap-12",
+    //             {
+    //               "tw-flex tw-justify-center tw-items-center tw-flex-col tw-gap-y-4":
+    //                 isMobile && isPortrait,
+    //             }
+    //           )}
+    //         >
+    //           <div
+    //             className={classNames(
+    //               "tw-flex tw-flex-col tw-w-40 tw-border-[2px] tw-border-black tw-rounded-xl tw-p-2",
+    //               {
+    //                 "tw-w-64": isMobile && isPortrait,
+    //               }
+    //             )}
+    //           >
+    //             <div className="tw-flex">แพลต์ฟอร์ม:Facebook</div>
+    //             <div className="tw-flex">กลุ่ม:NGO</div>
+    //             <div className="tw-flex">ชื่อกลุ่ม:iLaeFX</div>
+    //             <div className="tw-flex">ผู้ติดตาม:460K</div>
+    //             <div className="tw-flex">ช่องทาง FB:iLawClub</div>
+    //           </div>
+    //           <div className="tw-flex tw-flex-col tw-w-64 tw-border-[2px] tw-border-black tw-rounded-xl tw-p-2">
+    //             <div className="tw-flex">ถูกใจ:46K</div>
+    //             <div className="tw-flex">แชร์:403</div>
+    //             <div className="tw-flex">ความคิดเห็น:123</div>
+    //             <div className="tw-flex">สร้างโพส:3 มิ.ย.2023 เวลา 19.45น.</div>
+    //             <div className="tw-flex">
+    //               อัพเดทข้อมูล FB:5 มิ.ย.2023 เวลา 15.45น.
+    //             </div>
+    //           </div>
+    //         </div>
+    //         <div className="tw-flex  tw-mt-4 tw-justify-center tw-items-center">
+    //           <PicCarousel onClick={showModal} className="" />
+    //           <PicModal modalToggle={modalToggle} handleCancel={handleCancel} />
+    //         </div>
+    //       </div>
 
-          <div
-            className="tw-flex tw-flex-col tw-justify-center tw-my-6 "
-            ref={summarizeContent}
-            tabIndex={1}
-          >
-            <div
-              className="tw-flex  tw-justify-start tw-self-start tw-text-3xl tw-bg-gradient-to-r 
-        tw-from-indigo-500 tw-from-10% tw-via-sky-500 tw-via-30% tw-to-white 
-        tw-text-white tw-w-full tw-h-max"
-            >
-              <p>สรุปความเคลื่อนไหว</p>
+    //       <div
+    //         className="tw-flex tw-flex-col tw-justify-center tw-my-6 "
+    //         ref={summarizeContent}
+    //         tabIndex={1}
+    //       >
+    //         <div
+    //           className="tw-flex  tw-justify-start tw-self-start tw-text-3xl tw-bg-gradient-to-r
+    //     tw-from-indigo-500 tw-from-10% tw-via-sky-500 tw-via-30% tw-to-white
+    //     tw-text-white tw-w-full tw-h-max"
+    //         >
+    //           <p>สรุปความเคลื่อนไหว</p>
+    //         </div>
+    //         <div className="tw-flex tw-h-max tw-w-full tw-p-6">
+    //           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+    //           volutpat dolor eu ex ornare sodales. Phasellus dapibus vitae
+    //           tortor ut posuere. Donec ipsum arcu, ultricies faucibus nisl nec,
+    //           aliquet dictum est. Proin eget justo et augue blandit viverra.
+    //           Donec quam tellus, rhoncus quis gravida vitae, rutrum vitae mi. Ut
+    //           et dolor sed risus pellentesque faucibus at in massa. Mauris
+    //           porttitor, arcu et gravida commodo, ligula sem venenatis libero,
+    //           vel elementum nulla lectus eu purus. Phasellus sed fringilla
+    //           ipsum. Maecenas cursus odio sit amet magna fringilla, a euismod
+    //           purus egestas. In cursus tristique vulputate. Nullam vestibulum,
+    //           tellus sodales aliquet tincidunt, metus augue faucibus ante, a
+    //           tempor mi nunc sed arcu. Nulla in ex purus. Mauris luctus turpis
+    //           lacinia odio vehicula, ac tempor arcu finibus. Vestibulum viverra
+    //           odio dignissim finibus congue. Sed et elit leo. Etiam scelerisque
+    //           ultricies urna eget venenatis. Nunc pharetra nisi non lorem
+    //           tincidunt, sed porttitor erat ultricies. Vestibulum a elementum
+    //           dui. Quisque at sem quis dolor molestie ornare. Proin convallis
+    //           libero nunc, ut finibus augue pharetra vel. Fusce fermentum nisi
+    //           vitae magna auctor eleifend. Donec id mauris odio. Aenean non
+    //           lorem mi. Nunc posuere congue rutrum. Integer rhoncus massa luctus
+    //           sapien facilisis ultricies. Sed mi leo, scelerisque sit amet
+    //           imperdiet porta, viverra a sem. Sed in diam sit amet turpis
+    //           fermentum ultrices et ac lectus. Fusce vel egestas elit, sit amet
+    //           facilisis lectus. Aenean congue molestie dui eget mattis. Cras
+    //           mattis, purus et hendrerit porttitor, quam augue cursus urna, eget
+    //           pharetra magna eros molestie purus. Maecenas eu libero ut neque
+    //           sollicitudin sagittis. Nam nec odio turpis. Suspendisse tincidunt
+    //           aliquam metus, a tincidunt metus ullamcorper non. Nam accumsan
+    //           urna a purus commodo, et vehicula sapien dictum. Integer suscipit
+    //           felis non lectus eleifend tristique. Nunc sem sapien, accumsan et
+    //           volutpat in, interdum et nulla. Proin at pretium felis, quis
+    //           iaculis justo. Mauris sit amet ex eu ligula posuere gravida. Fusce
+    //           nec nulla lobortis, dignissim nisi in, ultricies orci. Donec non
+    //           ullamcorper ligula. Fusce ultrices euismod ex, nec pellentesque
+    //           erat cursus a. Nunc scelerisque justo vel purus dictum sodales.
+    //           Cras dictum urna aliquam consectetur auctor. Donec feugiat leo
+    //           varius turpis faucibus, ac dignissim nibh tempus. Integer
+    //           faucibus, enim non cursus laoreet, nisi risus aliquam lectus, non
+    //           egestas lacus turpis quis tortor. Nam blandit congue diam at
+    //           auctor. Nunc eu tortor sodales, condimentum urna egestas, auctor
+    //           libero. Morbi tincidunt non mauris in tristique. Sed ut metus
+    //           risus. Mauris tincidunt nibh in tellus sagittis finibus. In
+    //           maximus, nisi et vehicula ultrices, leo enim hendrerit ligula, eu
+    //           vehicula mauris tellus sit amet mauris. In ullamcorper posuere
+    //           tellus id semper. Praesent mauris metus, elementum ac finibus vel,
+    //           aliquam in turpis. Donec luctus lobortis velit, et laoreet nibh
+    //           auctor sed. Nam dignissim ligula ex, sit amet euismod quam
+    //           fermentum et.
+    //         </div>
+    //       </div>
+    //       <div
+    //         className="tw-flex tw-flex-col tw-justify-center tw-my-6"
+    //         ref={inputRef}
+    //         tabIndex={2}
+    //       >
+    //         <div
+    //           className="tw-flex  tw-justify-start tw-self-start tw-text-3xl tw-bg-gradient-to-r
+    //     tw-from-indigo-500 tw-from-10% tw-via-sky-500 tw-via-30% tw-to-white
+    //     tw-text-white tw-w-full tw-h-max"
+    //         >
+    //           <p>สรุปวิเคราะห์</p>
+    //         </div>
+    //         <div className="tw-flex tw-h-full tw-w-full tw-p-6">
+    //           <textarea
+    //             type="text"
+    //             className="tw-w-full tw-h-40 tw-rounded-md tw-bg-gray-100 tw-p-2 tw-border-solid tw-border-neutral-400 tw-border-2 "
+    //             rows={5}
+    //           ></textarea>
+    //         </div>
+    //         <div className=" tw-flex tw-flex-col tw-p-6">
+    //           <div className="tw-text-xl">
+    //             สถานการณ์ล่าสุดใน <THDate />
+    //           </div>
+    //           <ListInput />
+    //           <div className="tw-text-xl">สถานการณ์ในห้วงต่อไป</div>
+    //           <ListInput />
+    //         </div>
+    //       </div>
+    //     </div>
+    //     <ToTopButton onClick={scrollToTop} />
+    //   </div>
+    // </div>
+    <div className="tw-w-screen tw-p-2">
+      <a>สรุปรายงานจากโพสต์:</a>
+      <div className="tw-flex tw-flex-row tw-mb-4">
+        <div className="tw-w-20 tw-h-20 tw-border-2 tw-border-black tw-rounded-full">
+          <img className="tw-rounded-full" src={iLaw}></img>
+        </div>
+        <div className="tw-flex tw-justify-around tw-w-full">
+          <a>
+            กลุ่ม :
+            <div className="tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-w-44 tw-border-solid tw-border-black">
+              {" "}
+              NGO
             </div>
-            <div className="tw-flex tw-h-max tw-w-full tw-p-6">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-              volutpat dolor eu ex ornare sodales. Phasellus dapibus vitae
-              tortor ut posuere. Donec ipsum arcu, ultricies faucibus nisl nec,
-              aliquet dictum est. Proin eget justo et augue blandit viverra.
-              Donec quam tellus, rhoncus quis gravida vitae, rutrum vitae mi. Ut
-              et dolor sed risus pellentesque faucibus at in massa. Mauris
-              porttitor, arcu et gravida commodo, ligula sem venenatis libero,
-              vel elementum nulla lectus eu purus. Phasellus sed fringilla
-              ipsum. Maecenas cursus odio sit amet magna fringilla, a euismod
-              purus egestas. In cursus tristique vulputate. Nullam vestibulum,
-              tellus sodales aliquet tincidunt, metus augue faucibus ante, a
-              tempor mi nunc sed arcu. Nulla in ex purus. Mauris luctus turpis
-              lacinia odio vehicula, ac tempor arcu finibus. Vestibulum viverra
-              odio dignissim finibus congue. Sed et elit leo. Etiam scelerisque
-              ultricies urna eget venenatis. Nunc pharetra nisi non lorem
-              tincidunt, sed porttitor erat ultricies. Vestibulum a elementum
-              dui. Quisque at sem quis dolor molestie ornare. Proin convallis
-              libero nunc, ut finibus augue pharetra vel. Fusce fermentum nisi
-              vitae magna auctor eleifend. Donec id mauris odio. Aenean non
-              lorem mi. Nunc posuere congue rutrum. Integer rhoncus massa luctus
-              sapien facilisis ultricies. Sed mi leo, scelerisque sit amet
-              imperdiet porta, viverra a sem. Sed in diam sit amet turpis
-              fermentum ultrices et ac lectus. Fusce vel egestas elit, sit amet
-              facilisis lectus. Aenean congue molestie dui eget mattis. Cras
-              mattis, purus et hendrerit porttitor, quam augue cursus urna, eget
-              pharetra magna eros molestie purus. Maecenas eu libero ut neque
-              sollicitudin sagittis. Nam nec odio turpis. Suspendisse tincidunt
-              aliquam metus, a tincidunt metus ullamcorper non. Nam accumsan
-              urna a purus commodo, et vehicula sapien dictum. Integer suscipit
-              felis non lectus eleifend tristique. Nunc sem sapien, accumsan et
-              volutpat in, interdum et nulla. Proin at pretium felis, quis
-              iaculis justo. Mauris sit amet ex eu ligula posuere gravida. Fusce
-              nec nulla lobortis, dignissim nisi in, ultricies orci. Donec non
-              ullamcorper ligula. Fusce ultrices euismod ex, nec pellentesque
-              erat cursus a. Nunc scelerisque justo vel purus dictum sodales.
-              Cras dictum urna aliquam consectetur auctor. Donec feugiat leo
-              varius turpis faucibus, ac dignissim nibh tempus. Integer
-              faucibus, enim non cursus laoreet, nisi risus aliquam lectus, non
-              egestas lacus turpis quis tortor. Nam blandit congue diam at
-              auctor. Nunc eu tortor sodales, condimentum urna egestas, auctor
-              libero. Morbi tincidunt non mauris in tristique. Sed ut metus
-              risus. Mauris tincidunt nibh in tellus sagittis finibus. In
-              maximus, nisi et vehicula ultrices, leo enim hendrerit ligula, eu
-              vehicula mauris tellus sit amet mauris. In ullamcorper posuere
-              tellus id semper. Praesent mauris metus, elementum ac finibus vel,
-              aliquam in turpis. Donec luctus lobortis velit, et laoreet nibh
-              auctor sed. Nam dignissim ligula ex, sit amet euismod quam
-              fermentum et.
+          </a>
+          <a>
+            ชื่อกลุ่ม :
+            <div className="tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-w-44 tw-border-solid tw-border-black">
+              {" "}
+              iLawFX
             </div>
+          </a>
+          <a>
+            ช่องทาง :
+            <div className="tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-w-44 tw-border-solid tw-border-black">
+              {" "}
+              Facebook
+            </div>
+          </a>
+          <a>
+            ผู้ติดตาม :
+            <div className="tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-w-44 tw-border-solid tw-border-black">
+              {" "}
+              460,000
+            </div>
+          </a>
+        </div>
+      </div>
+      <ReportTable checkStrictly={false} fixed={false} />
+      <div className="tw-p-4" ref={topRef} tabIndex={0}>
+        <div>บทวิเคราะห์ :</div>
+        <div className="tw-border-solid tw-border-gray-300 tw-border-2 tw-p-2">
+          <div> จําเป็นต้องติดตามความเคลื่อนไหวอย่างใกล้ชิด</div>
+          <div className="">
+            <ListInput />
           </div>
-          <div
-            className="tw-flex tw-flex-col tw-justify-center tw-my-6"
-            ref={inputRef}
-            tabIndex={2}
-          >
-            <div
-              className="tw-flex  tw-justify-start tw-self-start tw-text-3xl tw-bg-gradient-to-r 
-        tw-from-indigo-500 tw-from-10% tw-via-sky-500 tw-via-30% tw-to-white 
-        tw-text-white tw-w-full tw-h-max"
-            >
-              <p>สรุปวิเคราะห์</p>
-            </div>
-            <div className="tw-flex tw-h-full tw-w-full tw-p-6">
-              <textarea
-                type="text"
-                className="tw-w-full tw-h-40 tw-rounded-md tw-bg-gray-100 tw-p-2 tw-border-solid tw-border-neutral-400 tw-border-2 "
-                rows={5}
-              ></textarea>
-            </div>
-            <div className=" tw-flex tw-flex-col tw-p-6">
-              <div className="tw-text-xl">
-                สถานการณ์ล่าสุดใน <THDate />
-              </div>
-              <ListInput />
-              <div className="tw-text-xl">สถานการณ์ในห้วงต่อไป</div>
-              <ListInput />
-            </div>
+          <div> สถานการณ์ในห้วงต่อไป</div>
+          <div className="">
+            <ListInput />
           </div>
         </div>
-        <ToTopButton onClick={scrollToTop} />
       </div>
+      <ToTopButton onClick={scrollToTop} />
     </div>
   );
 };

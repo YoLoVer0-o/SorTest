@@ -2,12 +2,21 @@ import { Carousel } from "antd";
 import carouselPic from "../assets/carouselPic.jpg";
 import poster from "../assets/poster.jpg";
 import PropTypes from "prop-types";
-
+import { useResponsive } from "../hooks";
+import classNames from "classnames";
 const PicCarousel = (props) => {
   const showAll = props.onClick;
-
+  const {
+    isDesktopOrLaptop,
+    isBigScreen,
+    isTabletOrMobile,
+    isMobile,
+    isTablet,
+    isPortrait,
+    isLandscape,
+  } = useResponsive();
   return (
-    <div className=" tw-relative tw-flex tw-flex-col ">
+    <div className=" tw-relative tw-flex tw-flex-col  ">
       <button
         onClick={showAll}
         className="tw-absolute tw-mt-1 tw-mr-1 tw-justify-center tw-items-center 
@@ -17,23 +26,22 @@ const PicCarousel = (props) => {
       </button>
       <Carousel
         autoplay
-        className="tw-flex  tw-w-[30rem] tw-justify-self-center tw-content-center tw-justify-center 
-         tw-bg-red-900 tw-z-0"
+        className={classNames("tw-flex  tw-w-[30rem] tw-h-[20rem] tw-bg-red-900 tw-z-0",{
+          "tw-w-[15rem] tw-h-[20rem]":isMobile && isPortrait ,
+        })} 
+         
       >
-        <div className="tw-flex tw-justify-center tw-object-center  	">
-          <img
-            className="tw-flex tw-justify-center tw-w-[30rem] tw-h-[20rem] tw-max-w-[inherit] 
-            object-contain tw-max-h-[inherit]"
+        <img
+            className="tw-w-[30rem] tw-h-[20rem] "
             src={carouselPic}
           />
-        </div>
-        <div className=" tw-flex tw-justify-center tw-object-center  tw-max-w-80 tw-max-h-80">
+    
+        
           <img
             src={poster}
-            className="tw-flex tw-justify-center tw-w-[30rem] tw-h-[20rem] tw-max-w-[inherit]
-             object-contain tw-max-h-[inherit]"
+            className=" tw-w-[30rem] tw-h-[20rem] "
           />
-        </div>
+        
         {/* <div className="tw-flex tw-justify-center tw-w-[20rem] tw-h-[20rem]">
     <img 
   //   style={contentStyle} 

@@ -1,22 +1,23 @@
-import { FloatButton } from "antd";
-import { UpCircleOutlined } from "@ant-design/icons";
+import { FloatButton, Tooltip } from "antd";
+import { FileTextOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 
-const ToTopButton = props => {
-
+const ToTopButton = (props) => {
   const clickHandler = props.onClick;
-
+  const text = <span>สรุปบทวิเคราะห์</span>;
   return (
-    <FloatButton
-      className="tw-flex tw-mr-2 tw-mb-14 tw-z-10"
-      icon={<UpCircleOutlined />}
-      onClick={() => clickHandler()}
-    />
+    <Tooltip placement="topLeft" title={text} color="blue">
+      <FloatButton
+        className="tw-flex tw-mr-2 tw-mb-14 tw-z-10"
+        icon={<FileTextOutlined />}
+        onClick={() => clickHandler()}
+      />
+    </Tooltip>
   );
 };
 
 ToTopButton.propTypes = {
-  onClick: PropTypes.func
-}
+  onClick: PropTypes.func,
+};
 
 export default ToTopButton;
