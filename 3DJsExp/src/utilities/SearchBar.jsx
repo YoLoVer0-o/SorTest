@@ -56,7 +56,7 @@ const SearchBar = props => {
     };
 
     return (
-        <div className={classNames('tw-flex tw-flex-row tw-my-2 tw-gap-2 tw-max-w-max', {
+        <div className={classNames('tw-flex tw-flex-row tw-my-2 tw-gap-2 tw-max-w-max tw-justify-center', {
             "tw-flex-col tw-self-center": isTabletOrMobile && isPortrait,
         })}>
             <Tooltip title="พิมพ์สิ่งที่ต้องการค้นหา">
