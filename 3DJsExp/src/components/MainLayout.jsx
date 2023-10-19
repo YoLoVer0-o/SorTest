@@ -164,7 +164,7 @@ const MainLayout = (props) => {
     //   </Layout>
     // </Layout>
     <Layout
-      className={classNames("tw-max-w-full", {
+      className={classNames("tw-w-screen", {
         "tw-min-h-screen": isTabletOrMobile && isLandscape,
         "tw-min-h-full tw-h-full tw-max-h-full":
           isDesktopOrLaptop || isTabletOrMobile,
@@ -172,7 +172,7 @@ const MainLayout = (props) => {
     >
       <Header
         className={classNames(
-          "tw-p-0 tw-flex tw-bg-[#303c6c] tw-object-contain",
+          "tw-p-0 tw-flex tw-bg-[#303c6c] tw-object-contain ",
           {
             "tw-sticky tw-top-0 tw-z-10": isTabletOrMobile && isLandscape,
           }
@@ -220,36 +220,36 @@ const MainLayout = (props) => {
                   key: "/main",
                   icon: <UserOutlined />,
                   label: "main",
-                  
+
                 },
                 {
                   key: "/postlog",
                   icon: <ContainerOutlined />,
                   label: "DataLog",
-                  className:"",
+                  className: "",
                 },
                 {
                   key: "3",
                   icon: <UploadOutlined />,
                   label: "nav 3",
-                  className:"",
+                  className: "",
                 },
               ]}
             />
           </Sider>
-          {(isDesktopOrLaptop || isTablet || (collapsed === true && isMobile)) && (
-            <button
+          {(isDesktopOrLaptop || isTablet || (collapsed && isMobile)) && (
+            <Button
               className="tw-sticky tw-bg-[#0874c4] tw-h-[10rem] tw-z-40 tw-items-center tw-w-8 tw-flex tw-text-center 
               tw-justify-center tw-self-center tw-opacity-90"
               onClick={() => setCollapsed(!collapsed)}
             >
               <p className="tw-rotate-90 tw-text-white">Menu</p>
-            </button>
+            </Button>
           )}
         </div>
 
         <Layout>
-          
+
           <Breadcrumb className="tw-px-4 tw-my-4" items={breadcrumbItems} />
           <Content
             className={classNames(
