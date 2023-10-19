@@ -254,7 +254,7 @@ const PostReport = () => {
     // </div>
     <div className="tw-w-screen tw-p-2">
       <a>สรุปรายงานจากโพสต์:</a>
-      <div className="tw-flex tw-flex-row ">
+      <div className="tw-flex tw-flex-row tw-mb-4">
         <div className="tw-w-20 tw-h-20 tw-border-2 tw-border-black tw-rounded-full">
           <img className="tw-rounded-full" src={iLaw}></img>
         </div>
@@ -289,13 +289,10 @@ const PostReport = () => {
           </a>
         </div>
       </div>
-      <ReportTable 
-      checkStrictly={false}
-      fixed={false}
-      />
-      <div className="tw-p-4">
+      <ReportTable checkStrictly={false} fixed={false} />
+      <div className="tw-p-4" ref={topRef} tabIndex={0}>
         <div>บทวิเคราะห์ :</div>
-        <div className="tw-border-solid tw-border-gray-300 tw-border-2">
+        <div className="tw-border-solid tw-border-gray-300 tw-border-2 tw-p-2">
           <div> จําเป็นต้องติดตามความเคลื่อนไหวอย่างใกล้ชิด</div>
           <div className="">
             <ListInput />
@@ -306,6 +303,7 @@ const PostReport = () => {
           </div>
         </div>
       </div>
+      <ToTopButton onClick={scrollToTop} />
     </div>
   );
 };

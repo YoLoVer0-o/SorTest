@@ -18,7 +18,7 @@ const ReportTable = () => {
             dataIndex: 'creator',
             key: 'creator',
             align: "center",
-            width: 150,
+            width: 250,
             className: 'tw-text-white tw-bg-[#303c6c]',
         },
         {
@@ -26,7 +26,7 @@ const ReportTable = () => {
             dataIndex: 'link',
             key: 'link',
             align: "center",
-            width: 150,
+            width: 100,
             className: 'tw-text-white tw-text-sky-700 tw-bg-[#303c6c]',
         },
         {
@@ -34,7 +34,7 @@ const ReportTable = () => {
             dataIndex: 'update',
             key: 'update',
             align: "center",
-            width: 150,
+            width: 100,
             className: 'tw-text-white tw-bg-[#303c6c]',
         
         },

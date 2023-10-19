@@ -191,7 +191,7 @@ const MainLayout = (props) => {
             collapsed={isTabletOrMobile ? !collapsed : collapsed}
             // collapsedWidth={isTabletOrMobile && isPortrait ? 0 : 80}
             collapsedWidth={0}
-            className={classNames(" tw-opacity-90 tw-min-h-full tw-z-40", {
+            className={classNames(" tw-opacity-90 tw-min-h-full tw-z-40 tw-bg-[#0874c4]", {
               "tw-absolute tw-top-0": isMobile && isPortrait,
             })}
           >
@@ -206,12 +206,12 @@ const MainLayout = (props) => {
               </div>
             )}
 
-            <div className="demo-logo-vertical" />
+            <div className="demo-logo-vertical " />
             <Menu
-              className={classNames("", {
+              className={classNames("tw-bg-[#0874c4]  tw-text-white", {
                 "tw-sticky tw-top-0 ": isTabletOrMobile && isLandscape,
               })}
-              theme="dark"
+              // theme="dark"
               mode="inline"
               onClick={handleMenuClick}
               selectedKeys={props.pageKey}
@@ -220,27 +220,31 @@ const MainLayout = (props) => {
                   key: "/main",
                   icon: <UserOutlined />,
                   label: "main",
+                  
                 },
                 {
                   key: "/postlog",
                   icon: <ContainerOutlined />,
                   label: "DataLog",
+                  className:"",
                 },
                 {
                   key: "3",
                   icon: <UploadOutlined />,
                   label: "nav 3",
+                  className:"",
                 },
               ]}
             />
           </Sider>
           {!(isTabletOrMobile && isPortrait && collapsed) && (
-            <div
-              className="tw-sticky tw-bg-blue-600 tw-h-[10rem] tw-z-40 tw-items-center tw-w-8 tw-flex tw-text-center tw-justify-center tw-self-center"
+            <button
+              className="tw-sticky tw-bg-[#0874c4] tw-h-[10rem] tw-z-40 tw-items-center tw-w-8 tw-flex tw-text-center 
+              tw-justify-center tw-self-center tw-opacity-90"
               onClick={() => setCollapsed(!collapsed)}
             >
               <p className="tw-rotate-90 tw-text-white">Menu</p>
-            </div>
+            </button>
           )}
         </div>
 
