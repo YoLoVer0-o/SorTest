@@ -13,20 +13,9 @@ function App() {
     <div className="tw-h-screen tw-w-screen">
       <ConfigProvider
         theme={{
-          token: { fontFamily: '"Noto Sans Thai Variable", "Noto Sans", sans serif' }
-          ,
+          token: { fontFamily: '"Noto Sans Thai Variable", "Noto Sans", sans serif' },
         }}
       >
-        {/* <Router basename={"/"}>
-          <Routes>
-            <Route path="/" exact element={<LoginPage />} />
-            <Route path="main" element={<MainPage />} >
-              <Route index element={<LogTable />} />
-              <Route path='overall' element={<Dashboard />} />
-              <Route path='overall/feedback' element={<Feedback />} />
-            </Route>
-          </Routes>
-        </Router> */}
         <RouterProvider router={router} />
       </ConfigProvider>
     </div>

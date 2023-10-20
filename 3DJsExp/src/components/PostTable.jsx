@@ -9,10 +9,8 @@ import {
     FileTextOutlined,
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
-
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 dayjs.extend(isSameOrBefore)
-
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import classNames from "classnames";
 dayjs.extend(isSameOrAfter)
@@ -123,7 +121,7 @@ const PostTable = () => {
         navigate("/postlog/report", { state: data })
     }
 
-    const genReport = (rows) => {
+    const genReport = () => {
         // console.log("get:", rows);
         console.log(selectedRows);
         toReport(selectedRows);
@@ -148,7 +146,6 @@ const PostTable = () => {
                 <DataTable
                     data={postMock}
                     columns={columns}
-                    // onRowClick={toReport}
                     setPageSize={pageSize}
                     onRowsSelected={setSelectedRows}
                     useRowSelection={true}
