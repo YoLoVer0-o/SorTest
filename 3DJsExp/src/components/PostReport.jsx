@@ -252,16 +252,19 @@ const PostReport = () => {
     //     <ToTopButton onClick={scrollToTop} />
     //   </div>
     // </div>
-    <div className="tw-w-screen tw-p-2">
-      <a>สรุปรายงานจากโพสต์:</a>
-      <div className="tw-flex tw-flex-row tw-mb-4">
-        <div className="tw-w-20 tw-h-20 tw-border-2 tw-border-black tw-rounded-full">
+    <div className="tw-w-screen tw-px-6">
+      <a className=" tw-text-xl tw-mb-4">สรุปรายงานจากโพสต์:</a>
+      <div className="tw-flex tw-flex-row tw-mb-4 tw-items-center">
+        <div className={classNames("tw-border-2 tw-border-black tw-rounded-full",{
+        "tw-w-20 tw-h-20":isDesktopOrLaptop,
+        "tw-w-12 tw-h-12":isMobile && isPortrait
+        })}>
           <img className="tw-rounded-full" src={iLaw}></img>
         </div>
         <div className="tw-flex tw-justify-around tw-w-full">
           <a>
             กลุ่ม :
-            <div className={classNames("tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-w-44 tw-border-solid tw-border-black",{
+            <div className={classNames("tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-w-44 tw-border-solid  tw-border-gray-300",{
               "tw-w-max":isMobile && isPortrait
             })}>
               {" "}
@@ -270,7 +273,7 @@ const PostReport = () => {
           </a>
           <a>
             ชื่อกลุ่ม :
-            <div className={classNames("tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-w-44 tw-border-solid tw-border-black",{
+            <div className={classNames("tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-w-44 tw-border-solid tw-border-gray-300",{
               "tw-w-max":isMobile && isPortrait
             })}>
               {" "}
@@ -279,7 +282,7 @@ const PostReport = () => {
           </a>
           <a>
             ช่องทาง :
-            <div className={classNames("tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-w-44 tw-border-solid tw-border-black",{
+            <div className={classNames("tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-w-44 tw-border-solid tw-border-gray-300",{
               "tw-w-max":isMobile && isPortrait
             })}>
               {" "}
@@ -288,7 +291,7 @@ const PostReport = () => {
           </a>
           <a>
             ผู้ติดตาม :
-            <div className={classNames("tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-w-44 tw-border-solid tw-border-black",{
+            <div className={classNames("tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-w-44 tw-border-solid tw-border-gray-300",{
               "tw-w-max":isMobile && isPortrait
             })}>
               {" "}
@@ -299,7 +302,7 @@ const PostReport = () => {
       </div>
       <ReportTable checkStrictly={false} fixed={false}  />
       <div className="tw-p-4" ref={topRef} tabIndex={0}>
-        <div>บทวิเคราะห์ :</div>
+        <div className="tw-text-xl">บทวิเคราะห์ :</div>
         <div className="tw-border-solid tw-border-gray-300 tw-border-2 tw-p-2">
           <div> จําเป็นต้องติดตามความเคลื่อนไหวอย่างใกล้ชิด</div>
           <div className="">

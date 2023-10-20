@@ -8,7 +8,7 @@ const ToTopButton = (props) => {
   return (
     <Tooltip placement="topLeft" title={text} color="blue">
       <FloatButton
-        className="tw-flex tw-mr-2 tw-mb-14 tw-z-10"
+        className="tw-flex tw-mr-2  tw-mb-8 tw-z-10"
         icon={<FileTextOutlined />}
         onClick={() => clickHandler()}
       />
