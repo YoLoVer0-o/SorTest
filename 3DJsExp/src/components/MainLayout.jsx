@@ -29,6 +29,7 @@ const MainLayout = (props) => {
     "/main/overall/feedback": "Feedback",
     "/postlog": "postlog",
     "/postlog/report": "report",
+    "/createPost": "createPost",
   };
   const navigate = useNavigate();
 
@@ -124,23 +125,22 @@ const MainLayout = (props) => {
                   className: "",
                 },
                 {
-                  key: "3",
+                  key: "/createPost",
                   icon: <UploadOutlined />,
-                  label: "nav 3",
+                  label: "Create New Post",
                   className: "",
                 },
               ]}
             />
           </Sider>
-          {(isDesktopOrLaptop || isTablet || (collapsed && isMobile)) && (
-            <Button
-              className="tw-sticky tw-bg-[#0874c4] tw-h-[10rem] tw-z-40 tw-items-center tw-w-8 tw-flex tw-text-center 
-              tw-justify-center tw-self-center tw-opacity-90"
-              onClick={() => setCollapsed(!collapsed)}
-            >
-              <p className="tw-rotate-90 tw-text-white">Menu</p>
-            </Button>
-          )}
+          <Button
+            className={classNames("tw-sticky tw-bg-[#0874c4] tw-h-[10rem] tw-z-40 tw-items-center tw-w-8 tw-flex tw-text-center tw-justify-center tw-self-center", {
+              "tw-hidden": !collapsed && isMobile,
+            })}
+            onClick={() => setCollapsed(!collapsed)}
+          >
+            <p className="tw-rotate-90 tw-text-white">Menu</p>
+          </Button>
         </div>
 
         <Layout>
@@ -163,7 +163,7 @@ const MainLayout = (props) => {
           </Content>
         </Layout>
       </Layout>
-    </Layout>
+    </Layout >
   );
 };
 

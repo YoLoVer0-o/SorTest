@@ -1,3 +1,5 @@
+import postReportAPI from "../service/postReportAPI";
+
 import { DataTable, SearchBar } from "../utilities";
 import { postMock } from "../mock";
 import { useState } from "react";
@@ -121,11 +123,16 @@ const PostTable = () => {
         navigate("/postlog/report", { state: data })
     }
 
-    const genReport = () => {
+    const genReport = async () => {
         // console.log("get:", rows);
-        console.log(selectedRows);
-        toReport(selectedRows);
+        // console.log(selectedRows);
+        const testData = await postReportAPI.getAllPost();
+        console.log(testData);
+
+        // toReport(selectedRows);
     }
+
+
 
     return (
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto', {
