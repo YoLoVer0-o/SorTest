@@ -51,8 +51,8 @@ const CreatePostUtil = () => {
             </div>
           )}
         </div> */}
-        <input onDrag={}>
-        </input>
+        {/* <input onDrag={}>
+        </input> */}
       </div>
     </div>
   );
