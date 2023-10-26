@@ -139,7 +139,7 @@ const PostTable = () => {
             // "tw-min-h-screen": isTabletOrMobile && isLandscape,
         })}>
             <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">PostTable</p>
-            <div>
+            <div className="tw-flex tw-justify-center tw-w-full">
                 <SearchBar
                     data={postMock}
                     onChangeSearch={setSearchVal}

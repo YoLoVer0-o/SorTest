@@ -5,7 +5,6 @@ import Dashboard from "./Dashboard";
 import Feedback from "./Feedback";
 import FeedbackModal from "./FeedbackModal";
 import PostReport from "./PostReport";
-import ReportSideBar from "./ReportSideBar";
 import CreatePost from "./Createpost";
 
 export {
@@ -16,6 +15,5 @@ export {
   Feedback,
   FeedbackModal,
   PostReport,
-  ReportSideBar,
   CreatePost,
 };
