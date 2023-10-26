@@ -1,19 +1,29 @@
 import profile from "../assets/profile.png";
+import {useDropzone} from "react-dropzone"
 import { InboxOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
-const CreatePostUtil = () => {
-  const [selectedImage, setSelectedImage] = useState(null);
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setSelectedImage(event.target.result);
-      };
-      reader.readAsDataURL(file);
+const CreatePostUtil = () => {
+
+  const [files ,setFiles] = useState([])
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: "image/*",
+    onDrop: (acceptedFiles) => {
+      setFiles(acceptedFiles.map((file => Object.assign(file, {
+        preview: URL.createObjectURL(file)
+      })))
+      )
     }
-  };
+  })
+
+const images = files.map((file) => (
+  <div key={file.name}>
+    <div>
+      <img src={file.preview} className=" tw-w-40 " alt="preview"/>
+    </div>
+  </div>
+))
+
   return (
     <div className="tw-w-full tw-flex tw-justify-center  ">
       <div className="tw-flex tw-flex-col tw-items-center tw-justify-center tw-gap-y-4 tw-w-[80%] tw-border-2">
@@ -30,29 +40,12 @@ const CreatePostUtil = () => {
           placeholder="คุณกำลังคิดอะไรอยู่"
           className=" tw-text-xl tw-border-none tw-resize-none tw-outline-none"
         /> */}
-        {/* <div className="image-upload-slot ">
-          <label htmlFor="file-upload" className="upload-button">
-            Upload Image
-          </label>
-          <input
-            type="file"
-            id="file-upload"
-            accept="image/*"
-            onChange={handleImageChange}
-            style={{ display: "none" }}
-            
-          />
-          {selectedImage && (
-            <div className="image-preview">
-              <img src={selectedImage} 
-               alt="Selected" 
-               className="tw-w-32 tw-h-32"
-               />
-            </div>
-          )}
-        </div> */}
-        {/* <input onDrag={}>
-        </input> */}
+
+        <div {...getRootProps()} className=" tw-border-2 tw-w-[50%] tw-h-64">
+          <input {...getInputProps()} />
+          <p>Drop files here </p>
+        </div>
+        <div>{images}</div>
       </div>
     </div>
   );
