@@ -1,7 +1,8 @@
 import profile from "../assets/profile.png";
 import {useDropzone} from "react-dropzone"
-import { InboxOutlined } from "@ant-design/icons";
+import { CloudUploadOutlined  } from "@ant-design/icons";
 import React, { useState } from "react";
+import Image from "../assets/PostImage";
 
 const CreatePostUtil = () => {
 
@@ -41,11 +42,24 @@ const images = files.map((file) => (
           className=" tw-text-xl tw-border-none tw-resize-none tw-outline-none"
         /> */}
 
-        <div {...getRootProps()} className=" tw-border-2 tw-w-[50%] tw-h-64">
+        <div
+          {...getRootProps()}
+          className=" tw-flex tw-justify-center tw-items-center tw-border-[1px] tw-w-[50%] tw-flex-col tw-h-64 tw-bg-gray-200 tw-border-gray-400 tw-rounded-md hover:tw-bg-gray-300"
+        >
           <input {...getInputProps()} />
+          <CloudUploadOutlined className="tw-text-4xl" />
           <p>Drop files here </p>
         </div>
         <div>{images}</div>
+        <div className="tw-flex tw-flex-row tw-gap-x-8 tw-border-[1px] tw-p-2 tw-items-center tw-rounded-md tw-border-gray-400 tw-h-12">
+          <p>Add to your post</p>
+          <img className="tw-w-6 tw-h-6" src={Image.selectPic} />
+          <img className="tw-w-6 tw-h-6" src={Image.tagOther} />
+          <img className="tw-w-6 tw-h-6" src={Image.emoji} />
+          <img className="tw-w-6 tw-h-6" src={Image.checkIn} />
+          <img className="tw-w-6 tw-h-6" src={Image.Gif} />
+          <button className="tw-rounded-full tw-bg-gray-200 tw-w-6 tw-h-6 tw-items-center"> ...</button>
+        </div>
       </div>
     </div>
   );
