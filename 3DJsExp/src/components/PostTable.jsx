@@ -1,3 +1,5 @@
+import postReportAPI from "../service/postReportAPI";
+
 import { DataTable, SearchBar } from "../utilities";
 import { postMock } from "../mock";
 import { useState } from "react";
@@ -9,10 +11,8 @@ import {
     FileTextOutlined,
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
-
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 dayjs.extend(isSameOrBefore)
-
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import classNames from "classnames";
 dayjs.extend(isSameOrAfter)
@@ -123,11 +123,16 @@ const PostTable = () => {
         navigate("/postlog/report", { state: data })
     }
 
-    const genReport = (rows) => {
+    const genReport = async () => {
         // console.log("get:", rows);
-        console.log(selectedRows);
+        // console.log(selectedRows);
+        // const testData = await postReportAPI.getAllPost();
+        // console.log(testData);
+
         toReport(selectedRows);
     }
+
+
 
     return (
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-y-auto', {
@@ -148,7 +153,6 @@ const PostTable = () => {
                 <DataTable
                     data={postMock}
                     columns={columns}
-                    // onRowClick={toReport}
                     setPageSize={pageSize}
                     onRowsSelected={setSelectedRows}
                     useRowSelection={true}
