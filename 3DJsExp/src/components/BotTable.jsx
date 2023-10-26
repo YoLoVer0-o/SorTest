@@ -1,5 +1,3 @@
-import postReportAPI from "../service/postReportAPI";
-
 import { DataTable, SearchBar } from "../utilities";
 import { postMock } from "../mock";
 import { useState } from "react";
@@ -8,7 +6,6 @@ import { Button, Tooltip } from "antd";
 import {
     ColumnHeightOutlined,
     VerticalAlignMiddleOutlined,
-    FileTextOutlined,
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
@@ -18,10 +15,9 @@ import classNames from "classnames";
 dayjs.extend(isSameOrAfter)
 import { useResponsive } from "../hooks";
 
-const PostTable = () => {
-
-    const [searchVal, setSearchVal] = useState('');
+const BotTable = () => {
     const [searchTag, setSearchTag] = useState([]);
+    const [searchBot, setSearchBot] = useState([]);
     const [searchDate, setSearchDate] = useState([]);
     const [selectedRows, setSelectedRows] = useState([]);
     const [pageSize, setPageSize] = useState(5);
@@ -71,12 +67,6 @@ const PostTable = () => {
             align: "center",
             width: 150,
             className: 'tw-text-amber-600',
-            filteredValue: [searchVal],
-            onFilter: (value, record) => (
-                String(record?.post).toLowerCase().includes(value.toLowerCase())
-                || String(record?.creator).toLowerCase().includes(value.toLowerCase())
-                || String(record?.update).toLowerCase().includes(value.toLowerCase())
-            ),
         },
         {
             title: 'tag',
@@ -119,36 +109,40 @@ const PostTable = () => {
 
     ];
 
-    const toReport = (data) => {
-        navigate("/postlog/report", { state: data })
-    }
-
-    const genReport = async () => {
-        // console.log("get:", rows);
-        // console.log(selectedRows);
-        // const testData = await postReportAPI.getAllPost();
-        // console.log(testData);
-
-        toReport(selectedRows);
-    }
-
-
-
     return (
-        <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto', {
-            // "tw-min-h-screen": isTabletOrMobile && isLandscape,
-        })}>
-            <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">PostTable</p>
-            <div className="tw-flex tw-justify-center tw-w-full">
-                <SearchBar
-                    data={postMock}
-                    useTextSearch={true}
-                    useTagSearch={true}
-                    useDateSearch={true}
-                    onChangeSearch={setSearchVal}
-                    onChangeFilter={setSearchTag}
-                    onChangeDate={setSearchDate}
-                />
+        <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto', {})}>
+            <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">BotTable</p>
+            <div className={classNames("tw-flex tw-flex-row tw-max-w-full tw-justify-center tw-gap-2", {
+                "tw-flex-col": isTabletOrMobile,
+            })}>
+                <div className={classNames("tw-w-full", {
+                })}>
+                    <p className="tw-text-lg">หัวข้อ:</p>
+                    <SearchBar
+                        useTagSearch={true}
+                        data={postMock}
+                        onChangeFilter={setSearchTag}
+                    />
+                </div>
+                <div className={classNames("tw-w-full", {
+
+                })}>
+                    <p className="tw-text-lg">เวลา:</p>
+                    <SearchBar
+                        useDateSearch={true}
+                        onChangeDate={setSearchDate}
+                    />
+                </div>
+                <div className={classNames("tw-w-full", {
+
+                })}>
+                    <p className="tw-text-lg">Bot:</p>
+                    <SearchBar
+                        useTagSearch={true}
+                        data={postMock}
+                        onChangeFilter={setSearchBot}
+                    />
+                </div>
             </div>
             <div className={classNames("", {
                 "tw-overflow-auto": isTabletOrMobile && isPortrait,
@@ -158,7 +152,6 @@ const PostTable = () => {
                     columns={columns}
                     setPageSize={pageSize}
                     onRowsSelected={setSelectedRows}
-                    useRowSelection={true}
                 />
             </div>
             <div className=" tw-flex tw-flex-row tw-my-6 tw-gap-4">
@@ -183,19 +176,9 @@ const PostTable = () => {
                         </Button>
                     </Tooltip>
                 )}
-                {selectedRows.length > 0 && (
-                    <Tooltip title="สร้างรายงาน">
-                        <Button className="tw-border-black tw-border-2 tw-bg-sky-400 tw-drop-shadow-md hover:tw-bg-white hover:tw-border-sky-600 hover:tw-text-sky-600"
-                            onClick={() => genReport(selectedRows)}
-                            icon={<FileTextOutlined />}
-                        >
-                            สร้างรายงาน
-                        </Button>
-                    </Tooltip>
-                )}
             </div>
         </div>
     );
-};
+}
 
-export default PostTable;
+export default BotTable
