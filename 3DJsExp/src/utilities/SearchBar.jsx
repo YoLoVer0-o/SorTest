@@ -6,7 +6,9 @@ import classNames from "classnames";
 import { useResponsive } from "../hooks";
 
 const SearchBar = props => {
-
+    const useTextSearch = props.useTextSearch;
+    const useTagSearch = props.useTagSearch;
+    const useDateSearch = props.useDateSearch;
     const receviedData = props.data;
     const onChangeSearch = props.onChangeSearch;
     const onChangeFilter = props.onChangeFilter;
@@ -25,11 +27,14 @@ const SearchBar = props => {
 
     const uniqueTagsSet = new Set();
 
-    receviedData.forEach((receviedData) => {
-        receviedData.tag.forEach((tag) => {
-            uniqueTagsSet.add(tag);
-        });
-    });
+    {
+        useTagSearch && (receviedData.forEach((receviedData) => {
+            receviedData.tag.forEach((tag) => {
+                uniqueTagsSet.add(tag);
+            });
+        }))
+    }
+
 
     const uniqueTagsArray = [...uniqueTagsSet].map((tag) => ({
         label: tag,
@@ -55,67 +60,52 @@ const SearchBar = props => {
     };
 
     return (
-        <div className={classNames('tw-flex tw-flex-row tw-my-2 tw-gap-2 tw-max-w-max tw-justify-center', {
+        <div className={classNames('tw-flex tw-flex-row tw-my-2 tw-gap-2 tw-w-full', {
             "tw-flex-col tw-self-center": isTabletOrMobile && isPortrait,
         })}>
-            <Tooltip title="พิมพ์สิ่งที่ต้องการค้นหา">
-                <div
-                    style={{
-                        width: '100%',
-                    }}
-                >
+            {useTextSearch && (<Tooltip title="พิมพ์สิ่งที่ต้องการค้นหา">
+                <div className='tw-w-full'>
                     <Input
-                        style={{
-                            width: '100%',
-                        }}
                         addonBefore={<SearchOutlined />}
                         placeholder="พิมพ์สิ่งที่ต้องการค้นหา"
                         onChange={onTextChange}
-                        className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-mx-2 tw-drop-shadow-md hover:tw-border-sky-700'
+                        className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md hover:tw-border-sky-700 tw-w-full'
                     />
                 </div>
-            </Tooltip>
-            <Tooltip title="เลือกหมวดหมู่ที่ต้องการค้นหา">
-                <div
-                    style={{
-                        width: '100%',
-                    }}
-                >
+            </Tooltip>)}
+
+            {useTagSearch && (<Tooltip title="เลือกหมวดหมู่ที่ต้องการค้นหา">
+                <div className='tw-w-full'>
                     <Cascader
-                        style={{
-                            width: '100%',
-                        }}
                         options={uniqueTagsArray}
                         onChange={onTagChange}
                         multiple
                         maxTagCount="responsive"
                         placeholder="เลือกหมวดหมู่ที่ต้องการค้นหา"
-                        className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-mx-2 tw-drop-shadow-md hover:tw-border-sky-700 '
+                        className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md hover:tw-border-sky-700 tw-w-full'
                     />
                 </div>
-            </Tooltip>
-            <Tooltip title="เลือกช่วงเวลาที่ต้องการค้นหา">
-                <div
-                    style={{
-                        width: '100%',
-                    }}
-                >
+            </Tooltip>)}
+
+            {useDateSearch && (<Tooltip title="เลือกช่วงเวลาที่ต้องการค้นหา">
+                <div className='tw-w-full'>
                     <RangePicker
-                        style={{
-                            width: '100%',
-                        }}
                         onChange={onTimeChange}
                         format={dateFormat}
-                        className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-mx-2 tw-drop-shadow-md hover:tw-border-sky-700 '
+                        className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md hover:tw-border-sky-700 tw-w-full'
                     />
                 </div>
-            </Tooltip>
+            </Tooltip>)}
+
         </div>
     );
 };
 
 SearchBar.propTypes = {
-    data: PropTypes.array.isRequired,
+    useTextSearch: PropTypes.bool,
+    useTagSearch: PropTypes.bool,
+    useDateSearch: PropTypes.bool,
+    data: PropTypes.array,
     onChangeFilter: PropTypes.func,
     onChangeSearch: PropTypes.func,
     onChangeDate: PropTypes.func,
