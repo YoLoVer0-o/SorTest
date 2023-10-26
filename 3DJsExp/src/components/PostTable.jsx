@@ -126,10 +126,10 @@ const PostTable = () => {
     const genReport = async () => {
         // console.log("get:", rows);
         // console.log(selectedRows);
-        const testData = await postReportAPI.getAllPost();
-        console.log(testData);
+        // const testData = await postReportAPI.getAllPost();
+        // console.log(testData);
 
-        // toReport(selectedRows);
+        toReport(selectedRows);
     }
 
 
