@@ -8,9 +8,9 @@ const ToTopButton = (props) => {
     topRef?.current?.scrollIntoView({ behavior: "smooth" });
   };
   return (
-    <Tooltip placement="topLeft" title={"กลับขึ้นด้านบน"} color="blue">
+    <Tooltip placement="left" title={"กลับขึ้นด้านบน"} color="blue">
       <FloatButton
-        className="tw-flex tw-mr-2 tw-mb-14 tw-z-10"
+        className="tw-flex tw-right-2 tw-bottom-32 tw-z-10"
         icon={<UpCircleOutlined />}
         onClick={() => scrollToTop()}
       />

@@ -93,7 +93,7 @@ const MainLayout = (props) => {
               "tw-absolute tw-top-0": isMobile && isPortrait,
             })}
           >
-            {isTabletOrMobile && isPortrait && (
+            {isMobile && (
               <div className={classNames("tw-w-full tw-grid tw-p-2", {})}>
                 <Button
                   className="tw-text-white tw-flex tw-right-0 tw-z-40 tw-justify-center tw-items-center tw-justify-self-end"

@@ -5,10 +5,11 @@ import "dayjs/locale/th";
 import buddhistEra from "dayjs/plugin/buddhistEra";
 dayjs.extend(buddhistEra);
 import iLaw from "../assets/iLaw.png";
-import { FloatButton } from "antd";
+import { FloatButton, Tooltip } from "antd";
 import classNames from "classnames";
 import { useResponsive } from "../hooks";
 import { DataTable } from "../utilities";
+import { FormOutlined, MoreOutlined, FilePdfOutlined } from "@ant-design/icons";
 
 const PostReport = () => {
 
@@ -90,9 +91,10 @@ const PostReport = () => {
           })}>
             <a>
               กลุ่ม :
-              <div className={classNames("tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-w-44 tw-border-solid tw-border-black", {
+              <div className={classNames("tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-border-solid tw-border-black", {
                 "tw-w-28": isMobile && isPortrait,
                 "tw-w-34": isTablet && isPortrait,
+                "tw-w-44": isDesktopOrLaptop || isBigScreen,
               })}>
                 {" "}
                 NGO
@@ -100,34 +102,37 @@ const PostReport = () => {
             </a>
             <a>
               ชื่อกลุ่ม :
-              <div className={classNames("tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-w-44 tw-border-solid tw-border-black", {
+              <div className={classNames("tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-border-solid tw-border-black", {
                 "tw-w-28": isMobile && isPortrait,
                 "tw-w-34": isTablet && isPortrait,
+                "tw-w-44": isDesktopOrLaptop || isBigScreen,
               })}>
                 {" "}
                 iLawFX
               </div>
             </a>
-            <a>
+            <div>
               ช่องทาง :
-              <div className={classNames("tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-w-44 tw-border-solid tw-border-black", {
+              <div className={classNames("tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-border-solid tw-border-black", {
                 "tw-w-28": isMobile && isPortrait,
                 "tw-w-34": isTablet && isPortrait,
+                "tw-w-44": isDesktopOrLaptop || isBigScreen,
               })}>
                 {" "}
                 Facebook
               </div>
-            </a>
-            <a>
+            </div>
+            <div>
               ผู้ติดตาม :
-              <div className={classNames("tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-w-44 tw-border-solid tw-border-black", {
+              <div className={classNames("tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-border-solid tw-border-black", {
                 "tw-w-28": isMobile && isPortrait,
                 "tw-w-34": isTablet && isPortrait,
+                "tw-w-44": isDesktopOrLaptop || isBigScreen,
               })}>
                 {" "}
                 460,000
               </div>
-            </a>
+            </div>
           </div>
         </div>
       </div>
@@ -140,7 +145,10 @@ const PostReport = () => {
         />
       </div>
 
-      <div className="tw-p-4">
+      <div className="tw-p-4"
+        ref={summarizeContent}
+        tabIndex={0}
+      >
         <div>บทวิเคราะห์ :</div>
         <div className="tw-border-solid tw-border-gray-300 tw-border-2 tw-p-2">
           <div> จําเป็นต้องติดตามความเคลื่อนไหวอย่างใกล้ชิด</div>
@@ -153,8 +161,30 @@ const PostReport = () => {
           </div>
         </div>
       </div>
+      <Tooltip placement="left" title={"เพิ่มเติม"} color="blue">
+        <FloatButton.Group
+          trigger="click"
+          type="primary"
+          className="tw-right-10"
+          icon={<MoreOutlined />}
+        >
+          <Tooltip placement="left" title={"สร้างรายงานPDF"} color="blue">
+            <FloatButton
+              className="tw-flex tw-right-2 tw-bottom-32 tw-z-10"
+              icon={<FilePdfOutlined />}
 
-      <ToTopButton topRef={topRef} />
+            />
+          </Tooltip>
+          <Tooltip placement="left" title={"ไปยังสรุป"} color="blue">
+            <FloatButton
+              className="tw-flex tw-right-2 tw-bottom-32 tw-z-10"
+              icon={<FormOutlined />}
+              onClick={() => focusSummarize()}
+            />
+          </Tooltip>
+          <ToTopButton topRef={topRef} />
+        </FloatButton.Group>
+      </Tooltip>
     </div>
   );
 };
