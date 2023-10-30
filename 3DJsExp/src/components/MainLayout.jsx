@@ -27,7 +27,7 @@ const MainLayout = (props) => {
     "/main": "main",
     "/main/overall": "overall",
     "/main/overall/feedback": "Feedback",
-    "/search": "search",
+    "/sentiment": "sentiment",
     "/postlog": "postlog",
     "/postlog/report": "report",
     "/createPost": "createPost",
@@ -120,9 +120,9 @@ const MainLayout = (props) => {
 
                 },
                 {
-                  key: "/search",
+                  key: "/sentiment",
                   icon: <UploadOutlined />,
-                  label: "Search",
+                  label: "Sentiment",
                   className: "",
                 },
                 {

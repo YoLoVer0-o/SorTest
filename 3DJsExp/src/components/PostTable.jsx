@@ -148,6 +148,7 @@ const PostTable = () => {
                     onChangeSearch={setSearchVal}
                     onChangeFilter={setSearchTag}
                     onChangeDate={setSearchDate}
+                    keyName={"tag"}
                 />
             </div>
             <div className={classNames("", {

@@ -2,6 +2,6 @@ import LoginPage from "./LoginPage";
 import MainPage from "./MainPage";
 import PostDataPage from "./PostDataPage";
 import CreatePostPage from "./CreatePostPage";
-import BotSearchPage from "./BotSearchPage";
+import SentimentPage from "./SentimentPage";
 
-export { MainPage, LoginPage, PostDataPage, CreatePostPage, BotSearchPage };
+export { MainPage, LoginPage, PostDataPage, CreatePostPage, SentimentPage };

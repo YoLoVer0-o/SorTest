@@ -13,6 +13,7 @@ const SearchBar = props => {
     const onChangeSearch = props.onChangeSearch;
     const onChangeFilter = props.onChangeFilter;
     const onChangeDate = props.onChangeDate;
+    const keyName = props.keyName;
 
     const {
         isDesktopOrLaptop,
@@ -24,17 +25,15 @@ const SearchBar = props => {
 
     const { RangePicker } = DatePicker;
     const dateFormat = 'DD/MM/YYYY';
-
     const uniqueTagsSet = new Set();
 
     {
         useTagSearch && (receviedData.forEach((receviedData) => {
-            receviedData.tag.forEach((tag) => {
+            receviedData[`${keyName}`].forEach((tag) => {
                 uniqueTagsSet.add(tag);
             });
         }))
     }
-
 
     const uniqueTagsArray = [...uniqueTagsSet].map((tag) => ({
         label: tag,
@@ -109,6 +108,7 @@ SearchBar.propTypes = {
     onChangeFilter: PropTypes.func,
     onChangeSearch: PropTypes.func,
     onChangeDate: PropTypes.func,
+    keyName: PropTypes.string,
 }
 
 export default SearchBar;
