@@ -5,7 +5,7 @@ import { BsEmojiSmile } from "react-icons/bs";
 import { Button } from "antd";
 import React, { useState } from "react";
 import Image from "../assets/PostImage";
-import EmojiPicker from "emoji-picker-react";
+import EmojiPicker, { EmojiStyle } from "emoji-picker-react";
 
 const CreatePostUtil = () => {
   const [message, setMessage] = useState('');
@@ -56,7 +56,7 @@ const CreatePostUtil = () => {
 
   return (
     <div className="tw-w-full tw-flex tw-justify-center  ">
-      <div className="tw-flex tw-flex-col tw-items-center tw-justify-center tw-gap-y-4 tw-w-[80%] tw-border-2">
+      <div className="tw-flex tw-flex-col tw-items-center tw-justify-center tw-gap-y-4 tw-w-[80%] tw-h- tw-border-2">
         <div className="tw-flex tw-flex-row tw-items-center tw-gap-x-8">
           <img
             className="tw-w-12 tw-h-12 tw-rounded-full tw-border-2 tw-border-black"
@@ -74,8 +74,10 @@ const CreatePostUtil = () => {
             className=" tw-text-xl tw-border-none tw-resize-none tw-outline-none"
             
           />
-          {showEmojiInput && <EmojiPicker
+          {showEmojiInput && <EmojiPicker 
+          emojiStyle={EmojiStyle.NATIVE}
           onEmojiClick = {(emoji) => showEmo(emoji)}
+          className=""
            />}
           <BsEmojiSmile
             className=" tw-text-3xl tw-self-end tw-text-gray-700 hover:tw-bg-gray-300 tw-rounded-full tw-flex"
