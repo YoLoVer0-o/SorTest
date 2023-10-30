@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Dashboard, Feedback, LogTable, PostTable, PostReport, CreatePost, BotTable } from "../components";
-import { LoginPage, MainPage, PostDataPage, CreatePostPage, BotSearchPage } from "../pages";
+import { Dashboard, Feedback, LogTable, PostTable, PostReport, CreatePost, SentimentTable } from "../components";
+import { LoginPage, MainPage, PostDataPage, CreatePostPage, SentimentPage } from "../pages";
 
 
 export const router = createBrowserRouter([
@@ -51,12 +51,12 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "/search",
-    element: <BotSearchPage />,
+    path: "/sentiment",
+    element: <SentimentPage />,
     children: [
       {
         path: "",
-        element: <BotTable />,
+        element: <SentimentTable />,
       },
     ],
   },

@@ -27,7 +27,7 @@ const MainLayout = (props) => {
     "/main": "main",
     "/main/overall": "overall",
     "/main/overall/feedback": "Feedback",
-    "/search": "search",
+    "/sentiment": "sentiment",
     "/postlog": "postlog",
     "/postlog/report": "report",
     "/createPost": "createPost",
@@ -98,7 +98,7 @@ const MainLayout = (props) => {
               "tw-absolute tw-top-0": isMobile && isPortrait,
             })}
           >
-            {isTabletOrMobile && isPortrait && (
+            {isMobile && (
               <div className={classNames("tw-w-full tw-grid tw-p-2", {})}>
                 <Button
                   className="tw-text-white tw-flex tw-right-0 tw-z-40 tw-justify-center tw-items-center tw-justify-self-end"
@@ -125,9 +125,9 @@ const MainLayout = (props) => {
 
                 },
                 {
-                  key: "/search",
+                  key: "/sentiment",
                   icon: <UploadOutlined />,
-                  label: "Search",
+                  label: "Sentiment",
                   className: "",
                 },
                 {

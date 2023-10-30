@@ -1,11 +1,11 @@
 import { MainLayout } from "../components";
 
-const BotSearchPage = () => {
+const SentimentPage = () => {
     return (
         <div className="tw-h-full tw-max-h-full">
-            <MainLayout pageKey={['/search']} />
+            <MainLayout pageKey={['/sentiment']} />
         </div>
     )
 }
 
-export default BotSearchPage
+export default SentimentPage
