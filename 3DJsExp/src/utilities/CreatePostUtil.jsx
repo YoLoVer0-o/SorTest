@@ -1,14 +1,38 @@
 import profile from "../assets/profile.png";
 import { useDropzone } from "react-dropzone";
 import { CloudUploadOutlined, CloseOutlined } from "@ant-design/icons";
+import { BsEmojiSmile } from "react-icons/bs";
 import { Button } from "antd";
 import React, { useState } from "react";
 import Image from "../assets/PostImage";
 import EmojiPicker from "emoji-picker-react";
 
 const CreatePostUtil = () => {
-  const [isShow, setIsShow] = useState(true);
+  const [message, setMessage] = useState('');
+  const [isShow, setIsShow] = useState(false);
+  const [showEmojiInput, setShowEmojiInput] = useState(false);
   const [files, setFiles] = useState([]);
+
+  const toggleEmoji = () => {
+    setShowEmojiInput(!showEmojiInput);
+  };
+ 
+  const handleMessageChange = event => {
+    const text = event.target.value
+    if(!text.emoji ){
+      setMessage(text);
+      console.log(event.target.value);
+    }
+    else {
+      setMessage(message+text.emoji);
+    }
+  };
+
+  const showEmo = (emo) => {
+    setMessage(message+emo.emoji);
+    console.log(emo)
+  }
+ 
   const { getRootProps, getInputProps } = useDropzone({
     accept: "image/*",
     onDrop: (acceptedFiles) => {
@@ -40,12 +64,24 @@ const CreatePostUtil = () => {
           ></img>
           <p className="  tw-text-xl ">Account Name</p>
         </div>
-        {/* <textarea
-          rows={4}
-          cols={40}
-          placeholder="คุณกำลังคิดอะไรอยู่"
-          className=" tw-text-xl tw-border-none tw-resize-none tw-outline-none"
-        /> */}
+        <div className="tw-flex tw-flex-col">
+          <textarea
+            rows={4}
+            cols={40}
+            value={message}
+            onChange={handleMessageChange}
+            placeholder="คุณกำลังคิดอะไรอยู่"
+            className=" tw-text-xl tw-border-none tw-resize-none tw-outline-none"
+            
+          />
+          {showEmojiInput && <EmojiPicker
+          onEmojiClick = {(emoji) => showEmo(emoji)}
+           />}
+          <BsEmojiSmile
+            className=" tw-text-3xl tw-self-end tw-text-gray-700 hover:tw-bg-gray-300 tw-rounded-full tw-flex"
+            onClick={toggleEmoji}
+          />
+        </div>
         {isShow && (
           <div className="tw-relative tw-w-[50%]">
             <Button
@@ -66,7 +102,6 @@ const CreatePostUtil = () => {
             </div>
           </div>
         )}
-
         <div>{images}</div>
         <div className="tw-flex tw-flex-row tw-gap-x-8 tw-border-[1px] tw-p-2 tw-items-center tw-rounded-md tw-border-gray-400 tw-h-12">
           <p>Add to your post</p>
