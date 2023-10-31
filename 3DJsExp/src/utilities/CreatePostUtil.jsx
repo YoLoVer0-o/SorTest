@@ -1,17 +1,29 @@
+import { CloudUploadOutlined, CloseOutlined } from "@ant-design/icons";
+import EmojiPicker, { EmojiStyle } from "emoji-picker-react";
 import profile from "../assets/profile.png";
 import { useDropzone } from "react-dropzone";
-import { CloudUploadOutlined, CloseOutlined } from "@ant-design/icons";
 import { BsEmojiSmile } from "react-icons/bs";
-import { Button } from "antd";
+import { useResponsive } from "../hooks";
+import classNames from "classnames";
 import React, { useState } from "react";
 import Image from "../assets/PostImage";
-import EmojiPicker, { EmojiStyle } from "emoji-picker-react";
+import { Button } from "antd";
 
 const CreatePostUtil = () => {
   const [message, setMessage] = useState('');
   const [isShow, setIsShow] = useState(false);
   const [showEmojiInput, setShowEmojiInput] = useState(false);
   const [files, setFiles] = useState([]);
+
+  const {
+    isDesktopOrLaptop,
+    isBigScreen,
+    isTabletOrMobile,
+    isMobile,
+    isTablet,
+    isPortrait,
+    isLandscape,
+  } = useResponsive();
 
   const toggleEmoji = () => {
     setShowEmojiInput(!showEmojiInput);
@@ -66,19 +78,18 @@ const CreatePostUtil = () => {
         </div>
         <div className="tw-flex tw-flex-col">
           <textarea
-            rows={4}
-            cols={40}
             value={message}
             onChange={handleMessageChange}
             placeholder="คุณกำลังคิดอะไรอยู่"
             className=" tw-text-xl tw-border-none tw-resize-none tw-outline-none"
-            
           />
-          {showEmojiInput && <EmojiPicker 
-          emojiStyle={EmojiStyle.NATIVE}
-          onEmojiClick = {(emoji) => showEmo(emoji)}
-          className=""
-           />}
+          {showEmojiInput && (
+            <EmojiPicker
+              emojiStyle={EmojiStyle.NATIVE}
+              onEmojiClick={(emoji) => showEmo(emoji)}
+              className=""
+            />
+          )}
           <BsEmojiSmile
             className=" tw-text-3xl tw-self-end tw-text-gray-700 hover:tw-bg-gray-300 tw-rounded-full tw-flex"
             onClick={toggleEmoji}
@@ -95,20 +106,36 @@ const CreatePostUtil = () => {
             ></Button>
             <div
               {...getRootProps()}
-              className=" tw-flex  tw-justify-center tw-items-center tw-border-[1px] tw-z-10 tw-w-full
-           tw-flex-col tw-h-64 tw-bg-gray-200 tw-border-gray-400 tw-rounded-md hover:tw-bg-gray-300"
+              className={classNames(
+                "tw-flex tw-justify-center tw-items-center tw-border-[1px] tw-z-10 tw-w-full tw-flex-col tw-h-64 tw-bg-gray-200 tw-border-gray-400 tw-rounded-md hover:tw-bg-gray-300",
+                {
+                  "": isMobile && isPortrait,
+                }
+              )}
             >
-              <input {...getInputProps()} />
+              <input {...getInputProps()} className="tw-w-full" />
               <CloudUploadOutlined className="tw-text-4xl" />
               <p>Drop files here </p>
             </div>
           </div>
         )}
         <div>{images}</div>
-        <div className="tw-flex tw-flex-row tw-gap-x-8 tw-border-[1px] tw-p-2 tw-items-center tw-rounded-md tw-border-gray-400 tw-h-12">
+        <div
+          className={classNames(
+            "tw-flex tw-flex-row  tw-border-[1px]  tw-items-center tw-rounded-md tw-border-gray-400 tw-h-12",
+            {
+              "tw-gap-x-8 tw-p-2": isDesktopOrLaptop,
+              "tw-gap-x-8 tw-p-2 ": isTablet,
+              "tw-flex tw-justify-center tw-gap-1": isMobile && isPortrait,
+            }
+          )}
+        >
           <p>Add to your post</p>
-          <button onClick={() => setIsShow(true)}>
-            <img className="tw-w-6 tw-h-6" src={Image.selectPic} />
+          <button
+            className=" tw-rounded-full hover:tw-bg-gray-300"
+            onClick={() => setIsShow(true)}
+          >
+            <img className="tw-w-6 tw-h-6 " src={Image.selectPic} />
           </button>
           <img className="tw-w-6 tw-h-6" src={Image.tagOther} />
           <img className="tw-w-6 tw-h-6" src={Image.emoji} />
