@@ -23,15 +23,18 @@ const MainLayout = (props) => {
     isPortrait,
     isLandscape,
   } = useResponsive();
+
   const breadcrumbNameMap = {
     "/main": "main",
     "/main/overall": "overall",
     "/main/overall/feedback": "Feedback",
     "/sentiment": "sentiment",
+    "/sentiment/report": "report",
     "/postlog": "postlog",
     "/postlog/report": "report",
     "/createPost": "createPost",
   };
+
   const navigate = useNavigate();
 
   const location = useLocation();
@@ -76,10 +79,6 @@ const MainLayout = (props) => {
           }
         )}
       >
-        {/* <div className="tw-flex tw-flex-col tw-text-white tw-h-full">
-          <div className="tw-flex ">หน่วย</div>
-          <div className="tw-flex">หน่วย</div>
-        </div> */}
         <div className="tw-text-white tw-flex tw-jsutify-self-center">Project</div>
       </Header>
 
@@ -122,7 +121,6 @@ const MainLayout = (props) => {
                   key: "/main",
                   icon: <UserOutlined />,
                   label: "main",
-
                 },
                 {
                   key: "/sentiment",

@@ -7,6 +7,7 @@ import FeedbackModal from "./FeedbackModal";
 import PostReport from "./PostReport";
 import CreatePost from "./Createpost";
 import SentimentTable from "./SentimentTable";
+import SentimentReport from "./SentimentReport";
 
 export {
   MainLayout,
@@ -18,4 +19,5 @@ export {
   PostReport,
   CreatePost,
   SentimentTable,
+  SentimentReport,
 };

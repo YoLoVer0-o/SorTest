@@ -138,6 +138,10 @@ const SentimentTable = () => {
         },
     ];
 
+    const toReport = async (data) => {
+        navigate("/sentiment/report", { state: data })
+    }
+
     return (
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto', {})}>
             <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">BotTable</p>
@@ -184,6 +188,8 @@ const SentimentTable = () => {
                     columns={columns}
                     setPageSize={pageSize}
                     onRowsSelected={setSelectedRows}
+                    useRowClick={true}
+                    onRowClick={() => toReport(selectedRows)}
                 />
             </div>
             <div className=" tw-flex tw-flex-row tw-my-6 tw-gap-4">

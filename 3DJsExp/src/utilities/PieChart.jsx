@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 const Arc = ({ data, index, createArc, colors, displayText, displayValue }) => {
 
+
     return (
         <g key={index} className="arc">
             <path className="arc" d={createArc(data)} fill={colors(index)} />
@@ -32,9 +33,13 @@ const Arc = ({ data, index, createArc, colors, displayText, displayValue }) => {
 };
 
 const PieChart = props => {
+
+    const keyName = props.keyName;
+    const displayText = props.displayText;
+
     const createPie = d3
         .pie()
-        .value(d => d.money_current)
+        .value(d => d[`${keyName}`])
         .sort(null);
     const createArc = d3
         .arc()
@@ -53,8 +58,8 @@ const PieChart = props => {
                         index={i}
                         createArc={createArc}
                         colors={colors}
-                        displayText={d.data.cclient_name}
-                        displayValue={d.data.money_current}
+                        displayText={d.data[`${displayText}`]}
+                        displayValue={d.data[`${keyName}`]}
                     />
                 ))}
             </g>
@@ -68,7 +73,8 @@ PieChart.propTypes = {
     outerRadius: PropTypes.number,
     width: PropTypes.number,
     height: PropTypes.number,
-
+    keyName: PropTypes.string,
+    displayText: PropTypes.string,
 }
 
 Arc.propTypes = {
