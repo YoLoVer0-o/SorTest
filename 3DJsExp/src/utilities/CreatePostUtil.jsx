@@ -10,7 +10,7 @@ import Image from "../assets/PostImage";
 import { Button } from "antd";
 
 const CreatePostUtil = () => {
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [isShow, setIsShow] = useState(false);
   const [showEmojiInput, setShowEmojiInput] = useState(false);
   const [files, setFiles] = useState([]);
@@ -28,23 +28,22 @@ const CreatePostUtil = () => {
   const toggleEmoji = () => {
     setShowEmojiInput(!showEmojiInput);
   };
- 
-  const handleMessageChange = event => {
-    const text = event.target.value
-    if(!text.emoji ){
+
+  const handleMessageChange = (event) => {
+    const text = event.target.value;
+    if (!text.emoji) {
       setMessage(text);
       console.log(event.target.value);
-    }
-    else {
-      setMessage(message+text.emoji);
+    } else {
+      setMessage(message + text.emoji);
     }
   };
 
   const showEmo = (emo) => {
-    setMessage(message+emo.emoji);
-    console.log(emo)
-  }
- 
+    setMessage(message + emo.emoji);
+    console.log(emo);
+  };
+
   const { getRootProps, getInputProps } = useDropzone({
     accept: "image/*",
     onDrop: (acceptedFiles) => {
@@ -67,36 +66,46 @@ const CreatePostUtil = () => {
   ));
 
   return (
-    <div className="tw-w-full tw-flex tw-justify-center  ">
-      <div className="tw-flex tw-flex-col tw-items-center tw-justify-center tw-gap-y-4 tw-w-[80%] tw-h- tw-border-2">
-        <div className="tw-flex tw-flex-row tw-items-center tw-gap-x-8">
+    <div className="tw-w-full tw-flex tw-justify-center tw-max-h-min tw-h-[80%]">
+      <div className="tw-flex tw-flex-col tw-items-center tw-gap-y-4 tw-w-[80%] tw-h-full tw-border-2">
+        <div className="tw-flex tw-flex-row  tw-gap-x-8">
           <img
             className="tw-w-12 tw-h-12 tw-rounded-full tw-border-2 tw-border-black"
             src={profile}
           ></img>
           <p className="  tw-text-xl ">Account Name</p>
         </div>
-        <div className="tw-flex tw-flex-col">
+        <div
+          className={classNames("tw-flex tw-relative tw-flex-col  ", {
+            "tw-w-full": isMobile && isPortrait,
+          })}
+        >
           <textarea
             value={message}
             onChange={handleMessageChange}
             placeholder="คุณกำลังคิดอะไรอยู่"
-            className=" tw-text-xl tw-border-none tw-resize-none tw-outline-none"
+            className=" tw-text-xl  tw-border-none tw-resize-none tw-outline-none"
           />
-          {showEmojiInput && (
-            <EmojiPicker
-              emojiStyle={EmojiStyle.NATIVE}
-              onEmojiClick={(emoji) => showEmo(emoji)}
-              className=""
-            />
-          )}
           <BsEmojiSmile
-            className=" tw-text-3xl tw-self-end tw-text-gray-700 hover:tw-bg-gray-300 tw-rounded-full tw-flex"
+            className=" tw-text-3xl tw-relative tw-self-end tw-text-gray-700 hover:tw-bg-gray-300 tw-rounded-full tw-flex"
             onClick={toggleEmoji}
           />
+          {showEmojiInput && (
+            <div className=" tw-absolute tw-left-80">
+              <EmojiPicker
+                emojiStyle={EmojiStyle.NATIVE}
+                onEmojiClick={(emoji) => showEmo(emoji)}
+                // height="20rem"
+              />
+            </div>
+          )}
         </div>
         {isShow && (
-          <div className="tw-relative tw-w-[50%]">
+          <div
+            className={classNames("tw-relative tw-w-[50%]", {
+              "tw-w-full": isMobile && isPortrait,
+            })}
+          >
             <Button
               className="tw-text-black tw-absolute tw-border-black tw-flex tw-right-1 tw-bg-red-800 tw-top-1 tw-z-40 tw-justify-center 
             tw-items-center tw-justify-self-end  "
@@ -122,15 +131,15 @@ const CreatePostUtil = () => {
         <div>{images}</div>
         <div
           className={classNames(
-            "tw-flex tw-flex-row  tw-border-[1px]  tw-items-center tw-rounded-md tw-border-gray-400 tw-h-12",
+            "tw-grid tw-grid-cols-8  tw-border-[1px] tw-justify-self-end   tw-items-center tw-rounded-md tw-border-gray-400 tw-w-[80%] tw-h-12",
             {
-              "tw-gap-x-8 tw-p-2": isDesktopOrLaptop,
-              "tw-gap-x-8 tw-p-2 ": isTablet,
-              "tw-flex tw-justify-center tw-gap-1": isMobile && isPortrait,
+              " ": isDesktopOrLaptop,
+              "  ": isTablet,
+              "": isMobile && isPortrait,
             }
           )}
         >
-          <p>Add to your post</p>
+          <p className="tw-col-span-2">Add to your post</p>
           <button
             className=" tw-rounded-full hover:tw-bg-gray-300"
             onClick={() => setIsShow(true)}
