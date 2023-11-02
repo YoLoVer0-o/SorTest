@@ -78,12 +78,12 @@ PieChart.propTypes = {
 }
 
 Arc.propTypes = {
-    data: PropTypes.array,
+    data: PropTypes.object,
     index: PropTypes.number,
     createArc: PropTypes.func,
     colors: PropTypes.func,
     displayText: PropTypes.string,
-    displayValue: PropTypes.string,
+    displayValue: PropTypes.number,
     centroid: PropTypes.func,
 }
 

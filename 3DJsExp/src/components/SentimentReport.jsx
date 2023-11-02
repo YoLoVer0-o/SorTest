@@ -1,11 +1,11 @@
 import { useRef } from "react";
-import { PieChart, ToTopButton } from "../utilities";
+import { BarChart, PieChart, ToTopButton } from "../utilities";
 import { FloatButton, Tooltip } from "antd";
 import classNames from "classnames";
 import { useResponsive } from "../hooks";
 import { DataTable } from "../utilities";
 import { MoreOutlined, FilePdfOutlined } from "@ant-design/icons";
-import { sentimentAll } from "../mock";
+import { sentimentAll,sentimentPos } from "../mock";
 
 const SentimentReport = () => {
 
@@ -68,7 +68,7 @@ const SentimentReport = () => {
                 <div className={classNames("tw-flex tw-flex-row tw-mb-4 tw-w-full tw-h-full", {
                     "tw-flex-col": isTabletOrMobile && isPortrait,
                 })}>
-                    <div className={classNames("tw-flex tw-flex-row tw-justify-around tw-w-full", {
+                    <div className={classNames("tw-flex tw-flex-row tw-justify-around tw-w-full tw-border-stone-400 tw-border-4 tw-rounded-lg", {
                         "tw-grid tw-grid-cols-2 tw-gap-1": isTabletOrMobile && isPortrait,
                     })}>
                         <div>
@@ -119,10 +119,10 @@ const SentimentReport = () => {
                 </div>
 
                 <div className="tw-flex tw-flex-row">
-                    <div className="tw-flex tw-flex-col">
-                        <p>ความรู้สึกเชิงบวก-ลบ</p>
-                        <div className="tw-flex tw-flex-row tw-gap-3">
-                            <div className="tw-flex tw-flex-row tw-gap-1">
+                    <div className="tw-flex tw-flex-col tw-justify-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                        <p className="tw-text-center">ความรู้สึกเชิงบวก-ลบ</p>
+                        <div className="tw-flex tw-flex-row tw-justify-center tw-gap-3">
+                            <div className="tw-flex tw-flex-row tw-gap-1 ">
                                 <div className="tw-w-6 tw-h-6 tw-border-2 tw-border-black tw-rounded-full">
                                 </div>
                                 <p>เชิงบวก</p>
@@ -143,13 +143,23 @@ const SentimentReport = () => {
                                 data={sentimentAll}
                                 keyName={"value"}
                                 displayText={"name"}
-                                width={400}
-                                height={400}
+                                width={360}
+                                height={360}
                                 innerRadius={60}
                                 outerRadius={180} />
                         </div>
                     </div>
-                    <div></div>
+                    <div className="tw-flex tw-flex-col">
+                        <p>ข้อความเชิงบวกสูงสุด</p>
+                        <div>
+                            <BarChart
+                                className={"tw-flex tw-h-fit tw-w-fit tw-max-w-fit tw-max-h-fit"}
+                                data={sentimentPos}
+                                width={740}
+                                height={460}
+                            />
+                        </div>
+                    </div>
                     <div></div>
                 </div>
 
