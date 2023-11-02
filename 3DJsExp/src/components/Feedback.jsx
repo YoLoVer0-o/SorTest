@@ -1,4 +1,4 @@
-import { BarChart } from '../utilities';
+import { VerticalBarChart } from '../utilities';
 import { FeedbackModal } from '../components'
 import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
@@ -27,7 +27,7 @@ function Feedback() {
                 <h1 className='tw-font-extrabold tw-text-2xl'>Top 10 Feedback</h1>
             </div>
             <div className='tw-my-6 tw-max-w-fit tw-max-h-full tw-object-contain'>
-                <BarChart
+                <VerticalBarChart
                     data={sortedFeedback}
                     width={740}
                     height={460}

@@ -1,11 +1,11 @@
 import { useRef } from "react";
-import { BarChart, PieChart, ToTopButton } from "../utilities";
+import { HorizontalBarChart, PieChart, ToTopButton } from "../utilities";
 import { FloatButton, Tooltip } from "antd";
 import classNames from "classnames";
 import { useResponsive } from "../hooks";
 import { DataTable } from "../utilities";
 import { MoreOutlined, FilePdfOutlined } from "@ant-design/icons";
-import { sentimentAll,sentimentPos } from "../mock";
+import { sentimentAll, sentimentPos } from "../mock";
 
 const SentimentReport = () => {
 
@@ -152,11 +152,12 @@ const SentimentReport = () => {
                     <div className="tw-flex tw-flex-col">
                         <p>ข้อความเชิงบวกสูงสุด</p>
                         <div>
-                            <BarChart
+                            <HorizontalBarChart
                                 className={"tw-flex tw-h-fit tw-w-fit tw-max-w-fit tw-max-h-fit"}
                                 data={sentimentPos}
                                 width={740}
-                                height={460}
+                                keyNameX={"value"}
+                                keyNameY={"name"}
                             />
                         </div>
                     </div>

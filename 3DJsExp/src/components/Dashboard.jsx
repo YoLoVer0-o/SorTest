@@ -1,4 +1,4 @@
-import { BarChart } from '../utilities';
+import { VerticalBarChart } from '../utilities';
 import { sentimentAll, sentimentPos, sentimentNega } from '../mock';
 import { useNavigate } from "react-router-dom";
 
@@ -32,7 +32,7 @@ function Dashboard() {
                 <h1 className='tw-font-extrabold tw-text-2xl'>Overall DashBoard</h1>
             </div>
             <div className='tw-flex tw-my-6 tw-max-w-fit tw-max-h-fit tw-object-contain'>
-                <BarChart
+                <VerticalBarChart
                     className={"tw-flex tw-h-fit tw-w-fit tw-max-w-fit tw-max-h-fit"}
                     data={sentimentAll}
                     width={740}

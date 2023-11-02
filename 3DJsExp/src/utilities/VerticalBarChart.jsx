@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import PropTypes from 'prop-types';
 import * as d3 from "d3";
 
-const BarChart = props => {
+const VerticalBarChart = props => {
 
   const svgRef = useRef(null);
 
@@ -81,8 +81,6 @@ const BarChart = props => {
       .call(d3.axisBottom(x));
 
     svg.append("g").attr("class", "y-axis").call(d3.axisLeft(y));
-
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.data, props.height, props.width]);
 
@@ -93,11 +91,11 @@ const BarChart = props => {
   );
 };
 
-BarChart.propTypes = {
+VerticalBarChart.propTypes = {
   data: PropTypes.array,
   onBarClick: PropTypes.func,
   width: PropTypes.number,
   height: PropTypes.number,
 }
 
-export default BarChart;
+export default VerticalBarChart;
