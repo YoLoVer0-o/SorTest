@@ -1,16 +1,23 @@
 import { useEffect, useRef } from "react";
 import PropTypes from 'prop-types';
+import { useResponsive } from "../hooks";
 import * as d3 from "d3";
 
 const HorizontalBarChart = props => {
 
     const data = props.data;
 
-
-    //  console.log(data[`${keyNameX}`]);
-
-
     const svgRef = useRef(null);
+
+    const {
+        isDesktopOrLaptop,
+        isBigScreen,
+        isTabletOrMobile,
+        isTablet,
+        isMobile,
+        isPortrait,
+        isRetina,
+    } = useResponsive();
 
     let onBarClick = props.onBarClick;
 
@@ -19,11 +26,11 @@ const HorizontalBarChart = props => {
         const keyNameX = props.keyNameX;
         const keyNameY = props.keyNameY;
 
-        const barHeight = 25;
+        const barHeight = isTabletOrMobile ? 70 : 35;
         const marginTop = 30;
-        const marginRight = 0;
+        const marginRight = 60;
         const marginBottom = 10;
-        const marginLeft = 30;
+        const marginLeft = 100;
         const width = props.width;
         const height = Math.ceil((data.length + 0.1) * barHeight) + marginTop + marginBottom;
 
@@ -45,7 +52,7 @@ const HorizontalBarChart = props => {
             .attr("width", width)
             .attr("height", height)
             .attr("viewBox", [0, 0, width, height])
-            .attr("style", "max-width: 100%; height: auto; font: 10px sans-serif;");
+            .attr("style", "max-width: 100%; height: auto;");
 
         svg.append("g")
             .attr("fill", "steelblue")
@@ -55,7 +62,10 @@ const HorizontalBarChart = props => {
             .attr("x", x(0))
             .attr("y", (d) => y(d[`${keyNameY}`]))
             .attr("width", (d) => x(d[`${keyNameX}`]) - x(0))
-            .attr("height", y.bandwidth());
+            .attr("height", y.bandwidth())
+            .on("click", function (event, d) {
+                onBarClick(d);
+            });
 
         svg.append("g")
             .attr("fill", "white")
@@ -76,17 +86,20 @@ const HorizontalBarChart = props => {
         svg.append("g")
             .attr("transform", `translate(0,${marginTop})`)
             .call(d3.axisTop(x).ticks(width / 80, ""))
-            .call(g => g.select(".domain").remove());
+            .call(g => g.select(".domain").remove())
+            .selectAll("text") // Select all text elements in the y-axis
+            .style("font-size", "1rem"); // Set the desired font size
 
         svg.append("g")
             .attr("transform", `translate(${marginLeft},0)`)
-            .call(d3.axisLeft(y).tickSizeOuter(0));
+            .call(d3.axisLeft(y).tickSizeOuter(0))
+            .selectAll("text") // Select all text elements in the y-axis
+            .style("font-size", "1rem"); // Set the desired font size
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data, props.keyNameX, props.keyNameY, props.width])
 
     return (
-        <div className="tw-flex tw-max-h-fit tw-max-w-fit">
-            <svg className="tw-flex tw-max-h-fit tw-max-w-fit tw-m-4" ref={svgRef}></svg>
-        </div>
+        <svg className="tw-text-xl" ref={svgRef}></svg>
     )
 }
 

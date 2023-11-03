@@ -5,7 +5,7 @@ import classNames from "classnames";
 import { useResponsive } from "../hooks";
 import { DataTable } from "../utilities";
 import { MoreOutlined, FilePdfOutlined } from "@ant-design/icons";
-import { sentimentAll, sentimentPos } from "../mock";
+import { sentimentAll, sentimentNega, sentimentPos } from "../mock";
 
 const SentimentReport = () => {
 
@@ -20,6 +20,10 @@ const SentimentReport = () => {
     } = useResponsive();
 
     const topRef = useRef(null);
+
+    const redirect = (data) => {
+        console.log(data);
+    };
 
     const columns = [
         {
@@ -68,7 +72,7 @@ const SentimentReport = () => {
                 <div className={classNames("tw-flex tw-flex-row tw-mb-4 tw-w-full tw-h-full", {
                     "tw-flex-col": isTabletOrMobile && isPortrait,
                 })}>
-                    <div className={classNames("tw-flex tw-flex-row tw-justify-around tw-w-full tw-border-stone-400 tw-border-4 tw-rounded-lg", {
+                    <div className={classNames("tw-flex tw-flex-row tw-justify-around tw-w-full tw-border-stone-400 tw-py-4 tw-border-4 tw-rounded-lg", {
                         "tw-grid tw-grid-cols-2 tw-gap-1": isTabletOrMobile && isPortrait,
                     })}>
                         <div>
@@ -118,7 +122,9 @@ const SentimentReport = () => {
                     </div>
                 </div>
 
-                <div className="tw-flex tw-flex-row">
+                <div className={classNames("tw-flex tw-flex-row tw-justify-around tw-my-4", {
+                    "tw-flex-col": isTabletOrMobile,
+                })}>
                     <div className="tw-flex tw-flex-col tw-justify-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                         <p className="tw-text-center">ความรู้สึกเชิงบวก-ลบ</p>
                         <div className="tw-flex tw-flex-row tw-justify-center tw-gap-3">
@@ -149,19 +155,32 @@ const SentimentReport = () => {
                                 outerRadius={180} />
                         </div>
                     </div>
-                    <div className="tw-flex tw-flex-col">
-                        <p>ข้อความเชิงบวกสูงสุด</p>
-                        <div>
+                    <div className="tw-flex tw-flex-col tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                        <p className="tw-text-center">ข้อความเชิงบวกสูงสุด</p>
+                        <div className="">
                             <HorizontalBarChart
                                 className={"tw-flex tw-h-fit tw-w-fit tw-max-w-fit tw-max-h-fit"}
                                 data={sentimentPos}
-                                width={740}
+                                width={640}
                                 keyNameX={"value"}
                                 keyNameY={"name"}
+                                onBarClick={redirect}
                             />
                         </div>
                     </div>
-                    <div></div>
+                    <div className="tw-flex tw-flex-col tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                        <p className="tw-text-center">ข้อความเชิงลบสูงสุด</p>
+                        <div className="">
+                            <HorizontalBarChart
+                                className={"tw-flex tw-h-fit tw-w-fit tw-max-w-fit tw-max-h-fit"}
+                                data={sentimentNega}
+                                width={640}
+                                keyNameX={"value"}
+                                keyNameY={"name"}
+                                onBarClick={redirect}
+                            />
+                        </div>
+                    </div>
                 </div>
 
             </div>

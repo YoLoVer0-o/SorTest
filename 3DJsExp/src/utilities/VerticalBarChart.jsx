@@ -14,9 +14,7 @@ const VerticalBarChart = props => {
     ///////////////////////Width Height Bar//////////////////////////////
     const margin = { top: 20, right: 30, bottom: 40, left: 40 };
     const width = props.width - margin.left - margin.right;
-    //console.log(width);
     const height = props.height - margin.top - margin.bottom;
-    //console.log(height);
 
     const svg = d3
       .select(svgRef.current)
@@ -52,24 +50,14 @@ const VerticalBarChart = props => {
       .attr("y", (d) => y(d.value))
       .attr("width", x.bandwidth())
       .attr("height", (d) => height - y(d.value))
-      .style("fill", function (d) {
-        if (d.commentType == "positive") {
-          return "green";
-        } else if (d.commentType == "negative") {
-          return "red";
-        }
+      .style("fill", function () {
         return "yellow";
       })
       .on("mouseover", function () {
         d3.select(this).style("fill", "orange");
       })
       .on("mouseout", function () {
-        d3.select(this).style("fill", function (d) {
-          if (d.commentType == "positive") {
-            return "green";
-          } else if (d.commentType == "negative") {
-            return "red";
-          }
+        d3.select(this).style("fill", function () {
           return "yellow";
         });
       });
@@ -85,9 +73,7 @@ const VerticalBarChart = props => {
   }, [props.data, props.height, props.width]);
 
   return (
-    <div className="tw-flex tw-max-h-fit tw-max-w-fit">
-      <svg className="tw-flex tw-max-h-fit tw-max-w-fit tw-m-4" ref={svgRef}></svg>
-    </div>
+    <svg width={props.width} height={props.height} ref={svgRef}></svg>
   );
 };
 
