@@ -15,8 +15,8 @@ const useResponsive = () => {
     maxDeviceWidth: 1368,
   });
   const isMobile = useMediaQuery({
-    maxDeviceWidth: 926,
-    maxDeviceHeight: 926,
+    maxDeviceWidth: 936,
+    maxDeviceHeight: 936,
   });
   const isPortrait = useMediaQuery({
     query: "(orientation: portrait)",

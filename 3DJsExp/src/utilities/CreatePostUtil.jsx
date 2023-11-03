@@ -3,6 +3,7 @@ import EmojiPicker, { EmojiStyle } from "emoji-picker-react";
 import profile from "../assets/profile.png";
 import { useDropzone } from "react-dropzone";
 import { BsEmojiSmile } from "react-icons/bs";
+import {LiaWindowClose} from "react-icons/lia";
 import { useResponsive } from "../hooks";
 import classNames from "classnames";
 import React, { useState } from "react";
@@ -46,6 +47,7 @@ const CreatePostUtil = () => {
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: "image/*",
+    multiple: true,
     onDrop: (acceptedFiles) => {
       setFiles(
         acceptedFiles.map((file) =>
@@ -64,101 +66,110 @@ const CreatePostUtil = () => {
       </div>
     </div>
   ));
-
+  console.log(images);
   return (
-    <div className="tw-w-full tw-flex tw-justify-center tw-max-h-min tw-h-[80%]">
-      <div className="tw-flex tw-flex-col tw-items-center tw-gap-y-4 tw-w-[80%] tw-h-full tw-border-2">
-        <div className="tw-flex tw-flex-row  tw-gap-x-8">
+    <div className="tw-flex tw-flex-col tw-w-full tw-items-center tw-h-[80%] tw-max-h-max  ">
+      <div>
+        <div className="tw-flex tw-justify-center tw-flex-row tw-w-full tw-gap-x-8">
+          {" "}
           <img
             className="tw-w-12 tw-h-12 tw-rounded-full tw-border-2 tw-border-black"
             src={profile}
           ></img>
           <p className="  tw-text-xl ">Account Name</p>
         </div>
+      </div>
+      <div className={classNames("tw-flex tw-flex-col tw-justify-center tw-h-[80%] ",{
+        "tw-w-[40%]": isDesktopOrLaptop,
+        "tw-w-[40%] ": isTablet && isPortrait,
+        "tw-w-full": isMobile && isPortrait
+      })}>
+      <textarea
+        value={message}
+        onChange={handleMessageChange}
+        placeholder="คุณกำลังคิดอะไรอยู่"
+        className=" tw-text-xl  tw-w-full tw-h-full tw-border-none tw-resize-none tw-outline-none"
+      />
+      <BsEmojiSmile
+        className=" tw-text-3xl  tw-self-end tw-text-gray-700 hover:tw-bg-gray-300 tw-rounded-full tw-flex"
+        onClick={toggleEmoji}
+      />
+      </div>
+      
+      {showEmojiInput && (
+        <div className=" tw-absolute tw-flex tw-justify-center   tw-z-20">
+          <EmojiPicker
+            classNames="tw-relative"
+            emojiStyle={EmojiStyle.NATIVE}
+            onEmojiClick={(emoji) => showEmo(emoji)}
+            // height="20rem"
+          />
+          <button className="tw-absolute tw-top-0 tw-right-0"
+          onClick={toggleEmoji}
+          >
+            <LiaWindowClose className="tw-text-2xl  tw-bg-red-500"/>
+            </button>
+        </div>
+      )}
+      {isShow && (
         <div
-          className={classNames("tw-flex tw-relative tw-flex-col  ", {
-            "tw-w-full": isMobile && isPortrait,
+          className={classNames("tw-relative tw-z-10 tw-w-[40%]", {
+            " tw-w-[40%]": isDesktopOrLaptop,
+            "tw-w-full": isTabletOrMobile && isPortrait,
           })}
         >
-          <textarea
-            value={message}
-            onChange={handleMessageChange}
-            placeholder="คุณกำลังคิดอะไรอยู่"
-            className=" tw-text-xl  tw-border-none tw-resize-none tw-outline-none"
-          />
-          <BsEmojiSmile
-            className=" tw-text-3xl tw-relative tw-self-end tw-text-gray-700 hover:tw-bg-gray-300 tw-rounded-full tw-flex"
-            onClick={toggleEmoji}
-          />
-          {showEmojiInput && (
-            <div className=" tw-absolute tw-left-80">
-              <EmojiPicker
-                emojiStyle={EmojiStyle.NATIVE}
-                onEmojiClick={(emoji) => showEmo(emoji)}
-                // height="20rem"
-              />
-            </div>
-          )}
-        </div>
-        {isShow && (
-          <div
-            className={classNames("tw-relative tw-w-[50%]", {
-              "tw-w-full": isMobile && isPortrait,
-            })}
-          >
-            <Button
-              className="tw-text-black tw-absolute tw-border-black tw-flex tw-right-1 tw-bg-red-800 tw-top-1 tw-z-40 tw-justify-center 
+          <Button
+            className="tw-text-black tw-absolute tw-border-black tw-flex tw-right-1 tw-bg-red-500 tw-top-1 tw-z-40 tw-justify-center
             tw-items-center tw-justify-self-end  "
-              icon={<CloseOutlined />}
-              onClick={() => setIsShow(!isShow)}
-              shape="circle"
-            ></Button>
-            <div
-              {...getRootProps()}
-              className={classNames(
-                "tw-flex tw-justify-center tw-items-center tw-border-[1px] tw-z-10 tw-w-full tw-flex-col tw-h-64 tw-bg-gray-200 tw-border-gray-400 tw-rounded-md hover:tw-bg-gray-300",
-                {
-                  "": isMobile && isPortrait,
-                }
-              )}
-            >
-              <input {...getInputProps()} className="tw-w-full" />
-              <CloudUploadOutlined className="tw-text-4xl" />
-              <p>Drop files here </p>
-            </div>
+            icon={<CloseOutlined />}
+            onClick={() => setIsShow(!isShow)}
+            shape="circle"
+          ></Button>
+          <div
+            {...getRootProps()}
+            className={classNames(
+              "tw-flex tw-justify-center tw-items-center tw-border-dashed tw-border-2 tw-z-10 tw-w-full tw-flex-col tw-h-64 tw-bg-gray-100  hover:tw-bg-gray-200 tw-border-gray-400 tw-rounded-md",
+              {
+                " tw-w-full tw-min-w-full": isMobile  && isPortrait,
+              }
+            )}
+          >
+            <input {...getInputProps()} className="tw-w-full" />
+            <CloudUploadOutlined className="tw-text-4xl" />
+            <p>Drop files here </p>
+            <div>{images}</div>
           </div>
-        )}
-        <div>{images}</div>
-        <div
-          className={classNames(
-            "tw-grid tw-grid-cols-8  tw-border-[1px] tw-justify-self-end   tw-items-center tw-rounded-md tw-border-gray-400 tw-w-[80%] tw-h-12",
-            {
-              " ": isDesktopOrLaptop,
-              "  ": isTablet,
-              "": isMobile && isPortrait,
-            }
-          )}
-        >
-          <p className="tw-col-span-2">Add to your post</p>
-          <button
-            className=" tw-rounded-full hover:tw-bg-gray-300"
-            onClick={() => setIsShow(true)}
-          >
-            <img className="tw-w-6 tw-h-6 " src={Image.selectPic} />
-          </button>
-          <img className="tw-w-6 tw-h-6" src={Image.tagOther} />
-          <img className="tw-w-6 tw-h-6" src={Image.emoji} />
-          <img className="tw-w-6 tw-h-6" src={Image.checkIn} />
-          <img className="tw-w-6 tw-h-6" src={Image.Gif} />
-          <button
-            className="tw-rounded-full tw-flex tw-justify-center
-           hover:tw-bg-gray-200 tw-w-6 tw-h-6 tw-items-center tw-text-center"
-          >
-            {" "}
-            ...
-          </button>
         </div>
+      )}
+      
+      <div className=" tw-flex tw-h-[50%] tw-w-full tw-items-end tw-justify-center ">
+      <div
+        className={classNames("tw-flex tw-flex-row tw-h-12  tw-border-[1px]  tw-border-gray-300 tw-rounded-md tw-justify-center tw-items-center tw-gap-x-4 ",{
+          "tw-w-[40%]": isDesktopOrLaptop,
+          " tw-w-full": isMobile && isPortrait
+        })}
+      >
+        <p className="tw-col-span-2">Add to your post</p>
+        <button
+          className=" tw-rounded-full tw-w-max  hover:tw-bg-gray-300"
+          onClick={() => setIsShow(true)}
+        >
+          <img className="tw-w-6 tw-h-6 " src={Image.selectPic} />
+        </button>
+        <img className="tw-w-6 tw-h-6" src={Image.tagOther} />
+        <img className="tw-w-6 tw-h-6" src={Image.emoji} />
+        <img className="tw-w-6 tw-h-6" src={Image.checkIn} />
+        <img className="tw-w-6 tw-h-6" src={Image.Gif} />
+        <button
+          className="tw-rounded-full tw-flex tw-justify-center
+           hover:tw-bg-gray-200 tw-w-6 tw-h-6 tw-items-center tw-text-center"
+        >
+          {" "}
+          ...
+        </button>
       </div>
+      </div>
+     
     </div>
   );
 };
