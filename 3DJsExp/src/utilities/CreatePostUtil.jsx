@@ -1,5 +1,6 @@
 import { CloudUploadOutlined, CloseOutlined } from "@ant-design/icons";
 import EmojiPicker, { EmojiStyle } from "emoji-picker-react";
+import  DropDownPostTarget  from "../utilities/DropDownPostTarget";
 import profile from "../assets/profile.png";
 import { useDropzone } from "react-dropzone";
 import { BsEmojiSmile } from "react-icons/bs";
@@ -76,7 +77,10 @@ const CreatePostUtil = () => {
             className="tw-w-12 tw-h-12 tw-rounded-full tw-border-2 tw-border-black"
             src={profile}
           ></img>
+          <div>
           <p className="  tw-text-xl ">Account Name</p>
+          <DropDownPostTarget/>
+          </div>
         </div>
       </div>
       <div className={classNames("tw-flex tw-flex-col tw-justify-center tw-h-[80%] ",{
