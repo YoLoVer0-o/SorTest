@@ -3,6 +3,7 @@ import { Button, Modal, Radio, Space } from "antd";
 import PostTag from "../assets/PostTag";
 const DropDownPostTarget = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  //  const [changeLable, setChangeLable] = useState("เพื่อน");
   const [value, setValue] = useState(1);
   const showModal = () => {
     setIsModalOpen(true);
@@ -17,6 +18,11 @@ const DropDownPostTarget = () => {
     console.log("radio checked", e.target.value);
     setValue(e.target.value);
   };
+
+  // const handleChange = (label) => {
+  //   setChangeLable (label)
+  // };
+  
   //   const [number, setNumber] = useState();
   //   const ChangeComp = () => {
   //     switch (number) {
@@ -31,7 +37,7 @@ const DropDownPostTarget = () => {
 
   return (
     <div>
-      <Button onClick={showModal}>Open Modal</Button>
+      <Button onClick={showModal}>test</Button>
       <Modal
         centered
         title="กลุ่มเป้าหมายของโพสต์"
@@ -49,6 +55,7 @@ const DropDownPostTarget = () => {
             <Space direction="vertical" className="tw-w-full">
               <Radio
                 value={1}
+                label="สาธารณะ"
                 className=" hover:tw-bg-gray-200 tw-items-center tw-rounded-md tw-h-16 tw-w-full"
               >
                 <div className="tw-flex tw-flex-row tw-items-center tw-gap-x-2">
@@ -61,6 +68,7 @@ const DropDownPostTarget = () => {
               </Radio>
               <Radio
                 value={2}
+                label="เพื่อน"
                 className="hover:tw-bg-gray-200 tw-items-center tw-rounded-md tw-h-16 tw-w-full"
               >
                 <div className="tw-flex tw-flex-row tw-items-center tw-gap-x-2">
@@ -73,6 +81,7 @@ const DropDownPostTarget = () => {
               </Radio>
               <Radio
                 value={3}
+                label="เพื่อนยกเว้น ..."
                 className="hover:tw-bg-gray-200 tw-items-center tw-rounded-md tw-h-16 tw-w-full"
               >
                 <div className="tw-flex tw-flex-row tw-items-center tw-gap-x-2">
@@ -85,6 +94,7 @@ const DropDownPostTarget = () => {
               </Radio>
               <Radio
                 value={4}
+                label="เฉพาะฉัน"
                 className="hover:tw-bg-gray-200 tw-items-center tw-rounded-md tw-h-16 tw-w-full"
               >
                 <div className="tw-flex tw-flex-row tw-items-center tw-gap-x-2">
@@ -97,6 +107,7 @@ const DropDownPostTarget = () => {
               </Radio>
               <Radio
                 value={5}
+                label="เพื่อนที่เจาะจง"
                 className="hover:tw-bg-gray-200 tw-items-center tw-rounded-md tw-h-16 tw-w-full"
               >
                 <div className="tw-flex tw-flex-row tw-items-center tw-gap-x-2">
@@ -109,6 +120,7 @@ const DropDownPostTarget = () => {
               </Radio>
               <Radio
                 value={6}
+                label="กำหนดเอง"
                 className="hover:tw-bg-gray-200 tw-items-center tw-rounded-md tw-h-16 tw-w-full"
               >
                 <div className="tw-flex tw-flex-row tw-items-center tw-gap-x-2">
@@ -123,7 +135,10 @@ const DropDownPostTarget = () => {
           </Radio.Group>
           <div className="tw-grid tw-grid-cols-2 tw-gap-x-2 tw-items-end tw-w-full ">
             <button className="tw-bg-gray-200 tw-rounded-md">ยกเลิก</button>
-            <button className="tw-bg-blue-600 tw-text-white tw-rounded-md">
+            <button
+              // onClick={handleChange}
+              className="tw-bg-blue-600 tw-text-white tw-rounded-md"
+            >
               เรียบร้อย
             </button>
           </div>
