@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button, Modal, Radio, Space } from "antd";
-import PostTag from "../assets/PostTag"
+import PostTag from "../assets/PostTag";
 const DropDownPostTarget = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [value, setValue] = useState(1);
@@ -33,43 +33,99 @@ const DropDownPostTarget = () => {
     <div>
       <Button onClick={showModal}>Open Modal</Button>
       <Modal
-      centered
+        centered
         title="กลุ่มเป้าหมายของโพสต์"
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
         footer={null}
-       
       >
         <div className="tw-grid ">
-          <Radio.Group onChange={onChange} 
-          value={value}
-          className="tw-w-full tw-flex">
-            <Space direction="vertical"
-            className="tw-w-full">
-              <Radio value={1} className="tw-flex tw-flex-row hover:tw-bg-gray-200 tw-items-center tw-rounded-sm tw-h-16 tw-w-full">
-               <p> สาธารณะ</p><img src={PostTag.publicPost}/>
+          <Radio.Group
+            onChange={onChange}
+            value={value}
+            className="tw-w-full tw-flex"
+          >
+            <Space direction="vertical" className="tw-w-full">
+              <Radio
+                value={1}
+                className=" hover:tw-bg-gray-200 tw-items-center tw-rounded-md tw-h-16 tw-w-full"
+              >
+                <div className="tw-flex tw-flex-row tw-items-center tw-gap-x-2">
+                  <img
+                    className="tw-bg-gray-200 tw-rounded-full tw-p-3"
+                    src={PostTag.publicPost}
+                  />
+                  <p> สาธารณะ</p>
+                </div>
               </Radio>
-              <Radio value={2} className="hover:tw-bg-gray-200 tw-items-center tw-rounded-sm tw-h-16 tw-w-full">
-                <p>เพื่อน</p> <img src={PostTag.tagFriend}/> 
+              <Radio
+                value={2}
+                className="hover:tw-bg-gray-200 tw-items-center tw-rounded-md tw-h-16 tw-w-full"
+              >
+                <div className="tw-flex tw-flex-row tw-items-center tw-gap-x-2">
+                  <img
+                    className="tw-bg-gray-200 tw-rounded-full tw-p-3"
+                    src={PostTag.tagFriend}
+                  />
+                  <p>เพื่อน</p>
+                </div>
               </Radio>
-              <Radio value={3} className="hover:tw-bg-gray-200 tw-items-center tw-rounded-sm tw-h-16 tw-w-full">
-                <p>เพื่อนยกเว้น ...</p><img src={PostTag.tagExceptFriend}/> 
+              <Radio
+                value={3}
+                className="hover:tw-bg-gray-200 tw-items-center tw-rounded-md tw-h-16 tw-w-full"
+              >
+                <div className="tw-flex tw-flex-row tw-items-center tw-gap-x-2">
+                  <img
+                    className="tw-bg-gray-200 tw-rounded-full tw-p-3"
+                    src={PostTag.tagExceptFriend}
+                  />
+                  <p>เพื่อนยกเว้น ...</p>
+                </div>
               </Radio>
-              <Radio value={4} className="hover:tw-bg-gray-200 tw-items-center tw-rounded-sm tw-h-16 tw-w-full">
-              <p>เฉพาะฉัน</p><img src={PostTag.onlyMe}/> 
+              <Radio
+                value={4}
+                className="hover:tw-bg-gray-200 tw-items-center tw-rounded-md tw-h-16 tw-w-full"
+              >
+                <div className="tw-flex tw-flex-row tw-items-center tw-gap-x-2">
+                  <img
+                    className="tw-bg-gray-200 tw-rounded-full tw-p-3"
+                    src={PostTag.onlyMe}
+                  />
+                  <p>เฉพาะฉัน</p>
+                </div>
               </Radio>
-              <Radio value={5} className="hover:tw-bg-gray-200 tw-items-center tw-rounded-sm tw-h-16 tw-w-full">
-              <p>เพื่อนที่เจาะจง</p><img src={PostTag.tagSome}/> 
+              <Radio
+                value={5}
+                className="hover:tw-bg-gray-200 tw-items-center tw-rounded-md tw-h-16 tw-w-full"
+              >
+                <div className="tw-flex tw-flex-row tw-items-center tw-gap-x-2">
+                  <img
+                    className="tw-bg-gray-200 tw-rounded-full tw-p-3"
+                    src={PostTag.tagSome}
+                  />
+                  <p>เพื่อนที่เจาะจง</p>
+                </div>
               </Radio>
-              <Radio value={6} className="hover:tw-bg-gray-200 tw-items-center tw-rounded-sm tw-h-16 tw-w-full">
-              <p>กำหนดเอง</p><img src={PostTag.custom}/> 
+              <Radio
+                value={6}
+                className="hover:tw-bg-gray-200 tw-items-center tw-rounded-md tw-h-16 tw-w-full"
+              >
+                <div className="tw-flex tw-flex-row tw-items-center tw-gap-x-2">
+                  <img
+                    className="tw-bg-gray-200 tw-rounded-full tw-p-3"
+                    src={PostTag.custom}
+                  />
+                  <p>กำหนดเอง</p>
+                </div>
               </Radio>
             </Space>
           </Radio.Group>
           <div className="tw-grid tw-grid-cols-2 tw-gap-x-2 tw-items-end tw-w-full ">
             <button className="tw-bg-gray-200 tw-rounded-md">ยกเลิก</button>
-            <button className="tw-bg-blue-600 tw-text-white tw-rounded-md">เรียบร้อย</button>
+            <button className="tw-bg-blue-600 tw-text-white tw-rounded-md">
+              เรียบร้อย
+            </button>
           </div>
         </div>
       </Modal>
