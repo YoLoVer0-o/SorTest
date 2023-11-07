@@ -6,7 +6,7 @@ const Arc = ({ data, index, createArc, colors, displayText, displayValue }) => {
 
     return (
         <g key={index} className="arc">
-            <path className="arc" d={createArc(data)} fill={} />
+            <path className="arc" d={createArc(data)} fill={colors} />
             <text
                 transform={`translate(${createArc.centroid(data)[0]}, ${createArc.centroid(data)[1] + 10})`}
                 textAnchor="middle"
@@ -36,6 +36,7 @@ const PieChart = props => {
 
     const keyName = props.keyName;
     const displayText = props.displayText;
+    const calColor = props.calColor;
 
     const createPie = d3
         .pie()
@@ -56,7 +57,7 @@ const PieChart = props => {
                         data={d}
                         index={i}
                         createArc={createArc}
-                        colors={colors}
+                        colors={calColor(d.data[`${displayText}`])}
                         displayText={d.data[`${displayText}`]}
                         displayValue={d.data[`${keyName}`]}
                     />
@@ -74,6 +75,7 @@ PieChart.propTypes = {
     height: PropTypes.number,
     keyName: PropTypes.string,
     displayText: PropTypes.string,
+    calColor: PropTypes.func,
 }
 
 Arc.propTypes = {

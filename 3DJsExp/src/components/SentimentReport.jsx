@@ -16,6 +16,7 @@ const SentimentReport = () => {
     const [pageSize, setPageSize] = useState(5);
     const [modalToggle, setModalToggle] = useState(false);
     const [message, setMessage] = useState({});
+    const [displayComments, setDisplayComments] = useState("");
     const topRef = useRef(null);
 
     const {
@@ -39,7 +40,20 @@ const SentimentReport = () => {
 
     const redirect = (data) => {
         console.log(data);
+        setDisplayComments(data);
         setDetails(data.Comment);
+    };
+
+    const colorSet = (data) => {
+        if (data == "positive") {
+            return "#22c55e";
+        }
+        else if (data == "negative") {
+            return "#ef4444";
+        }
+        else {
+            return "#0284c7";
+        }
     };
 
     const columns = [
@@ -89,7 +103,7 @@ const SentimentReport = () => {
                 <div className={classNames("tw-flex tw-flex-row tw-mb-4 tw-w-full tw-h-full", {
                     "tw-flex-col": isTabletOrMobile && isPortrait,
                 })}>
-                    <div className={classNames("tw-flex tw-flex-row tw-justify-around tw-w-full tw-border-stone-400 tw-py-4 tw-border-4 tw-rounded-lg", {
+                    <div className={classNames("tw-flex tw-flex-row tw-justify-around tw-w-full tw-border-stone-400 tw-py-4 tw-border-4 tw-rounded-lg tw-text-md", {
                         "tw-grid tw-grid-cols-2 tw-gap-1": isTabletOrMobile && isPortrait,
                     })}>
                         <div>
@@ -161,15 +175,19 @@ const SentimentReport = () => {
                                 <p>เชิงลบ</p>
                             </div>
                         </div>
-                        <div>
+                        <div className={classNames("", {
+                            "tw-flex tw-justify-center": isTabletOrMobile,
+                        })}>
                             <PieChart
                                 data={sentimentAll}
                                 keyName={"value"}
                                 displayText={"name"}
-                                width={360}
-                                height={360}
-                                innerRadius={60}
-                                outerRadius={180} />
+                                width={isTabletOrMobile ? 280 : 360}
+                                height={isTabletOrMobile ? 280 : 360}
+                                innerRadius={isTabletOrMobile ? 30 : 60}
+                                outerRadius={isTabletOrMobile ? 140 : 180}
+                                calColor={colorSet}
+                            />
                         </div>
                     </div>
                     <div className="tw-flex tw-flex-col tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
@@ -181,6 +199,8 @@ const SentimentReport = () => {
                                 width={640}
                                 keyNameX={"value"}
                                 keyNameY={"name"}
+                                keyNameColor={"positive"}
+                                calColor={colorSet}
                                 onBarClick={redirect}
                             />
                         </div>
@@ -194,6 +214,8 @@ const SentimentReport = () => {
                                 width={640}
                                 keyNameX={"value"}
                                 keyNameY={"name"}
+                                keyNameColor={"negative"}
+                                calColor={colorSet}
                                 onBarClick={redirect}
                             />
                         </div>
@@ -202,16 +224,23 @@ const SentimentReport = () => {
 
             </div>
 
-            <div className={classNames("", {
+            <div className={classNames("tw-my-12 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4", {
                 "tw-overflow-auto": isTabletOrMobile && isPortrait,
             })}>
-                <DataTable
-                    columns={columns}
-                    data={details}
-                    setPageSize={pageSize}
-                    useRowClick={true}
-                    onRowClick={(selectedRows) => showModal(selectedRows)}
-                />
+                {displayComments !== "" && (
+                    <p className="tw-text-2xl tw-text-center tw-my-4">แสดงความคิดเห็น {displayComments.commentType == "positive" ? "แง่บวก" : "แง่ลบ"} ของ {displayComments.name} </p>
+                )}
+                <div className={classNames("", {
+                    "tw-overflow-auto": isTabletOrMobile && isPortrait,
+                })}>
+                    <DataTable
+                        columns={columns}
+                        data={details}
+                        setPageSize={pageSize}
+                        useRowClick={true}
+                        onRowClick={(selectedRows) => showModal(selectedRows)}
+                    />
+                </div>
                 <FeedbackModal
                     modalToggle={modalToggle}
                     handleCancel={handleCancel}
