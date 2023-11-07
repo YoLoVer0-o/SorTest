@@ -1,13 +1,22 @@
-import { useRef } from "react";
-import { HorizontalBarChart, PieChart, ToTopButton } from "../utilities";
-import { FloatButton, Tooltip } from "antd";
+import { useState, useRef } from "react";
+import { HorizontalBarChart, PieChart, ToTopButton, DataTable } from "../utilities";
+import { Button, FloatButton, Tooltip } from "antd";
 import classNames from "classnames";
 import { useResponsive } from "../hooks";
-import { DataTable } from "../utilities";
+import { FeedbackModal } from "../components";
 import { MoreOutlined, FilePdfOutlined } from "@ant-design/icons";
 import { sentimentAll, sentimentNega, sentimentPos } from "../mock";
+import {
+    ColumnHeightOutlined,
+    VerticalAlignMiddleOutlined,
+} from '@ant-design/icons';
 
 const SentimentReport = () => {
+    const [details, setDetails] = useState([]);
+    const [pageSize, setPageSize] = useState(5);
+    const [modalToggle, setModalToggle] = useState(false);
+    const [message, setMessage] = useState({});
+    const topRef = useRef(null);
 
     const {
         isDesktopOrLaptop,
@@ -16,20 +25,28 @@ const SentimentReport = () => {
         isTablet,
         isMobile,
         isPortrait,
-        isRetina,
     } = useResponsive();
 
-    const topRef = useRef(null);
+    const showModal = (data) => {
+        console.log(data);
+        setMessage(data);
+        setModalToggle(true);
+    };
+
+    const handleCancel = () => {
+        setModalToggle(false);
+    };
 
     const redirect = (data) => {
         console.log(data);
+        setDetails(data.Comment);
     };
 
     const columns = [
         {
             title: 'ลำดับ',
-            dataIndex: 'id',
-            key: 'id',
+            dataIndex: 'key',
+            key: 'key',
             align: "center",
             width: 150,
             className: 'tw-text-white tw-bg-[#303c6c]',
@@ -52,8 +69,8 @@ const SentimentReport = () => {
         },
         {
             title: 'ผู้โพสต์',
-            dataIndex: 'username',
-            key: 'username',
+            dataIndex: 'userName',
+            key: 'userName',
             align: "center",
             width: 100,
             className: 'tw-text-white tw-bg-[#303c6c]',
@@ -129,17 +146,17 @@ const SentimentReport = () => {
                         <p className="tw-text-center">ความรู้สึกเชิงบวก-ลบ</p>
                         <div className="tw-flex tw-flex-row tw-justify-center tw-gap-3">
                             <div className="tw-flex tw-flex-row tw-gap-1 ">
-                                <div className="tw-w-6 tw-h-6 tw-border-2 tw-border-black tw-rounded-full">
+                                <div className="tw-w-6 tw-h-6 tw-border-2 tw-border-black tw-rounded-full tw-bg-green-500">
                                 </div>
                                 <p>เชิงบวก</p>
                             </div>
                             <div className="tw-flex tw-flex-row tw-gap-1">
-                                <div className="tw-w-6 tw-h-6 tw-border-2 tw-border-black tw-rounded-full">
+                                <div className="tw-w-6 tw-h-6 tw-border-2 tw-border-black tw-rounded-full tw-bg-sky-600">
                                 </div>
                                 <p>เป็นกลาง</p>
                             </div>
                             <div className="tw-flex tw-flex-row tw-gap-1">
-                                <div className="tw-w-6 tw-h-6 tw-border-2 tw-border-black tw-rounded-full">
+                                <div className="tw-w-6 tw-h-6 tw-border-2 tw-border-black tw-rounded-full tw-bg-red-500">
                                 </div>
                                 <p>เชิงลบ</p>
                             </div>
@@ -190,7 +207,40 @@ const SentimentReport = () => {
             })}>
                 <DataTable
                     columns={columns}
+                    data={details}
+                    setPageSize={pageSize}
+                    useRowClick={true}
+                    onRowClick={(selectedRows) => showModal(selectedRows)}
                 />
+                <FeedbackModal
+                    modalToggle={modalToggle}
+                    handleCancel={handleCancel}
+                    modalData={message}
+                />
+                <div className=" tw-flex tw-flex-row tw-my-6 tw-gap-4">
+                    {pageSize < 20 && (
+                        <Tooltip title="แสดงเพิ่มเติม">
+                            <Button
+                                className="tw-border-black tw-border-2 tw-bg-green-400 tw-drop-shadow-md hover:tw-bg-white hover:tw-border-green-600 hover:tw-text-green-600"
+                                onClick={() => setPageSize(20)}
+                                icon={<ColumnHeightOutlined />}
+                            >
+                                show more
+                            </Button>
+                        </Tooltip>
+                    )}
+                    {pageSize >= 20 && (
+                        <Tooltip title="แสดงน้อยลง">
+                            <Button
+                                className="tw-border-black tw-border-2 tw-bg-yellow-400 tw-drop-shadow-md hover:tw-bg-white hover:tw-border-yellow-600 hover:tw-text-yellow-600"
+                                onClick={() => setPageSize(5)}
+                                icon={<VerticalAlignMiddleOutlined />}
+                            >
+                                show less
+                            </Button>
+                        </Tooltip>
+                    )}
+                </div>
             </div>
 
             <Tooltip placement="left" title={"เพิ่มเติม"} color="blue">
@@ -202,9 +252,8 @@ const SentimentReport = () => {
                 >
                     <Tooltip placement="left" title={"สร้างรายงานPDF"} color="blue">
                         <FloatButton
-                            className="tw-flex tw-right-2 tw-bottom-32 tw-z-10"
+                            className="tw-flex tw-right-2 tw-bottom-32 tw-z-10 tw-bg-red-400"
                             icon={<FilePdfOutlined />}
-
                         />
                     </Tooltip>
                     <ToTopButton topRef={topRef} />

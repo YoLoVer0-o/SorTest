@@ -6,13 +6,13 @@ const Arc = ({ data, index, createArc, colors, displayText, displayValue }) => {
 
     return (
         <g key={index} className="arc">
-            <path className="arc" d={createArc(data)} fill={colors(index)} />
+            <path className="arc" d={createArc(data)} fill={} />
             <text
                 transform={`translate(${createArc.centroid(data)[0]}, ${createArc.centroid(data)[1] + 10})`}
                 textAnchor="middle"
                 alignmentBaseline="text-after-edge"
                 fill="white"
-                fontSize="10"
+                fontSize="16"
                 style={{ zIndex: 1000 }}
             >
                 {displayText}
@@ -23,7 +23,7 @@ const Arc = ({ data, index, createArc, colors, displayText, displayValue }) => {
                 textAnchor="middle"
                 alignmentBaseline="mathematical"
                 fill="white"
-                fontSize="10"
+                fontSize="16"
                 style={{ zIndex: 1000 }}
             >
                 {displayValue}
@@ -45,7 +45,6 @@ const PieChart = props => {
         .arc()
         .innerRadius(props.innerRadius)
         .outerRadius(props.outerRadius);
-    const colors = d3.scaleOrdinal(d3.schemeCategory10);
     const data = createPie(props.data);
 
     return (

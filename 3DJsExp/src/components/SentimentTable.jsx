@@ -184,8 +184,8 @@ const SentimentTable = () => {
                 "tw-overflow-auto": isTabletOrMobile && isPortrait,
             })}>
                 <DataTable
-                    data={newSentiment}
                     columns={columns}
+                    data={newSentiment}
                     setPageSize={pageSize}
                     onRowsSelected={setSelectedRows}
                     useRowClick={true}

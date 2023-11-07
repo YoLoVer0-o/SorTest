@@ -16,7 +16,6 @@ const HorizontalBarChart = props => {
         isTablet,
         isMobile,
         isPortrait,
-        isRetina,
     } = useResponsive();
 
     let onBarClick = props.onBarClick;
@@ -65,6 +64,14 @@ const HorizontalBarChart = props => {
             .attr("height", y.bandwidth())
             .on("click", function (event, d) {
                 onBarClick(d);
+            })
+            .on("mouseover", function () {
+                d3.select(this).style("fill", "orange");
+            })
+            .on("mouseout", function () {
+                d3.select(this).style("fill", function () {
+                    return "steelblue";
+                });
             });
 
         svg.append("g")
