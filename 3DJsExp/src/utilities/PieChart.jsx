@@ -6,13 +6,13 @@ const Arc = ({ data, index, createArc, colors, displayText, displayValue }) => {
 
     return (
         <g key={index} className="arc">
-            <path className="arc" d={createArc(data)} fill={colors(index)} />
+            <path className="arc" d={createArc(data)} fill={colors} />
             <text
                 transform={`translate(${createArc.centroid(data)[0]}, ${createArc.centroid(data)[1] + 10})`}
                 textAnchor="middle"
                 alignmentBaseline="text-after-edge"
                 fill="white"
-                fontSize="10"
+                fontSize="16"
                 style={{ zIndex: 1000 }}
             >
                 {displayText}
@@ -23,7 +23,7 @@ const Arc = ({ data, index, createArc, colors, displayText, displayValue }) => {
                 textAnchor="middle"
                 alignmentBaseline="mathematical"
                 fill="white"
-                fontSize="10"
+                fontSize="16"
                 style={{ zIndex: 1000 }}
             >
                 {displayValue}
@@ -36,6 +36,7 @@ const PieChart = props => {
 
     const keyName = props.keyName;
     const displayText = props.displayText;
+    const calColor = props.calColor;
 
     const createPie = d3
         .pie()
@@ -45,7 +46,6 @@ const PieChart = props => {
         .arc()
         .innerRadius(props.innerRadius)
         .outerRadius(props.outerRadius);
-    const colors = d3.scaleOrdinal(d3.schemeCategory10);
     const data = createPie(props.data);
 
     return (
@@ -57,7 +57,7 @@ const PieChart = props => {
                         data={d}
                         index={i}
                         createArc={createArc}
-                        colors={colors}
+                        colors={calColor(d.data[`${displayText}`])}
                         displayText={d.data[`${displayText}`]}
                         displayValue={d.data[`${keyName}`]}
                     />
@@ -75,13 +75,14 @@ PieChart.propTypes = {
     height: PropTypes.number,
     keyName: PropTypes.string,
     displayText: PropTypes.string,
+    calColor: PropTypes.func,
 }
 
 Arc.propTypes = {
     data: PropTypes.object,
     index: PropTypes.number,
     createArc: PropTypes.func,
-    colors: PropTypes.func,
+    colors: PropTypes.string,
     displayText: PropTypes.string,
     displayValue: PropTypes.number,
     centroid: PropTypes.func,

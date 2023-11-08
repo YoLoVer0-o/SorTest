@@ -3,10 +3,7 @@ import { newSentiment } from "../mock";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Tooltip } from "antd";
-import {
-    ColumnHeightOutlined,
-    VerticalAlignMiddleOutlined,
-} from '@ant-design/icons';
+import { ColumnHeightOutlined, VerticalAlignMiddleOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 dayjs.extend(isSameOrBefore)
@@ -24,7 +21,7 @@ const SentimentTable = () => {
 
     const navigate = useNavigate();
 
-    const { isDesktopOrLaptop, isBigScreen, isTabletOrMobile, isPortrait, isLandscape } = useResponsive();
+    const { isTabletOrMobile, isPortrait } = useResponsive();
 
     const columns = [
         {
@@ -50,7 +47,7 @@ const SentimentTable = () => {
                 <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
                     {record?.tag.map(tag => (
                         <Tooltip key={tag} title={tag}>
-                            <div className=" tw-w-max tw-rounded-md tw-border-2 tw-border-black tw-text-center tw-text-white tw-bg-violet-600" >
+                            <div className=" tw-w-max tw-rounded-md tw-p-2 tw-border-2 tw-border-black tw-text-center tw-text-white tw-bg-violet-600" >
                                 {tag}
                             </div>
                         </Tooltip>
@@ -105,13 +102,12 @@ const SentimentTable = () => {
             filteredValue: [searchBot],
             onFilter: (value, record) => (
                 (value.split(",")).some(group => String(record?.group).includes(group))
-                // value.split(",").map(group => String(record?.group).includes(group))
             ),
             render: (text, record) => (
                 <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
                     {record?.group.map(group => (
                         <Tooltip key={group} title={group}>
-                            <div className="tw-rounded-md tw-border-2 tw-border-black tw-w-max tw-text-center tw-text-white tw-bg-violet-600" >
+                            <div className="tw-rounded-md tw-border-2 tw-p-2 tw-border-black tw-w-max tw-text-center tw-text-white tw-bg-yellow-600" >
                                 {group}
                             </div>
                         </Tooltip>
@@ -129,7 +125,12 @@ const SentimentTable = () => {
             render: (text, record) => (
                 <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
                     <Tooltip title={record?.sentimentType}>
-                        <div className="tw-rounded-md tw-border-2 tw-border-black tw-w-max tw-text-center tw-text-white tw-bg-violet-600" >
+                        <div className={
+                            classNames("tw-rounded-md tw-border-2 tw-border-black tw-w-max tw-text-center tw-text-white tw-p-2", {
+                                "tw-bg-green-600": record?.sentimentType == "positive",
+                                "tw-bg-red-600": record?.sentimentType == "negative",
+                                "tw-bg-sky-600": record?.sentimentType == "neutral",
+                            })} >
                             {record?.sentimentType}
                         </div>
                     </Tooltip>
@@ -181,11 +182,11 @@ const SentimentTable = () => {
                 </div>
             </div>
             <div className={classNames("", {
-                "tw-overflow-auto": isTabletOrMobile && isPortrait,
+                "tw-overflow-auto tw-min-h-full": isTabletOrMobile && isPortrait,
             })}>
                 <DataTable
-                    data={newSentiment}
                     columns={columns}
+                    data={newSentiment}
                     setPageSize={pageSize}
                     onRowsSelected={setSelectedRows}
                     useRowClick={true}

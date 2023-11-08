@@ -9,15 +9,7 @@ const HorizontalBarChart = props => {
 
     const svgRef = useRef(null);
 
-    const {
-        isDesktopOrLaptop,
-        isBigScreen,
-        isTabletOrMobile,
-        isTablet,
-        isMobile,
-        isPortrait,
-        isRetina,
-    } = useResponsive();
+    const { isTabletOrMobile } = useResponsive();
 
     let onBarClick = props.onBarClick;
 
@@ -25,6 +17,8 @@ const HorizontalBarChart = props => {
 
         const keyNameX = props.keyNameX;
         const keyNameY = props.keyNameY;
+        const keyNameColor = props.keyNameColor;
+        const calColor = props.calColor;
 
         const barHeight = isTabletOrMobile ? 70 : 35;
         const marginTop = 30;
@@ -55,7 +49,7 @@ const HorizontalBarChart = props => {
             .attr("style", "max-width: 100%; height: auto;");
 
         svg.append("g")
-            .attr("fill", "steelblue")
+            .attr("fill", calColor(keyNameColor))
             .selectAll()
             .data(data)
             .join("rect")
@@ -65,6 +59,14 @@ const HorizontalBarChart = props => {
             .attr("height", y.bandwidth())
             .on("click", function (event, d) {
                 onBarClick(d);
+            })
+            .on("mouseover", function () {
+                d3.select(this).style("fill", "orange");
+            })
+            .on("mouseout", function () {
+                d3.select(this).style("fill", function () {
+                    return calColor(keyNameColor);
+                });
             });
 
         svg.append("g")
@@ -109,6 +111,9 @@ HorizontalBarChart.propTypes = {
     width: PropTypes.number,
     keyNameX: PropTypes.string,
     keyNameY: PropTypes.string,
+    keyNameColor: PropTypes.string,
+    calColor: PropTypes.func,
+
 }
 
 export default HorizontalBarChart;

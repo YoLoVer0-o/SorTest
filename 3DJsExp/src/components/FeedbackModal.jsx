@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Button } from 'antd';
+import { Modal } from 'antd';
 
 const FeedbackModal = props => {
 
@@ -11,14 +11,8 @@ const FeedbackModal = props => {
     const [isModalOpen, setIsModalOpen] = useState(modalToggle);
     const [data, setData] = useState(modalData);
 
-    const [visibleComments, setVisibleComments] = useState(5);
-
-    const loadMoreComments = () => {
-        setVisibleComments(visibleComments + 5);
-    };
 
     useEffect(() => {
-        //console.log("data selected");
         setData(modalData);
     }, [modalData]);
 
@@ -27,43 +21,28 @@ const FeedbackModal = props => {
     }, [modalToggle]);
 
     return (
-        <>
-            <Modal
-                className='tw-max-h-fit tw-max-w-fit'
-                title="Comment Modal"
-                open={isModalOpen}
-                onCancel={handleCancel}
-                footer={null}>
-                {data.length != 0 && (
-                    <div className='tw-m-6'>
-                        <p className='tw-text-center tw-font-extrabold tw-text-xl'>{data.commentType} comments of {data.name}</p>
-                        <p className='tw-font-bold tw-m-4'>comments: {data.value} </p>
-                        <div className='tw-overflow-y-auto tw-h-[19.5rem]'>
-                            {data.Comment.slice(0, visibleComments).map((comment, index) => (
-                                <div key={index} className='tw-border-black tw-border-4 tw-rounded-sm tw-my-2 tw-p-4'>
-                                    <div>
-                                        <span className='tw-font-extrabold tw-text-lg'>user: </span>
-                                        <span className='tw-font-bold'> {comment.userName}</span>
-                                    </div>
-                                    <div>
-                                        <span className='tw-font-extrabold tw-text-lg'>said: </span>
-                                        <span className='tw-font-bold'>{comment.message}</span>
-                                    </div>
-                                </div>
-                            ))}
+        <Modal
+            className='tw-max-h-fit tw-max-w-fit'
+            title={'ความคิดเห็นที่ ' + data.key}
+            open={isModalOpen}
+            onCancel={handleCancel}
+            footer={null} >
+            <div className='tw-m-6'>
+                <p className='tw-text-center tw-font-extrabold tw-text-xl'> โพสต์เมื่อวันที่: {data.timestamp}</p>
+                <div className='tw-overflow-y-auto tw-h-full tw-w-full'>
+                    <div className='tw-border-black tw-border-4 tw-rounded-sm tw-my-2 tw-p-4'>
+                        <div>
+                            <span className='tw-font-extrabold tw-text-lg'>ผู้โพสต์: </span>
+                            <span className='tw-font-bold'> {data.userName}</span>
                         </div>
-                        {visibleComments < data.Comment.length && (
-                            <Button
-                                type="primary"
-                                className='tw-bg-black'
-                                onClick={loadMoreComments}
-                            >
-                                Load More
-                            </Button>
-                        )}
-                    </div>)}
-            </Modal>
-        </>
+                        <div>
+                            <span className='tw-font-extrabold tw-text-lg'>เนื้อหา: </span>
+                            <span className='tw-font-bold'>{data.message}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </Modal >
     );
 };
 
