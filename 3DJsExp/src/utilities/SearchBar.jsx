@@ -15,13 +15,7 @@ const SearchBar = props => {
     const onChangeDate = props.onChangeDate;
     const keyName = props.keyName;
 
-    const {
-        isDesktopOrLaptop,
-        isBigScreen,
-        isTabletOrMobile,
-        isPortrait,
-        isLandscape,
-    } = useResponsive();
+    const { isTabletOrMobile, isPortrait } = useResponsive();
 
     const { RangePicker } = DatePicker;
     const dateFormat = 'DD/MM/YYYY';

@@ -3,10 +3,7 @@ import { newSentiment } from "../mock";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Tooltip } from "antd";
-import {
-    ColumnHeightOutlined,
-    VerticalAlignMiddleOutlined,
-} from '@ant-design/icons';
+import { ColumnHeightOutlined, VerticalAlignMiddleOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 dayjs.extend(isSameOrBefore)
@@ -24,7 +21,7 @@ const SentimentTable = () => {
 
     const navigate = useNavigate();
 
-    const { isDesktopOrLaptop, isBigScreen, isTabletOrMobile, isPortrait, isLandscape } = useResponsive();
+    const { isTabletOrMobile, isPortrait } = useResponsive();
 
     const columns = [
         {

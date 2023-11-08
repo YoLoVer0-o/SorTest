@@ -6,10 +6,7 @@ import { useResponsive } from "../hooks";
 import { FeedbackModal } from "../components";
 import { MoreOutlined, FilePdfOutlined } from "@ant-design/icons";
 import { sentimentAll, sentimentNega, sentimentPos } from "../mock";
-import {
-    ColumnHeightOutlined,
-    VerticalAlignMiddleOutlined,
-} from '@ant-design/icons';
+import { ColumnHeightOutlined, VerticalAlignMiddleOutlined } from '@ant-design/icons';
 
 const SentimentReport = () => {
     const [details, setDetails] = useState([]);

@@ -16,10 +16,8 @@ const { Header, Sider, Content } = Layout;
 const MainLayout = (props) => {
   const {
     isDesktopOrLaptop,
-    isBigScreen,
     isTabletOrMobile,
     isMobile,
-    isTablet,
     isPortrait,
     isLandscape,
   } = useResponsive();

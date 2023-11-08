@@ -9,14 +9,7 @@ const HorizontalBarChart = props => {
 
     const svgRef = useRef(null);
 
-    const {
-        isDesktopOrLaptop,
-        isBigScreen,
-        isTabletOrMobile,
-        isTablet,
-        isMobile,
-        isPortrait,
-    } = useResponsive();
+    const { isTabletOrMobile } = useResponsive();
 
     let onBarClick = props.onBarClick;
 
