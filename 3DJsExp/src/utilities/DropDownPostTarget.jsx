@@ -3,8 +3,9 @@ import { Button, Modal, Radio, Space } from "antd";
 import PostTag from "../assets/PostTag";
 const DropDownPostTarget = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  //  const [changeLable, setChangeLable] = useState("เพื่อน");
-  const [value, setValue] = useState(1);
+  const [changeLable, setChangeLable] = useState("เพื่อน");
+  const [value, setValue] = useState("เพื่อน");
+
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -18,11 +19,15 @@ const DropDownPostTarget = () => {
     console.log("radio checked", e.target.value);
     setValue(e.target.value);
   };
+  const confirmButton = () => {
+    setChangeLable(value);
+    setIsModalOpen(false);
+  };
 
   // const handleChange = (label) => {
   //   setChangeLable (label)
   // };
-  
+
   //   const [number, setNumber] = useState();
   //   const ChangeComp = () => {
   //     switch (number) {
@@ -35,9 +40,13 @@ const DropDownPostTarget = () => {
   //     }
   //   };
 
+  // useEffect(() => {
+  //      setChangeLable(value);
+  // }, [value])
+
   return (
     <div>
-      <Button onClick={showModal}>test</Button>
+      <Button onClick={showModal}>{changeLable}</Button>
       <Modal
         centered
         title="กลุ่มเป้าหมายของโพสต์"
@@ -48,13 +57,13 @@ const DropDownPostTarget = () => {
       >
         <div className="tw-grid ">
           <Radio.Group
-            onChange={onChange}
+            onChange={(e) => onChange(e)}
             value={value}
             className="tw-w-full tw-flex"
           >
             <Space direction="vertical" className="tw-w-full">
               <Radio
-                value={1}
+                value={"สาธารณะ"}
                 label="สาธารณะ"
                 className=" hover:tw-bg-gray-200 tw-items-center tw-rounded-md tw-h-16 tw-w-full"
               >
@@ -67,7 +76,7 @@ const DropDownPostTarget = () => {
                 </div>
               </Radio>
               <Radio
-                value={2}
+                value={"เพื่อน"}
                 label="เพื่อน"
                 className="hover:tw-bg-gray-200 tw-items-center tw-rounded-md tw-h-16 tw-w-full"
               >
@@ -80,7 +89,7 @@ const DropDownPostTarget = () => {
                 </div>
               </Radio>
               <Radio
-                value={3}
+                value={"เพื่อนยกเว้น ..."}
                 label="เพื่อนยกเว้น ..."
                 className="hover:tw-bg-gray-200 tw-items-center tw-rounded-md tw-h-16 tw-w-full"
               >
@@ -93,7 +102,7 @@ const DropDownPostTarget = () => {
                 </div>
               </Radio>
               <Radio
-                value={4}
+                value={"เฉพาะฉัน"}
                 label="เฉพาะฉัน"
                 className="hover:tw-bg-gray-200 tw-items-center tw-rounded-md tw-h-16 tw-w-full"
               >
@@ -106,7 +115,7 @@ const DropDownPostTarget = () => {
                 </div>
               </Radio>
               <Radio
-                value={5}
+                value={"เพื่อนที่เจาะจง"}
                 label="เพื่อนที่เจาะจง"
                 className="hover:tw-bg-gray-200 tw-items-center tw-rounded-md tw-h-16 tw-w-full"
               >
@@ -119,7 +128,7 @@ const DropDownPostTarget = () => {
                 </div>
               </Radio>
               <Radio
-                value={6}
+                value={"กำหนดเอง"}
                 label="กำหนดเอง"
                 className="hover:tw-bg-gray-200 tw-items-center tw-rounded-md tw-h-16 tw-w-full"
               >
@@ -136,7 +145,7 @@ const DropDownPostTarget = () => {
           <div className="tw-grid tw-grid-cols-2 tw-gap-x-2 tw-items-end tw-w-full ">
             <button className="tw-bg-gray-200 tw-rounded-md">ยกเลิก</button>
             <button
-              // onClick={handleChange}
+              onClick={confirmButton}
               className="tw-bg-blue-600 tw-text-white tw-rounded-md"
             >
               เรียบร้อย
