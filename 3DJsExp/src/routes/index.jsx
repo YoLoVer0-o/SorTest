@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Dashboard, Feedback, LogTable, PostTable, PostReport, CreatePost, SentimentTable, SentimentReport } from "../components";
+import { Dashboard, PostTable, PostReport, CreatePost, SentimentTable, SentimentReport } from "../components";
 import { LoginPage, MainPage, PostDataPage, CreatePostPage, SentimentPage } from "../pages";
 
 
@@ -14,15 +14,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/main",
-        element: <LogTable />,
-      },
-      {
-        path: "/main/overall",
         element: <Dashboard />,
-      },
-      {
-        path: "/main/overall/feedback",
-        element: <Feedback />,
       },
     ],
   },
