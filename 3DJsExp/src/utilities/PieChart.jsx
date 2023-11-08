@@ -82,7 +82,7 @@ Arc.propTypes = {
     data: PropTypes.object,
     index: PropTypes.number,
     createArc: PropTypes.func,
-    colors: PropTypes.func,
+    colors: PropTypes.string,
     displayText: PropTypes.string,
     displayValue: PropTypes.number,
     centroid: PropTypes.func,

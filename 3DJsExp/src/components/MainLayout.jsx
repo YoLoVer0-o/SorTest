@@ -7,7 +7,7 @@ import {
   ContainerOutlined,
   CloseOutlined,
 } from "@ant-design/icons";
-import { Layout, Menu, Button, Breadcrumb } from "antd";
+import { Layout, Menu, Button, Breadcrumb, Tooltip } from "antd";
 import classNames from "classnames";
 import { useResponsive } from "../hooks";
 
@@ -154,11 +154,23 @@ const MainLayout = (props) => {
         </div>
 
         <Layout>
+          <div className="tw-flex tw-flex-row tw-px-6 tw-my-4 tw-justify-between">
+            <Breadcrumb className="tw-text-lg tw-font-bold" items={breadcrumbItems} />
+            {breadcrumbItems.length > 1 && (
+              <Tooltip title="ย้อนกลับ">
+                <Button
+                  className="tw-self-center tw-border-black tw-border-2 tw-bg-blue-400 tw-drop-shadow-md hover:tw-bg-white hover:tw-border-blue-600 hover:tw-text-blue-600"
+                  onClick={() => navigate(-1)}
+                >
+                  ย้อนกลับ
+                </Button>
+              </Tooltip>
+            )}
+          </div>
 
-          <Breadcrumb className="tw-px-4 tw-my-4" items={breadcrumbItems} />
           <Content
             className={classNames(
-              "tw-flex tw-max-w-full tw-max-h-full tw-justify-center tw-m-4 tw-bg-white tw-object-contain",
+              "tw-flex tw-max-w-full tw-max-h-full tw-justify-center tw-m-4 tw-bg-white tw-object-contain tw-p-4",
               {
                 "tw-overflow-auto": isTabletOrMobile && isLandscape,
               }
