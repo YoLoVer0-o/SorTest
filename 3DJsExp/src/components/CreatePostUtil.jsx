@@ -1,6 +1,6 @@
 import { CloudUploadOutlined, CloseOutlined } from "@ant-design/icons";
 import EmojiPicker, { EmojiStyle } from "emoji-picker-react";
-import  DropDownPostTarget  from "../utilities/DropDownPostTarget";
+import  DropDownPostTarget  from "./DropDownPostTarget";
 import profile from "../assets/profile.png";
 import { useDropzone } from "react-dropzone";
 import { BsEmojiSmile } from "react-icons/bs";

@@ -19,6 +19,10 @@ const SelectPlatform = () => {
             label: "Facebook",
           },
           {
+            value: "Twitter",
+            label: "Twitter",
+          },
+          {
             value: "Instagram",
             label: "Instagram",
           },
