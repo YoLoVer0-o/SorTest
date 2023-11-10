@@ -43,7 +43,9 @@ const VerticalBarChart = props => {
       .attr("class", "bar")
 
       .on("click", function (event, d) {
-        onBarClick(d);
+        if (onBarClick){
+          onBarClick(d);
+        }
       })
 
       .attr("x", (d) => x(d.name))

@@ -1,46 +1,198 @@
-import { VerticalBarChart } from '../utilities';
-import { sentimentAll, sentimentPos, sentimentNega } from '../mock';
-import { useNavigate } from "react-router-dom";
+import { SearchBar, VerticalBarChart, HorizontalBarChart, PieChart } from "../utilities";
+import { newSentiment, sentimentAll, sentimentPos } from "../mock";
+import iLaw from "../assets/iLaw.png";
+import { useState } from "react";
 
-function Dashboard() {
+import dayjs from 'dayjs';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+dayjs.extend(isSameOrBefore)
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import classNames from "classnames";
+dayjs.extend(isSameOrAfter)
+import { useResponsive } from "../hooks";
 
-    const navigate = useNavigate();
+const Dashboard = () => {
 
-    const redirect = (data) => {
-        if (data.commentType == "positive") {
-            console.log(data.commentType);
-            navigate('feedback', { state: sentimentPos });
+    const [searchTag, setSearchTag] = useState([]);
+    const [searchDate, setSearchDate] = useState([]);
 
-        } else if (data.commentType == "negative") {
-            console.log(data.commentType);
-            navigate('feedback', { state: sentimentNega });
-        } else {
-            console.log("Unknown comment type");
+    const { isTabletOrMobile, isPortrait } = useResponsive();
+
+    const colorSet = (data) => {
+        if (data == "positive") {
+            return "#22c55e";
+        }
+        else if (data == "negative") {
+            return "#ef4444";
+        }
+        else {
+            return "#0284c7";
         }
     };
 
+
     return (
-        <div className='tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-w-min tw-h-min tw-object-contain'>
-            {/* <div>
-                <Pie data={bankData}
-                    width={200}
-                    height={200}
-                    innerRadius={60}
-                    outerRadius={100} />
-            </div> */}
-            <div className='tw-flex tw-text-center tw-max-w-fit tw-max-h-fit tw-m-3 tw-object-contain tw-self-center'>
-                <h1 className='tw-font-extrabold tw-text-2xl'>Overall DashBoard</h1>
-            </div>
-            <div className='tw-flex tw-my-6 tw-max-w-fit tw-max-h-fit tw-object-contain'>
-                <VerticalBarChart
-                    className={"tw-flex tw-h-fit tw-w-fit tw-max-w-fit tw-max-h-fit"}
-                    data={sentimentAll}
-                    width={740}
-                    height={460}
-                    onBarClick={redirect}
-                />
+        <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto', {})}>
+            <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">DashBoard</p>
+            <div className={classNames("tw-flex tw-flex-row tw-sticky tw-top-0 tw-z-50 tw-max-w-full tw-bg-white tw-justify-center tw-gap-2 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4", {
+                "tw-flex-col": isTabletOrMobile && isPortrait,
+            })}>
+                <div className={classNames("tw-w-full", {})}>
+                    <p className="tw-text-lg">ประเด็น:</p>
+                    <SearchBar
+                        useTagSearch={true}
+                        data={newSentiment}
+                        onChangeFilter={setSearchTag}
+                        keyName={"tag"}
+                    />
+                </div>
+                <div className={classNames("tw-w-full", {})}>
+                    <p className="tw-text-lg">ห้วงเวลา:</p>
+                    <SearchBar
+                        useDateSearch={true}
+                        onChangeDate={setSearchDate}
+                    />
+                </div>
             </div>
 
+            <div className={classNames("tw-flex tw-flex-col tw-justify-center", {})}>
+                <div className={classNames("tw-flex tw-flex-row", {})}>
+                    <div className={classNames("tw-flex tw-flex-col", {})}>
+                        <div className="tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                            <p className="tw-text-lg">จำนวนโพสต์</p>
+                            <p className="tw-text-xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
+                        </div>
+                        <div className="tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                            <p className="tw-text-lg">การมีส่วนร่วมทั้งหมด</p>
+                            <p className="tw-text-xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
+                        </div>
+                        <div className="tw-flex tw-flex-col tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                            <p className="tw-text-center tw-text-lg">จำนวนโพสต์รายวัน</p>
+                            <div className="">
+                                <VerticalBarChart
+                                    className={"tw-flex tw-h-fit tw-w-fit tw-max-w-fit tw-max-h-fit"}
+                                    data={sentimentPos}
+                                    width={640}
+                                    height={640}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div className={classNames("tw-flex tw-flex-col", {})}>
+                        <div className="tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                            <p className="tw-text-lg">จำนวนผู้ใช้งาน</p>
+                            <p className="tw-text-xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
+                        </div>
+                        <div className="tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                            <p className="tw-text-lg">การมีส่วนร่วมเฉลี่ย/โพสต์</p>
+                            <p className="tw-text-xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
+                        </div>
+                        <div className="tw-flex tw-flex-col tw-justify-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                            <p className="tw-text-center tw-text-lg">ความรู้สึกเชิงบวก-ลบ</p>
+                            <div className="tw-flex tw-flex-row tw-justify-center tw-gap-3">
+                                <div className="tw-flex tw-flex-row tw-gap-1 ">
+                                    <div className="tw-w-6 tw-h-6 tw-border-2 tw-border-black tw-rounded-full tw-bg-green-500">
+                                    </div>
+                                    <p>เชิงบวก</p>
+                                </div>
+                                <div className="tw-flex tw-flex-row tw-gap-1">
+                                    <div className="tw-w-6 tw-h-6 tw-border-2 tw-border-black tw-rounded-full tw-bg-sky-600">
+                                    </div>
+                                    <p>เป็นกลาง</p>
+                                </div>
+                                <div className="tw-flex tw-flex-row tw-gap-1">
+                                    <div className="tw-w-6 tw-h-6 tw-border-2 tw-border-black tw-rounded-full tw-bg-red-500">
+                                    </div>
+                                    <p>เชิงลบ</p>
+                                </div>
+                            </div>
+                            <div className={classNames("", {
+                                "tw-flex tw-justify-center": isTabletOrMobile,
+                            })}>
+                                <PieChart
+                                    data={sentimentAll}
+                                    keyName={"value"}
+                                    displayText={"name"}
+                                    width={isTabletOrMobile ? 240 : 360}
+                                    height={isTabletOrMobile ? 240 : 360}
+                                    innerRadius={isTabletOrMobile ? 30 : 60}
+                                    outerRadius={isTabletOrMobile ? 120 : 180}
+                                    calColor={colorSet}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div className={classNames("tw-flex tw-flex-col", {})}>
+                        <div className="tw-flex tw-flex-col tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                            <p className="tw-text-center tw-text-lg">ช่องทางสื่อออนไลน์</p>
+                            <div className="">
+                                <HorizontalBarChart
+                                    className={"tw-flex tw-h-fit tw-w-fit tw-max-w-fit tw-max-h-fit"}
+                                    data={sentimentPos}
+                                    width={640}
+                                    keyNameX={"value"}
+                                    keyNameY={"name"}
+                                    keyNameColor={"positive"}
+                                    calColor={colorSet}
+                                />
+                            </div>
+                        </div>
+                        <div className="tw-flex tw-flex-col tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                            <p className="tw-text-lg">การมีส่วนร่วมเฉลี่ย/โพสต์</p>
+                            <p className="tw-text-xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
+                        </div>
+                    </div>
+                </div>
+                <div className={classNames("tw-flex tw-flex-row", {})}>
+                    <div className={classNames("tw-flex tw-flex-col tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4", {})}>
+                        <p className="tw-text-lg">กลุ่มคำ</p>
+                        <div></div>
+                    </div>
+                    <div className={classNames("tw-flex tw-flex-col tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4", {})}>
+                        <p className="tw-text-lg">โพสต์ที่มีส่วนร่วมสูงสด</p>
+                        <div>
+                            <div className="tw-flex tw-flex-row">
+                                <div className="tw-w-20 tw-h-20 tw-border-2 tw-border-black tw-rounded-full">
+                                    <img className="tw-rounded-full" src={iLaw} />
+                                </div>
+                                <div className="tw-flex tw-flex-col">
+                                    <p>ชื่อผู้โพสต์</p>
+                                    <p>dd.mm.yy</p>
+                                </div>
+                            </div>
+                            <div>
+                                <p>
+                                    Lorem ipsum dolor sit amet,
+                                    consectetur adipiscing elit.
+                                    Vivamus odio quam,
+                                    convallis et pretium consectetur,
+                                    vestibulum nec tellus.
+                                    Nulla fringilla sem eu lacinia mollis.
+                                    Fusce a molestie enim.
+                                    Duis pellentesque turpis scelerisque efficitur condimentum.
+                                    Sed pellentesque odio efficitur interdum scelerisque.
+                                    Nulla euismod erat porta neque mattis lobortis.
+                                    Praesent consequat mi at pharetra venenatis.
+                                    Donec leo sapien, blandit porttitor justo nec,
+                                    sagittis sagittis diam. Nunc elementum neque quis laoreet maximus.
+                                    Donec dignissim lectus tortor,
+                                    condimentum egestas lorem volutpat et. Nulla leo orci,
+                                    euismod et rutrum ut, aliquam non tellus. Proin lectus nulla,
+                                    finibus eu tortor in, maximus euismod ligula.
+                                </p>
+                                <div></div>
+                            </div>
+                            <div className="tw-flex tw-flex-row tw-min-w-full tw-justify-between">
+                                <p className="tw-flex tw-self-start tw-w-max">150{ } like</p>
+                                <div className="tw-flex tw-flex-row tw-w-max tw-self-end">
+                                    <p>2.1k { } comments</p>
+                                    <p>8.5k { } shares</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
