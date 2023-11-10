@@ -1,6 +1,7 @@
 import { SearchBar, VerticalBarChart, HorizontalBarChart, PieChart } from "../utilities";
 import { newSentiment, sentimentAll, sentimentPos } from "../mock";
-import iLaw from "../assets/iLaw.png";
+import profile from "../assets/profile.png";
+import carouselPic from "../assets/carouselPic.jpg";
 import { useState } from "react";
 
 import dayjs from 'dayjs';
@@ -55,18 +56,18 @@ const Dashboard = () => {
                 </div>
             </div>
 
-            <div className={classNames("tw-flex tw-flex-col tw-justify-center", {})}>
-                <div className={classNames("tw-flex tw-flex-row", {})}>
-                    <div className={classNames("tw-flex tw-flex-col", {})}>
-                        <div className="tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+            <div className={classNames("tw-flex tw-flex-col tw-justify-center tw-my-4 ", {})}>
+                <div className={classNames("tw-flex tw-flex-row tw-justify-around tw-my-2", {})}>
+                    <div className={classNames("tw-flex tw-flex-col tw-gap-4", {})}>
+                        <div className="tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">จำนวนโพสต์</p>
                             <p className="tw-text-xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
                         </div>
-                        <div className="tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                        <div className="tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">การมีส่วนร่วมทั้งหมด</p>
                             <p className="tw-text-xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
                         </div>
-                        <div className="tw-flex tw-flex-col tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                        <div className="tw-flex tw-flex-col tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-center tw-text-lg">จำนวนโพสต์รายวัน</p>
                             <div className="">
                                 <VerticalBarChart
@@ -78,19 +79,19 @@ const Dashboard = () => {
                             </div>
                         </div>
                     </div>
-                    <div className={classNames("tw-flex tw-flex-col", {})}>
-                        <div className="tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                    <div className={classNames("tw-flex tw-flex-col tw-gap-4", {})}>
+                        <div className="tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">จำนวนผู้ใช้งาน</p>
                             <p className="tw-text-xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
                         </div>
-                        <div className="tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                        <div className="tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">การมีส่วนร่วมเฉลี่ย/โพสต์</p>
                             <p className="tw-text-xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
                         </div>
-                        <div className="tw-flex tw-flex-col tw-justify-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                        <div className="tw-text-center tw-flex tw-flex-col tw-justify-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-center tw-text-lg">ความรู้สึกเชิงบวก-ลบ</p>
-                            <div className="tw-flex tw-flex-row tw-justify-center tw-gap-3">
-                                <div className="tw-flex tw-flex-row tw-gap-1 ">
+                            <div className=" tw-flex tw-flex-row tw-justify-center tw-gap-3">
+                                <div className=" tw-flex tw-flex-row tw-gap-1 ">
                                     <div className="tw-w-6 tw-h-6 tw-border-2 tw-border-black tw-rounded-full tw-bg-green-500">
                                     </div>
                                     <p>เชิงบวก</p>
@@ -122,8 +123,8 @@ const Dashboard = () => {
                             </div>
                         </div>
                     </div>
-                    <div className={classNames("tw-flex tw-flex-col", {})}>
-                        <div className="tw-flex tw-flex-col tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                    <div className={classNames("tw-flex tw-flex-col tw-gap-4", {})}>
+                        <div className="tw-flex tw-flex-col  tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-center tw-text-lg">ช่องทางสื่อออนไลน์</p>
                             <div className="">
                                 <HorizontalBarChart
@@ -137,25 +138,27 @@ const Dashboard = () => {
                                 />
                             </div>
                         </div>
-                        <div className="tw-flex tw-flex-col tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                        <div className="tw-flex tw-flex-col tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">การมีส่วนร่วมเฉลี่ย/โพสต์</p>
                             <p className="tw-text-xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
                         </div>
                     </div>
                 </div>
-                <div className={classNames("tw-flex tw-flex-row", {})}>
-                    <div className={classNames("tw-flex tw-flex-col tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4", {})}>
+                <div className={classNames("tw-flex tw-flex-row tw-justify-around tw-gap-4 tw-my-2", {})}>
+                    <div className={classNames("tw-flex tw-flex-col tw-max-w-[50%] tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4", {})}>
                         <p className="tw-text-lg">กลุ่มคำ</p>
-                        <div></div>
-                    </div>
-                    <div className={classNames("tw-flex tw-flex-col tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4", {})}>
-                        <p className="tw-text-lg">โพสต์ที่มีส่วนร่วมสูงสด</p>
                         <div>
-                            <div className="tw-flex tw-flex-row">
+                            <img src={carouselPic} />
+                        </div>
+                    </div>
+                    <div className={classNames("tw-flex tw-flex-col tw-max-w-[50%] tw-object-contain tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4", {})}>
+                        <p className="tw-text-lg tw-text-center">โพสต์ที่มีส่วนร่วมสูงสด</p>
+                        <div>
+                            <div className="tw-flex tw-flex-row ">
                                 <div className="tw-w-20 tw-h-20 tw-border-2 tw-border-black tw-rounded-full">
-                                    <img className="tw-rounded-full" src={iLaw} />
+                                    <img className="tw-rounded-full" src={profile} />
                                 </div>
-                                <div className="tw-flex tw-flex-col">
+                                <div className="tw-flex tw-flex-col ">
                                     <p>ชื่อผู้โพสต์</p>
                                     <p>dd.mm.yy</p>
                                 </div>
@@ -180,7 +183,9 @@ const Dashboard = () => {
                                     euismod et rutrum ut, aliquam non tellus. Proin lectus nulla,
                                     finibus eu tortor in, maximus euismod ligula.
                                 </p>
-                                <div></div>
+                                <div>
+                                    <img src={carouselPic} />
+                                </div>
                             </div>
                             <div className="tw-flex tw-flex-row tw-min-w-full tw-justify-between">
                                 <p className="tw-flex tw-self-start tw-w-max">150{ } like</p>
