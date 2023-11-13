@@ -58,7 +58,9 @@ const HorizontalBarChart = props => {
             .attr("width", (d) => x(d[`${keyNameX}`]) - x(0))
             .attr("height", y.bandwidth())
             .on("click", function (event, d) {
-                onBarClick(d);
+                if (onBarClick) {
+                    onBarClick(d);
+                }
             })
             .on("mouseover", function () {
                 d3.select(this).style("fill", "orange");

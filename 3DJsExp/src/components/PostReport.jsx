@@ -20,7 +20,6 @@ const PostReport = () => {
     isTablet,
     isMobile,
     isPortrait,
-    isRetina,
   } = useResponsive();
 
   const topRef = useRef(null);

@@ -29,10 +29,15 @@ const SearchBar = props => {
         }))
     }
 
-    const uniqueTagsArray = [...uniqueTagsSet].map((tag) => ({
-        label: tag,
-        value: tag,
-    }));
+    const uniqueTagsArray = () => {
+        if (useTagSearch) {
+            return [...uniqueTagsSet].map((tag) => ({
+                label: tag,
+                value: tag,
+            }))
+        }
+    }
+
 
     const onTextChange = (e) => {
         onChangeSearch(e.target.value);
@@ -70,7 +75,7 @@ const SearchBar = props => {
             {useTagSearch && (<Tooltip title="เลือกหมวดหมู่ที่ต้องการค้นหา">
                 <div className='tw-w-full'>
                     <Cascader
-                        options={uniqueTagsArray}
+                        options={useTagSearch ? uniqueTagsArray() : false}
                         onChange={onTagChange}
                         multiple
                         maxTagCount="responsive"
