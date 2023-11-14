@@ -6,18 +6,21 @@ const VerticalBarChart = props => {
 
   const svgRef = useRef(null);
 
-  let onBarClick = props.onBarClick;
-
-  //////////////////////////Data///////////////////////////////////////
   useEffect(() => {
     const data = props.data;
-    ///////////////////////Width Height Bar//////////////////////////////
+
+    // Select the SVG element
+    const svg = d3.select(svgRef.current);
+
+    // Remove existing chart elements before rendering the new ones
+    svg.selectAll('*').remove();
+
+    // Width, height, margin
     const margin = { top: 20, right: 30, bottom: 40, left: 40 };
     const width = props.width - margin.left - margin.right;
     const height = props.height - margin.top - margin.bottom;
 
-    const svg = d3
-      .select(svgRef.current)
+    const chart = svg
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
       .append("g")
@@ -35,47 +38,41 @@ const VerticalBarChart = props => {
       .nice()
       .range([height, 0]);
 
-    svg
+    chart
       .selectAll(".bar")
       .data(data)
       .enter()
       .append("rect")
       .attr("class", "bar")
-
-      .on("click", function (event, d) {
-        if (onBarClick){
-          onBarClick(d);
-        }
-      })
-
       .attr("x", (d) => x(d.name))
       .attr("y", (d) => y(d.value))
       .attr("width", x.bandwidth())
       .attr("height", (d) => height - y(d.value))
-      .style("fill", function () {
-        return "yellow";
+      .style("fill", "yellow")
+      .on("click", function (event, d) {
+        if (props.onBarClick) {
+          props.onBarClick(d);
+        }
       })
       .on("mouseover", function () {
         d3.select(this).style("fill", "orange");
       })
       .on("mouseout", function () {
-        d3.select(this).style("fill", function () {
-          return "yellow";
-        });
+        d3.select(this).style("fill", "yellow");
       });
 
-    svg
+    chart
       .append("g")
       .attr("class", "x-axis")
       .attr("transform", `translate(0,${height})`)
       .call(d3.axisBottom(x));
 
-    svg.append("g").attr("class", "y-axis").call(d3.axisLeft(y));
+    chart.append("g").attr("class", "y-axis").call(d3.axisLeft(y));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.data, props.height, props.width]);
 
   return (
-    <svg width={props.width} height={props.height} ref={svgRef}></svg>
+    <svg className="tw-text-xl" ref={svgRef}></svg>
   );
 };
 
