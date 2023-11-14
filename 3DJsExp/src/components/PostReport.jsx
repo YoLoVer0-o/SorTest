@@ -167,7 +167,7 @@ const PostReport = () => {
           className="tw-right-10"
           icon={<MoreOutlined />}
         >
-          <Tooltip placement="left" title={"สร้างรายงานPDF"} color="blue">
+          <Tooltip placement="left" title={"สร้างรายงานPDF"} color5="blue">
             <FloatButton
               className="tw-flex tw-right-2 tw-bottom-32 tw-z-10 tw-bg-red-400"
               icon={<FilePdfOutlined />}
