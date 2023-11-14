@@ -4,6 +4,7 @@ import sentimentNega from "./sentimentNega";
 import botMock from "./botMock";
 import postMock from "./postMock";
 import newSentiment from "./newSentiment";
+import socialPlatform from "./socialPlatform";
 
 export {
   sentimentAll,
@@ -12,4 +13,5 @@ export {
   botMock,
   postMock,
   newSentiment,
+  socialPlatform,
 };

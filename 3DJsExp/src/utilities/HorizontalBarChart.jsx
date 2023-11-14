@@ -6,6 +6,7 @@ import * as d3 from "d3";
 const HorizontalBarChart = props => {
 
     const data = props.data;
+    const useImage = props.useImage;
 
     const svgRef = useRef(null);
 
@@ -18,6 +19,7 @@ const HorizontalBarChart = props => {
         const keyNameX = props.keyNameX;
         const keyNameY = props.keyNameY;
         const keyNameColor = props.keyNameColor;
+        const keyNameImage = props.keyNameImage;
         const calColor = props.calColor;
 
         const barHeight = isTabletOrMobile ? 70 : 35;
@@ -35,11 +37,12 @@ const HorizontalBarChart = props => {
 
 
         const y = d3.scaleBand()
-            .domain(d3.sort(data, d => -d[`${keyNameX}`]).map(d => d[`${keyNameY}`]))
+            .domain(d3.sort(data, d => -d[`${keyNameX}`])
+                .map(d => d[`${keyNameY}`]))
             .rangeRound([marginTop, height - marginBottom])
             .padding(0.1);
 
-        const format = x.tickFormat(20, "");
+        const format = d3.format(".0f");
 
         const svg = d3
             .select(svgRef.current)
@@ -48,6 +51,7 @@ const HorizontalBarChart = props => {
             .attr("viewBox", [0, 0, width, height])
             .attr("style", "max-width: 100%; height: auto;");
 
+        ///////////////////////////////Bars////////////////////////////////
         svg.append("g")
             .attr("fill", calColor(keyNameColor))
             .selectAll()
@@ -71,6 +75,8 @@ const HorizontalBarChart = props => {
                 });
             });
 
+
+        ///////////////////////////////Y-axis////////////////////////////////
         svg.append("g")
             .attr("fill", "white")
             .attr("text-anchor", "end")
@@ -82,25 +88,27 @@ const HorizontalBarChart = props => {
             .attr("dy", "0.35em")
             .attr("dx", -4)
             .text((d) => format(d[`${keyNameX}`]))
-            .call((text) => text.filter(d => x(d[`${keyNameX}`]) - x(0) < 20) // short bars
+            .call((text) => text.filter(d => x(d[`${keyNameX}`]) - x(0) < 20)
                 .attr("dx", +4)
                 .attr("fill", "black")
-                .attr("text-anchor", "start"));
+                .attr("text-anchor", "start"))
 
+        ///////////////////////////////X-axis////////////////////////////////
         svg.append("g")
             .attr("transform", `translate(0,${marginTop})`)
-            .call(d3.axisTop(x).ticks(width / 80, ""))
+            .call(d3.axisTop(x).ticks(width / 80, "").tickFormat(format))
             .call(g => g.select(".domain").remove())
             .selectAll("text") // Select all text elements in the y-axis
             .style("font-size", "1rem"); // Set the desired font size
 
+        ///////////////////////////////Y-axis////////////////////////////////
         svg.append("g")
             .attr("transform", `translate(${marginLeft},0)`)
             .call(d3.axisLeft(y).tickSizeOuter(0))
             .selectAll("text") // Select all text elements in the y-axis
             .style("font-size", "1rem"); // Set the desired font size
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data, props.keyNameX, props.keyNameY, props.width])
+    }, [data, props.keyNameX, props.keyNameY, props.width, props.useImage])
 
     return (
         <svg className="tw-text-xl" ref={svgRef}></svg>
@@ -114,6 +122,8 @@ HorizontalBarChart.propTypes = {
     keyNameX: PropTypes.string,
     keyNameY: PropTypes.string,
     keyNameColor: PropTypes.string,
+    keyNameImage: PropTypes.any,
+    useImage: PropTypes.bool,
     calColor: PropTypes.func,
 
 }

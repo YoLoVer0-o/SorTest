@@ -1,5 +1,5 @@
 import { SearchBar, VerticalBarChart, HorizontalBarChart, PieChart } from "../utilities";
-import { newSentiment, sentimentAll, sentimentPos } from "../mock";
+import { newSentiment, sentimentAll, sentimentPos, socialPlatform } from "../mock";
 import profile from "../assets/profile.png";
 import carouselPic from "../assets/carouselPic.jpg";
 import { useState } from "react";
@@ -35,7 +35,7 @@ const Dashboard = () => {
     return (
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto', {})}>
             <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">DashBoard</p>
-            <div className={classNames("tw-flex tw-flex-row tw-sticky tw-top-0 tw-z-50 tw-max-w-full tw-bg-white tw-justify-center tw-gap-2 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4", {
+            <div className={classNames("tw-flex tw-flex-row tw-sticky tw-top-0 tw-z-60 tw-max-w-full tw-bg-white tw-justify-center tw-gap-2 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4", {
                 "tw-flex-col": isTabletOrMobile && isPortrait,
             })}>
                 <div className={classNames("tw-w-full", {})}>
@@ -129,12 +129,14 @@ const Dashboard = () => {
                             <div className="">
                                 <HorizontalBarChart
                                     className={"tw-flex tw-h-fit tw-w-fit tw-max-w-fit tw-max-h-fit"}
-                                    data={sentimentPos}
+                                    data={socialPlatform}
                                     width={640}
-                                    keyNameX={"value"}
-                                    keyNameY={"name"}
+                                    keyNameX={"usage"}
+                                    keyNameY={"platform"}
                                     keyNameColor={"positive"}
                                     calColor={colorSet}
+                                    useImage={true}
+                                    keyNameImage={carouselPic}
                                 />
                             </div>
                         </div>
