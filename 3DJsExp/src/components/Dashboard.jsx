@@ -143,7 +143,9 @@ const Dashboard = () => {
                             </div>
                         </div>
                         <div className="tw-flex tw-flex-col tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
-                            <p className="tw-text-lg">การมีส่วนร่วมเฉลี่ย/โพสต์</p>
+                            <p className="tw-text-lg">แฮชเเท็กที่ถูกใช้งานมากที่สุด</p>
+                            <p className="tw-text-xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
+                            <p className="tw-text-xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
                             <p className="tw-text-xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
                         </div>
                     </div>

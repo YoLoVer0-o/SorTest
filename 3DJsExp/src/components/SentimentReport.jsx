@@ -194,6 +194,7 @@ const SentimentReport = () => {
                                 className={"tw-flex tw-h-fit tw-w-fit tw-max-w-fit tw-max-h-fit"}
                                 data={sentimentPos}
                                 width={640}
+                                barHeight={isTabletOrMobile ? 70 : 35}
                                 keyNameX={"value"}
                                 keyNameY={"name"}
                                 keyNameColor={"positive"}
@@ -209,6 +210,7 @@ const SentimentReport = () => {
                                 className={"tw-flex tw-h-fit tw-w-fit tw-max-w-fit tw-max-h-fit"}
                                 data={sentimentNega}
                                 width={640}
+                                barHeight={isTabletOrMobile ? 70 : 35}
                                 keyNameX={"value"}
                                 keyNameY={"name"}
                                 keyNameColor={"negative"}

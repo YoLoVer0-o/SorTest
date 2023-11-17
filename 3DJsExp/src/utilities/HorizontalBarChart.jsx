@@ -30,8 +30,9 @@ const HorizontalBarChart = props => {
                 .domain([0, d3.max(data, d => d[`${keyNameX}`])])
                 .range([marginLeft, width - marginRight]);
 
-            const y = d3.scaleBand().domain(d3.sort(data, d => -d[`${keyNameX}`])
-                .map(d => d[`${keyNameY}`]))
+            const y = d3.scaleBand()
+                .domain(d3.sort(data, d => -d[`${keyNameX}`])
+                    .map(d => d[`${keyNameY}`]))
                 .rangeRound([marginTop, height - marginBottom])
                 .padding(0.1);
 
