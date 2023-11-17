@@ -35,7 +35,7 @@ const Dashboard = () => {
     return (
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto', {})}>
             <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">DashBoard</p>
-            <div className={classNames("tw-flex tw-flex-row  tw-max-w-full tw-bg-white tw-justify-center tw-gap-2 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4", {
+            <div className={classNames("tw-flex tw-flex-row tw-max-w-full tw-bg-white tw-justify-center tw-gap-2 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4", {
                 "tw-flex-col": isTabletOrMobile && isPortrait,
                 "tw-sticky tw-top-0 tw-z-60": !isTabletOrMobile,
             })}>
@@ -58,7 +58,7 @@ const Dashboard = () => {
             </div>
 
             <div className={classNames("tw-flex tw-flex-col tw-justify-center tw-my-4 ", {})}>
-                <div className={classNames("tw-flex tw-flex-row tw-justify-around tw-my-2", {
+                <div className={classNames("tw-flex tw-flex-row tw-justify-around tw-gap-2 tw-my-2", {
                     "tw-flex-col": isTabletOrMobile
                 })}>
                     <div className={classNames("tw-flex tw-flex-col tw-gap-4", {})}>
@@ -70,11 +70,10 @@ const Dashboard = () => {
                             <p className="tw-text-lg">การมีส่วนร่วมทั้งหมด</p>
                             <p className="tw-text-xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
                         </div>
-                        <div className="tw-flex tw-flex-col tw-overflow-auto tw-justify-center tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                        <div className="tw-flex tw-flex-col tw-h-full tw-w-full tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-center tw-text-lg">จำนวนโพสต์รายวัน</p>
-                            <div className="tw-flex tw-w-max tw-h-max tw-justify-center">
+                            <div className="tw-flex tw-w-full tw-h-full tw-items-center tw-overflow-auto">
                                 <VerticalBarChart
-                                    className={"tw-flex tw-w-max tw-h-max "}
                                     data={sentimentPos}
                                     width={640}
                                     height={isTabletOrMobile ? 280 : 310}
@@ -82,7 +81,7 @@ const Dashboard = () => {
                             </div>
                         </div>
                     </div>
-                    <div className={classNames("tw-flex tw-flex-col tw-gap-4", {})}>
+                    <div className={classNames("tw-flex tw-flex-col tw-w-full tw-gap-4", {})}>
                         <div className="tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">จำนวนผู้ใช้งาน</p>
                             <p className="tw-text-xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
@@ -91,7 +90,7 @@ const Dashboard = () => {
                             <p className="tw-text-lg">การมีส่วนร่วมเฉลี่ย/โพสต์</p>
                             <p className="tw-text-xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
                         </div>
-                        <div className="tw-text-center tw-flex tw-flex-col tw-justify-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                        <div className="tw-text-center tw-flex tw-flex-col tw-h-full tw-items-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-center tw-text-lg">ความรู้สึกเชิงบวก-ลบ</p>
                             <div className=" tw-flex tw-flex-row tw-justify-center tw-gap-3">
                                 <div className=" tw-flex tw-flex-row tw-gap-1 ">
@@ -110,24 +109,23 @@ const Dashboard = () => {
                                     <p>เชิงลบ</p>
                                 </div>
                             </div>
-                            <div className={classNames("tw-justify-center", {
-                                "tw-flex tw-justify-center": isTabletOrMobile,
+                            <div className={classNames("tw-flex tw-justify-center tw-h-full tw-w-full", {
                             })}>
                                 <PieChart
                                     data={sentimentAll}
                                     keyName={"value"}
                                     displayText={"name"}
-                                    width={isTabletOrMobile ? 240 : 240}
-                                    height={isTabletOrMobile ? 240 : 260}
-                                    innerRadius={isTabletOrMobile ? 30 : 60}
-                                    outerRadius={isTabletOrMobile ? 120 : 120}
+                                    width={isTabletOrMobile ? 100 * 2 : 240 * 2}
+                                    height={isTabletOrMobile ? 100 * 2 : 240 * 2}
+                                    innerRadius={isTabletOrMobile ? 20 : 60}
+                                    outerRadius={isTabletOrMobile ? 100 : 240}
                                     calColor={colorSet}
                                 />
                             </div>
                         </div>
                     </div>
-                    <div className={classNames("tw-flex tw-flex-col tw-gap-4", {})}>
-                        <div className="tw-flex tw-flex-col  tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                    <div className={classNames("tw-flex tw-flex-col tw-w-full tw-gap-4", {})}>
+                        <div className="tw-flex tw-flex-col tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-center tw-text-lg">ช่องทางสื่อออนไลน์</p>
                             <div className="tw-flex tw-justify-center">
                                 <HorizontalBarChart
@@ -142,7 +140,7 @@ const Dashboard = () => {
                                 />
                             </div>
                         </div>
-                        <div className="tw-flex tw-flex-col tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                        <div className="tw-flex tw-flex-col tw-h-full tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">แฮชเเท็กที่ถูกใช้งานมากที่สุด</p>
                             <p className="tw-text-xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
                             <p className="tw-text-xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>

@@ -67,12 +67,17 @@ const VerticalBarChart = props => {
       .attr("transform", `translate(0,${height})`)
       .call(d3.axisBottom(x));
 
-    chart.append("g").attr("class", "y-axis").call(d3.axisLeft(y));
+    chart.append("g")
+      .attr("class", "y-axis")
+      .call(d3.axisLeft(y));
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.data, props.height, props.width]);
 
   return (
-    <svg className="tw-text-xl" ref={svgRef}></svg>
+    <div className="tw-h-max tw-w-max">
+      <svg className="tw-text-xl" ref={svgRef}></svg>
+    </div>
   );
 };
 

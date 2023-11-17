@@ -50,7 +50,7 @@ const PieChart = props => {
 
     return (
         <svg width={props.width} height={props.height}>
-            <g transform={`translate(${props.outerRadius} ${props.outerRadius})`}>
+            <g className={"tw-w-max tw-h-max tw-flex"} transform={`translate(${props.outerRadius} ${props.outerRadius})`}>
                 {data.map((d, i) => (
                     <Arc
                         key={i}
