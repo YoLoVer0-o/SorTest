@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { FloatButton, Tooltip } from "antd";
 import SelectPlatform from "../utilities/SelectPlatform";
-import CreatePostUtil from "./CreatePostUtil";
+import FacebookPost from "./FacebookPost";
+import InstagramPost from "./InstagramPost";
 import TwitterPost from "./TwitterPost";
 
 const CreatePost = () => {
@@ -12,15 +14,14 @@ const CreatePost = () => {
 
   let selectedComponent;
 
-  // Conditionally assign the component based on the selected platform
   if (selectedPlatform === "Twitter") {
     selectedComponent = <TwitterPost />;
   } else if (selectedPlatform === "Instagram") {
-    selectedComponent = <CreatePostUtil />;
+    selectedComponent = <InstagramPost />;
   } else if (selectedPlatform === "Facebook") {
-    selectedComponent = <CreatePostUtil />;
+    selectedComponent = <FacebookPost />;
   } else {
-    selectedComponent = <CreatePostUtil />;
+    selectedComponent = <FacebookPost />;
   }
 
   return (

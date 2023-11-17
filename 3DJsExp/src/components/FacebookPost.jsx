@@ -11,7 +11,7 @@ import React, { useState } from "react";
 import Image from "../assets/PostImage";
 import { Button } from "antd";
 
-const CreatePostUtil = () => {
+const FacebookPost = () => {
   const [message, setMessage] = useState("");
   const [isShow, setIsShow] = useState(false);
   const [showEmojiInput, setShowEmojiInput] = useState(false);
@@ -178,4 +178,4 @@ const CreatePostUtil = () => {
   );
 };
 
-export default CreatePostUtil;
+export default FacebookPost;
