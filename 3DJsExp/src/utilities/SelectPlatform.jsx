@@ -34,10 +34,6 @@ const SelectPlatform = (props) => {
               value: "Instagram",
               label: "Instagram",
             },
-            {
-              value: "Youtube",
-              label: "Youtube",
-            },
           ]}
         />
       </div>
