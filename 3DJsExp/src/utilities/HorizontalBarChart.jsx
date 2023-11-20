@@ -1,11 +1,9 @@
 import { useEffect, useRef } from "react";
 import PropTypes from 'prop-types';
-import { useResponsive } from "../hooks";
 import * as d3 from "d3";
-import { Tooltip } from 'antd';
 
 const HorizontalBarChart = props => {
-    const { isTabletOrMobile } = useResponsive();
+
     const data = props.data;
     const svgRef = useRef(null);
 
@@ -17,7 +15,6 @@ const HorizontalBarChart = props => {
         const keyNameColor = props.keyNameColor;
         const calColor = props.calColor;
         const barHeight = props.barHeight;
-
 
         const marginTop = 30;
         const marginRight = 60;
@@ -95,9 +92,6 @@ const HorizontalBarChart = props => {
             .call(d3.axisLeft(y).tickSizeOuter(0))
             .selectAll("text")
             .style("font-size", "1rem");
-
-
-
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data, props.keyNameX, props.keyNameY, props.keyNameColor, props.calColor, props.width, props.barHeight]);

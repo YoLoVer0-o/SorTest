@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 const Arc = ({ data, index, createArc, colors, displayText, displayValue }) => {
 
-
     return (
         <g key={index} className="arc">
             <path className="arc" d={createArc(data)} fill={colors} />

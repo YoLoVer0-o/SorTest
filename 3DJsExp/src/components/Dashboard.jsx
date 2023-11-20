@@ -11,7 +11,8 @@ import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import classNames from "classnames";
 dayjs.extend(isSameOrAfter)
 import { useResponsive } from "../hooks";
-
+import { Button, Tooltip } from "antd";
+import { FilePdfOutlined } from "@ant-design/icons";
 const Dashboard = () => {
 
     const [searchTag, setSearchTag] = useState([]);
@@ -30,7 +31,6 @@ const Dashboard = () => {
             return "#0284c7";
         }
     };
-
 
     return (
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto', {})}>
@@ -55,6 +55,12 @@ const Dashboard = () => {
                         onChangeDate={setSearchDate}
                     />
                 </div>
+                <Tooltip placement="top" title={"สร้างรายงานPDF"} color5="blue">
+                    <Button className="tw-h-max tw-flex tw-flex-row tw-self-end tw-m-3 tw-bg-white tw-border-2 tw-border-blue-300">
+                        <FilePdfOutlined />
+                        <p>สร้างรายงานPDF</p>
+                    </Button>
+                </Tooltip>
             </div>
 
             <div className={classNames("tw-flex tw-flex-col tw-justify-center tw-my-4 ", {})}>
@@ -64,17 +70,19 @@ const Dashboard = () => {
                     <div className={classNames("tw-flex tw-flex-col tw-gap-4", {})}>
                         <div className="tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">จำนวนโพสต์</p>
-                            <p className="tw-text-xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
+                            <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
                         </div>
                         <div className="tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">การมีส่วนร่วมทั้งหมด</p>
-                            <p className="tw-text-xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
+                            <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
                         </div>
                         <div className="tw-flex tw-flex-col tw-h-full tw-w-full tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-center tw-text-lg">จำนวนโพสต์รายวัน</p>
                             <div className="tw-flex tw-w-full tw-h-full tw-items-center tw-overflow-auto">
                                 <VerticalBarChart
                                     data={sentimentPos}
+                                    keyNameX={"name"}
+                                    keyNameY={"value"}
                                     width={640}
                                     height={isTabletOrMobile ? 280 : 310}
                                 />
@@ -84,11 +92,11 @@ const Dashboard = () => {
                     <div className={classNames("tw-flex tw-flex-col tw-w-full tw-gap-4", {})}>
                         <div className="tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">จำนวนผู้ใช้งาน</p>
-                            <p className="tw-text-xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
+                            <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
                         </div>
                         <div className="tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">การมีส่วนร่วมเฉลี่ย/โพสต์</p>
-                            <p className="tw-text-xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
+                            <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
                         </div>
                         <div className="tw-text-center tw-flex tw-flex-col tw-h-full tw-items-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-center tw-text-lg">ความรู้สึกเชิงบวก-ลบ</p>
@@ -142,9 +150,11 @@ const Dashboard = () => {
                         </div>
                         <div className="tw-flex tw-flex-col tw-h-full tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">แฮชเเท็กที่ถูกใช้งานมากที่สุด</p>
-                            <p className="tw-text-xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
-                            <p className="tw-text-xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
-                            <p className="tw-text-xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
+                            <div className="tw-flex tw-flex-col tw-w-full tw-h-full tw-justify-around tw-items-center tw-self-center tw-gap-4">
+                                <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
+                                <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
+                                <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -171,11 +181,11 @@ const Dashboard = () => {
                                     <img className="tw-rounded-full tw-h-12 tw-w-12" src={profile} />
                                 </div>
                                 <div className="tw-flex tw-flex-col">
-                                    <p>ชื่อผู้โพสต์</p>
-                                    <p>dd.mm.yy</p>
+                                    <p className="tw-text-2xl">ชื่อผู้โพสต์</p>
+                                    <p className="tw-text-lg tw-font-thin">dd.mm.yy</p>
                                 </div>
                             </div>
-                            <div className="">
+                            <div className="tw-text-lg">
                                 <p>
                                     Lorem ipsum dolor sit amet,
                                     consectetur adipiscing elit.
@@ -200,8 +210,8 @@ const Dashboard = () => {
                                 </div>
                             </div>
                             <div className="tw-flex tw-flex-row tw-min-w-full tw-justify-between">
-                                <p className="tw-flex tw-self-start tw-w-max">150{ } like</p>
-                                <div className="tw-flex tw-flex-row tw-gap-2 tw-w-max tw-self-end">
+                                <p className="tw-flex tw-text-lg tw-self-start tw-w-max">150{ } likes</p>
+                                <div className="tw-flex tw-flex-row tw-gap-2 tw-w-max tw-text-lg tw-self-end">
                                     <p>2.1k { } comments</p>
                                     <p>8.5k { } shares</p>
                                 </div>

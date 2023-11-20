@@ -171,7 +171,6 @@ const PostReport = () => {
             <FloatButton
               className="tw-flex tw-right-2 tw-bottom-32 tw-z-10 tw-bg-red-400"
               icon={<FilePdfOutlined />}
-
             />
           </Tooltip>
           <Tooltip placement="left" title={"ไปยังสรุป"} color="blue">
