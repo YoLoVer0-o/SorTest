@@ -97,7 +97,9 @@ const HorizontalBarChart = props => {
     }, [data, props.keyNameX, props.keyNameY, props.keyNameColor, props.calColor, props.width, props.barHeight]);
 
     return (
-        <svg className="tw-text-xl" ref={svgRef}></svg>
+        <div className="tw-h-max tw-w-max">
+            <svg className="tw-text-xl" ref={svgRef}></svg>
+        </div>
     )
 }
 

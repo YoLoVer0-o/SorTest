@@ -18,7 +18,7 @@ const Dashboard = () => {
     const [searchTag, setSearchTag] = useState([]);
     const [searchDate, setSearchDate] = useState([]);
 
-    const { isTabletOrMobile, isPortrait } = useResponsive();
+    const { isTabletOrMobile, isTablet, isPortrait } = useResponsive();
 
     const colorSet = (data) => {
         if (data == "positive") {
@@ -55,7 +55,7 @@ const Dashboard = () => {
                         onChangeDate={setSearchDate}
                     />
                 </div>
-                <Tooltip placement="top" title={"สร้างรายงานPDF"} color5="blue">
+                <Tooltip placement="top" title={"สร้างรายงานPDF"} color="blue">
                     <Button className="tw-h-max tw-flex tw-flex-row tw-self-end tw-m-3 tw-bg-white tw-border-2 tw-border-blue-300">
                         <FilePdfOutlined />
                         <p>สร้างรายงานPDF</p>
@@ -64,8 +64,8 @@ const Dashboard = () => {
             </div>
 
             <div className={classNames("tw-flex tw-flex-col tw-justify-center tw-my-4 ", {})}>
-                <div className={classNames("tw-flex tw-flex-row tw-justify-around tw-gap-2 tw-my-2", {
-                    "tw-flex-col": isTabletOrMobile
+                <div className={classNames("tw-flex tw-flex-row tw-gap-2 tw-my-2", {
+                    "tw-flex-col": isTabletOrMobile || isTablet,
                 })}>
                     <div className={classNames("tw-flex tw-flex-col tw-gap-4", {})}>
                         <div className="tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
@@ -133,13 +133,12 @@ const Dashboard = () => {
                         </div>
                     </div>
                     <div className={classNames("tw-flex tw-flex-col tw-w-full tw-gap-4", {})}>
-                        <div className="tw-flex tw-flex-col tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                        <div className="tw-flex tw-flex-col tw-gap-y-6 tw-w-full tw-h-full tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-center tw-text-lg">ช่องทางสื่อออนไลน์</p>
-                            <div className="tw-flex tw-justify-center">
+                            <div className="tw-flex tw-w-full tw-h-full tw-justify-center tw-overflow-auto">
                                 <HorizontalBarChart
-                                    className={"tw-flex tw-h-fit tw-w-fit tw-max-w-fit tw-max-h-fit"}
                                     data={socialPlatform}
-                                    width={640}
+                                    width={isTabletOrMobile ? 720 : 480}
                                     barHeight={isTabletOrMobile ? 70 : 35}
                                     keyNameX={"usage"}
                                     keyNameY={"platform"}

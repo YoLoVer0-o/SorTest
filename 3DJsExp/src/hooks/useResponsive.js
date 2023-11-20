@@ -8,7 +8,7 @@ const useResponsive = () => {
     query: "(min-width: 1824px)",
   });
   const isTabletOrMobile = useMediaQuery({
-    query: "(max-width: 1224px)",
+    maxDeviceWidth: 1224,
   });
   const isTablet = useMediaQuery({
     minDeviceWidth: 768,
