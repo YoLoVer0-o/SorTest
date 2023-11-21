@@ -3,7 +3,7 @@ import { newSentiment, sentimentAll, sentimentPos, socialPlatform } from "../moc
 import profile from "../assets/profile.png";
 import carouselPic from "../assets/carouselPic.jpg";
 import { useState } from "react";
-
+import SocialIcons from "../assets/SocialIcons";
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 dayjs.extend(isSameOrBefore)
@@ -13,6 +13,7 @@ dayjs.extend(isSameOrAfter)
 import { useResponsive } from "../hooks";
 import { Button, Tooltip } from "antd";
 import { FilePdfOutlined } from "@ant-design/icons";
+
 const Dashboard = () => {
 
     const [searchTag, setSearchTag] = useState([]);
@@ -30,6 +31,30 @@ const Dashboard = () => {
         else {
             return "#0284c7";
         }
+    };
+
+    const sentIcons = (name) => {
+        const { facebook, instagram, twitter, tiktok, youtube, social_media } = SocialIcons;
+        if (name == "facebook") {
+            return facebook
+        }
+        else if (name == "instagram") {
+            return instagram
+        }
+        else if (name == "twitter") {
+            return twitter
+        }
+        else if (name == "tiktok") {
+            return tiktok
+        }
+        else if (name == "youtube") {
+            return youtube
+        }
+        else {
+            return social_media
+        }
+
+
     };
 
     return (
@@ -143,6 +168,7 @@ const Dashboard = () => {
                                     keyNameX={"usage"}
                                     keyNameY={"platform"}
                                     keyNameColor={"positive"}
+                                    // keyNameImage={sentIcons}
                                     calColor={colorSet}
                                 />
                             </div>

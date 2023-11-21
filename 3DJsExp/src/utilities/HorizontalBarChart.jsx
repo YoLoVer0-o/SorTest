@@ -15,6 +15,7 @@ const HorizontalBarChart = props => {
         const keyNameColor = props.keyNameColor;
         const calColor = props.calColor;
         const barHeight = props.barHeight;
+        // const keyNameImage = props.keyNameImage;
 
         const marginTop = 30;
         const marginRight = 60;
@@ -65,6 +66,22 @@ const HorizontalBarChart = props => {
                 });
             });
 
+        // if (keyNameImage) {
+        //     svg.append("g")
+        //         .selectAll()
+        //         .data(data)
+        //         .join("image")
+        //         .attr("x", (d) => x(d[`${keyNameX}`]) + 10)
+        //         .attr("y", (d) => y(d[`${keyNameY}`]) + y.bandwidth() / 2)
+        //         .attr("dy", "0.35em")
+        //         .attr("dx", -4)
+        //         .attr("href", d => keyNameImage(d.platform))
+        //         .attr("x", 0) // Adjust the x-coordinate as needed
+        //         .attr("y", d => y(d[`${keyNameY}`]) + y.bandwidth() / 2) // Adjust the y-coordinate as needed
+        //         .attr("width", 40) // Set the width of the image
+        //         .attr("height", 40); // Set the height of the image
+        // }
+
         svg.append("g")
             .attr("fill", "black")
             .selectAll()
@@ -98,7 +115,7 @@ const HorizontalBarChart = props => {
 
     return (
         <div className="tw-h-max tw-w-max">
-            <svg className="tw-text-xl" ref={svgRef}></svg>
+            <svg className="tw-text-xl tw-h-max tw-w-max" ref={svgRef}></svg>
         </div>
     )
 }

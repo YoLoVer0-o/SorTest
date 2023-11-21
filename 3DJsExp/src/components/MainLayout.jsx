@@ -138,6 +138,176 @@ const MainLayout = (props) => {
                   label: "Create New Post",
                   className: "",
                 },
+                {
+                  key: null,
+                  icon: <UploadOutlined />,
+                  label: "RPA Management",
+                  className: "",
+                  children: [
+                    {
+                      key: "/facebook",
+                      icon: <UploadOutlined />,
+                      label: "Facebook",
+                      className: "",
+                      children: [
+                        {
+                          key: "/RPA/account:facebook",
+                          label: "บัญชีและสถานะ",
+                          className: "",
+                        },
+                        {
+                          key: "/RPA/fulltime:facebook",
+                          label: "งานประจำ",
+                          className: "",
+                        },
+                        {
+                          key: "/RPA/job:facebook",
+                          label: "งาน",
+                          className: "",
+                        },
+                        {
+                          key: "/RPA/errlog:facebook",
+                          label: "Error Log",
+                          className: "",
+                        },
+                        {
+                          key: "/RPA/activlog:facebook",
+                          label: "Activity Log",
+                          className: "",
+                        },
+                      ]
+                    }, {
+                      key: "/X",
+                      icon: <UploadOutlined />,
+                      label: "X(Twitter)",
+                      className: "",
+                      children: [
+                        {
+                          key: "/RPA/account:X",
+                          label: "บัญชีและสถานะ",
+                          className: "",
+                        },
+                        {
+                          key: "/RPA/fulltime:X",
+                          label: "งานประจำ",
+                          className: "",
+                        },
+                        {
+                          key: "/RPA/job:X",
+                          label: "งาน",
+                          className: "",
+                        },
+                        {
+                          key: "/RPA/errlog:X",
+                          label: "Error Log",
+                          className: "",
+                        },
+                        {
+                          key: "/RPA/activlog:X",
+                          label: "Activity Log",
+                          className: "",
+                        },
+                      ]
+                    }, {
+                      key:"/instagram",
+                      icon: <UploadOutlined />,
+                      label: "Instagram",
+                      className: "",
+                      children: [
+                        {
+                          key: "/RPA/account:instagram",
+                          label: "บัญชีและสถานะ",
+                          className: "",
+                        },
+                        {
+                          key: "/RPA/fulltime:instagram",
+                          label: "งานประจำ",
+                          className: "",
+                        },
+                        {
+                          key: "/RPA/job:instagram",
+                          label: "งาน",
+                          className: "",
+                        },
+                        {
+                          key: "/RPA/errlog:instagram",
+                          label: "Error Log",
+                          className: "",
+                        },
+                        {
+                          key: "/RPA/activlog:instagram",
+                          label: "Activity Log",
+                          className: "",
+                        },
+                      ]
+                    },
+                    {
+                      key: "/youtube",
+                      icon: <UploadOutlined />,
+                      label: "Youtube",
+                      className: "",
+                      children: [
+                        {
+                          key: "/RPA/account:youtube",
+                          label: "บัญชีและสถานะ",
+                          className: "",
+                        },
+                        {
+                          key: "/RPA/fulltime:youtube",
+                          label: "งานประจำ",
+                          className: "",
+                        },
+                        {
+                          key: "/RPA/job:youtube",
+                          label: "งาน",
+                          className: "",
+                        },
+                        {
+                          key: "/RPA/errlog:youtube",
+                          label: "Error Log",
+                          className: "",
+                        },
+                        {
+                          key: "/RPA/activlog:youtube",
+                          label: "Activity Log",
+                          className: "",
+                        },
+                      ]
+                    },
+                    {
+                      key: "/tiktok",
+                      label: "tiktok",
+                      className: "",
+                      children: [
+                        {
+                          key: "/RPA/account:tiktok",
+                          label: "บัญชีและสถานะ",
+                          className: "",
+                        },
+                        {
+                          key: "/RPA/fulltime:tiktok",
+                          label: "งานประจำ",
+                          className: "",
+                        },
+                        {
+                          key: "/RPA/job:tiktok",
+                          label: "งาน",
+                          className: "",
+                        },
+                        {
+                          key: "/RPA/errlog:tiktok",
+                          label: "Error Log",
+                          className: "",
+                        },
+                        {
+                          key: "/RPA/activlog:tiktok",
+                          label: "Activity Log",
+                          className: "",
+                        },
+                      ]
+                    },  
+                  ]
+                },
               ]}
             />
           </Sider>
