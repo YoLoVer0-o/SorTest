@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 const Arc = ({ data, index, createArc, colors, displayText, displayValue }) => {
 
-
     return (
         <g key={index} className="arc">
             <path className="arc" d={createArc(data)} fill={colors} />
@@ -50,7 +49,7 @@ const PieChart = props => {
 
     return (
         <svg width={props.width} height={props.height}>
-            <g transform={`translate(${props.outerRadius} ${props.outerRadius})`}>
+            <g className={"tw-w-max tw-h-max tw-flex"} transform={`translate(${props.outerRadius} ${props.outerRadius})`}>
                 {data.map((d, i) => (
                     <Arc
                         key={i}

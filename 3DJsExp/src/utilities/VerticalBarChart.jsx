@@ -8,6 +8,8 @@ const VerticalBarChart = props => {
 
   useEffect(() => {
     const data = props.data;
+    const keyNameX = props.keyNameX;
+    const keyNameY = props.keyNameY;
 
     // Select the SVG element
     const svg = d3.select(svgRef.current);
@@ -28,13 +30,13 @@ const VerticalBarChart = props => {
 
     const x = d3
       .scaleBand()
-      .domain(data.map((d) => d.name))
+      .domain(data.map((d) => d[`${keyNameX}`]))
       .range([0, width])
       .padding(0.1);
 
     const y = d3
       .scaleLinear()
-      .domain([0, d3.max(data, (d) => d.value)])
+      .domain([0, d3.max(data, (d) => d[`${keyNameY}`])])
       .nice()
       .range([height, 0]);
 
@@ -44,10 +46,10 @@ const VerticalBarChart = props => {
       .enter()
       .append("rect")
       .attr("class", "bar")
-      .attr("x", (d) => x(d.name))
-      .attr("y", (d) => y(d.value))
+      .attr("x", (d) => x(d[`${keyNameX}`]))
+      .attr("y", (d) => y(d[`${keyNameY}`]))
       .attr("width", x.bandwidth())
-      .attr("height", (d) => height - y(d.value))
+      .attr("height", (d) => height - y(d[`${keyNameY}`]))
       .style("fill", "yellow")
       .on("click", function (event, d) {
         if (props.onBarClick) {
@@ -61,23 +63,46 @@ const VerticalBarChart = props => {
         d3.select(this).style("fill", "yellow");
       });
 
+    chart.append("g")
+      .attr("fill", "black")
+      .selectAll()
+      .data(data)
+      .join("text")
+      .attr("x", (d) => x(d[`${keyNameX}`]) + 15)
+      .attr("y", (d) => y(d[`${keyNameY}`]) - 5)
+      .text((d) => d[`${keyNameY}`])
+      .call((text) => text.filter(d => x(d[`${keyNameX}`]))
+        .attr("fill", "black")
+        .attr("text-anchor", "start"));
+
     chart
       .append("g")
       .attr("class", "x-axis")
       .attr("transform", `translate(0,${height})`)
-      .call(d3.axisBottom(x));
+      .call(d3.axisBottom(x))
+      .selectAll("text")
+      .style("font-size", "1rem");
 
-    chart.append("g").attr("class", "y-axis").call(d3.axisLeft(y));
+    chart.append("g")
+      .attr("class", "y-axis")
+      .call(d3.axisLeft(y))
+      .selectAll("text")
+      .style("font-size", "1rem");
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.data, props.height, props.width]);
 
   return (
-    <svg className="tw-text-xl" ref={svgRef}></svg>
+    <div className="tw-h-max tw-w-max">
+      <svg className="tw-text-xl" ref={svgRef}></svg>
+    </div>
   );
 };
 
 VerticalBarChart.propTypes = {
   data: PropTypes.array,
+  keyNameX: PropTypes.string,
+  keyNameY: PropTypes.string,
   onBarClick: PropTypes.func,
   width: PropTypes.number,
   height: PropTypes.number,
