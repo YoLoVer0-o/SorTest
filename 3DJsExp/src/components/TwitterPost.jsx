@@ -11,18 +11,16 @@ import { HiOutlineAtSymbol, HiOutlineGif } from "react-icons/hi2";
 import { SlPicture } from "react-icons/sl";
 import { LiaPollHSolid, LiaWindowClose } from "react-icons/lia";
 import {
-  DownOutlined,
   CloseOutlined,
   CloudUploadOutlined,
 } from "@ant-design/icons";
-import { Select, Space, Button } from "antd";
+import { Select, Button } from "antd";
 
 const TwitterPost = () => {
   const [message, setMessage] = useState("");
   const [isShow, setIsShow] = useState(false);
   const [showEmojiInput, setShowEmojiInput] = useState(false);
   const [files, setFiles] = useState([]);
-  const [haveImages, setHaveImages] = useState(false);
 
   const {
     isDesktopOrLaptop,
@@ -76,9 +74,9 @@ const TwitterPost = () => {
   ));
 
   return (
-    <div className="tw-flex tw-justify-center tw-h-[75%] tw-w-full">
+    <div className="tw-flex tw-justify-center tw-h-[80%] tw-w-full">
       <div className="tw-flex tw-items-center  tw-w-[80%] tw-h-full tw-flex-col tw-bg-white tw-border-gray-200 tw-border-[1px] ">
-        <div className="tw-flex tw-gap-x-8  tw-w-[50%] tw-h-[20%]">
+        <div className="tw-flex tw-gap-x-8  tw-w-[50%] tw-h-[50%]">
           <img
             className="tw-w-12 tw-h-12 tw-rounded-full tw-border-2 tw-border-black"
             src={profile}

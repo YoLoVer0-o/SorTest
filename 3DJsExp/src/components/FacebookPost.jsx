@@ -1,10 +1,10 @@
 import { CloudUploadOutlined, CloseOutlined } from "@ant-design/icons";
 import EmojiPicker, { EmojiStyle } from "emoji-picker-react";
-import  DropDownPostTarget  from "./DropDownPostTarget";
+import DropDownPostTarget from "./DropDownPostTarget";
 import profile from "../assets/profile.png";
 import { useDropzone } from "react-dropzone";
 import { BsEmojiSmile } from "react-icons/bs";
-import {LiaWindowClose} from "react-icons/lia";
+import { LiaWindowClose } from "react-icons/lia";
 import { useResponsive } from "../hooks";
 import classNames from "classnames";
 import React, { useState } from "react";
@@ -69,7 +69,15 @@ const FacebookPost = () => {
   ));
   console.log(images);
   return (
-    <div className="tw-flex tw-flex-col tw-w-full tw-items-center tw-h-[80%] tw-max-h-max  ">
+    <div
+      className={classNames(
+        "tw-flex tw-flex-col tw-w-full tw-items-center tw-max-h-max",
+        {
+          "tw-h-[80%]": isDesktopOrLaptop,
+          "tw-h-[60%]": isMobile && isPortrait,
+        }
+      )}
+    >
       <div>
         <div className="tw-flex tw-justify-center tw-flex-row tw-w-full tw-gap-x-8">
           {" "}
@@ -78,28 +86,33 @@ const FacebookPost = () => {
             src={profile}
           ></img>
           <div>
-          <p className="  tw-text-xl ">Account Name</p>
-          <DropDownPostTarget/>
+            <p className="  tw-text-xl ">Account Name</p>
+            <DropDownPostTarget />
           </div>
         </div>
       </div>
-      <div className={classNames("tw-flex tw-flex-col tw-justify-center tw-h-[80%] ",{
-        "tw-w-[40%]": isDesktopOrLaptop,
-        "tw-w-[40%] ": isTablet && isPortrait,
-        "tw-w-full": isMobile && isPortrait
-      })}>
-      <textarea
-        value={message}
-        onChange={handleMessageChange}
-        placeholder="คุณกำลังคิดอะไรอยู่"
-        className=" tw-text-xl  tw-w-full tw-h-full tw-border-none tw-resize-none tw-outline-none"
-      />
-      <BsEmojiSmile
-        className=" tw-text-3xl  tw-self-end tw-text-gray-700 hover:tw-bg-gray-300 tw-rounded-full tw-flex"
-        onClick={toggleEmoji}
-      />
+      <div
+        className={classNames(
+          "tw-flex tw-flex-col tw-justify-center tw-h-[80%] ",
+          {
+            "tw-w-[40%]": isDesktopOrLaptop,
+            "tw-w-[40%] ": isTablet && isPortrait,
+            "tw-w-full": isMobile && isPortrait,
+          }
+        )}
+      >
+        <textarea
+          value={message}
+          onChange={handleMessageChange}
+          placeholder="คุณกำลังคิดอะไรอยู่"
+          className=" tw-text-xl  tw-w-full tw-h-full tw-border-none tw-resize-none tw-outline-none"
+        />
+        <BsEmojiSmile
+          className=" tw-text-3xl  tw-self-end tw-text-gray-700 hover:tw-bg-gray-300 tw-rounded-full tw-flex"
+          onClick={toggleEmoji}
+        />
       </div>
-      
+
       {showEmojiInput && (
         <div className=" tw-absolute tw-flex tw-justify-center   tw-z-20">
           <EmojiPicker
@@ -108,11 +121,12 @@ const FacebookPost = () => {
             onEmojiClick={(emoji) => showEmo(emoji)}
             // height="20rem"
           />
-          <button className="tw-absolute tw-top-0 tw-right-0"
-          onClick={toggleEmoji}
+          <button
+            className="tw-absolute tw-top-0 tw-right-0"
+            onClick={toggleEmoji}
           >
-            <LiaWindowClose className="tw-text-2xl  tw-bg-red-500"/>
-            </button>
+            <LiaWindowClose className="tw-text-2xl  tw-bg-red-500" />
+          </button>
         </div>
       )}
       {isShow && (
@@ -134,46 +148,52 @@ const FacebookPost = () => {
             className={classNames(
               "tw-flex tw-justify-center tw-items-center tw-border-dashed tw-border-2 tw-z-10 tw-w-full tw-flex-col tw-h-64 tw-bg-gray-100  hover:tw-bg-gray-200 tw-border-gray-400 tw-rounded-md",
               {
-                " tw-w-full tw-min-w-full": isMobile  && isPortrait,
+                " tw-w-full tw-min-w-full": isMobile && isPortrait,
               }
             )}
           >
             <input {...getInputProps()} className="tw-w-full" />
-            <CloudUploadOutlined className="tw-text-4xl" />
-            <p>Drop files here </p>
+            {images.length === 0 && (
+              <div className="tw-flex tw-flex-col tw-items-center">
+                <CloudUploadOutlined className="tw-text-4xl" />
+                <p>Drop files here </p>
+              </div>
+            )}
             <div>{images}</div>
           </div>
         </div>
       )}
-      
-      <div className=" tw-flex tw-h-[50%] tw-w-full tw-items-end tw-justify-center ">
-      <div
-        className={classNames("tw-flex tw-flex-row tw-h-12  tw-border-[1px]  tw-border-gray-300 tw-rounded-md tw-justify-center tw-items-center tw-gap-x-4 ",{
-          "tw-w-[40%]": isDesktopOrLaptop,
-          " tw-w-full": isMobile && isPortrait
-        })}
-      >
-        <p className="tw-col-span-2">Add to your post</p>
-        <button
-          className=" tw-rounded-full tw-w-max  hover:tw-bg-gray-300"
-          onClick={() => setIsShow(true)}
+
+      <div className=" tw-flex  tw-w-full tw-items-end tw-justify-center ">
+        <div
+          className={classNames(
+            "tw-flex tw-flex-row tw-h-12  tw-border-[1px]  tw-border-gray-300 tw-rounded-md tw-justify-center tw-items-center tw-gap-x-4 ",
+            {
+              "tw-w-[40%]": isDesktopOrLaptop,
+              " tw-w-full": isMobile && isPortrait,
+            }
+          )}
         >
-          <img className="tw-w-6 tw-h-6 " src={Image.selectPic} />
-        </button>
-        <img className="tw-w-6 tw-h-6" src={Image.tagOther} />
-        <img className="tw-w-6 tw-h-6" src={Image.emoji} />
-        <img className="tw-w-6 tw-h-6" src={Image.checkIn} />
-        <img className="tw-w-6 tw-h-6" src={Image.Gif} />
-        <button
-          className="tw-rounded-full tw-flex tw-justify-center
+          <p className="tw-col-span-2">Add to your post</p>
+          <button
+            className=" tw-rounded-full tw-w-max  hover:tw-bg-gray-300"
+            onClick={() => setIsShow(true)}
+          >
+            <img className="tw-w-6 tw-h-6 " src={Image.selectPic} />
+          </button>
+          <img className="tw-w-6 tw-h-6" src={Image.tagOther} />
+          <img className="tw-w-6 tw-h-6" src={Image.emoji} />
+          <img className="tw-w-6 tw-h-6" src={Image.checkIn} />
+          <img className="tw-w-6 tw-h-6" src={Image.Gif} />
+          <button
+            className="tw-rounded-full tw-flex tw-justify-center
            hover:tw-bg-gray-200 tw-w-6 tw-h-6 tw-items-center tw-text-center"
-        >
-          {" "}
-          ...
-        </button>
+          >
+            {" "}
+            ...
+          </button>
+        </div>
       </div>
-      </div>
-     
     </div>
   );
 };

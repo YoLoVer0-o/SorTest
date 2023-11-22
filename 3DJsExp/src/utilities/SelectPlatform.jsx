@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Select } from "antd";
+import { useResponsive } from "../hooks";
+import classNames from "classnames";
 import PropTypes from "prop-types";
 
 const SelectPlatform = (props) => {
@@ -22,9 +24,29 @@ const SelectPlatform = (props) => {
     setSelectedGroupType(selected);
   };
 
+  const {
+    isDesktopOrLaptop,
+    isBigScreen,
+    isTabletOrMobile,
+    isTablet,
+    isMobile,
+    isPortrait,
+  } = useResponsive();
+
   return (
-    <div className="tw-flex tw-flex-row tw-w-full tw-justify-center tw-gap-x-8 ">
-      <div className="tw-w-[30%]">
+    <div
+      className={classNames(
+        "tw-flex tw-flex-row tw-w-full tw-justify-center tw-gap-x-8 ",
+        {
+          "tw-flex tw-flex-col tw-w-full ": isMobile && isPortrait,
+        }
+      )}
+    >
+      <div
+        className={classNames("tw-w-[30%]", {
+          "tw-w-full": isMobile && isPortrait,
+        })}
+      >
         <p>แพลต์ฟอร์ม :</p>
         <Select
           defaultValue="Facebook"
@@ -48,7 +70,11 @@ const SelectPlatform = (props) => {
         />
       </div>
       {selectedGroupType === "Single User" && (
-        <div className="tw-w-[30%]">
+        <div
+        className={classNames("tw-w-[30%]", {
+          "tw-w-full": isMobile && isPortrait,
+        })}
+      >
           <p>บัญชีที่ใช้โพสต์ :</p>
           <Select
             defaultValue="John Doe"
@@ -73,7 +99,11 @@ const SelectPlatform = (props) => {
       )}
 
       {selectedGroupType === "Group" && (
-        <div className="tw-w-[30%]">
+        <div
+        className={classNames("tw-w-[30%]", {
+          "tw-w-full": isMobile && isPortrait,
+        })}
+      >
           <p>กลุ่มที่ใช้โพสต์ :</p>
           <Select
             defaultValue="กลุ่มทางการเมือง"
@@ -97,7 +127,11 @@ const SelectPlatform = (props) => {
         </div>
       )}
 
-      <div className="tw-w-[20%]">
+<div
+        className={classNames("tw-w-[20%]", {
+          "tw-w-full": isMobile && isPortrait,
+        })}
+      >
         <p>เลื่อกกลุ่ม :</p>
         <Select
           defaultValue="Single User"
