@@ -22,6 +22,7 @@ const Dashboard = () => {
     const { isTabletOrMobile, isTablet, isPortrait } = useResponsive();
 
     const colorSet = (data) => {
+        console.log(data);
         if (data == "positive") {
             return "#22c55e";
         }
@@ -53,8 +54,32 @@ const Dashboard = () => {
         else {
             return social_media
         }
+    };
 
+    const options = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+            title: {
+                display: false,
+                text: 'Chart.js Bar Chart',
+            },
+        },
+    };
 
+    const labels = sentimentPos.map(item => item.name);
+
+    const data = {
+        labels,
+        datasets: [
+            {
+                label: 'จำนวนโพสต์',
+                data: sentimentPos.map(item => item.value),
+                backgroundColor: sentimentPos.map(item => colorSet(item.commentType)),
+            },
+        ],
     };
 
     return (
@@ -105,11 +130,8 @@ const Dashboard = () => {
                             <p className="tw-text-center tw-text-lg">จำนวนโพสต์รายวัน</p>
                             <div className="tw-flex tw-w-full tw-h-full tw-items-center tw-overflow-auto">
                                 <VerticalBarChart
-                                    data={sentimentPos}
-                                    keyNameX={"name"}
-                                    keyNameY={"value"}
-                                    width={640}
-                                    height={isTabletOrMobile ? 280 : 310}
+                                    chartOptions={options}
+                                    chartData={data}
                                 />
                             </div>
                         </div>
@@ -144,7 +166,7 @@ const Dashboard = () => {
                             </div>
                             <div className={classNames("tw-flex tw-justify-center tw-h-full tw-w-full", {
                             })}>
-                                <PieChart
+                                {/* <PieChart
                                     data={sentimentAll}
                                     keyName={"value"}
                                     displayText={"name"}
@@ -153,7 +175,7 @@ const Dashboard = () => {
                                     innerRadius={isTabletOrMobile ? 20 : 60}
                                     outerRadius={isTabletOrMobile ? 100 : 240}
                                     calColor={colorSet}
-                                />
+                                /> */}
                             </div>
                         </div>
                     </div>
@@ -161,7 +183,7 @@ const Dashboard = () => {
                         <div className="tw-flex tw-flex-col tw-gap-y-6 tw-w-full tw-h-full tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-center tw-text-lg">ช่องทางสื่อออนไลน์</p>
                             <div className="tw-flex tw-w-full tw-h-full tw-justify-center tw-overflow-auto">
-                                <HorizontalBarChart
+                                {/* <HorizontalBarChart
                                     data={socialPlatform}
                                     width={isTabletOrMobile ? 720 : 480}
                                     barHeight={isTabletOrMobile ? 70 : 35}
@@ -170,7 +192,7 @@ const Dashboard = () => {
                                     keyNameColor={"positive"}
                                     // keyNameImage={sentIcons}
                                     calColor={colorSet}
-                                />
+                                /> */}
                             </div>
                         </div>
                         <div className="tw-flex tw-flex-col tw-h-full tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
