@@ -22,7 +22,6 @@ const Dashboard = () => {
     const { isTabletOrMobile, isTablet, isPortrait } = useResponsive();
 
     const colorSet = (data) => {
-        console.log(data);
         if (data == "positive") {
             return "#22c55e";
         }
@@ -33,30 +32,8 @@ const Dashboard = () => {
             return "#0284c7";
         }
     };
-
-    const sentIcons = (name) => {
-        const { facebook, instagram, twitter, tiktok, youtube, social_media } = SocialIcons;
-        if (name == "facebook") {
-            return facebook
-        }
-        else if (name == "instagram") {
-            return instagram
-        }
-        else if (name == "twitter") {
-            return twitter
-        }
-        else if (name == "tiktok") {
-            return tiktok
-        }
-        else if (name == "youtube") {
-            return youtube
-        }
-        else {
-            return social_media
-        }
-    };
-
-    const options = {
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    const postBarOptions = {
         responsive: true,
         plugins: {
             legend: {
@@ -69,10 +46,8 @@ const Dashboard = () => {
         },
     };
 
-    const labels = sentimentPos.map(item => item.name);
-
-    const data = {
-        labels,
+    const postBarData = {
+        labels: sentimentPos.map(item => item.name),
         datasets: [
             {
                 label: 'จำนวนโพสต์',
@@ -81,6 +56,78 @@ const Dashboard = () => {
             },
         ],
     };
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    const sentIcons = (value) => {
+        console.log(value);
+        const { facebook, instagram, twitter, tiktok, youtube, social_media } = SocialIcons;
+        if (value == "facebook") {
+            return facebook
+        }
+        else if (value == "instagram") {
+            return instagram
+        }
+        else if (value == "twitter") {
+            return twitter
+        }
+        else if (value == "tiktok") {
+            return tiktok
+        }
+        else if (value == "youtube") {
+            return youtube
+        }
+        else {
+            return social_media
+        }
+    };
+
+    const socialBarOptions = {
+        indexAxis: 'y',
+        elements: {
+            bar: {
+                borderWidth: 2,
+            },
+        },
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'right',
+                display: false,
+            },
+            title: {
+                display: false,
+                text: 'Chart.js Horizontal Bar Chart',
+            },
+
+        },
+        scales: {
+            y: {
+                ticks: {
+                    display: false,
+                },
+                grid: {
+                    display: false,
+                },
+                afterFit: (scaleInstance) => {
+                    scaleInstance.width = 150;
+                },
+            },
+        },
+    };
+
+    const socialBarData = {
+        labels: socialPlatform.map(item => item.platform),
+        datasets: [
+            {
+                label: 'จำนวนความเคลื่อนไหว',
+                data: socialPlatform.map(item => item.usage),
+                borderColor: 'rgb(255, 99, 132)',
+                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            },
+        ],
+    };
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     return (
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto', {})}>
@@ -130,8 +177,8 @@ const Dashboard = () => {
                             <p className="tw-text-center tw-text-lg">จำนวนโพสต์รายวัน</p>
                             <div className="tw-flex tw-w-full tw-h-full tw-items-center tw-overflow-auto">
                                 <VerticalBarChart
-                                    chartOptions={options}
-                                    chartData={data}
+                                    chartOptions={postBarOptions}
+                                    chartData={postBarData}
                                 />
                             </div>
                         </div>
@@ -183,16 +230,11 @@ const Dashboard = () => {
                         <div className="tw-flex tw-flex-col tw-gap-y-6 tw-w-full tw-h-full tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-center tw-text-lg">ช่องทางสื่อออนไลน์</p>
                             <div className="tw-flex tw-w-full tw-h-full tw-justify-center tw-overflow-auto">
-                                {/* <HorizontalBarChart
-                                    data={socialPlatform}
-                                    width={isTabletOrMobile ? 720 : 480}
-                                    barHeight={isTabletOrMobile ? 70 : 35}
-                                    keyNameX={"usage"}
-                                    keyNameY={"platform"}
-                                    keyNameColor={"positive"}
-                                    // keyNameImage={sentIcons}
-                                    calColor={colorSet}
-                                /> */}
+                                <HorizontalBarChart
+                                    chartOptions={socialBarOptions}
+                                    chartData={socialBarData}
+                                    redraw={true}
+                                />
                             </div>
                         </div>
                         <div className="tw-flex tw-flex-col tw-h-full tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">

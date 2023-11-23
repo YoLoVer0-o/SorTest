@@ -1,134 +1,97 @@
-import { useEffect, useRef } from "react";
-import PropTypes from 'prop-types';
-import * as d3 from "d3";
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend,
+} from 'chart.js';
+import { useMemo, useState } from 'react';
+import { Bar } from 'react-chartjs-2';
+import profile from "../assets/profile.png";
+
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend
+);
 
 const HorizontalBarChart = props => {
 
-    const data = props.data;
-    const svgRef = useRef(null);
+    const options = props.chartOptions;
+    const data = props.chartData;
 
-    let onBarClick = props.onBarClick;
+    const [isImageLoaded, setIsImageLoaded] = useState(false);
 
-    useEffect(() => {
-        const keyNameX = props.keyNameX;
-        const keyNameY = props.keyNameY;
-        const keyNameColor = props.keyNameColor;
-        const calColor = props.calColor;
-        const barHeight = props.barHeight;
-        // const keyNameImage = props.keyNameImage;
+    const labelImage = useMemo(() => {
+        const image = new Image();
+        image.src = profile;
 
-        const marginTop = 30;
-        const marginRight = 60;
-        const marginBottom = 10;
-        const marginLeft = 100;
-        const width = props.width;
-        const height = Math.ceil((data.length + 0.1) * barHeight) + marginTop + marginBottom;
+        image.onload = () => {
+            setIsImageLoaded(true);
+        };
 
-        const x = d3.scaleLinear()
-            .domain([0, d3.max(data, d => d[`${keyNameX}`])])
-            .range([marginLeft, width - marginRight]);
+        return image;
+    }, []);
+    const settings = {
+        barSize: 50,
+        imageWidth: 130,
+        imageHeight: 30,
+        imageHalfHeight: 30 / 2,
+        imageBarOffset: (50 - 30) / 2,
+        textHeight: 15,
+        textHalfHeight: 15 / 2,
+        textFont: 'normal 20px Arial, sans-serif'
+    };
 
-        const y = d3.scaleBand()
-            .domain(d3.sort(data, d => -d[`${keyNameX}`])
-                .map(d => d[`${keyNameY}`]))
-            .rangeRound([marginTop, height - marginBottom])
-            .padding(0.1);
+    const handleDrawImage = (chart) => {
+        const { ctx } = chart;
 
-        const svg = d3
-            .select(svgRef.current)
-            .attr("width", width)
-            .attr("height", height)
-            .attr("viewBox", [0, 0, width, height])
-            .attr("style", "max-width: 100%; height: auto;");
+        const chartHeight = chart.chartArea?.height;
+        const dataLength = data.labels.length;
 
-        svg.selectAll("*").remove();
+        const step = (chartHeight - settings.barSize * dataLength) / dataLength;
+        const yOffset = step / 2 + settings.imageBarOffset;
 
-        svg.append("g")
-            .attr("fill", calColor(keyNameColor))
-            .selectAll()
-            .data(data)
-            .join("rect")
-            .attr("x", x(0))
-            .attr("y", (d) => y(d[`${keyNameY}`]))
-            .attr("width", (d) => x(d[`${keyNameX}`]) - x(0))
-            .attr("height", y.bandwidth())
-            .on("click", function (event, d) {
-                if (onBarClick) {
-                    onBarClick(d);
-                }
-            })
-            .on("mouseover", function () {
-                d3.select(this).style("fill", "orange");
-            })
-            .on("mouseout", function () {
-                d3.select(this).style("fill", function () {
-                    return calColor(keyNameColor);
-                });
-            });
+        ctx.font = settings.textFont;
 
-        // if (keyNameImage) {
-        //     svg.append("g")
-        //         .selectAll()
-        //         .data(data)
-        //         .join("image")
-        //         .attr("x", (d) => x(d[`${keyNameX}`]) + 10)
-        //         .attr("y", (d) => y(d[`${keyNameY}`]) + y.bandwidth() / 2)
-        //         .attr("dy", "0.35em")
-        //         .attr("dx", -4)
-        //         .attr("href", d => keyNameImage(d.platform))
-        //         .attr("x", 0) // Adjust the x-coordinate as needed
-        //         .attr("y", d => y(d[`${keyNameY}`]) + y.bandwidth() / 2) // Adjust the y-coordinate as needed
-        //         .attr("width", 40) // Set the width of the image
-        //         .attr("height", 40); // Set the height of the image
-        // }
+        ctx.save();
 
-        svg.append("g")
-            .attr("fill", "black")
-            .selectAll()
-            .data(data)
-            .join("text")
-            .attr("x", (d) => x(d[`${keyNameX}`]) + 10)
-            .attr("y", (d) => y(d[`${keyNameY}`]) + y.bandwidth() / 2)
-            .attr("dy", "0.35em")
-            .attr("dx", -4)
-            .text((d) => d[`${keyNameX}`])
-            .call((text) => text.filter(d => x(d[`${keyNameX}`]) - x(0) < 20)
-                .attr("dx", +4)
-                .attr("fill", "black")
-                .attr("text-anchor", "start"));
+        data.labels.forEach((element, i) => {
 
-        svg.append("g")
-            .attr("transform", `translate(0,${marginTop})`)
-            .call(d3.axisTop(x).ticks(width / 80, "").tickFormat(d3.format(".0f")))
-            .call(g => g.select(".domain").remove())
-            .selectAll("text")
-            .style("font-size", "1rem");
+            const imageY = i * (settings.barSize + step) + yOffset;
 
-        svg.append("g")
-            .attr("transform", `translate(${marginLeft},0)`)
-            .call(d3.axisLeft(y).tickSizeOuter(0))
-            .selectAll("text")
-            .style("font-size", "1rem");
+            ctx.drawImage(
+                labelImage,
+                10,
+                imageY,
+                settings.imageWidth,
+                settings.imageHeight
+            );
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data, props.keyNameX, props.keyNameY, props.keyNameColor, props.calColor, props.width, props.barHeight]);
+            ctx.restore();
+        });
+    };
 
-    return (
-        <div className="tw-h-max tw-w-max">
-            <svg className="tw-text-xl tw-h-max tw-w-max" ref={svgRef}></svg>
-        </div>
-    )
+    if (!isImageLoaded) {
+        return null;
+    }
+
+    return <Bar
+        data={data}
+        options={options}
+        redraw={props.redraw}
+        plugins={[
+            {
+                id: "sectorBackground",
+                beforeDraw: (chart) => handleDrawImage(chart),
+                resize: (chart) => handleDrawImage(chart)
+            }
+        ]}
+    />
 }
-
-HorizontalBarChart.propTypes = {
-    data: PropTypes.array,
-    onBarClick: PropTypes.func,
-    width: PropTypes.number,
-    barHeight: PropTypes.number,
-    keyNameX: PropTypes.string,
-    keyNameY: PropTypes.string,
-    keyNameColor: PropTypes.string,
-    calColor: PropTypes.func,
-}
-
 export default HorizontalBarChart;

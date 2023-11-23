@@ -9,7 +9,6 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
-
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -21,9 +20,9 @@ ChartJS.register(
 
 const VerticalBarChart = props => {
 
-  const chartOptions = props.chartOptions;
-  const chartData = props.chartData;
+  const options = props.chartOptions;
+  const data = props.chartData;
 
-  return <Bar options={chartOptions} data={chartData} />;
+  return <Bar options={options} data={data} />;
 }
 export default VerticalBarChart;
