@@ -7,5 +7,4 @@ export default {
   },
   plugins: [],
   prefix: "tw-",
-  important: true,
 };

@@ -35,9 +35,11 @@ const Dashboard = () => {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     const postBarOptions = {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
             legend: {
                 position: 'top',
+                display: false,
             },
             title: {
                 display: false,
@@ -53,15 +55,16 @@ const Dashboard = () => {
                 label: 'จำนวนโพสต์',
                 data: sentimentPos.map(item => item.value),
                 backgroundColor: sentimentPos.map(item => colorSet(item.commentType)),
+                barThickness: isTabletOrMobile ? 20 : 50,
             },
         ],
     };
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    const { facebook, instagram, twitter, tiktok, youtube, social_media } = SocialIcons;
     const sentIcons = (value) => {
         console.log(value);
-        const { facebook, instagram, twitter, tiktok, youtube, social_media } = SocialIcons;
         if (value == "facebook") {
             return facebook
         }
@@ -82,6 +85,48 @@ const Dashboard = () => {
         }
     };
 
+    const imageSettings = {
+        barSize: isTabletOrMobile ? 30 : 50,
+        imageWidth: isTabletOrMobile ? 30 : 50,
+        imageHeight: isTabletOrMobile ? 30 : 50,
+        imageHalfHeight: isTabletOrMobile ? 30 / 2 : 50 / 2,
+        imageBarOffset: isTabletOrMobile ? (50 - 50) / 2 : (30 - 30) / 2,
+    };
+
+
+    const handleDrawImage = (chart, data) => {
+        const { ctx } = chart;
+
+        const chartHeight = chart.chartArea?.height;
+        const dataLength = data.labels.length;
+
+        const step = (chartHeight - imageSettings.barSize * dataLength) / dataLength;
+        const yOffset = step / 2 + imageSettings.imageBarOffset;
+
+        ctx.font = imageSettings.textFont;
+
+        ctx.save();
+
+        data.labels.forEach((element, i) => {
+            console.log(element);
+
+            const imageY = i * (imageSettings.barSize + step) + yOffset;
+
+            const image = new Image();
+            image.src = sentIcons(element);
+
+            ctx.drawImage(
+                image,
+                0,
+                imageY,
+                imageSettings.imageWidth,
+                imageSettings.imageHeight
+            );
+
+            ctx.restore();
+        });
+    };
+
     const socialBarOptions = {
         indexAxis: 'y',
         elements: {
@@ -90,6 +135,7 @@ const Dashboard = () => {
             },
         },
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
             legend: {
                 position: 'right',
@@ -99,7 +145,6 @@ const Dashboard = () => {
                 display: false,
                 text: 'Chart.js Horizontal Bar Chart',
             },
-
         },
         scales: {
             y: {
@@ -110,7 +155,7 @@ const Dashboard = () => {
                     display: false,
                 },
                 afterFit: (scaleInstance) => {
-                    scaleInstance.width = 150;
+                    scaleInstance.width = 60;
                 },
             },
         },
@@ -124,6 +169,7 @@ const Dashboard = () => {
                 data: socialPlatform.map(item => item.usage),
                 borderColor: 'rgb(255, 99, 132)',
                 backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                barThickness: isTabletOrMobile ? 30 : 50,
             },
         ],
     };
@@ -164,7 +210,10 @@ const Dashboard = () => {
                 <div className={classNames("tw-flex tw-flex-row tw-gap-2 tw-my-2", {
                     "tw-flex-col": isTabletOrMobile || isTablet,
                 })}>
-                    <div className={classNames("tw-flex tw-flex-col tw-gap-4", {})}>
+                    <div className={classNames("tw-flex tw-flex-col tw-gap-4", {
+                        "tw-w-full": isTabletOrMobile || isTablet,
+                        "tw-w-1/3": !isTabletOrMobile && !isTablet,
+                    })}>
                         <div className="tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">จำนวนโพสต์</p>
                             <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
@@ -175,15 +224,22 @@ const Dashboard = () => {
                         </div>
                         <div className="tw-flex tw-flex-col tw-h-full tw-w-full tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-center tw-text-lg">จำนวนโพสต์รายวัน</p>
-                            <div className="tw-flex tw-w-full tw-h-full tw-items-center tw-overflow-auto">
-                                <VerticalBarChart
-                                    chartOptions={postBarOptions}
-                                    chartData={postBarData}
-                                />
+                            <div className="tw-flex tw-w-full tw-h-full tw-overflow-auto tw-items-center">
+                                <div className={classNames("tw-h-full tw-w-full tw-overflow-auto", {
+                                    "tw-h-96": isTabletOrMobile||isTablet,
+                                })}>
+                                    <VerticalBarChart
+                                        chartOptions={postBarOptions}
+                                        chartData={postBarData}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div className={classNames("tw-flex tw-flex-col tw-w-full tw-gap-4", {})}>
+                    <div className={classNames("tw-flex tw-flex-col tw-gap-4", {
+                        "tw-w-full": isTabletOrMobile || isTablet,
+                        "tw-w-1/3": !isTabletOrMobile && !isTablet,
+                    })}>
                         <div className="tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">จำนวนผู้ใช้งาน</p>
                             <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
@@ -226,16 +282,31 @@ const Dashboard = () => {
                             </div>
                         </div>
                     </div>
-                    <div className={classNames("tw-flex tw-flex-col tw-w-full tw-gap-4", {})}>
+                    <div className={classNames("tw-flex tw-flex-col tw-gap-4", {
+                        "tw-w-full": isTabletOrMobile || isTablet,
+                        "tw-w-1/3": !isTabletOrMobile && !isTablet,
+                    })}>
                         <div className="tw-flex tw-flex-col tw-gap-y-6 tw-w-full tw-h-full tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-center tw-text-lg">ช่องทางสื่อออนไลน์</p>
-                            <div className="tw-flex tw-w-full tw-h-full tw-justify-center tw-overflow-auto">
+                            {/* <div className="tw-flex tw-w-full tw-h-full tw-overflow-auto"> */}
+                            <div className={classNames("tw-w-full tw-h-[38rem]", {
+                                "tw-h-96 tw-w-96": isTabletOrMobile,
+                            })}>
                                 <HorizontalBarChart
                                     chartOptions={socialBarOptions}
                                     chartData={socialBarData}
                                     redraw={true}
+                                    imageSettings={imageSettings}
+                                    plugins={[
+                                        {
+                                            id: "sectorBackground",
+                                            beforeDraw: (chart) => handleDrawImage(chart, socialBarData),
+                                            resize: (chart) => handleDrawImage(chart, socialBarData)
+                                        }
+                                    ]}
                                 />
                             </div>
+                            {/* </div> */}
                         </div>
                         <div className="tw-flex tw-flex-col tw-h-full tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">แฮชเเท็กที่ถูกใช้งานมากที่สุด</p>
