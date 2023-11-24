@@ -32,30 +32,148 @@ const Dashboard = () => {
             return "#0284c7";
         }
     };
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    const postBarOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'top',
+                display: false,
+            },
+            title: {
+                display: false,
+                text: 'Chart.js Bar Chart',
+            },
+        },
+    };
 
-    const sentIcons = (name) => {
-        const { facebook, instagram, twitter, tiktok, youtube, social_media } = SocialIcons;
-        if (name == "facebook") {
+    const postBarData = {
+        labels: sentimentPos.map(item => item.name),
+        datasets: [
+            {
+                label: 'จำนวนโพสต์',
+                data: sentimentPos.map(item => item.value),
+                backgroundColor: sentimentPos.map(item => colorSet(item.commentType)),
+                barThickness: isTabletOrMobile ? 20 : 50,
+            },
+        ],
+    };
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    const { facebook, instagram, twitter, tiktok, youtube, social_media } = SocialIcons;
+    const sentIcons = (value) => {
+        console.log(value);
+        if (value == "facebook") {
             return facebook
         }
-        else if (name == "instagram") {
+        else if (value == "instagram") {
             return instagram
         }
-        else if (name == "twitter") {
+        else if (value == "twitter") {
             return twitter
         }
-        else if (name == "tiktok") {
+        else if (value == "tiktok") {
             return tiktok
         }
-        else if (name == "youtube") {
+        else if (value == "youtube") {
             return youtube
         }
         else {
             return social_media
         }
-
-
     };
+
+    const imageSettings = {
+        barSize: isTabletOrMobile ? 30 : 50,
+        imageWidth: isTabletOrMobile ? 30 : 50,
+        imageHeight: isTabletOrMobile ? 30 : 50,
+        imageHalfHeight: isTabletOrMobile ? 30 / 2 : 50 / 2,
+        imageBarOffset: isTabletOrMobile ? (50 - 50) / 2 : (30 - 30) / 2,
+    };
+
+
+    const handleDrawImage = (chart, data) => {
+        const { ctx } = chart;
+
+        const chartHeight = chart.chartArea?.height;
+        const dataLength = data.labels.length;
+
+        const step = (chartHeight - imageSettings.barSize * dataLength) / dataLength;
+        const yOffset = step / 2 + imageSettings.imageBarOffset;
+
+        ctx.font = imageSettings.textFont;
+
+        ctx.save();
+
+        data.labels.forEach((element, i) => {
+            console.log(element);
+
+            const imageY = i * (imageSettings.barSize + step) + yOffset;
+
+            const image = new Image();
+            image.src = sentIcons(element);
+
+            ctx.drawImage(
+                image,
+                0,
+                imageY,
+                imageSettings.imageWidth,
+                imageSettings.imageHeight
+            );
+
+            ctx.restore();
+        });
+    };
+
+    const socialBarOptions = {
+        indexAxis: 'y',
+        elements: {
+            bar: {
+                borderWidth: 2,
+            },
+        },
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'right',
+                display: false,
+            },
+            title: {
+                display: false,
+                text: 'Chart.js Horizontal Bar Chart',
+            },
+        },
+        scales: {
+            y: {
+                ticks: {
+                    display: false,
+                },
+                grid: {
+                    display: false,
+                },
+                afterFit: (scaleInstance) => {
+                    scaleInstance.width = 60;
+                },
+            },
+        },
+    };
+
+    const socialBarData = {
+        labels: socialPlatform.map(item => item.platform),
+        datasets: [
+            {
+                label: 'จำนวนความเคลื่อนไหว',
+                data: socialPlatform.map(item => item.usage),
+                borderColor: 'rgb(255, 99, 132)',
+                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                barThickness: isTabletOrMobile ? 30 : 50,
+            },
+        ],
+    };
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     return (
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto', {})}>
@@ -92,7 +210,10 @@ const Dashboard = () => {
                 <div className={classNames("tw-flex tw-flex-row tw-gap-2 tw-my-2", {
                     "tw-flex-col": isTabletOrMobile || isTablet,
                 })}>
-                    <div className={classNames("tw-flex tw-flex-col tw-gap-4", {})}>
+                    <div className={classNames("tw-flex tw-flex-col tw-gap-4", {
+                        "tw-w-full": isTabletOrMobile || isTablet,
+                        "tw-w-1/3": !isTabletOrMobile && !isTablet,
+                    })}>
                         <div className="tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">จำนวนโพสต์</p>
                             <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
@@ -103,18 +224,22 @@ const Dashboard = () => {
                         </div>
                         <div className="tw-flex tw-flex-col tw-h-full tw-w-full tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-center tw-text-lg">จำนวนโพสต์รายวัน</p>
-                            <div className="tw-flex tw-w-full tw-h-full tw-items-center tw-overflow-auto">
-                                <VerticalBarChart
-                                    data={sentimentPos}
-                                    keyNameX={"name"}
-                                    keyNameY={"value"}
-                                    width={640}
-                                    height={isTabletOrMobile ? 280 : 310}
-                                />
+                            <div className="tw-flex tw-w-full tw-h-full tw-overflow-auto tw-items-center">
+                                <div className={classNames("tw-h-full tw-w-full tw-overflow-auto", {
+                                    "tw-h-96": isTabletOrMobile||isTablet,
+                                })}>
+                                    <VerticalBarChart
+                                        chartOptions={postBarOptions}
+                                        chartData={postBarData}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div className={classNames("tw-flex tw-flex-col tw-w-full tw-gap-4", {})}>
+                    <div className={classNames("tw-flex tw-flex-col tw-gap-4", {
+                        "tw-w-full": isTabletOrMobile || isTablet,
+                        "tw-w-1/3": !isTabletOrMobile && !isTablet,
+                    })}>
                         <div className="tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">จำนวนผู้ใช้งาน</p>
                             <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
@@ -144,7 +269,7 @@ const Dashboard = () => {
                             </div>
                             <div className={classNames("tw-flex tw-justify-center tw-h-full tw-w-full", {
                             })}>
-                                <PieChart
+                                {/* <PieChart
                                     data={sentimentAll}
                                     keyName={"value"}
                                     displayText={"name"}
@@ -153,25 +278,35 @@ const Dashboard = () => {
                                     innerRadius={isTabletOrMobile ? 20 : 60}
                                     outerRadius={isTabletOrMobile ? 100 : 240}
                                     calColor={colorSet}
-                                />
+                                /> */}
                             </div>
                         </div>
                     </div>
-                    <div className={classNames("tw-flex tw-flex-col tw-w-full tw-gap-4", {})}>
+                    <div className={classNames("tw-flex tw-flex-col tw-gap-4", {
+                        "tw-w-full": isTabletOrMobile || isTablet,
+                        "tw-w-1/3": !isTabletOrMobile && !isTablet,
+                    })}>
                         <div className="tw-flex tw-flex-col tw-gap-y-6 tw-w-full tw-h-full tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-center tw-text-lg">ช่องทางสื่อออนไลน์</p>
-                            <div className="tw-flex tw-w-full tw-h-full tw-justify-center tw-overflow-auto">
+                            {/* <div className="tw-flex tw-w-full tw-h-full tw-overflow-auto"> */}
+                            <div className={classNames("tw-w-full tw-h-[38rem]", {
+                                "tw-h-96 tw-w-96": isTabletOrMobile,
+                            })}>
                                 <HorizontalBarChart
-                                    data={socialPlatform}
-                                    width={isTabletOrMobile ? 720 : 480}
-                                    barHeight={isTabletOrMobile ? 70 : 35}
-                                    keyNameX={"usage"}
-                                    keyNameY={"platform"}
-                                    keyNameColor={"positive"}
-                                    // keyNameImage={sentIcons}
-                                    calColor={colorSet}
+                                    chartOptions={socialBarOptions}
+                                    chartData={socialBarData}
+                                    redraw={true}
+                                    imageSettings={imageSettings}
+                                    plugins={[
+                                        {
+                                            id: "sectorBackground",
+                                            beforeDraw: (chart) => handleDrawImage(chart, socialBarData),
+                                            resize: (chart) => handleDrawImage(chart, socialBarData)
+                                        }
+                                    ]}
                                 />
                             </div>
+                            {/* </div> */}
                         </div>
                         <div className="tw-flex tw-flex-col tw-h-full tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">แฮชเเท็กที่ถูกใช้งานมากที่สุด</p>
