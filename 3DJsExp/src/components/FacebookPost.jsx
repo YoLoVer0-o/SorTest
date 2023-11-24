@@ -7,7 +7,7 @@ import { BsEmojiSmile } from "react-icons/bs";
 import { LiaWindowClose } from "react-icons/lia";
 import { useResponsive } from "../hooks";
 import classNames from "classnames";
-import React, { useState } from "react";
+import { useState } from "react";
 import Image from "../assets/PostImage";
 import { Button } from "antd";
 
@@ -19,8 +19,8 @@ const FacebookPost = () => {
 
   const {
     isDesktopOrLaptop,
-    isBigScreen,
-    isTabletOrMobile,
+    // isBigScreen,
+    // isTabletOrMobile,
     isMobile,
     isTablet,
     isPortrait,
@@ -203,9 +203,10 @@ const FacebookPost = () => {
     //     </div>
     //   </div>
     // </div>
-    <div className={classNames("tw-flex tw-flex-col tw-items-center tw-w-full tw-h-[80%] ",{
-      "tw-h-[80%]":isTablet && isPortrait,
-      "tw-h-[40%]":isMobile && isPortrait,
+    <div className={classNames("tw-flex tw-flex-col tw-items-center tw-w-full  ",{
+      "tw-h-[80%]":isDesktopOrLaptop,
+      "tw-h-[80%] ":isTablet && isPortrait,
+      "tw-h-[60%]":isMobile && isPortrait,
     })}>
       <div className=" tw-flex tw-flex-col tw-w-full tw-h-full	tw-items-center">
         <div className="tw-flex tw-flex-row">
@@ -235,7 +236,9 @@ const FacebookPost = () => {
 {isShow && (
         <div
           className={classNames("tw-relative tw-flex tw-self-center  tw-z-10 tw-w-[50%] tw-h-[50%]", {
-         
+         "tw-w-[50%]":isDesktopOrLaptop,
+         "tw-w-[70%]":isTablet && isPortrait,
+         "tw-w-full":isMobile && isPortrait 
           })}
         >
           <Button
@@ -268,7 +271,7 @@ const FacebookPost = () => {
 
       </div>
       {showEmojiInput && (
-        <div className=" tw-absolute tw-flex tw-justify-center  tw-z-20">
+        <div className=" tw-absolute tw-flex tw-justify-center tw-mt-24 tw-z-20">
           <EmojiPicker
             classNames="tw-relative"
             emojiStyle={EmojiStyle.NATIVE}
@@ -289,7 +292,8 @@ const FacebookPost = () => {
           "tw-flex tw-flex-row tw-h-12  tw-border-[1px]  tw-border-gray-300 tw-rounded-md tw-justify-center tw-justify-self-end tw-items-center tw-gap-x-4 ",
           {
             "tw-w-[30%]": isDesktopOrLaptop,
-            // " tw-w-full": isMobile && isPortrait,
+            " tw-w-full": isMobile && isPortrait,
+            " tw-w-[50%]": isMobile && isLandscape ,
           }
         )}
       >

@@ -10,10 +10,7 @@ import { MdOutlineVerified } from "react-icons/md";
 import { HiOutlineAtSymbol, HiOutlineGif } from "react-icons/hi2";
 import { SlPicture } from "react-icons/sl";
 import { LiaPollHSolid, LiaWindowClose } from "react-icons/lia";
-import {
-  CloseOutlined,
-  CloudUploadOutlined,
-} from "@ant-design/icons";
+import { CloseOutlined, CloudUploadOutlined } from "@ant-design/icons";
 import { Select, Button } from "antd";
 
 const TwitterPost = () => {
@@ -74,9 +71,29 @@ const TwitterPost = () => {
   ));
 
   return (
-    <div className="tw-flex tw-justify-center tw-h-[80%] tw-w-full">
-      <div className="tw-flex tw-items-center  tw-w-[80%] tw-h-full tw-flex-col tw-bg-white tw-border-gray-200 tw-border-[1px] ">
-        <div className="tw-flex tw-gap-x-8  tw-w-[50%] tw-h-[50%]">
+    <div
+      className={classNames("tw-flex tw-justify-center  tw-w-full", {
+        "tw-h-[80%]": isDesktopOrLaptop,
+        "tw-h-[70%] ": isTablet && isPortrait,
+        "tw-h-[60%]": isMobile && isPortrait,
+      })}
+    >
+      <div
+        className={classNames(
+          "tw-flex tw-items-center tw-w-[80%] tw-h-full tw-flex-col tw-bg-white tw-border-gray-200 tw-border-[1px] ",
+          {
+            "tw-w-full": isTablet && isPortrait,
+            "tw-w-full ": isMobile && isPortrait,
+          }
+        )}
+      >
+        <div
+          className={classNames("tw-flex tw-gap-x-8  ", {
+            "tw-w-[50%] tw-h-[50%]": isDesktopOrLaptop,
+            "tw-w-[50%] tw-h-[50%] ": isTablet && isPortrait,
+            "tw-w-full tw-h-full": isMobile && isPortrait,
+          })}
+        >
           <img
             className="tw-w-12 tw-h-12 tw-rounded-full tw-border-2 tw-border-black"
             src={profile}
@@ -192,9 +209,15 @@ const TwitterPost = () => {
             ]}
           />
         </div>
-        <hr className="tw-h-px tw-my-4 tw-bg-gray-200 tw-border-0 dark:tw-bg-gray-700 tw-w-[50%]"></hr>
-        <div className="tw-flex tw-flex-row tw-w-full tw-justify-center">
-          <div className="tw-flex tw-flex-row tw-gap-x-8 tw-w-[40%]">
+        <hr className="tw-h-px tw-my-4 tw-bg-gray-200 tw-border-0 dark:tw-bg-gray-700 tw-w-full"></hr>
+        <div className="tw-flex tw-flex-row tw-w-full  tw-justify-center">
+          <div
+            className={classNames("tw-flex tw-flex-row  ", {
+              "tw-w-[40%] tw-gap-x-8": isDesktopOrLaptop,
+              "tw-w-[60%] tw-gap-x-8": isTablet && isPortrait,
+              "tw-w-full tw-gap-x-4": isMobile && isPortrait,
+            })}
+          >
             <button className=" tw-rounded-full  hover:tw-bg-sky-200 tw-p-1">
               <SlPicture
                 className="tw-text-2xl tw-text-blue-500  "
@@ -208,7 +231,6 @@ const TwitterPost = () => {
               <LiaPollHSolid className="tw-text-2xl tw-text-blue-500" />
             </button>
             <button className=" tw-rounded-full  hover:tw-bg-sky-200 tw-p-1">
-              {" "}
               <BsEmojiSmile
                 className=" tw-text-2xl  tw-text-blue-500  tw-rounded-full tw-flex"
                 onClick={toggleEmoji}
