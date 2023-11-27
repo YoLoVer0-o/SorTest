@@ -23,6 +23,6 @@ const VerticalBarChart = props => {
   const options = props.chartOptions;
   const data = props.chartData;
 
-  return <Bar options={options} data={data} />;
+  return <Bar options={options} data={data} redraw={props.redraw} />;
 }
 export default VerticalBarChart;

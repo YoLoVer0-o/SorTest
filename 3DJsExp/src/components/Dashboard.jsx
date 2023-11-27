@@ -1,4 +1,4 @@
-import { SearchBar, VerticalBarChart, HorizontalBarChart, PieChart } from "../utilities";
+import { SearchBar, VerticalBarChart, HorizontalBarChart, DoughnutChart } from "../utilities";
 import { newSentiment, sentimentAll, sentimentPos, socialPlatform } from "../mock";
 import profile from "../assets/profile.png";
 import carouselPic from "../assets/carouselPic.jpg";
@@ -19,7 +19,7 @@ const Dashboard = () => {
     const [searchTag, setSearchTag] = useState([]);
     const [searchDate, setSearchDate] = useState([]);
 
-    const { isTabletOrMobile, isTablet, isPortrait } = useResponsive();
+    const { isTabletOrMobile, isTablet, isMobile, isPortrait } = useResponsive();
 
     const colorSet = (data) => {
         if (data == "positive") {
@@ -55,9 +55,39 @@ const Dashboard = () => {
                 label: 'จำนวนโพสต์',
                 data: sentimentPos.map(item => item.value),
                 backgroundColor: sentimentPos.map(item => colorSet(item.commentType)),
-                barThickness: isTabletOrMobile ? 20 : 50,
+                barThickness: isMobile ? 20 : 50,
             },
         ],
+    };
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    const sentimentData = {
+        labels: sentimentAll.map(item => item.name),
+        datasets: [
+            {
+                label: 'จำนวนความคิดเห็น',
+                data: sentimentAll.map(item => item.value),
+                backgroundColor: sentimentAll.map(item => colorSet(item.commentType)),
+                borderColor: sentimentAll.map(item => colorSet(item.commentType)),
+            },
+        ],
+    };
+
+    const sentimentOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'top',
+                display: false,
+            },
+            title: {
+                display: false,
+                text: 'Chart.js Doughnut Chart',
+            },
+        },
     };
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -86,11 +116,11 @@ const Dashboard = () => {
     };
 
     const imageSettings = {
-        barSize: isTabletOrMobile ? 30 : 50,
-        imageWidth: isTabletOrMobile ? 30 : 50,
-        imageHeight: isTabletOrMobile ? 30 : 50,
-        imageHalfHeight: isTabletOrMobile ? 30 / 2 : 50 / 2,
-        imageBarOffset: isTabletOrMobile ? (50 - 50) / 2 : (30 - 30) / 2,
+        barSize: isMobile ? 30 : 50,
+        imageWidth: isMobile ? 30 : 50,
+        imageHeight: isMobile ? 30 : 50,
+        imageHalfHeight: isMobile ? 30 / 2 : 50 / 2,
+        imageBarOffset: 0,
     };
 
 
@@ -103,7 +133,6 @@ const Dashboard = () => {
         const step = (chartHeight - imageSettings.barSize * dataLength) / dataLength;
         const yOffset = step / 2 + imageSettings.imageBarOffset;
 
-        ctx.font = imageSettings.textFont;
 
         ctx.save();
 
@@ -225,12 +254,14 @@ const Dashboard = () => {
                         <div className="tw-flex tw-flex-col tw-h-full tw-w-full tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-center tw-text-lg">จำนวนโพสต์รายวัน</p>
                             <div className="tw-flex tw-w-full tw-h-full tw-overflow-auto tw-items-center">
-                                <div className={classNames("tw-h-full tw-w-full tw-overflow-auto", {
-                                    "tw-h-96": isTabletOrMobile||isTablet,
+                                <div className={classNames("tw-w-full tw-overflow-auto", {
+                                    "tw-h-96": isTabletOrMobile || isTablet,
+                                    "tw-h-full ": !isTabletOrMobile && !isTablet,
                                 })}>
                                     <VerticalBarChart
                                         chartOptions={postBarOptions}
                                         chartData={postBarData}
+                                        redraw={true}
                                     />
                                 </div>
                             </div>
@@ -269,16 +300,16 @@ const Dashboard = () => {
                             </div>
                             <div className={classNames("tw-flex tw-justify-center tw-h-full tw-w-full", {
                             })}>
-                                {/* <PieChart
-                                    data={sentimentAll}
-                                    keyName={"value"}
-                                    displayText={"name"}
-                                    width={isTabletOrMobile ? 100 * 2 : 240 * 2}
-                                    height={isTabletOrMobile ? 100 * 2 : 240 * 2}
-                                    innerRadius={isTabletOrMobile ? 20 : 60}
-                                    outerRadius={isTabletOrMobile ? 100 : 240}
-                                    calColor={colorSet}
-                                /> */}
+                                <div className={classNames("tw-w-full tw-overflow-auto", {
+                                    "tw-h-96": isTabletOrMobile || isTablet,
+                                    "tw-h-full ": !isTabletOrMobile && !isTablet,
+                                })}>
+                                    <DoughnutChart
+                                        chartData={sentimentData}
+                                        chartOptions={sentimentOptions}
+                                        redraw={true}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>

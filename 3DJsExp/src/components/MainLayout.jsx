@@ -209,7 +209,7 @@ const MainLayout = (props) => {
                         },
                       ]
                     }, {
-                      key:"/instagram",
+                      key: "/instagram",
                       icon: <UploadOutlined />,
                       label: "Instagram",
                       className: "",
@@ -305,7 +305,7 @@ const MainLayout = (props) => {
                           className: "",
                         },
                       ]
-                    },  
+                    },
                   ]
                 },
               ]}
