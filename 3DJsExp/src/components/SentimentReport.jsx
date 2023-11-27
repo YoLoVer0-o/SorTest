@@ -53,6 +53,82 @@ const SentimentReport = () => {
         }
     };
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    const sentimentData = {
+        labels: sentimentAll.map(item => item.name),
+        datasets: [
+            {
+                label: 'จำนวนความคิดเห็น',
+                data: sentimentAll.map(item => item.value),
+                backgroundColor: sentimentAll.map(item => colorSet(item.commentType)),
+                borderColor: sentimentAll.map(item => colorSet(item.commentType)),
+            },
+        ],
+    };
+
+    const sentimentOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'top',
+                display: false,
+            },
+            title: {
+                display: false,
+                text: 'Chart.js Doughnut Chart',
+            },
+        },
+    };
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    const posBarData = {
+        labels: sentimentPos.map(item => item.name),
+        datasets: [
+            {
+                label: 'จำนวนโพสต์',
+                data: sentimentPos.map(item => item.value),
+                backgroundColor: sentimentPos.map(item => colorSet(item.commentType)),
+                barThickness: isMobile ? 20 : 50,
+            },
+        ],
+    };
+
+    const negaBarData = {
+        labels: sentimentNega.map(item => item.name),
+        datasets: [
+            {
+                label: 'จำนวนโพสต์',
+                data: sentimentNega.map(item => item.value),
+                backgroundColor: sentimentNega.map(item => colorSet(item.commentType)),
+                barThickness: isMobile ? 20 : 50,
+            },
+        ],
+    };
+
+    const socialBarOptions = {
+        indexAxis: 'y',
+        elements: {
+            bar: {
+                borderWidth: 2,
+            },
+        },
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'right',
+                display: false,
+            },
+            title: {
+                display: false,
+                text: 'Chart.js Horizontal Bar Chart',
+            },
+        },
+    };
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
     const columns = [
         {
@@ -176,48 +252,44 @@ const SentimentReport = () => {
                         <div className={classNames("", {
                             "tw-flex tw-justify-center": isTabletOrMobile,
                         })}>
-                            {/* <PieChart
-                                data={sentimentAll}
-                                keyName={"value"}
-                                displayText={"name"}
-                                width={isTabletOrMobile ? 240 : 360}
-                                height={isTabletOrMobile ? 240 : 360}
-                                innerRadius={isTabletOrMobile ? 30 : 60}
-                                outerRadius={isTabletOrMobile ? 120 : 180}
-                                calColor={colorSet}
-                            /> */}
+                            <div className={classNames("tw-w-full tw-overflow-auto", {
+                                "tw-h-96": isTabletOrMobile || isTablet,
+                                "tw-h-full ": !isTabletOrMobile && !isTablet,
+                            })}>
+                                <DoughnutChart
+                                    chartData={sentimentData}
+                                    chartOptions={sentimentOptions}
+                                    redraw={true}
+                                />
+                            </div>
                         </div>
                     </div>
                     <div className="tw-flex tw-flex-col tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                         <p className="tw-text-center tw-text-lg">ข้อความเชิงบวกสูงสุด</p>
                         <div className="">
-                            {/* <HorizontalBarChart
-                                className={"tw-flex tw-h-fit tw-w-fit tw-max-w-fit tw-max-h-fit"}
-                                data={sentimentPos}
-                                width={640}
-                                barHeight={isTabletOrMobile ? 70 : 35}
-                                keyNameX={"value"}
-                                keyNameY={"name"}
-                                keyNameColor={"positive"}
-                                calColor={colorSet}
-                                onBarClick={redirect}
-                            /> */}
+                            <div className={classNames("tw-w-full tw-h-[38rem]", {
+                                "tw-h-96 tw-w-96": isTabletOrMobile,
+                            })}>
+                                <HorizontalBarChart
+                                    chartOptions={socialBarOptions}
+                                    chartData={posBarData}
+                                    redraw={true}
+                                />
+                            </div>
                         </div>
                     </div>
                     <div className="tw-flex tw-flex-col tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                         <p className="tw-text-center tw-text-lg">ข้อความเชิงลบสูงสุด</p>
                         <div className="">
-                            {/* <HorizontalBarChart
-                                className={"tw-flex tw-h-fit tw-w-fit tw-max-w-fit tw-max-h-fit"}
-                                data={sentimentNega}
-                                width={640}
-                                barHeight={isTabletOrMobile ? 70 : 35}
-                                keyNameX={"value"}
-                                keyNameY={"name"}
-                                keyNameColor={"negative"}
-                                calColor={colorSet}
-                                onBarClick={redirect}
-                            /> */}
+                            <div className={classNames("tw-w-full tw-h-[38rem]", {
+                                "tw-h-96 tw-w-96": isTabletOrMobile,
+                            })}>
+                                <HorizontalBarChart
+                                    chartOptions={socialBarOptions}
+                                    chartData={negaBarData}
+                                    redraw={true}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
