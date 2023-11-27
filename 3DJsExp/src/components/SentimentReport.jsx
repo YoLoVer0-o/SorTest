@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { HorizontalBarChart, PieChart, ToTopButton, DataTable } from "../utilities";
+import { HorizontalBarChart, DoughnutChart, ToTopButton, DataTable } from "../utilities";
 import { Button, FloatButton, Tooltip } from "antd";
 import classNames from "classnames";
 import { useResponsive } from "../hooks";
