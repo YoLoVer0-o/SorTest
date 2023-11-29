@@ -8,6 +8,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import PropTypes from 'prop-types';
 
 ChartJS.register(
   CategoryScale,
@@ -23,6 +24,18 @@ const VerticalBarChart = props => {
   const options = props.chartOptions;
   const data = props.chartData;
 
-  return <Bar options={options} data={data} redraw={props.redraw} />;
+  return <Bar
+    options={options}
+    data={data}
+    redraw={props.redraw}
+  />
 }
+
+VerticalBarChart.propTypes = {
+  chartOptions: PropTypes.object,
+  chartData: PropTypes.object,
+  redraw: PropTypes.bool,
+  plugins: PropTypes.array,
+}
+
 export default VerticalBarChart;

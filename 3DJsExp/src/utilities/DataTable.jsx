@@ -13,7 +13,7 @@ const DataTable = props => {
   const useRowSelection = props.useRowSelection;
   const useRowClick = props.useRowClick;
 
-  const { isDesktopOrLaptop, isBigScreen, isTabletOrMobile, isMobile, isPortrait, isLandscape } = useResponsive();
+  const { isMobile, isLandscape } = useResponsive();
 
   const onChange = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);

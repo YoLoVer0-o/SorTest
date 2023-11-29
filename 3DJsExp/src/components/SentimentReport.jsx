@@ -7,6 +7,7 @@ import { FeedbackModal } from "../components";
 import { MoreOutlined, FilePdfOutlined } from "@ant-design/icons";
 import { sentimentAll, sentimentNega, sentimentPos } from "../mock";
 import { ColumnHeightOutlined, VerticalAlignMiddleOutlined } from '@ant-design/icons';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 const SentimentReport = () => {
     const [details, setDetails] = useState([]);
@@ -35,10 +36,15 @@ const SentimentReport = () => {
         setModalToggle(false);
     };
 
-    const redirect = (data) => {
-        console.log(data);
-        setDisplayComments(data);
-        setDetails(data.Comment);
+    const redirect = (element, data) => {
+        if (!element.length) return;
+
+        const { index } = element[0];
+
+        // console.log(data[index]);
+
+        setDisplayComments(data[index]);
+        setDetails(data[index].Comment);
     };
 
     const colorSet = (data) => {
@@ -77,6 +83,12 @@ const SentimentReport = () => {
             title: {
                 display: false,
                 text: 'Chart.js Doughnut Chart',
+            },
+            datalabels: {
+                color: '#000000',
+                font: {
+                    size: 24
+                },
             },
         },
     };
@@ -128,7 +140,6 @@ const SentimentReport = () => {
         },
     };
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
     const columns = [
         {
@@ -227,10 +238,10 @@ const SentimentReport = () => {
                     </div>
                 </div>
 
-                <div className={classNames("tw-flex tw-flex-row tw-justify-around tw-my-4", {
+                <div className={classNames("tw-flex tw-flex-row tw-justify-around tw-my-4 tw-gap-2", {
                     "tw-flex-col": isTabletOrMobile,
                 })}>
-                    <div className="tw-flex tw-flex-col tw-justify-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                    <div className="tw-flex tw-w-full tw-flex-col tw-items-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                         <p className="tw-text-center tw-text-lg">ความรู้สึกเชิงบวก-ลบ</p>
                         <div className="tw-flex tw-flex-row tw-justify-center tw-gap-3">
                             <div className="tw-flex tw-flex-row tw-gap-1 ">
@@ -249,47 +260,44 @@ const SentimentReport = () => {
                                 <p>เชิงลบ</p>
                             </div>
                         </div>
-                        <div className={classNames("", {
-                            "tw-flex tw-justify-center": isTabletOrMobile,
+                        <div className={classNames("tw-flex tw-w-full tw-overflow-auto tw-items-center", {
+                            "tw-h-96": isTabletOrMobile || isTablet,
+                            "tw-h-full ": !isTabletOrMobile && !isTablet,
                         })}>
-                            <div className={classNames("tw-w-full tw-overflow-auto", {
-                                "tw-h-96": isTabletOrMobile || isTablet,
-                                "tw-h-full ": !isTabletOrMobile && !isTablet,
-                            })}>
-                                <DoughnutChart
-                                    chartData={sentimentData}
-                                    chartOptions={sentimentOptions}
-                                    redraw={true}
-                                />
-                            </div>
+                            <DoughnutChart
+                                chartData={sentimentData}
+                                chartOptions={sentimentOptions}
+                                redraw={true}
+                                plugins={[ChartDataLabels]}
+                            />
                         </div>
                     </div>
-                    <div className="tw-flex tw-flex-col tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                    <div className="tw-flex tw-w-full tw-flex-col tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                         <p className="tw-text-center tw-text-lg">ข้อความเชิงบวกสูงสุด</p>
-                        <div className="">
-                            <div className={classNames("tw-w-full tw-h-[38rem]", {
-                                "tw-h-96 tw-w-96": isTabletOrMobile,
-                            })}>
-                                <HorizontalBarChart
-                                    chartOptions={socialBarOptions}
-                                    chartData={posBarData}
-                                    redraw={true}
-                                />
-                            </div>
+                        <div className={classNames("tw-w-full tw-h-[38rem]", {
+                            "tw-h-96 tw-w-96": isTabletOrMobile,
+                        })}>
+                            <HorizontalBarChart
+                                chartOptions={socialBarOptions}
+                                chartData={posBarData}
+                                redraw={true}
+                                handleClick={redirect}
+                                useDataProps={sentimentPos}
+                            />
                         </div>
                     </div>
-                    <div className="tw-flex tw-flex-col tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                    <div className="tw-flex tw-w-full tw-flex-col tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                         <p className="tw-text-center tw-text-lg">ข้อความเชิงลบสูงสุด</p>
-                        <div className="">
-                            <div className={classNames("tw-w-full tw-h-[38rem]", {
-                                "tw-h-96 tw-w-96": isTabletOrMobile,
-                            })}>
-                                <HorizontalBarChart
-                                    chartOptions={socialBarOptions}
-                                    chartData={negaBarData}
-                                    redraw={true}
-                                />
-                            </div>
+                        <div className={classNames("tw-w-full tw-h-[38rem]", {
+                            "tw-h-96 tw-w-96": isTabletOrMobile,
+                        })}>
+                            <HorizontalBarChart
+                                chartOptions={socialBarOptions}
+                                chartData={negaBarData}
+                                redraw={true}
+                                handleClick={redirect}
+                                useDataProps={sentimentNega}
+                            />
                         </div>
                     </div>
                 </div>

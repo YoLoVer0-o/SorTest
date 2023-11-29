@@ -13,6 +13,7 @@ dayjs.extend(isSameOrAfter)
 import { useResponsive } from "../hooks";
 import { Button, Tooltip } from "antd";
 import { FilePdfOutlined } from "@ant-design/icons";
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 const Dashboard = () => {
 
@@ -63,6 +64,7 @@ const Dashboard = () => {
 
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     const sentimentData = {
         labels: sentimentAll.map(item => item.name),
         datasets: [
@@ -87,6 +89,12 @@ const Dashboard = () => {
                 display: false,
                 text: 'Chart.js Doughnut Chart',
             },
+            datalabels: {
+                color: '#000000',
+                font: {
+                    size: 24
+                },
+            },
         },
     };
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -94,7 +102,7 @@ const Dashboard = () => {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     const { facebook, instagram, twitter, tiktok, youtube, social_media } = SocialIcons;
     const sentIcons = (value) => {
-        console.log(value);
+        // console.log(value);
         if (value == "facebook") {
             return facebook
         }
@@ -137,7 +145,7 @@ const Dashboard = () => {
         ctx.save();
 
         data.labels.forEach((element, i) => {
-            console.log(element);
+            // console.log(element);
 
             const imageY = i * (imageSettings.barSize + step) + yOffset;
 
@@ -308,6 +316,7 @@ const Dashboard = () => {
                                         chartData={sentimentData}
                                         chartOptions={sentimentOptions}
                                         redraw={true}
+                                        plugins={[ChartDataLabels]}
                                     />
                                 </div>
                             </div>
