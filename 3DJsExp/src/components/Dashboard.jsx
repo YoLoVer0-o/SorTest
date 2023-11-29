@@ -14,6 +14,7 @@ import { useResponsive } from "../hooks";
 import { Button, Tooltip } from "antd";
 import { FilePdfOutlined } from "@ant-design/icons";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import ReadMoreReact from 'read-more-react';
 
 const Dashboard = () => {
 
@@ -33,6 +34,10 @@ const Dashboard = () => {
             return "#0284c7";
         }
     };
+
+    const testText = "Lorem ipsum dolor sit amet,consectetur adipiscing elit.Vivamus odio quam,convallis et pretium consectetur,vestibulum nec tellus.Nulla fringilla sem eu lacinia mollis.Fusce a molestie enim.Duis pellentesque turpis scelerisque efficitur condimentum.Sed pellentesque odio efficitur interdum scelerisque.Nulla euismod erat porta neque mattis lobortis.Praesent consequat mi at pharetra venenatis.Donec leo sapien, blandit porttitor justo nec,sagittis sagittis diam.Nunc elementum neque quis laoreet maximus.Donec dignissim lectus tortor,condimentum egestas lorem volutpat et.Nulla leo orci,euismod et rutrum ut, aliquam non tellus.Proin lectus nulla,finibus eu tortor in, maximus euismod ligula."
+    const readMore = <p className="tw-text-blue-500">read more</p>
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     const postBarOptions = {
         responsive: true,
@@ -386,25 +391,13 @@ const Dashboard = () => {
                                 </div>
                             </div>
                             <div className="tw-text-lg">
-                                <p>
-                                    Lorem ipsum dolor sit amet,
-                                    consectetur adipiscing elit.
-                                    Vivamus odio quam,
-                                    convallis et pretium consectetur,
-                                    vestibulum nec tellus.
-                                    Nulla fringilla sem eu lacinia mollis.
-                                    Fusce a molestie enim.
-                                    Duis pellentesque turpis scelerisque efficitur condimentum.
-                                    Sed pellentesque odio efficitur interdum scelerisque.
-                                    Nulla euismod erat porta neque mattis lobortis.
-                                    Praesent consequat mi at pharetra venenatis.
-                                    Donec leo sapien, blandit porttitor justo nec,
-                                    sagittis sagittis diam. Nunc elementum neque quis laoreet maximus.
-                                    Donec dignissim lectus tortor,
-                                    condimentum egestas lorem volutpat et. Nulla leo orci,
-                                    euismod et rutrum ut, aliquam non tellus. Proin lectus nulla,
-                                    finibus eu tortor in, maximus euismod ligula.
-                                </p>
+                                <ReadMoreReact text={testText}
+                                    min={80}
+                                    ideal={100}
+                                    max={200}
+                                    // readMoreText={"read more"}
+                                    readMoreText={readMore}
+                                />
                                 <div>
                                     <img src={carouselPic} />
                                 </div>
