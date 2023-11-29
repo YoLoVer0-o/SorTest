@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { HorizontalBarChart, PieChart, ToTopButton, DataTable } from "../utilities";
+import { HorizontalBarChart, DoughnutChart, ToTopButton, DataTable } from "../utilities";
 import { Button, FloatButton, Tooltip } from "antd";
 import classNames from "classnames";
 import { useResponsive } from "../hooks";
@@ -52,6 +52,7 @@ const SentimentReport = () => {
             return "#0284c7";
         }
     };
+
 
     const columns = [
         {
@@ -175,7 +176,7 @@ const SentimentReport = () => {
                         <div className={classNames("", {
                             "tw-flex tw-justify-center": isTabletOrMobile,
                         })}>
-                            <PieChart
+                            {/* <PieChart
                                 data={sentimentAll}
                                 keyName={"value"}
                                 displayText={"name"}
@@ -184,13 +185,13 @@ const SentimentReport = () => {
                                 innerRadius={isTabletOrMobile ? 30 : 60}
                                 outerRadius={isTabletOrMobile ? 120 : 180}
                                 calColor={colorSet}
-                            />
+                            /> */}
                         </div>
                     </div>
                     <div className="tw-flex tw-flex-col tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                         <p className="tw-text-center tw-text-lg">ข้อความเชิงบวกสูงสุด</p>
                         <div className="">
-                            <HorizontalBarChart
+                            {/* <HorizontalBarChart
                                 className={"tw-flex tw-h-fit tw-w-fit tw-max-w-fit tw-max-h-fit"}
                                 data={sentimentPos}
                                 width={640}
@@ -200,13 +201,13 @@ const SentimentReport = () => {
                                 keyNameColor={"positive"}
                                 calColor={colorSet}
                                 onBarClick={redirect}
-                            />
+                            /> */}
                         </div>
                     </div>
                     <div className="tw-flex tw-flex-col tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
                         <p className="tw-text-center tw-text-lg">ข้อความเชิงลบสูงสุด</p>
                         <div className="">
-                            <HorizontalBarChart
+                            {/* <HorizontalBarChart
                                 className={"tw-flex tw-h-fit tw-w-fit tw-max-w-fit tw-max-h-fit"}
                                 data={sentimentNega}
                                 width={640}
@@ -216,7 +217,7 @@ const SentimentReport = () => {
                                 keyNameColor={"negative"}
                                 calColor={colorSet}
                                 onBarClick={redirect}
-                            />
+                            /> */}
                         </div>
                     </div>
                 </div>
