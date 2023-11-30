@@ -69,147 +69,16 @@ const FacebookPost = () => {
   ));
   console.log(images);
   return (
-    // <div
-    //   className={classNames(
-    //     "tw-flex tw-flex-col tw-w-full tw-items-center tw-max-h-max",
-    //     {
-    //       "tw-h-[80%]": isDesktopOrLaptop,
-    //       "tw-h-[70%]":isTablet && isPortrait,
-    //       "tw-h-[60%]": isMobile && isPortrait,
-    //     }
-    //   )}
-    // >
-    //   <div>
-    //     <div className="tw-flex tw-justify-center tw-flex-row tw-w-full tw-gap-x-8">
-    //       {" "}
-    //       <img
-    //         className="tw-w-12 tw-h-12 tw-rounded-full tw-border-2 tw-border-black"
-    //         src={profile}
-    //       ></img>
-    //       <div>
-    //         <p className="  tw-text-xl ">Account Name</p>
-    //         <DropDownPostTarget />
-    //       </div>
-    //     </div>
-    //   </div>
-    //   <div
-    //     className={classNames(
-    //       "tw-flex tw-flex-col tw-justify-center tw-h-[80%] ",
-    //       {
-    //         "tw-w-[40%] tw-h-[80%]": isDesktopOrLaptop,
-    //         "tw-w-[60%] tw-h-[30%]": isTablet && isPortrait,
-    //         "tw-w-full tw-h-[20%]": isMobile && isPortrait,
-    //       }
-    //     )}
-    //   >
-    //     <textarea
-    //       value={message}
-    //       onChange={handleMessageChange}
-    //       placeholder="คุณกำลังคิดอะไรอยู่"
-    //       className=" tw-text-xl  tw-w-full tw-h-full tw-border-none tw-resize-none tw-outline-none"
-    //     />
-    //     <BsEmojiSmile
-    //       className=" tw-text-3xl  tw-self-end tw-text-gray-700 hover:tw-bg-gray-300 tw-rounded-full tw-flex"
-    //       onClick={toggleEmoji}
-    //     />
-    //   </div>
-
-    //   {showEmojiInput && (
-    //     <div className=" tw-absolute tw-flex tw-justify-center  tw-z-20">
-    //       <EmojiPicker
-    //         classNames="tw-relative"
-    //         emojiStyle={EmojiStyle.NATIVE}
-    //         onEmojiClick={(emoji) => showEmo(emoji)}
-    //         // height="20rem"
-    //       />
-    //       <button
-    //         className="tw-absolute tw-top-0 tw-right-0"
-    //         onClick={toggleEmoji}
-    //       >
-    //         <LiaWindowClose className="tw-text-2xl  tw-bg-red-500" />
-    //       </button>
-    //     </div>
-    //   )}
-    //   <div className={classNames("tw-h-full tw-w-full tw-flex tw-justify-center",{
-    //     "":isDesktopOrLaptop,
-    //     "tw-h-[50%]":isTablet && isPortrait,
-    //   })}>
-    //   {isShow && (
-    //     <div
-    //       className={classNames("tw-relative  tw-z-10 tw-w-[40%]", {
-    //         " tw-w-[40%] tw-mb-24": isDesktopOrLaptop,
-    //         "tw-w-[80%]  ": isTablet && isPortrait,
-    //         "tw-w-[80%] ": isMobile && isPortrait,
-    //       })}
-    //     >
-    //       <Button
-    //         className="tw-text-black tw-absolute tw-border-black tw-flex tw-right-1 tw-bg-red-500 tw-top-1 tw-z-40 tw-justify-center
-    //         tw-items-center tw-justify-self-end  "
-    //         icon={<CloseOutlined />}
-    //         onClick={() => setIsShow(!isShow)}
-    //         shape="circle"
-    //       ></Button>
-    //       <div
-    //         {...getRootProps()}
-    //         className={classNames(
-    //           "tw-flex tw-justify-center tw-items-center tw-border-dashed tw-border-2 tw-z-10 tw-w-full tw-flex-col tw-h-64 tw-bg-gray-100  hover:tw-bg-gray-200 tw-border-gray-400 tw-rounded-md",
-    //           {
-    //             " tw-w-full tw-min-w-full tw-h-44 tw-max-h-max": isMobile && isPortrait,
-    //             " tw-w-full tw-min-w-full tw-h-32 tw-max-h-max": isMobile && isLandscape,
-    //           }
-    //         )}
-    //       >
-    //         <input {...getInputProps()} className="tw-w-full" />
-    //         {images.length === 0 && (
-    //           <div className="tw-flex tw-flex-col tw-items-center">
-    //             <CloudUploadOutlined className="tw-text-4xl" />
-    //             <p>Drop files here </p>
-    //           </div>
-    //         )}
-    //         <div>{images}</div>
-    //       </div>
-    //     </div>
-    //   )}
-    //   </div>
-
-    //   <div className=" tw-flex  tw-w-full tw-items-end tw-justify-center ">
-    //     <div
-    //       className={classNames(
-    //         "tw-flex tw-flex-row tw-h-12  tw-border-[1px]  tw-border-gray-300 tw-rounded-md tw-justify-center tw-items-center tw-gap-x-4 ",
-    //         {
-    //           "tw-w-[40%]": isDesktopOrLaptop,
-    //           " tw-w-full": isMobile && isPortrait,
-    //         }
-    //       )}
-    //     >
-    //       <p className="tw-col-span-2">Add to your post</p>
-    //       <button
-    //         className=" tw-rounded-full tw-w-max  hover:tw-bg-gray-300"
-    //         onClick={() => setIsShow(true)}
-    //       >
-    //         <img className="tw-w-6 tw-h-6 " src={Image.selectPic} />
-    //       </button>
-    //       <img className="tw-w-6 tw-h-6" src={Image.tagOther} />
-    //       <img className="tw-w-6 tw-h-6" src={Image.emoji} />
-    //       <img className="tw-w-6 tw-h-6" src={Image.checkIn} />
-    //       <img className="tw-w-6 tw-h-6" src={Image.Gif} />
-    //       <button
-    //         className="tw-rounded-full tw-flex tw-justify-center
-    //        hover:tw-bg-gray-200 tw-w-6 tw-h-6 tw-items-center tw-text-center"
-    //       >
-    //         {" "}
-    //         ...
-    //       </button>
-    //     </div>
-    //   </div>
-    // </div>
-    <div className={classNames("tw-flex tw-flex-col tw-items-center tw-w-full  ",{
-      "tw-h-[80%]":isDesktopOrLaptop,
-      "tw-h-[80%] ":isTablet && isPortrait,
-      "tw-h-[60%]":isMobile && isPortrait,
-    })}>
+    <div
+      className={classNames("tw-flex tw-flex-col tw-items-center tw-h-[60%] tw-w-full  ", {
+        "tw-h-[80%]": isDesktopOrLaptop,
+        "tw-h-[80%] ": isTablet && isPortrait,
+        "tw-h-[70%]  ": isTablet && isLandscape,
+        "tw-h-[60%]": isMobile && isPortrait,
+      })}
+    >
       <div className=" tw-flex tw-flex-col tw-w-full tw-h-full	tw-items-center">
-        <div className="tw-flex tw-flex-row">
+        <div className="tw-flex tw-flex-row tw-gap-x-4">
           <img
             className="tw-w-12 tw-h-12 tw-rounded-full tw-border-2 tw-border-black"
             src={profile}
@@ -220,55 +89,53 @@ const FacebookPost = () => {
           </div>
         </div>
         <div className="tw-flex tw-h-[30%] tw-flex-row">
-        <textarea
-          value={message}
-          onChange={handleMessageChange}
-          placeholder="คุณกำลังคิดอะไรอยู่"
-          className=" tw-text-xl tw-w-full tw-h-full  tw-border-none tw-resize-none tw-outline-none"
-        />
-        <BsEmojiSmile
-          className=" tw-text-3xl  tw-self-end tw-text-gray-700 hover:tw-bg-gray-300 tw-rounded-full tw-flex"
-          onClick={toggleEmoji}
-        />
+          <textarea
+            value={message}
+            onChange={handleMessageChange}
+            placeholder="คุณกำลังคิดอะไรอยู่"
+            className=" tw-text-xl tw-w-full tw-h-full  tw-border-none tw-resize-none tw-outline-none"
+          />
+          <BsEmojiSmile
+            className=" tw-text-3xl  tw-self-end tw-text-gray-700 hover:tw-bg-gray-300 tw-rounded-full tw-flex"
+            onClick={toggleEmoji}
+          />
         </div>
-       
 
-{isShow && (
-        <div
-          className={classNames("tw-relative tw-flex tw-self-center  tw-z-10 tw-w-[50%] tw-h-[50%]", {
-         "tw-w-[50%]":isDesktopOrLaptop,
-         "tw-w-[70%]":isTablet && isPortrait,
-         "tw-w-full":isMobile && isPortrait 
-          })}
-        >
-          <Button
-            className="tw-text-black tw-absolute tw-border-black tw-flex tw-right-1 tw-bg-red-500 tw-top-1 tw-z-40 tw-justify-center
-            tw-items-center tw-justify-self-end  "
-            icon={<CloseOutlined />}
-            onClick={() => setIsShow(!isShow)}
-            shape="circle"
-          ></Button>
+        {isShow && (
           <div
-            {...getRootProps()}
-            className="tw-flex tw-w-full tw-h-full tw-justify-center tw-items-center tw-border-dashed tw-border-2 tw-z-10
-             tw-bg-gray-100  hover:tw-bg-gray-200 tw-border-gray-400 tw-rounded-md"
-           
-          
-          >
-            <input {...getInputProps()} className="tw-w-full" />
-            {images.length === 0 && (
-              <div className="tw-flex tw-flex-col tw-items-center">
-                <CloudUploadOutlined className="tw-text-4xl" />
-                <p>Drop files here </p>
-              </div>
+            className={classNames(
+              "tw-relative tw-flex tw-self-center  tw-z-10  tw-h-[50%]",
+              {
+                "tw-w-[30%]": isDesktopOrLaptop,
+                "tw-w-[70%]": isTablet && isPortrait,
+                "tw-w-[40%]": isTablet && isLandscape,
+                "tw-w-full": isMobile && isPortrait,
+              }
             )}
-            <div>{images}</div>
+          >
+            <Button
+              className="tw-text-black tw-absolute tw-border-black tw-flex tw-right-1 tw-bg-red-500 tw-top-1 tw-z-40 tw-justify-center
+            tw-items-center tw-justify-self-end  "
+              icon={<CloseOutlined />}
+              onClick={() => setIsShow(!isShow)}
+              shape="circle"
+            ></Button>
+            <div
+              {...getRootProps()}
+              className="tw-flex tw-w-full tw-h-full tw-justify-center tw-items-center tw-border-dashed tw-border-2 tw-z-10
+             tw-bg-gray-100  hover:tw-bg-gray-200 tw-border-gray-400 tw-rounded-md"
+            >
+              <input {...getInputProps()} className="tw-w-full tw-h-full" />
+              {images.length === 0 && (
+                <div className="tw-flex tw-flex-col tw-items-center">
+                  <CloudUploadOutlined className="tw-text-4xl" />
+                  <p>Drop files here </p>
+                </div>
+              )}
+              <div>{images}</div>
+            </div>
           </div>
-        </div>
-      )}
-
-
-
+        )}
       </div>
       {showEmojiInput && (
         <div className=" tw-absolute tw-flex tw-justify-center tw-mt-24 tw-z-20">
@@ -286,14 +153,13 @@ const FacebookPost = () => {
         </div>
       )}
 
-    
       <div
         className={classNames(
           "tw-flex tw-flex-row tw-h-12  tw-border-[1px]  tw-border-gray-300 tw-rounded-md tw-justify-center tw-justify-self-end tw-items-center tw-gap-x-4 ",
           {
             "tw-w-[30%]": isDesktopOrLaptop,
             " tw-w-full": isMobile && isPortrait,
-            " tw-w-[50%]": isMobile && isLandscape ,
+            " tw-w-[50%]": isMobile && isLandscape,
           }
         )}
       >
@@ -316,9 +182,6 @@ const FacebookPost = () => {
           ...
         </button>
       </div>
-      
-      
-      
     </div>
   );
 };

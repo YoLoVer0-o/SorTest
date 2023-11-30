@@ -63,11 +63,13 @@ const MainLayout = (props) => {
 
   return (
     <Layout
-      className={classNames("tw-w-screen", {
-        "tw-min-h-screen": isTabletOrMobile && isLandscape,
-        "tw-min-h-full tw-h-full tw-max-h-full":
-          isDesktopOrLaptop || isTabletOrMobile,
-      })}
+      className={classNames(
+        "tw-w-screen tw-min-h-full tw-h-full tw-max-h-full",
+        {
+          "tw-min-h-screen tw-h-screen tw-max-h-screen":
+            isTabletOrMobile && isLandscape,
+        }
+      )}
     >
       <Header
         className={classNames(
@@ -77,13 +79,20 @@ const MainLayout = (props) => {
           }
         )}
       >
-        <div className="tw-text-white tw-flex tw-jsutify-self-center">Project</div>
+        <div className="tw-text-white tw-flex tw-jsutify-self-center">
+          Project
+        </div>
       </Header>
 
       <Layout className={"tw-relative"}>
-        <div className={classNames("tw-flex tw-h-full tw-flex-row tw-absolute tw-z-40", {
-          "tw-w-full": isMobile && isPortrait && !collapsed,
-        })}>
+        <div
+          className={classNames(
+            "tw-flex tw-h-full tw-flex-row tw-absolute tw-z-40",
+            {
+              "tw-w-full": isMobile && isPortrait && !collapsed,
+            }
+          )}
+        >
           <Sider
             trigger={null}
             width={isTabletOrMobile && isPortrait ? "100%" : 200}
@@ -175,8 +184,9 @@ const MainLayout = (props) => {
                           label: "Activity Log",
                           className: "",
                         },
-                      ]
-                    }, {
+                      ],
+                    },
+                    {
                       key: "/X",
                       icon: <UploadOutlined />,
                       label: "X(Twitter)",
@@ -207,8 +217,9 @@ const MainLayout = (props) => {
                           label: "Activity Log",
                           className: "",
                         },
-                      ]
-                    }, {
+                      ],
+                    },
+                    {
                       key: "/instagram",
                       icon: <UploadOutlined />,
                       label: "Instagram",
@@ -239,7 +250,7 @@ const MainLayout = (props) => {
                           label: "Activity Log",
                           className: "",
                         },
-                      ]
+                      ],
                     },
                     {
                       key: "/youtube",
@@ -272,7 +283,7 @@ const MainLayout = (props) => {
                           label: "Activity Log",
                           className: "",
                         },
-                      ]
+                      ],
                     },
                     {
                       key: "/tiktok",
@@ -304,17 +315,20 @@ const MainLayout = (props) => {
                           label: "Activity Log",
                           className: "",
                         },
-                      ]
+                      ],
                     },
-                  ]
+                  ],
                 },
               ]}
             />
           </Sider>
           <Button
-            className={classNames("tw-sticky tw-bg-[#0874c4] tw-h-[10rem] tw-z-40 tw-items-center tw-w-8 tw-flex tw-text-center tw-justify-center tw-self-center", {
-              "tw-hidden": !collapsed && isMobile,
-            })}
+            className={classNames(
+              "tw-sticky tw-bg-[#0874c4] tw-h-[10rem] tw-z-40 tw-items-center tw-w-8 tw-flex tw-text-center tw-justify-center tw-self-center",
+              {
+                "tw-hidden": !collapsed && isMobile,
+              }
+            )}
             onClick={() => setCollapsed(!collapsed)}
           >
             <p className="tw-rotate-90 tw-text-white">Menu</p>
@@ -323,7 +337,10 @@ const MainLayout = (props) => {
 
         <Layout>
           <div className="tw-flex tw-flex-row tw-px-6 tw-my-4 tw-justify-between">
-            <Breadcrumb className="tw-text-lg tw-font-bold" items={breadcrumbItems} />
+            <Breadcrumb
+              className="tw-text-lg tw-font-bold"
+              items={breadcrumbItems}
+            />
             {breadcrumbItems.length > 1 && (
               <Tooltip title="ย้อนกลับ">
                 <Button
@@ -353,7 +370,7 @@ const MainLayout = (props) => {
           </Content>
         </Layout>
       </Layout>
-    </Layout >
+    </Layout>
   );
 };
 
