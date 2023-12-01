@@ -248,7 +248,9 @@ const TwitterPost = () => {
         "tw-h-[80%]": isBigScreen,
         "tw-h-[70%]": isDesktopOrLaptop,
         "tw-h-[60%] ": isTablet && isPortrait,
+        "tw-h-[70%]  ": isTablet && isLandscape,
         "tw-h-[60%]": isMobile && isPortrait,
+        "tw-h-screen": isMobile && isLandscape,
       })}
     >
       <div
@@ -256,8 +258,10 @@ const TwitterPost = () => {
           "tw-grid tw-justify-center tw-justify-self-center tw-w-max ",
           {
             "tw-grid-cols-12 tw-grid-rows-6 ": isDesktopOrLaptop,
-            "tw-grid-cols-8 tw-grid-rows-6 ": isTablet && isPortrait,
-            "tw-grid-cols-6 tw-grid-rows-6": isMobile && isPortrait,
+            "tw-grid-cols-8 tw-grid-rows-6 ":
+              (isTablet && isPortrait) || (isTablet && isLandscape),
+            "tw-grid-cols-6 tw-grid-rows-6":
+              (isMobile && isPortrait) || (isMobile && isLandscape),
           }
         )}
       >
@@ -266,9 +270,9 @@ const TwitterPost = () => {
             "tw-grid-cols-3 tw-grid-rows-4 tw-col-span-4  tw-row-span-2 tw-col-start-5 ":
               isDesktopOrLaptop,
             "tw-grid-cols-3 tw-grid-rows-4 tw-col-span-4  tw-row-span-2 tw-col-start-3  ":
-              isTablet && isPortrait,
+              (isTablet && isPortrait) || (isTablet && isLandscape),
             "tw-grid-cols-3 tw-grid-rows-3 tw-col-span-4  tw-row-span-2 tw-col-start-2":
-              isMobile && isPortrait,
+              (isMobile && isPortrait) || (isMobile && isLandscape),
           })}
         >
           <img
@@ -282,16 +286,15 @@ const TwitterPost = () => {
             className="tw-text-xl tw-col-span-2 tw-row-span-6  tw-w-full tw-border-none tw-resize-none tw-outline-none"
           />
         </div>
-       
 
         {isShow && (
           <div
             className={classNames("tw-relative tw-z-10 ", {
               "tw-col-span-4 tw-row-span-3 tw-col-start-5 ": isDesktopOrLaptop,
               "tw-col-span-6 tw-row-span-3 tw-col-start-2 ":
-                isTablet && isPortrait,
+                (isTablet && isPortrait) || (isTablet && isLandscape),
               "tw-col-span-4 tw-row-span-3 tw-col-start-2 ":
-                isMobile && isPortrait,
+                (isMobile && isPortrait) || (isMobile && isLandscape),
             })}
           >
             <Button
@@ -306,7 +309,8 @@ const TwitterPost = () => {
               className={classNames(
                 "tw-flex tw-justify-center tw-items-center tw-border-dashed tw-border-2 tw-z-10 tw-w-full tw-h-full tw-flex-col  tw-bg-gray-100  hover:tw-bg-gray-200 tw-border-gray-400 tw-rounded-md",
                 {
-                  " tw-w-full tw-min-w-full": isMobile && isPortrait,
+                  " tw-w-full tw-min-w-full":
+                    (isMobile && isPortrait) || (isMobile && isLandscape),
                 }
               )}
             >
@@ -321,14 +325,15 @@ const TwitterPost = () => {
             </div>
           </div>
         )}
-     
+
         <div
           className={classNames("tw-grid ", {
             "tw-col-start-5 tw-row-start-6 tw-col-span-4 tw-row-span-2 ":
               isDesktopOrLaptop,
             "tw-col-start-3 tw-row-start-6 tw-col-span-4 tw-row-span-2 ":
-              isTablet && isPortrait,
-            "tw-col-start-2 tw-row-start-6": isMobile && isPortrait,
+              (isTablet && isPortrait) || (isTablet && isLandscape),
+            "tw-col-start-2 tw-row-start-6":
+              (isMobile && isPortrait) || (isMobile && isLandscape),
           })}
         >
           <Select
@@ -381,7 +386,7 @@ const TwitterPost = () => {
             ]}
           />
 
-          <div className="tw-grid tw-grid-flow-col   ">
+          <div className="tw-grid tw-grid-flow-col  row-end-auto ">
             <div className="tw-grid tw-grid-flow-col tw-h-max tw-rounded-full">
               <button className=" tw-rounded-full tw-w-max  hover:tw-bg-sky-200 tw-p-1">
                 <SlPicture
@@ -409,23 +414,28 @@ const TwitterPost = () => {
         </div>
       </div>
       {showEmojiInput && (
-            <div className={classNames(" tw-absolute tw-flex tw-justify-start  tw-z-20",{
-              " ":isDesktopOrLaptop,
-              " tw-mb-96" :isMobile && isPortrait,
-            })}>
-              <EmojiPicker
-                classNames="tw-relative"
-                emojiStyle={EmojiStyle.NATIVE}
-                onEmojiClick={(emoji) => showEmo(emoji)}
-              />
-              <button
-                className="tw-absolute tw-top-0 tw-right-0"
-                onClick={toggleEmoji}
-              >
-                <LiaWindowClose className="tw-text-2xl  tw-bg-red-500" />
-              </button>
-            </div>
+        <div
+          className={classNames(
+            " tw-absolute tw-flex tw-justify-start  tw-z-20",
+            {
+              " ": isDesktopOrLaptop,
+              " tw-mb-96": isMobile && isPortrait,
+            }
           )}
+        >
+          <EmojiPicker
+            classNames="tw-relative"
+            emojiStyle={EmojiStyle.NATIVE}
+            onEmojiClick={(emoji) => showEmo(emoji)}
+          />
+          <button
+            className="tw-absolute tw-top-0 tw-right-0"
+            onClick={toggleEmoji}
+          >
+            <LiaWindowClose className="tw-text-2xl  tw-bg-red-500" />
+          </button>
+        </div>
+      )}
     </div>
   );
 };
