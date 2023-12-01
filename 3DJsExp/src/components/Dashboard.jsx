@@ -36,7 +36,7 @@ const Dashboard = () => {
     };
 
     const testText = "Lorem ipsum dolor sit amet,consectetur adipiscing elit.Vivamus odio quam,convallis et pretium consectetur,vestibulum nec tellus.Nulla fringilla sem eu lacinia mollis.Fusce a molestie enim.Duis pellentesque turpis scelerisque efficitur condimentum.Sed pellentesque odio efficitur interdum scelerisque.Nulla euismod erat porta neque mattis lobortis.Praesent consequat mi at pharetra venenatis.Donec leo sapien, blandit porttitor justo nec,sagittis sagittis diam.Nunc elementum neque quis laoreet maximus.Donec dignissim lectus tortor,condimentum egestas lorem volutpat et.Nulla leo orci,euismod et rutrum ut, aliquam non tellus.Proin lectus nulla,finibus eu tortor in, maximus euismod ligula."
-    const readMore = <p className="tw-text-blue-500">read more</p>
+    const readMore = <p className="tw-text-blue-500">อ่านเพิ่มเติม</p>
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     const postBarOptions = {
