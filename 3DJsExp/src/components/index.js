@@ -7,6 +7,7 @@ import PostReport from "./PostReport";
 import CreatePost from "./Createpost";
 import SentimentTable from "./SentimentTable";
 import SentimentReport from "./SentimentReport";
+import AccountTable from "./AccountTable";
 
 export {
   MainLayout,
@@ -18,4 +19,5 @@ export {
   CreatePost,
   SentimentTable,
   SentimentReport,
+  AccountTable,
 };

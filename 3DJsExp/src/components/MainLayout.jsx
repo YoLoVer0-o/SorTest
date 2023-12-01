@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
-import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
+  BarChartOutlined,
+  CommentOutlined,
   UploadOutlined,
-  UserOutlined,
+  ControlOutlined,
   ContainerOutlined,
   CloseOutlined,
 } from "@ant-design/icons";
+import SocialIcons from "../assets/SocialIcons";
 import { Layout, Menu, Button, Breadcrumb, Tooltip } from "antd";
 import classNames from "classnames";
 import { useResponsive } from "../hooks";
@@ -22,29 +25,45 @@ const MainLayout = (props) => {
     isLandscape,
   } = useResponsive();
 
+  let { platform } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const breadcrumbNameMap = {
-    "/main": "main",
-    "/main/overall": "overall",
-    "/main/overall/feedback": "Feedback",
-    "/sentiment": "sentiment",
-    "/sentiment/report": "report",
-    "/postlog": "postlog",
-    "/postlog/report": "report",
-    "/createPost": "createPost",
+    '/main': 'รายงานสรุป',
+    '/postlog': 'โพสต์และความเคลื่อนไหว',
+    '/postlog/report': 'รายงานโพสต์',
+    '/createPost': 'สร้างโพสต์ใหม่',
+    '/sentiment': 'ความคิดเห็น',
+    '/sentiment/report': 'รายงานความคิดเห็น',
+    '/RPA': 'RPA',
+    '/RPA/account': 'บัญชีและสถานะ',
+    '/RPA/fulltime': 'งานประจำ',
+    '/RPA/job': 'งาน',
+    '/RPA/errlog': 'Error Log',
+    '/RPA/activlog': 'Activity Log',
   };
 
-  const navigate = useNavigate();
+  const pathSnippets = location.pathname.split('/').filter((i) => i);
+  const breadcrumbItems = pathSnippets.map((_, index) => {
+    const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
+    const isDynamic = url.includes(':');
 
-  const location = useLocation();
-  const pathSnippets = location.pathname.split("/").filter((i) => i);
-  const extraBreadcrumbItems = pathSnippets.map((_, index) => {
-    const url = `/${pathSnippets.slice(0, index + 1).join("/")}`;
+    // return (
+    //   <Breadcrumb.Item key={url}>
+    //     {index === pathSnippets.length - 1 ? (isDynamic ? platform : breadcrumbNameMap[url]) : (
+    //       <p>
+    //         {isDynamic ? platform : breadcrumbNameMap[url]}
+    //       </p>
+    //     )}
+    //   </Breadcrumb.Item>
+    // );
+
     return {
       key: url,
-      title: <Link to={url}>{breadcrumbNameMap[url]}</Link>,
-    };
+      title: <p>{isDynamic ? platform : breadcrumbNameMap[url]}</p>,
+    }
   });
-  const breadcrumbItems = [].concat(extraBreadcrumbItems);
 
   const handleMenuClick = ({ key }) => {
     if (key) {
@@ -53,6 +72,33 @@ const MainLayout = (props) => {
   };
 
   const [collapsed, setCollapsed] = useState(true);
+
+  const rootSubmenuKeys = ['/RPA/facebook', '/RPA/X', '/RPA/instagram', '/RPA/youtube', '/RPA/tiktok'];
+
+  const [openKeys, setOpenKeys] = useState([]);
+
+  const onOpenChange = (keys) => {
+    const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
+
+    if (latestOpenKey) {
+      const topLevelKeys = ['/RPA'];
+
+      const parentKey = latestOpenKey.split('/').slice(0, -1).join('/');
+      if (parentKey === '/RPA' || rootSubmenuKeys.indexOf(parentKey) === -1) {
+        topLevelKeys.push(latestOpenKey);
+      } else {
+        topLevelKeys.push(parentKey);
+      }
+
+      setOpenKeys(topLevelKeys);
+    } else {
+      setOpenKeys([]);
+    }
+  };
+
+  const showBackButton = breadcrumbItems.length > 1 && !breadcrumbItems.some(item => item.key.includes(':'));
+
+  const { facebook, instagram, twitter, tiktok, youtube } = SocialIcons;
 
   useEffect(() => {
     if (location.pathname == "/") {
@@ -89,7 +135,6 @@ const MainLayout = (props) => {
             width={isTabletOrMobile && isPortrait ? "100%" : 200}
             collapsible
             collapsed={collapsed}
-            // collapsedWidth={isTabletOrMobile && isPortrait ? 0 : 80}
             collapsedWidth={0}
             className={classNames("tw-min-h-full tw-z-40 tw-bg-[#0874c4]", {
               "tw-absolute tw-top-0": isMobile && isPortrait,
@@ -114,193 +159,196 @@ const MainLayout = (props) => {
               mode="inline"
               onClick={handleMenuClick}
               selectedKeys={props.pageKey}
+              openKeys={openKeys}
+              onOpenChange={onOpenChange}
               items={[
                 {
                   key: "/main",
-                  icon: <UserOutlined />,
-                  label: "main",
+                  icon: <BarChartOutlined />,
+                  label: "รายงานสรุป",
                 },
                 {
                   key: "/sentiment",
-                  icon: <UploadOutlined />,
-                  label: "Sentiment",
+                  icon: <CommentOutlined />,
+                  label: "ความคิดเห็น",
                   className: "",
                 },
                 {
                   key: "/postlog",
                   icon: <ContainerOutlined />,
-                  label: "DataLog",
+                  label: "โพสต์และความเคลื่อนไหว",
                   className: "",
                 },
                 {
                   key: "/createPost",
                   icon: <UploadOutlined />,
-                  label: "Create New Post",
+                  label: "สร้างโพสต์ใหม่",
                   className: "",
                 },
                 {
-                  key: null,
-                  icon: <UploadOutlined />,
+                  key: "/RPA",
+                  icon: <ControlOutlined />,
                   label: "RPA Management",
                   className: "",
                   children: [
                     {
-                      key: "/facebook",
-                      icon: <UploadOutlined />,
+                      key: "/RPA/facebook",
+                      icon: <img src={facebook} className="tw-h-8 tw-w-8" />,
                       label: "Facebook",
                       className: "",
                       children: [
                         {
-                          key: "/RPA/account:facebook",
+                          key: "/RPA/account/:facebook",
                           label: "บัญชีและสถานะ",
                           className: "",
                         },
                         {
-                          key: "/RPA/fulltime:facebook",
+                          key: "/RPA/fulltime/:facebook",
                           label: "งานประจำ",
                           className: "",
                         },
                         {
-                          key: "/RPA/job:facebook",
+                          key: "/RPA/job/:facebook",
                           label: "งาน",
                           className: "",
                         },
                         {
-                          key: "/RPA/errlog:facebook",
+                          key: "/RPA/errlog/:facebook",
                           label: "Error Log",
                           className: "",
                         },
                         {
-                          key: "/RPA/activlog:facebook",
+                          key: "/RPA/activlog/:facebook",
                           label: "Activity Log",
                           className: "",
                         },
                       ]
                     }, {
-                      key: "/X",
-                      icon: <UploadOutlined />,
+                      key: "/RPA/X",
+                      icon: <img src={twitter} className="tw-h-8 tw-w-8" />,
                       label: "X(Twitter)",
                       className: "",
                       children: [
                         {
-                          key: "/RPA/account:X",
+                          key: "/RPA/account/:X",
                           label: "บัญชีและสถานะ",
                           className: "",
                         },
                         {
-                          key: "/RPA/fulltime:X",
+                          key: "/RPA/fulltime/:X",
                           label: "งานประจำ",
                           className: "",
                         },
                         {
-                          key: "/RPA/job:X",
+                          key: "/RPA/job/:X",
                           label: "งาน",
                           className: "",
                         },
                         {
-                          key: "/RPA/errlog:X",
+                          key: "/RPA/errlog/:X",
                           label: "Error Log",
                           className: "",
                         },
                         {
-                          key: "/RPA/activlog:X",
+                          key: "/RPA/activlog/:X",
                           label: "Activity Log",
                           className: "",
                         },
                       ]
                     }, {
-                      key: "/instagram",
-                      icon: <UploadOutlined />,
+                      key: "/RPA/instagram",
+                      icon: <img src={instagram} className="tw-h-8 tw-w-8" />,
                       label: "Instagram",
                       className: "",
                       children: [
                         {
-                          key: "/RPA/account:instagram",
+                          key: "/RPA/account/:instagram",
                           label: "บัญชีและสถานะ",
                           className: "",
                         },
                         {
-                          key: "/RPA/fulltime:instagram",
+                          key: "/RPA/fulltime/:instagram",
                           label: "งานประจำ",
                           className: "",
                         },
                         {
-                          key: "/RPA/job:instagram",
+                          key: "/RPA/job/:instagram",
                           label: "งาน",
                           className: "",
                         },
                         {
-                          key: "/RPA/errlog:instagram",
+                          key: "/RPA/errlog/:instagram",
                           label: "Error Log",
                           className: "",
                         },
                         {
-                          key: "/RPA/activlog:instagram",
+                          key: "/RPA/activlog/:instagram",
                           label: "Activity Log",
                           className: "",
                         },
                       ]
                     },
                     {
-                      key: "/youtube",
-                      icon: <UploadOutlined />,
+                      key: "/RPA/youtube",
+                      icon: <img src={youtube} className="tw-h-8 tw-w-8" />,
                       label: "Youtube",
                       className: "",
                       children: [
                         {
-                          key: "/RPA/account:youtube",
+                          key: "/RPA/account/:youtube",
                           label: "บัญชีและสถานะ",
                           className: "",
                         },
                         {
-                          key: "/RPA/fulltime:youtube",
+                          key: "/RPA/fulltime/:youtube",
                           label: "งานประจำ",
                           className: "",
                         },
                         {
-                          key: "/RPA/job:youtube",
+                          key: "/RPA/job/:youtube",
                           label: "งาน",
                           className: "",
                         },
                         {
-                          key: "/RPA/errlog:youtube",
+                          key: "/RPA/errlog/:youtube",
                           label: "Error Log",
                           className: "",
                         },
                         {
-                          key: "/RPA/activlog:youtube",
+                          key: "/RPA/activlog/:youtube",
                           label: "Activity Log",
                           className: "",
                         },
                       ]
                     },
                     {
-                      key: "/tiktok",
+                      key: "/RPA/tiktok",
+                      icon: <img src={tiktok} className="tw-h-8 tw-w-8" />,
                       label: "tiktok",
                       className: "",
                       children: [
                         {
-                          key: "/RPA/account:tiktok",
+                          key: "/RPA/account/:tiktok",
                           label: "บัญชีและสถานะ",
                           className: "",
                         },
                         {
-                          key: "/RPA/fulltime:tiktok",
+                          key: "/RPA/fulltime/:tiktok",
                           label: "งานประจำ",
                           className: "",
                         },
                         {
-                          key: "/RPA/job:tiktok",
+                          key: "/RPA/job/:tiktok",
                           label: "งาน",
                           className: "",
                         },
                         {
-                          key: "/RPA/errlog:tiktok",
+                          key: "/RPA/errlog/:tiktok",
                           label: "Error Log",
                           className: "",
                         },
                         {
-                          key: "/RPA/activlog:tiktok",
+                          key: "/RPA/activlog/:tiktok",
                           label: "Activity Log",
                           className: "",
                         },
@@ -323,8 +371,9 @@ const MainLayout = (props) => {
 
         <Layout>
           <div className="tw-flex tw-flex-row tw-px-6 tw-my-4 tw-justify-between">
+            {/* <Breadcrumb className="tw-text-lg tw-font-bold" >{breadcrumbItems}</Breadcrumb> */}
             <Breadcrumb className="tw-text-lg tw-font-bold" items={breadcrumbItems} />
-            {breadcrumbItems.length > 1 && (
+            {showBackButton && (
               <Tooltip title="ย้อนกลับ">
                 <Button
                   className="tw-self-center tw-border-black tw-border-2 tw-bg-blue-400 tw-drop-shadow-md hover:tw-bg-white hover:tw-border-blue-600 hover:tw-text-blue-600"
