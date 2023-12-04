@@ -40,11 +40,11 @@ const DataTable = props => {
   };
 
   return (
-    <div className={classNames("tw-min-h-fit tw-min-w-full tw-overflow-y-visible tw-overflow-x-visible", {
-      "tw-min-h-screen": isMobile && isLandscape,
+    <div className={classNames("tw-min-h-fit tw-min-w-full tw-overflow-auto", {
+      // "tw-min-h-screen": isMobile && isLandscape,
     })}>
       <Table
-        rowClassName={"tw-min-h-fit tw-min-w-full"}
+        rowClassName={"tw-min-h-fit tw-min-w-fit"}
         tableLayout={'fixed'}
         columns={columns}
         // sticky={{ offsetScroll: 4, }}

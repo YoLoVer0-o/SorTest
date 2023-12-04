@@ -8,15 +8,15 @@ const useResponsive = () => {
     query: "(min-width: 1824px)",
   });
   const isTabletOrMobile = useMediaQuery({
-    maxDeviceWidth: 1224,
+    maxWidth: 1224,
   });
   const isTablet = useMediaQuery({
-    minDeviceWidth: 768,
-    maxDeviceWidth: 1368,
+    minWidth: 768,
+    maxWidth: 1368,
   });
   const isMobile = useMediaQuery({
-    maxDeviceWidth: 936,
-    maxDeviceHeight: 936,
+    maxWidth: 936,
+    maxHeight: 936,
   });
   const isPortrait = useMediaQuery({
     query: "(orientation: portrait)",

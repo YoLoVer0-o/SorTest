@@ -21,7 +21,7 @@ const SentimentTable = () => {
 
     const navigate = useNavigate();
 
-    const { isTabletOrMobile, isPortrait } = useResponsive();
+    const { isTabletOrMobile, isMobile, isPortrait, isLandscape } = useResponsive();
 
     const columns = [
         {
@@ -144,10 +144,12 @@ const SentimentTable = () => {
     }
 
     return (
-        <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto', {})}>
+        <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto', {
+            // "tw-min-h-screen":isTabletOrMobile,
+        })}>
             <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">BotTable</p>
             <div className={classNames("tw-flex tw-flex-row tw-max-w-full tw-justify-center tw-gap-2", {
-                "tw-flex-col": isTabletOrMobile,
+                "tw-flex-col": isTabletOrMobile && isPortrait,
             })}>
                 <div className={classNames("tw-w-full", {
                 })}>
@@ -181,9 +183,7 @@ const SentimentTable = () => {
                     />
                 </div>
             </div>
-            <div className={classNames("", {
-                "tw-overflow-auto tw-min-h-full": isTabletOrMobile && isPortrait,
-            })}>
+            <div className={classNames("", {})}>
                 <DataTable
                     columns={columns}
                     data={newSentiment}
