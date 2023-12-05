@@ -1,7 +1,6 @@
 import { Table } from 'antd';
 import PropTypes from 'prop-types';
 import classNames from "classnames";
-import { useResponsive } from "../hooks";
 
 const DataTable = props => {
 
@@ -13,7 +12,6 @@ const DataTable = props => {
   const useRowSelection = props.useRowSelection;
   const useRowClick = props.useRowClick;
 
-  const { isMobile, isLandscape } = useResponsive();
 
   const onChange = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
