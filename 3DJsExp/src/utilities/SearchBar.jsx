@@ -21,11 +21,18 @@ const SearchBar = props => {
     const dateFormat = 'DD/MM/YYYY';
     const uniqueTagsSet = new Set();
 
+
     {
-        useTagSearch && (receviedData.forEach((receviedData) => {
+        useTagSearch && typeof receviedData[0][`${keyName}`] === "object" && (receviedData.forEach((receviedData) => {
             receviedData[`${keyName}`].forEach((tag) => {
                 uniqueTagsSet.add(tag);
             });
+        }))
+    }
+
+    {
+        useTagSearch && typeof receviedData[0][`${keyName}`] === "string" && (receviedData.forEach((receviedData) => {
+            uniqueTagsSet.add(receviedData[`${keyName}`]);
         }))
     }
 
