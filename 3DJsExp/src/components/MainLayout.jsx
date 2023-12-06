@@ -18,7 +18,6 @@ const { Header, Sider, Content } = Layout;
 
 const MainLayout = (props) => {
   const {
-    isDesktopOrLaptop,
     isTabletOrMobile,
     isMobile,
     isPortrait,
@@ -373,7 +372,6 @@ const MainLayout = (props) => {
 
         <Layout>
           <div className="tw-flex tw-flex-row tw-px-6 tw-my-4 tw-justify-between">
-            {/* <Breadcrumb className="tw-text-lg tw-font-bold" >{breadcrumbItems}</Breadcrumb> */}
             <Breadcrumb className="tw-text-lg tw-font-bold" items={breadcrumbItems} />
             {showBackButton && (
               <Tooltip title="ย้อนกลับ">

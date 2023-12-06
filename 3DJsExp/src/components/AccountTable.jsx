@@ -19,7 +19,7 @@ const AccountTable = () => {
 
     // const navigate = useNavigate();
 
-    const { isTabletOrMobile, isPortrait } = useResponsive();
+    const { isTabletOrMobile, isMobile, isPortrait, isLandscape } = useResponsive();
 
     const columns = [
         {
@@ -151,19 +151,45 @@ const AccountTable = () => {
                     />
                 </div>
             </div>
-            <div
-                className={classNames("", {
-                    "tw-overflow-auto tw-min-h-full": isTabletOrMobile && isPortrait,
-                })}
-            >
-                <DataTable
-                    columns={columns}
-                    data={botStatus}
-                    setPageSize={5}
-                    onRowsSelected={setSelectedRows}
-                    useRowClick={true}
-                // onRowClick={() => toReport(selectedRows)}
-                />
+            <div className={classNames("tw-flex tw-flex-col tw-h-full tw-w-full tw-gap-2", {})}>
+                <div className={classNames("tw-flex tw-flex-row tw-h-fit tw-my-2", {
+                    "tw-flex-col tw-w-full tw-gap-2": isMobile && isPortrait,
+                    "tw-self-end tw-w-fit tw-gap-2": isMobile && isLandscape,
+                    "tw-gap-4 tw-self-end tw-w-fit": !isMobile,
+                })}>
+                    <Button
+                        className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
+                            "tw-w-full": isMobile && isPortrait,
+                        })}>
+                        ดาวน์โหลด Format
+                    </Button>
+                    <Button
+                        className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
+                            "tw-w-full": isMobile && isPortrait,
+                        })}>
+                        เพิ่มบัญชี Excel
+                    </Button>
+                    <Button
+                        className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
+                            "tw-w-full": isMobile && isPortrait,
+                        })}>
+                        เพิ่มบัญชีใหม่
+                    </Button>
+                </div>
+                <div
+                    className={classNames("tw-border-2 tw-rounded-md", {
+                        "tw-overflow-auto tw-min-h-fit": isTabletOrMobile && isPortrait,
+                    })}
+                >
+                    <DataTable
+                        columns={columns}
+                        data={botStatus}
+                        setPageSize={5}
+                        onRowsSelected={setSelectedRows}
+                    // useRowClick={true}
+                    // onRowClick={() => toReport(selectedRows)}
+                    />
+                </div>
             </div>
         </div>
     );

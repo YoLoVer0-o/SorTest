@@ -21,7 +21,6 @@ const SearchBar = props => {
     const dateFormat = 'DD/MM/YYYY';
     const uniqueTagsSet = new Set();
 
-
     {
         useTagSearch && typeof receviedData[0][`${keyName}`] === "object" && (receviedData.forEach((receviedData) => {
             receviedData[`${keyName}`].forEach((tag) => {
@@ -95,6 +94,7 @@ const SearchBar = props => {
             {useDateSearch && (<Tooltip title="เลือกช่วงเวลาที่ต้องการค้นหา">
                 <div className='tw-w-full'>
                     <RangePicker
+                        placement={"buttomLeft"}
                         onChange={onTimeChange}
                         format={dateFormat}
                         className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md hover:tw-border-sky-700 tw-w-full'
