@@ -2,7 +2,6 @@ import profile from "../assets/profile.png";
 import EmojiPicker, { EmojiStyle } from "emoji-picker-react";
 import { useState } from "react";
 import classNames from "classnames";
-import { useDropzone } from "react-dropzone";
 import { useResponsive } from "../hooks";
 import { BsGlobeAsiaAustralia, BsEmojiSmile } from "react-icons/bs";
 import { LuUserCheck2 } from "react-icons/lu";
@@ -10,19 +9,18 @@ import { MdOutlineVerified } from "react-icons/md";
 import { HiOutlineAtSymbol, HiOutlineGif } from "react-icons/hi2";
 import { SlPicture } from "react-icons/sl";
 import { LiaPollHSolid, LiaWindowClose } from "react-icons/lia";
-import { CloseOutlined, CloudUploadOutlined } from "@ant-design/icons";
-import { Select, Button } from "antd";
+import { Select } from "antd";
+import FileUpLoader from "../utilities/FileUpLoader";
 
 const TwitterPost = () => {
   const [message, setMessage] = useState("");
-  const [isShow, setIsShow] = useState(false);
+  const [openUpload, setOpenUpLoad] = useState(false);
   const [showEmojiInput, setShowEmojiInput] = useState(false);
-  const [files, setFiles] = useState([]);
 
   const {
     isDesktopOrLaptop,
     isBigScreen,
-    isTabletOrMobile,
+    // isTabletOrMobile,
     isMobile,
     isTablet,
     isPortrait,
@@ -48,27 +46,12 @@ const TwitterPost = () => {
     console.log(emo);
   };
 
-  const { getRootProps, getInputProps } = useDropzone({
-    accept: "image/*",
-    multiple: true,
-    onDrop: (acceptedFiles) => {
-      setFiles(
-        acceptedFiles.map((file) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file),
-          })
-        )
-      );
-    },
-  });
-
-  const images = files.map((file) => (
-    <div key={file.name}>
-      <div>
-        <img src={file.preview} className=" tw-w-40 " alt="preview" />
-      </div>
-    </div>
-  ));
+  const openPicUpload = () => {
+    setOpenUpLoad(true);
+  };
+  const closePicUpload = () => {
+    setOpenUpLoad(false);
+  };
 
   return (
     <div
@@ -115,44 +98,17 @@ const TwitterPost = () => {
           />
         </div>
 
-        {isShow && (
-          <div
-            className={classNames("tw-relative tw-z-10 ", {
-              "tw-col-span-4 tw-row-span-3 tw-col-start-5 ": isDesktopOrLaptop,
-              "tw-col-span-6 tw-row-span-3 tw-col-start-2 ":
-                (isTablet && isPortrait) || (isTablet && isLandscape),
-              "tw-col-span-4 tw-row-span-3 tw-col-start-2 ":
-                (isMobile && isPortrait) || (isMobile && isLandscape),
-            })}
-          >
-            <Button
-              className="tw-text-black tw-absolute tw-border-black tw-flex tw-right-1 tw-bg-red-500 tw-top-1 tw-z-40 tw-justify-center
-            tw-items-center tw-justify-self-end  "
-              icon={<CloseOutlined />}
-              onClick={() => setIsShow(!isShow)}
-              shape="circle"
-            ></Button>
-            <div
-              {...getRootProps()}
-              className={classNames(
-                "tw-flex tw-justify-center tw-items-center tw-border-dashed tw-border-2 tw-z-10 tw-w-full tw-h-full tw-flex-col  tw-bg-gray-100  hover:tw-bg-gray-200 tw-border-gray-400 tw-rounded-md",
-                {
-                  " tw-w-full tw-min-w-full":
-                    (isMobile && isPortrait) || (isMobile && isLandscape),
-                }
-              )}
-            >
-              <input {...getInputProps()} className="tw-w-full" />
-              {images.length === 0 && (
-                <div className="tw-flex tw-flex-col tw-items-center">
-                  <CloudUploadOutlined className="tw-text-4xl" />
-                  <p>Drop files here </p>
-                </div>
-              )}
-              <div>{images}</div>
-            </div>
-          </div>
-        )}
+        <div
+          className={classNames("tw-flex tw-w-full tw-h-full ", {
+            "tw-col-span-4 tw-row-span-3 tw-col-start-5 ": isDesktopOrLaptop,
+            "tw-col-span-6 tw-row-span-3 tw-col-start-2 ":
+              (isTablet && isPortrait) || (isTablet && isLandscape),
+            "tw-col-span-4 tw-row-span-3 tw-col-start-2 ":
+              (isMobile && isPortrait) || (isMobile && isLandscape),
+          })}
+        >
+          <FileUpLoader isOpen={openUpload} isClose={closePicUpload} />
+        </div>
 
         <div
           className={classNames("tw-grid ", {
@@ -219,7 +175,7 @@ const TwitterPost = () => {
               <button className=" tw-rounded-full tw-w-max  hover:tw-bg-sky-200 tw-p-1">
                 <SlPicture
                   className="tw-text-2xl tw-text-blue-500  "
-                  onClick={() => setIsShow(true)}
+                  onClick={openPicUpload}
                 />
               </button>
               <button className=" tw-rounded-full tw-w-max hover:tw-bg-sky-200 tw-p-1">

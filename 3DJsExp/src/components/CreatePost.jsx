@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { FloatButton, Tooltip } from "antd";
+import { useState } from "react";
 import SelectPlatform from "../utilities/SelectPlatform";
 import FacebookPost from "./FacebookPost";
 import InstagramPost from "./InstagramPost";

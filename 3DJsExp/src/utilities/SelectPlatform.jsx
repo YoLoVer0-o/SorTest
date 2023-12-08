@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Select } from "antd";
 import { useResponsive } from "../hooks";
 import classNames from "classnames";
@@ -25,10 +25,10 @@ const SelectPlatform = (props) => {
   };
 
   const {
-    isDesktopOrLaptop,
-    isBigScreen,
-    isTabletOrMobile,
-    isTablet,
+    // isDesktopOrLaptop,
+    // isBigScreen,
+    // isTabletOrMobile,
+    // isTablet,
     isMobile,
     isPortrait,
   } = useResponsive();
