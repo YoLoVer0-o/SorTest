@@ -326,7 +326,7 @@ const SentimentReport = () => {
                     handleCancel={handleCancel}
                     modalData={message}
                 />
-                {displayComments !== "" && (<div className=" tw-flex tw-flex-row tw-my-6 tw-gap-4">
+                {displayComments !== "" && details.length > 5 && (<div className="tw-flex tw-flex-row tw-my-6 tw-gap-4">
                     {pageSize < 20 && (
                         <Tooltip title="แสดงเพิ่มเติม">
                             <Button

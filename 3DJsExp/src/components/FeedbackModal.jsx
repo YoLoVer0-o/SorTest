@@ -23,7 +23,7 @@ const FeedbackModal = props => {
     return (
         <Modal
             className='tw-max-h-fit tw-max-w-fit'
-            title={'ความคิดเห็นที่ ' + data.key}
+            title={'ความคิดเห็นที่ ' + `${data.key}`}
             open={isModalOpen}
             onCancel={handleCancel}
             footer={null} >

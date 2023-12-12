@@ -86,7 +86,7 @@ const SearchBar = props => {
                         multiple
                         maxTagCount="responsive"
                         placeholder="เลือกหมวดหมู่ที่ต้องการค้นหา"
-                        className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md hover:tw-border-sky-700 tw-w-full'
+                        className='tw-border-2 tw-truncate tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md hover:tw-border-sky-700 tw-w-full'
                     />
                 </div>
             </Tooltip>)}

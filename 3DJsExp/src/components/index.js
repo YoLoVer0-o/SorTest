@@ -8,6 +8,8 @@ import CreatePost from "./Createpost";
 import SentimentTable from "./SentimentTable";
 import SentimentReport from "./SentimentReport";
 import AccountTable from "./AccountTable";
+import SchedueTable from "./SchedueTable";
+import WorkTable from "./WorkTable";
 
 export {
   MainLayout,
@@ -20,4 +22,6 @@ export {
   SentimentTable,
   SentimentReport,
   AccountTable,
+  SchedueTable,
+  WorkTable,
 };

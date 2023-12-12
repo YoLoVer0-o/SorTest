@@ -46,7 +46,7 @@ const DataTable = props => {
         tableLayout={'fixed'}
         columns={columns}
         // sticky={{ offsetScroll: 4, }}
-        dataSource={receviedData.map(item => ({ ...item, key: item.id }))}
+        dataSource={receviedData ? receviedData.map(item => ({ ...item, key: item.id })) : []}
         onChange={onChange}
         pagination={{
           defaultPageSize: 5,

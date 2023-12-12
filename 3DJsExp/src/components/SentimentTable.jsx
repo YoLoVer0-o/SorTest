@@ -183,7 +183,7 @@ const SentimentTable = () => {
                     />
                 </div>
             </div>
-            <div className={classNames("", {})}>
+            <div className={classNames("tw-border-2 tw-rounded-md", {})}>
                 <DataTable
                     columns={columns}
                     data={newSentiment}
@@ -193,7 +193,7 @@ const SentimentTable = () => {
                     onRowClick={() => toReport(selectedRows)}
                 />
             </div>
-            <div className=" tw-flex tw-flex-row tw-my-6 tw-gap-4">
+            <div className="tw-flex tw-flex-row tw-my-6 tw-gap-4">
                 {pageSize < 20 && (
                     <Tooltip title="แสดงเพิ่มเติม">
                         <Button className="tw-border-black tw-border-2 tw-bg-green-400 tw-drop-shadow-md hover:tw-bg-white hover:tw-border-green-600 hover:tw-text-green-600"

@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Dashboard, PostTable, PostReport, CreatePost, SentimentTable, SentimentReport, AccountTable } from "../components";
+import { Dashboard, PostTable, PostReport, CreatePost, SentimentTable, SentimentReport, AccountTable,SchedueTable,WorkTable } from "../components";
 import { LoginPage, MainPage, PostDataPage, CreatePostPage, SentimentPage, RPAManagementPage } from "../pages";
 
 export const router = createBrowserRouter([
@@ -65,11 +65,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/RPA/fulltime/:platform",
-        element: <SentimentReport />,
+        element: <SchedueTable />,
       },
       {
         path: "/RPA/job/:platform",
-        element: <SentimentReport />,
+        element: <WorkTable />,
       },
       {
         path: "/RPA/errlog/:platform",
