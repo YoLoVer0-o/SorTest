@@ -100,7 +100,7 @@ const TwitterPost = () => {
 
         <div
           className={classNames("tw-flex tw-w-full tw-h-full ", {
-            "tw-col-span-4 tw-row-span-3 tw-col-start-5 ": isDesktopOrLaptop,
+            "tw-col-span-6 tw-row-span-3 tw-col-start-4 ": isDesktopOrLaptop,
             "tw-col-span-6 tw-row-span-3 tw-col-start-2 ":
               (isTablet && isPortrait) || (isTablet && isLandscape),
             "tw-col-span-4 tw-row-span-3 tw-col-start-2 ":
