@@ -10,7 +10,7 @@ import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import classNames from "classnames";
 dayjs.extend(isSameOrAfter);
 import { useResponsive } from "../hooks";
-import EditUserModal from "./EditUserModal";
+import { EditUserModal } from "../components";
 
 const AccountTable = () => {
     const [searchAccount, setSearchAccout] = useState("");

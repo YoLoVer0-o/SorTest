@@ -10,16 +10,26 @@ import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import classNames from "classnames";
 dayjs.extend(isSameOrAfter);
 import { useResponsive } from "../hooks";
+import { EditWorkModal } from "../components";
 
 const WorkTable = () => {
     const [searchAccount, setSearchAccout] = useState("");
     const [searchTarget, setSearchTarget] = useState([]);
     const [searchWork, setSearchWork] = useState([]);
-    const [selectedRows, setSelectedRows] = useState([]);
-
-    // const navigate = useNavigate();
+    const [modalToggle, setModalToggle] = useState(false);
+    const [modalData, setModalData] = useState([]);
 
     const { isTabletOrMobile, isMobile, isPortrait, isLandscape } = useResponsive();
+
+    const showModal = (data) => {
+        setModalData(data);
+        setModalToggle(true);
+    };
+
+    const handleCancel = () => {
+        setModalToggle(false);
+    };
+
 
     const columns = [
         {
@@ -102,7 +112,7 @@ const WorkTable = () => {
             render: (text, record) => (
                 <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
                     <Tooltip key={record.id} title={"กดเพื่อแก้ไข"}>
-                        <EditOutlined />
+                        <EditOutlined onClick={() => showModal(record)} />
                     </Tooltip>
                 </div>
             ),
@@ -197,10 +207,14 @@ const WorkTable = () => {
                         columns={columns}
                         data={workMock}
                         setPageSize={workMock.length}
-                        onRowsSelected={setSelectedRows}
-                    // useRowClick={true}
-                    // onRowClick={() => toReport(selectedRows)}
                     />
+                    {modalToggle && (
+                        <EditWorkModal
+                            modalToggle={modalToggle}
+                            handleCancel={handleCancel}
+                            modalData={modalData}
+                        />
+                    )}
                 </div>
             </div>
         </div>

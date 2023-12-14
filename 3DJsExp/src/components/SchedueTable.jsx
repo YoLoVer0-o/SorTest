@@ -10,16 +10,27 @@ import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import classNames from "classnames";
 dayjs.extend(isSameOrAfter);
 import { useResponsive } from "../hooks";
+import { EditSchedueModal } from "../components";
 
 const SchedueTable = () => {
     const [searchAccount, setSearchAccout] = useState("");
     const [searchTarget, setSearchTarget] = useState([]);
     const [searchFrequency, setSearchFrequency] = useState([]);
-    const [selectedRows, setSelectedRows] = useState([]);
+    const [modalToggle, setModalToggle] = useState(false);
+    const [modalData, setModalData] = useState([]);
 
-    // const navigate = useNavigate();
+
 
     const { isTabletOrMobile, isMobile, isPortrait, isLandscape } = useResponsive();
+
+    const showModal = (data) => {
+        setModalData(data);
+        setModalToggle(true);
+    };
+
+    const handleCancel = () => {
+        setModalToggle(false);
+    };
 
     const columns = [
         {
@@ -77,7 +88,7 @@ const SchedueTable = () => {
             render: (text, record) => (
                 <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
                     <Tooltip key={record.id} title={"กดเพื่อแก้ไข"}>
-                        <EditOutlined />
+                        <EditOutlined onClick={() => showModal(record)} />
                     </Tooltip>
                 </div>
             ),
@@ -163,10 +174,14 @@ const SchedueTable = () => {
                         columns={columns}
                         data={testAcc}
                         setPageSize={testAcc.length}
-                        onRowsSelected={setSelectedRows}
-                    // useRowClick={true}
-                    // onRowClick={() => toReport(selectedRows)}
                     />
+                    {modalToggle && (
+                        <EditSchedueModal
+                            modalToggle={modalToggle}
+                            handleCancel={handleCancel}
+                            modalData={modalData}
+                        />
+                    )}
                 </div>
             </div>
         </div>

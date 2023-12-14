@@ -11,6 +11,8 @@ import AccountTable from "./AccountTable";
 import SchedueTable from "./SchedueTable";
 import WorkTable from "./WorkTable";
 import EditUserModal from "./EditUserModal";
+import EditSchedueModal from "./EditSchedueModal";
+import EditWorkModal from "./EditWorkModal";
 
 export {
   MainLayout,
@@ -26,4 +28,6 @@ export {
   SchedueTable,
   WorkTable,
   EditUserModal,
+  EditSchedueModal,
+  EditWorkModal,
 };
