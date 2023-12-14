@@ -1,7 +1,6 @@
 import { Table } from 'antd';
 import PropTypes from 'prop-types';
 import classNames from "classnames";
-import { useResponsive } from "../hooks";
 
 const DataTable = props => {
 
@@ -13,7 +12,6 @@ const DataTable = props => {
   const useRowSelection = props.useRowSelection;
   const useRowClick = props.useRowClick;
 
-  const { isMobile, isLandscape } = useResponsive();
 
   const onChange = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
@@ -40,15 +38,15 @@ const DataTable = props => {
   };
 
   return (
-    <div className={classNames("tw-min-h-fit tw-min-w-full tw-overflow-y-visible tw-overflow-x-visible", {
-      "tw-min-h-screen": isMobile && isLandscape,
+    <div className={classNames("tw-min-h-fit tw-min-w-full tw-overflow-auto", {
+      // "tw-min-h-screen": isMobile && isLandscape,
     })}>
       <Table
-        rowClassName={"tw-min-h-fit tw-min-w-full"}
+        rowClassName={"tw-min-h-fit tw-min-w-fit"}
         tableLayout={'fixed'}
         columns={columns}
         // sticky={{ offsetScroll: 4, }}
-        dataSource={receviedData}
+        dataSource={receviedData ? receviedData.map(item => ({ ...item, key: item.id })) : []}
         onChange={onChange}
         pagination={{
           defaultPageSize: 5,

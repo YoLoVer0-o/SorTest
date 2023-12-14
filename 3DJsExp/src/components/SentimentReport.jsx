@@ -311,7 +311,7 @@ const SentimentReport = () => {
                     <p className="tw-text-2xl tw-text-center tw-my-4">แสดงความคิดเห็น {displayComments.commentType == "positive" ? "แง่บวก" : "แง่ลบ"} ของ {displayComments.name} </p>
                 )}
                 <div className={classNames("", {
-                    "tw-overflow-auto": isTabletOrMobile && isPortrait,
+                    "tw-overflow-auto": isTabletOrMobile,
                 })}>
                     <DataTable
                         columns={columns}
@@ -326,7 +326,7 @@ const SentimentReport = () => {
                     handleCancel={handleCancel}
                     modalData={message}
                 />
-                {displayComments !== "" && (<div className=" tw-flex tw-flex-row tw-my-6 tw-gap-4">
+                {displayComments !== "" && details.length > 5 && (<div className="tw-flex tw-flex-row tw-my-6 tw-gap-4">
                     {pageSize < 20 && (
                         <Tooltip title="แสดงเพิ่มเติม">
                             <Button

@@ -22,10 +22,16 @@ const SearchBar = props => {
     const uniqueTagsSet = new Set();
 
     {
-        useTagSearch && (receviedData.forEach((receviedData) => {
+        useTagSearch && typeof receviedData[0][`${keyName}`] === "object" && (receviedData.forEach((receviedData) => {
             receviedData[`${keyName}`].forEach((tag) => {
                 uniqueTagsSet.add(tag);
             });
+        }))
+    }
+
+    {
+        useTagSearch && typeof receviedData[0][`${keyName}`] === "string" && (receviedData.forEach((receviedData) => {
+            uniqueTagsSet.add(receviedData[`${keyName}`]);
         }))
     }
 
@@ -80,7 +86,7 @@ const SearchBar = props => {
                         multiple
                         maxTagCount="responsive"
                         placeholder="เลือกหมวดหมู่ที่ต้องการค้นหา"
-                        className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md hover:tw-border-sky-700 tw-w-full'
+                        className='tw-border-2 tw-truncate tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md hover:tw-border-sky-700 tw-w-full'
                     />
                 </div>
             </Tooltip>)}
@@ -88,6 +94,7 @@ const SearchBar = props => {
             {useDateSearch && (<Tooltip title="เลือกช่วงเวลาที่ต้องการค้นหา">
                 <div className='tw-w-full'>
                     <RangePicker
+                        placement={"buttomLeft"}
                         onChange={onTimeChange}
                         format={dateFormat}
                         className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md hover:tw-border-sky-700 tw-w-full'

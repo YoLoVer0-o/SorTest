@@ -1,5 +1,5 @@
 import { DataTable, SearchBar } from "../utilities";
-import { botStatus } from "../mock";
+import { testAcc } from "../mock";
 import { useState } from "react";
 import { Button, Tooltip } from "antd";
 import { EditOutlined } from "@ant-design/icons";
@@ -10,12 +10,12 @@ import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import classNames from "classnames";
 dayjs.extend(isSameOrAfter);
 import { useResponsive } from "../hooks";
-import { EditUserModal } from "../components";
+import { EditSchedueModal } from "../components";
 
-const AccountTable = () => {
+const SchedueTable = () => {
     const [searchAccount, setSearchAccout] = useState("");
-    const [searchGroup, setSearchGroup] = useState([]);
-    const [searchStatus, setSearchStatus] = useState([]);
+    const [searchTarget, setSearchTarget] = useState([]);
+    const [searchFrequency, setSearchFrequency] = useState([]);
     const [modalToggle, setModalToggle] = useState(false);
     const [modalData, setModalData] = useState([]);
 
@@ -43,77 +43,40 @@ const AccountTable = () => {
         },
         {
             title: "accName",
-            dataIndex: "accName",
-            key: "accName",
+            dataIndex: "acc_name",
+            key: "acc_name",
             align: "center",
             width: 150,
             className: "tw-truncate",
             filteredValue: [searchAccount],
             onFilter: (value, record) =>
-                String(record?.accName).toLowerCase().includes(value.toLowerCase()),
+                String(record?.acc_name).toLowerCase().includes(value.toLowerCase()),
         },
         {
-            title: "group",
-            dataIndex: "group",
-            key: "group",
+            title: "target",
+            dataIndex: "target",
+            key: "target",
             align: "center",
             width: 150,
-            className: "tw-text-violet-600",
-            filteredValue: [searchGroup],
+            className: "tw-text-violet-600 tw-truncate",
+            filteredValue: [searchTarget],
             onFilter: (value, record) =>
                 value
                     .split(",")
-                    .every((group) => String(record?.group).includes(group)),
-            render: (text, record) => (
-                <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
-                    {record?.group.map((group) => (
-                        <Tooltip key={group} title={group}>
-                            <div className=" tw-w-max tw-rounded-md tw-p-2 tw-border-2 tw-border-black tw-text-center tw-text-white tw-bg-violet-600">
-                                {group}
-                            </div>
-                        </Tooltip>
-                    ))}
-                </div>
-            ),
+                    .every((target) => String(record?.target).includes(target)),
         },
         {
-            title: "status",
-            dataIndex: "status",
-            key: "status",
+            title: "frequency",
+            dataIndex: "frequency",
+            key: "frequency",
             align: "center",
             width: 150,
             className: "tw-text-amber-600",
-            filteredValue: [searchStatus],
+            filteredValue: [searchFrequency],
             onFilter: (value, record) =>
                 value
                     .split(",")
-                    .some((status) => String(record?.status).includes(status)),
-            render: (text, record) => (
-                <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
-                    <Tooltip title={record?.status}>
-                        <div
-                            className={classNames(
-                                "tw-rounded-md tw-border-2 tw-border-black tw-w-max tw-text-center tw-text-white tw-p-2",
-                                {
-                                    "tw-bg-green-600": record?.status == "online",
-                                    "tw-bg-red-600": record?.status == "offline",
-                                    "tw-bg-yellow-600": record?.status == "standby",
-                                }
-                            )}
-                        >
-                            {record?.status}
-                        </div>
-                    </Tooltip>
-                </div>
-            ),
-        },
-        {
-            title: "details",
-            dataIndex: "details",
-            key: "details",
-            align: "center",
-            width: 150,
-            className: "tw-text-lime-600 tw-truncate",
+                    .some((frequency) => String(record?.frequency).includes(frequency)),
         },
         {
             title: "",
@@ -140,7 +103,7 @@ const AccountTable = () => {
             )}
         >
             <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">
-                AccountTable
+                SchedueTable
             </p>
             <div
                 className={classNames(
@@ -154,26 +117,26 @@ const AccountTable = () => {
                     <p className="tw-text-lg">เลขบัญชี/ชื่อบัญชี:</p>
                     <SearchBar
                         useTextSearch={true}
-                        data={botStatus}
+                        data={testAcc}
                         onChangeSearch={setSearchAccout}
                     />
                 </div>
                 <div className={classNames("tw-w-full", {})}>
-                    <p className="tw-text-lg">กลุ่ม:</p>
+                    <p className="tw-text-lg">เป้าหมาย:</p>
                     <SearchBar
                         useTagSearch={true}
-                        data={botStatus}
-                        onChangeFilter={setSearchGroup}
-                        keyName={"group"}
+                        data={testAcc}
+                        onChangeFilter={setSearchTarget}
+                        keyName={"target"}
                     />
                 </div>
                 <div className={classNames("tw-w-full", {})}>
-                    <p className="tw-text-lg">สถานะ:</p>
+                    <p className="tw-text-lg">ความถี่:</p>
                     <SearchBar
                         useTagSearch={true}
-                        data={botStatus}
-                        onChangeFilter={setSearchStatus}
-                        keyName={"status"}
+                        data={testAcc}
+                        onChangeFilter={setSearchFrequency}
+                        keyName={"frequency"}
                     />
                 </div>
             </div>
@@ -193,13 +156,13 @@ const AccountTable = () => {
                         className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
                             "tw-w-full": isMobile && isPortrait,
                         })}>
-                        เพิ่มบัญชี Excel
+                        เพิ่มงานประจำจาก Excel
                     </Button>
                     <Button
                         className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
                             "tw-w-full": isMobile && isPortrait,
                         })}>
-                        เพิ่มบัญชีใหม่
+                        เพิ่มงานประจำใหม่
                     </Button>
                 </div>
                 <div
@@ -209,11 +172,11 @@ const AccountTable = () => {
                 >
                     <DataTable
                         columns={columns}
-                        data={botStatus}
-                        setPageSize={botStatus.length}
+                        data={testAcc}
+                        setPageSize={testAcc.length}
                     />
                     {modalToggle && (
-                        <EditUserModal
+                        <EditSchedueModal
                             modalToggle={modalToggle}
                             handleCancel={handleCancel}
                             modalData={modalData}
@@ -225,4 +188,4 @@ const AccountTable = () => {
     );
 };
 
-export default AccountTable;
+export default SchedueTable;

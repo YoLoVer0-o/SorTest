@@ -391,7 +391,8 @@ const Dashboard = () => {
                                 </div>
                             </div>
                             <div className="tw-text-lg">
-                                <ReadMoreReact text={testText}
+                                <ReadMoreReact
+                                    text={testText}
                                     min={80}
                                     ideal={100}
                                     max={200}

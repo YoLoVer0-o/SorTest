@@ -18,7 +18,6 @@ const { Header, Sider, Content } = Layout;
 
 const MainLayout = (props) => {
   const {
-    isDesktopOrLaptop,
     isTabletOrMobile,
     isMobile,
     isPortrait,
@@ -48,16 +47,6 @@ const MainLayout = (props) => {
   const breadcrumbItems = pathSnippets.map((_, index) => {
     const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
     const isDynamic = url.includes(':');
-
-    // return (
-    //   <Breadcrumb.Item key={url}>
-    //     {index === pathSnippets.length - 1 ? (isDynamic ? platform : breadcrumbNameMap[url]) : (
-    //       <p>
-    //         {isDynamic ? platform : breadcrumbNameMap[url]}
-    //       </p>
-    //     )}
-    //   </Breadcrumb.Item>
-    // );
 
     return {
       key: url,
@@ -145,7 +134,7 @@ const MainLayout = (props) => {
             collapsible
             collapsed={collapsed}
             collapsedWidth={0}
-            className={classNames("tw-min-h-full tw-z-40 tw-bg-[#0874c4]", {
+            className={classNames("tw-min-h-full tw-overflow-y-auto tw-z-40 tw-bg-[#0874c4]", {
               "tw-absolute tw-top-0": isMobile && isPortrait,
             })}
           >
@@ -383,7 +372,6 @@ const MainLayout = (props) => {
 
         <Layout>
           <div className="tw-flex tw-flex-row tw-px-6 tw-my-4 tw-justify-between">
-            {/* <Breadcrumb className="tw-text-lg tw-font-bold" >{breadcrumbItems}</Breadcrumb> */}
             <Breadcrumb className="tw-text-lg tw-font-bold" items={breadcrumbItems} />
             {showBackButton && (
               <Tooltip title="ย้อนกลับ">
@@ -399,7 +387,7 @@ const MainLayout = (props) => {
 
           <Content
             className={classNames(
-              "tw-flex tw-max-w-full tw-max-h-full tw-justify-center tw-m-4 tw-bg-white tw-object-contain tw-p-4",
+              "tw-flex tw-max-w-full tw-max-h-fit tw-justify-center tw-m-4 tw-bg-white tw-object-contain tw-p-4",
               {
                 "tw-overflow-auto": isTabletOrMobile && isLandscape,
               }
@@ -407,7 +395,7 @@ const MainLayout = (props) => {
           >
             <Outlet
               className={classNames(
-                "tw-flex tw-max-h-full tw-h-full tw-max-w-full tw-justify-center tw-object-contain",
+                "tw-flex tw-max-h-fit tw-h-fit tw-max-w-full tw-justify-center tw-object-contain",
                 {}
               )}
             />

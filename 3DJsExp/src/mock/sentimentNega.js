@@ -4,9 +4,9 @@ const sentimentNega = [
     value: 12,
     commentType: "negative",
     Comment: [
-      { key: 1, timestamp: "2022/09/04", userName: "A", message: "hello world" },
-      { key: 2, timestamp: "2022/09/04", userName: "B", message: "hello world" },
-      { key: 3, timestamp: "2022/09/04", userName: "C", message: "hello world" },
+      { id: 1, timestamp: "2022/09/04", userName: "A", message: "hello world" },
+      { id: 2, timestamp: "2022/09/04", userName: "B", message: "hello world" },
+      { id: 3, timestamp: "2022/09/04", userName: "C", message: "hello world" },
     ],
   },
   {
@@ -14,9 +14,9 @@ const sentimentNega = [
     value: 44,
     commentType: "negative",
     Comment: [
-      { key: 1, timestamp: "2022/09/04", userName: "A", message: "hello world" },
-      { key: 2, timestamp: "2022/09/04", userName: "B", message: "hello world" },
-      { key: 3, timestamp: "2022/09/04", userName: "C", message: "hello world" },
+      { id: 1, timestamp: "2022/09/04", userName: "A", message: "hello world" },
+      { id: 2, timestamp: "2022/09/04", userName: "B", message: "hello world" },
+      { id: 3, timestamp: "2022/09/04", userName: "C", message: "hello world" },
     ],
   },
   {
@@ -24,9 +24,9 @@ const sentimentNega = [
     value: 39,
     commentType: "negative",
     Comment: [
-      { key: 1, timestamp: "2022/09/04", userName: "A", message: "hello world" },
-      { key: 2, timestamp: "2022/09/04", userName: "B", message: "hello world" },
-      { key: 3, timestamp: "2022/09/04", userName: "C", message: "hello world" },
+      { id: 1, timestamp: "2022/09/04", userName: "A", message: "hello world" },
+      { id: 2, timestamp: "2022/09/04", userName: "B", message: "hello world" },
+      { id: 3, timestamp: "2022/09/04", userName: "C", message: "hello world" },
     ],
   },
   {
@@ -34,9 +34,9 @@ const sentimentNega = [
     value: 29,
     commentType: "negative",
     Comment: [
-      { key: 1, timestamp: "2022/09/04", userName: "A", message: "hello world" },
-      { key: 2, timestamp: "2022/09/04", userName: "B", message: "hello world" },
-      { key: 3, timestamp: "2022/09/04", userName: "C", message: "hello world" },
+      { id: 1, timestamp: "2022/09/04", userName: "A", message: "hello world" },
+      { id: 2, timestamp: "2022/09/04", userName: "B", message: "hello world" },
+      { id: 3, timestamp: "2022/09/04", userName: "C", message: "hello world" },
     ],
   },
   {
@@ -44,9 +44,9 @@ const sentimentNega = [
     value: 43,
     commentType: "negative",
     Comment: [
-      { key: 1, timestamp: "2022/09/04", userName: "A", message: "hello world" },
-      { key: 2, timestamp: "2022/09/04", userName: "B", message: "hello world" },
-      { key: 3, timestamp: "2022/09/04", userName: "C", message: "hello world" },
+      { id: 1, timestamp: "2022/09/04", userName: "A", message: "hello world" },
+      { id: 2, timestamp: "2022/09/04", userName: "B", message: "hello world" },
+      { id: 3, timestamp: "2022/09/04", userName: "C", message: "hello world" },
     ],
   },
   {
@@ -54,9 +54,9 @@ const sentimentNega = [
     value: 42,
     commentType: "negative",
     Comment: [
-      { key: 1, timestamp: "2022/09/04", userName: "A", message: "hello world" },
-      { key: 2, timestamp: "2022/09/04", userName: "B", message: "hello world" },
-      { key: 3, timestamp: "2022/09/04", userName: "C", message: "hello world" },
+      { id: 1, timestamp: "2022/09/04", userName: "A", message: "hello world" },
+      { id: 2, timestamp: "2022/09/04", userName: "B", message: "hello world" },
+      { id: 3, timestamp: "2022/09/04", userName: "C", message: "hello world" },
     ],
   },
   {
@@ -64,9 +64,9 @@ const sentimentNega = [
     value: 39,
     commentType: "negative",
     Comment: [
-      { key: 1, timestamp: "2022/09/04", userName: "A", message: "hello world" },
-      { key: 2, timestamp: "2022/09/04", userName: "B", message: "hello world" },
-      { key: 3, timestamp: "2022/09/04", userName: "C", message: "hello world" },
+      { id: 1, timestamp: "2022/09/04", userName: "A", message: "hello world" },
+      { id: 2, timestamp: "2022/09/04", userName: "B", message: "hello world" },
+      { id: 3, timestamp: "2022/09/04", userName: "C", message: "hello world" },
     ],
   },
   {
@@ -74,9 +74,9 @@ const sentimentNega = [
     value: 26,
     commentType: "negative",
     Comment: [
-      { key: 1, timestamp: "2022/09/04", userName: "A", message: "hello world" },
-      { key: 2, timestamp: "2022/09/04", userName: "B", message: "hello world" },
-      { key: 3, timestamp: "2022/09/04", userName: "C", message: "hello world" },
+      { id: 1, timestamp: "2022/09/04", userName: "A", message: "hello world" },
+      { id: 2, timestamp: "2022/09/04", userName: "B", message: "hello world" },
+      { id: 3, timestamp: "2022/09/04", userName: "C", message: "hello world" },
     ],
   },
   {
@@ -84,9 +84,9 @@ const sentimentNega = [
     value: 49,
     commentType: "negative",
     Comment: [
-      { key: 1, timestamp: "2022/09/04", userName: "A", message: "hello world" },
-      { key: 2, timestamp: "2022/09/04", userName: "B", message: "hello world" },
-      { key: 3, timestamp: "2022/09/04", userName: "C", message: "hello world" },
+      { id: 1, timestamp: "2022/09/04", userName: "A", message: "hello world" },
+      { id: 2, timestamp: "2022/09/04", userName: "B", message: "hello world" },
+      { id: 3, timestamp: "2022/09/04", userName: "C", message: "hello world" },
     ],
   },
   {
@@ -94,9 +94,9 @@ const sentimentNega = [
     value: 28,
     commentType: "negative",
     Comment: [
-      { key: 1, timestamp: "2022/09/04", userName: "A", message: "hello world" },
-      { key: 2, timestamp: "2022/09/04", userName: "B", message: "hello world" },
-      { key: 3, timestamp: "2022/09/04", userName: "C", message: "hello world" },
+      { id: 1, timestamp: "2022/09/04", userName: "A", message: "hello world" },
+      { id: 2, timestamp: "2022/09/04", userName: "B", message: "hello world" },
+      { id: 3, timestamp: "2022/09/04", userName: "C", message: "hello world" },
     ],
   },
 ];
