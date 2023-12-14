@@ -9,12 +9,15 @@ import { MdOutlineVerified } from "react-icons/md";
 import { HiOutlineAtSymbol, HiOutlineGif } from "react-icons/hi2";
 import { SlPicture } from "react-icons/sl";
 import { LiaPollHSolid, LiaWindowClose } from "react-icons/lia";
+import { TbCalendarTime } from "react-icons/tb";
 import { Select } from "antd";
 import FileUpLoader from "../utilities/FileUpLoader";
+import TimeSetPost from "../utilities/TimeSetPost";
 
 const TwitterPost = () => {
   const [message, setMessage] = useState("");
   const [openUpload, setOpenUpLoad] = useState(false);
+  const [openTimeSet, setOpenTimeSet] = useState(false);
   const [showEmojiInput, setShowEmojiInput] = useState(false);
 
   const {
@@ -27,10 +30,6 @@ const TwitterPost = () => {
     isLandscape,
   } = useResponsive();
 
-  const toggleEmoji = () => {
-    setShowEmojiInput(!showEmojiInput);
-  };
-
   const handleMessageChange = (event) => {
     const text = event.target.value;
     if (!text.emoji) {
@@ -41,6 +40,10 @@ const TwitterPost = () => {
     }
   };
 
+  const toggleEmoji = () => {
+    setShowEmojiInput(!showEmojiInput);
+  };
+
   const showEmo = (emo) => {
     setMessage(message + emo.emoji);
     console.log(emo);
@@ -48,25 +51,33 @@ const TwitterPost = () => {
 
   const openPicUpload = () => {
     setOpenUpLoad(true);
+    setOpenTimeSet(false)
   };
   const closePicUpload = () => {
     setOpenUpLoad(false);
   };
+  const openTime = () => {
+    setOpenTimeSet(true);
+    setOpenUpLoad(false)
+  };
+  const closeTimeSet = () => {
+    setOpenTimeSet(false);
+  };
 
   return (
     <div
-      className={classNames("tw-w-full  tw-flex tw-justify-center", {
+      className={classNames("tw-w-full tw-h-[80%] tw-flex tw-justify-center", {
         "tw-h-[80%]": isBigScreen,
         "tw-h-[70%]": isDesktopOrLaptop,
         "tw-h-[60%] ": isTablet && isPortrait,
-        "tw-h-[70%]  ": isTablet && isLandscape,
+        "tw-h-[70%] ": isTablet && isLandscape,
         "tw-h-[60%]": isMobile && isPortrait,
         "tw-h-screen": isMobile && isLandscape,
       })}
     >
       <div
         className={classNames(
-          "tw-grid tw-justify-center tw-justify-self-center tw-w-max ",
+          "tw-grid tw-justify-center tw-justify-self-center tw-w-max tw-grid-cols-12 tw-grid-rows-6",
           {
             "tw-grid-cols-12 tw-grid-rows-6 ": isDesktopOrLaptop,
             "tw-grid-cols-8 tw-grid-rows-6 ":
@@ -77,14 +88,17 @@ const TwitterPost = () => {
         )}
       >
         <div
-          className={classNames("tw-grid   ", {
-            "tw-grid-cols-3 tw-grid-rows-4 tw-col-span-4  tw-row-span-2 tw-col-start-5 ":
-              isDesktopOrLaptop,
-            "tw-grid-cols-3 tw-grid-rows-4 tw-col-span-4  tw-row-span-2 tw-col-start-3  ":
-              (isTablet && isPortrait) || (isTablet && isLandscape),
-            "tw-grid-cols-3 tw-grid-rows-3 tw-col-span-4  tw-row-span-2 tw-col-start-2":
-              (isMobile && isPortrait) || (isMobile && isLandscape),
-          })}
+          className={classNames(
+            "tw-grid  tw-grid-cols-3 tw-grid-rows-4 tw-col-span-4  tw-row-span-2 tw-col-start-5 ",
+            {
+              "tw-grid-cols-3 tw-grid-rows-4 tw-col-span-4  tw-row-span-2 tw-col-start-5 ":
+                isDesktopOrLaptop,
+              "tw-grid-cols-3 tw-grid-rows-4 tw-col-span-4  tw-row-span-2 tw-col-start-3  ":
+                (isTablet && isPortrait) || (isTablet && isLandscape),
+              "tw-grid-cols-3 tw-grid-rows-3 tw-col-span-4  tw-row-span-2 tw-col-start-2":
+                (isMobile && isPortrait) || (isMobile && isLandscape),
+            }
+          )}
         >
           <img
             className="tw-w-12 tw-h-12 tw-rounded-full tw-border-2 tw-border-black tw-flex tw-justify-self-center "
@@ -99,26 +113,40 @@ const TwitterPost = () => {
         </div>
 
         <div
-          className={classNames("tw-flex tw-w-full tw-h-full ", {
-            "tw-col-span-6 tw-row-span-3 tw-col-start-4 ": isDesktopOrLaptop,
-            "tw-col-span-6 tw-row-span-3 tw-col-start-2 ":
-              (isTablet && isPortrait) || (isTablet && isLandscape),
-            "tw-col-span-4 tw-row-span-3 tw-col-start-2 ":
-              (isMobile && isPortrait) || (isMobile && isLandscape),
-          })}
+          className={classNames(
+            "tw-flex tw-w-full tw-h-full tw-col-span-6 tw-row-span-3 tw-col-start-4",
+            {
+              "tw-col-span-6 tw-row-span-3 tw-col-start-4 ": isDesktopOrLaptop,
+              "tw-col-span-6 tw-row-span-3 tw-col-start-2 ":
+                (isTablet && isPortrait) || (isTablet && isLandscape),
+              "tw-col-span-4 tw-row-span-3 tw-col-start-2 ":
+                (isMobile && isPortrait) || (isMobile && isLandscape),
+            }
+          )}
         >
-          <FileUpLoader isOpen={openUpload} isClose={closePicUpload} />
+          {(openUpload === true && (
+            <FileUpLoader isOpen={openUpload} 
+            isClose={closePicUpload} />
+          )) ||
+          (openTimeSet === true && (
+            <TimeSetPost isOpenTime={openTimeSet}
+            isCloseTime={closeTimeSet}
+              />
+            ))}
         </div>
 
         <div
-          className={classNames("tw-grid ", {
-            "tw-col-start-5 tw-row-start-6 tw-col-span-4 tw-row-span-2 ":
-              isDesktopOrLaptop,
-            "tw-col-start-3 tw-row-start-6 tw-col-span-4 tw-row-span-2 ":
-              (isTablet && isPortrait) || (isTablet && isLandscape),
-            "tw-col-start-2 tw-row-start-6":
-              (isMobile && isPortrait) || (isMobile && isLandscape),
-          })}
+          className={classNames(
+            "tw-grid tw-col-start-5 tw-row-start-6 tw-col-span-4 tw-row-span-2",
+            {
+              "tw-col-start-5 tw-row-start-6 tw-col-span-4 tw-row-span-2 ":
+                isDesktopOrLaptop,
+              "tw-col-start-3 tw-row-start-6 tw-col-span-4 tw-row-span-2 ":
+                (isTablet && isPortrait) || (isTablet && isLandscape),
+              "tw-col-start-2 tw-row-start-6":
+                (isMobile && isPortrait) || (isMobile && isLandscape),
+            }
+          )}
         >
           <Select
             className="hover:tw-bg-sky-200 tw-w-52 tw-h-max tw-rounded-full tw-self-end "
@@ -188,6 +216,12 @@ const TwitterPost = () => {
                 <BsEmojiSmile
                   className=" tw-text-2xl  tw-text-blue-500  tw-rounded-full tw-flex"
                   onClick={toggleEmoji}
+                />
+              </button>
+              <button className=" tw-rounded-full tw-w-max hover:tw-bg-sky-200 tw-p-1">
+                <TbCalendarTime
+                  className="tw-text-2xl tw-text-blue-500"
+                  onClick={openTime}
                 />
               </button>
             </div>

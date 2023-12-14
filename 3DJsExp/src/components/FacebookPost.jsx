@@ -52,7 +52,7 @@ const FacebookPost = () => {
   return (
     <div
       className={classNames(
-        "tw-w-full tw-border-[#0874c4] tw-border-solid tw-border-2 tw-flex tw-justify-center tw-overflow-auto",
+        "tw-w-full tw-border-[#0874c4] tw-h-[70%] tw-border-solid tw-border-2 tw-flex tw-justify-center tw-overflow-auto",
         {
           "tw-h-[80%]": isBigScreen,
           "tw-h-[70%]": isDesktopOrLaptop,
@@ -64,7 +64,7 @@ const FacebookPost = () => {
     >
       <div
         className={classNames(
-          "tw-grid tw-justify-center tw-justify-self-center tw-w-max ",
+          "tw-grid tw-justify-center tw-justify-self-center tw-w-max tw-grid-cols-12 tw-grid-rows-8 ",
           {
             "tw-grid-cols-12 tw-grid-rows-8 ": isDesktopOrLaptop,
             "tw-grid-cols-8 tw-grid-rows-6 ":
@@ -75,7 +75,7 @@ const FacebookPost = () => {
         )}
       >
         <div
-          className={classNames("tw-grid tw-h-max  ", {
+          className={classNames("tw-grid tw-h-max tw-grid-cols-3 tw-grid-rows-1 tw-col-span-4 tw-row-span-1 tw-row-start-1 tw-col-start-5  ", {
             "tw-grid-cols-3 tw-grid-rows-1 tw-col-span-4 tw-row-span-1 tw-row-start-1 tw-col-start-5 ":
               isDesktopOrLaptop,
             "tw-grid-cols-3 tw-grid-rows-1 tw-col-span-4  tw-row-span-1 tw-col-start-3  ":
@@ -98,7 +98,7 @@ const FacebookPost = () => {
           onChange={handleMessageChange}
           placeholder="คุณกำลังคิดอะไรอยู่"
           className={classNames(
-            " tw-text-xl tw-w-full tw-h-full tw-border-none tw-resize-none tw-outline-none",
+            " tw-text-xl tw-w-full tw-h-full tw-border-none tw-resize-none tw-outline-none tw-col-start-5 tw-row-start-2 tw-row-span-2 tw-col-span-4",
             {
               "tw-col-start-5 tw-row-start-2 tw-row-span-2 tw-col-span-4":
                 isDesktopOrLaptop,
@@ -112,7 +112,7 @@ const FacebookPost = () => {
 
         <BsEmojiSmile
           className={classNames(
-            " tw-text-3xl tw-self-end  tw-text-gray-700 hover:tw-bg-gray-300 tw-rounded-full tw-flex",
+            " tw-text-3xl tw-self-end  tw-text-gray-700 hover:tw-bg-gray-300 tw-rounded-full tw-flex tw-col-start-9 tw-row-start-3 tw-justify-self-end",
             {
               "tw-col-start-9 tw-row-start-3 tw-justify-self-end":
                 isDesktopOrLaptop,
@@ -125,7 +125,7 @@ const FacebookPost = () => {
           onClick={toggleEmoji}
         />
         <div
-          className={classNames("tw-flex tw-w-full tw-h-full  ", {
+          className={classNames("tw-flex tw-w-full tw-h-full tw-col-span-6 tw-row-span-4 tw-col-start-4 tw-row-start-4 ", {
             "tw-col-span-6 tw-row-span-4 tw-col-start-4 tw-row-start-4 ":
               isDesktopOrLaptop,
             "tw-col-span-6 tw-row-span-3 tw-col-start-2 tw-row-start-3  ":
@@ -133,13 +133,13 @@ const FacebookPost = () => {
             "tw-col-span-4 tw-row-span-3 tw-col-start-2 tw-row-start-3 ":
               (isMobile && isPortrait) || (isMobile && isLandscape),
           })}
-        >
+        >  
           <FileUpLoader isOpen={openUpload} isClose={closePicUpload} />
         </div>
 
         <div
           className={classNames(
-            "tw-grid  tw-border-[1px] tw-h-12 tw-border-gray-300 tw-rounded-md tw-items-center tw-p-4 tw-self-center",
+            "tw-grid  tw-border-[1px] tw-h-12 tw-border-gray-300 tw-rounded-md tw-items-center tw-p-4 tw-self-center tw-col-start-4 tw-row-start-8 tw-col-span-6 tw-grid-cols-8 tw-grid-rows-1",
             {
               "tw-col-start-4 tw-row-start-8 tw-col-span-6 tw-grid-cols-8 tw-grid-rows-1":
                 isDesktopOrLaptop,

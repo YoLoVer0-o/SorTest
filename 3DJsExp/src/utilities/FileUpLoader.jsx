@@ -4,8 +4,9 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 import { useResponsive } from "../hooks";
 import { CloseOutlined } from "@ant-design/icons";
-import DescriptionPicModal from "./DescriptionPicModal";
+// import DescriptionPicModal from "./DescriptionPicModal";
 import { PlusOutlined } from "@ant-design/icons";
+import { Modal, Input } from "antd";
 const FileUpLoader = (props) => {
   const {
     isDesktopOrLaptop,
@@ -23,9 +24,16 @@ const FileUpLoader = (props) => {
   const [selectedFile, setSelectedFile] = useState("");
   const [isOpenState, setIsOpenState] = useState(isOpen);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [description, setDescription] = useState("");
 
+  const handleSave = () => {
+    saveDescription(description);
+    setDescription("");
+    closeModal();
+  };
   const closeEvent = () => {
     setIsOpenState(false);
+    setFiles([])
     if (isClose) {
       isClose();
     }
@@ -37,13 +45,6 @@ const FileUpLoader = (props) => {
 
   const closeModal = () => {
     setIsModalOpen(false);
-  };
-
-  const saveDescription = (description) => {
-    const updatedFiles = files.map((file) =>
-      file === selectedFile ? { ...file, description } : file
-    );
-    setFiles(updatedFiles);
   };
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -63,60 +64,75 @@ const FileUpLoader = (props) => {
     },
   });
 
+
+  const saveDescription = (description, type) => {
+    const newDescription = files.map((file) =>
+      file === selectedFile ? { ...file, description } : file
+    );
+    const updatedFiles = files.map((file) =>
+      file === selectedFile && file.type === type ? { ...file, type } : file
+    );
+    setFiles(updatedFiles && newDescription);
+  };
+
+  const imgType = () =>{
+    files.type === "image/"
+  }
+  const videoType = () =>{
+    files.type === "video/"
+  }
+
   const thumbs = files.map((file) => {
-    let media;
+    let media
 
- if (file && file.type) {
-   if (file.type.includes("image/")) {
-     media = (
-       <div onClick={openModal}>
-         {" "}
-         <img
-           src={file.preview}
-           onLoad={() => {
-             URL.revokeObjectURL(file.preview);
-           }}
-           alt={`Preview of ${file.name}`}
-         />
-         <p>{file.description}</p>
-       </div>
-     );
-   } else if (file.type.includes("video/")) {
-     media = (
-       <div>
-         {" "}
-         <video src={file.preview} controls alt={`Preview of ${file.name}`} />
-         <p>{file.description}</p>
-       </div>
-     );
-   } else {
-     // Handle unsupported file type
-     media = <p>Unsupported file type</p>;
-   }
- } else {
-   // Handle case where file or file.type is undefined
-   media = <p>File or file type is undefined</p>;
- }
+     if (imgType) {
+      media = (
+         <div className="tw-w-full  ">
+           {" "}
+           <div className="tw-flex tw-w-full tw-justify-center">
+            <img
+             src={file.preview}
+             onLoad={() => {
+               URL.revokeObjectURL(file.preview);
+             }}
+             alt={`Preview of ${file.name}`}
+             className="tw-flex tw-justify-center tw-w-[200px] tw-h-[200px]"
+           />
+           </div>
+           <p className="tw-w-full tw-h-10 tw-overflow-x-auto">{file.description}</p>
+           <p onClick={openModal} className="tw-pointer-events-auto  hover:tw-text-gray-800">เพิ่มคําอธิบาย</p>
+         </div>
+       );
+     } else if (videoType) {
+      (
+        media = <div>
+        
+           <video src={file.preview} controls 
+          //  alt={`Preview of ${file.name}`}
+            />
+           
+         </div>
+       );
+     }
 
-
-    console.log(file);
-    console.log(media.type)
+    console.log(files ,"From fileupload");
+    // console.log(media)
 
     return (
-      <div key={file.id} onClick={() => setSelectedFile(file)}>
-        <div className=" tw-z-10">
-          {media}
+      <div className="tw-w-full " key={file.index} onClick={() => setSelectedFile(file)}>
+        <div className="tw-w-full tw-z-10">
+        {media}
         </div>
       </div>
     );
   });
 
-  useEffect(() => {
-    return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
-  }, [files]);
+
   useEffect(() => {
     setIsOpenState(isOpen);
   }, [isOpen]);
+
+  
 
   return (
     <div
@@ -150,7 +166,7 @@ const FileUpLoader = (props) => {
                 </p>
               )}
             </div>
-            <aside className=" tw-absolute tw-top-0 tw-left-0 ">
+            <aside className=" tw-absolute tw-w-full tw-top-0 tw-left-0 ">
               {thumbs}
               {thumbs.length !== 0 && (
                 <div
@@ -170,12 +186,35 @@ const FileUpLoader = (props) => {
             </aside>
 
             {selectedFile && (
-              <DescriptionPicModal
-                modalOpen={isModalOpen}
-                onRequestClose={closeModal}
-                onSave={saveDescription}
-                mediaContent={files}
-              />
+             <Modal
+             title="Add Description"
+             open={isModalOpen}
+             onCancel={closeModal}
+             centered={true}
+             footer={null}
+           >
+             <div>
+               <Input.TextArea
+                 value={description}
+                 onChange={(e) => setDescription(e.target.value, console.log(e))}
+                 placeholder="Add description..."
+               />
+               <div className="tw-flex tw-flex-row tw-justify-end tw-gap-x-5 tw-mt-5">
+                 <button
+                   onClick={closeModal}
+                   className="tw-bg-red-400 tw-rounded-sm tw-w-16 tw-h-8"
+                 >
+                   Cancel
+                 </button>
+                 <button
+                   onClick={handleSave}
+                   className="tw-bg-green-400 tw-rounded-sm tw-w-16 tw-h-8"
+                 >
+                   Save
+                 </button>
+               </div>
+             </div>
+           </Modal>
             )}
           </section>
         </div>
