@@ -48,6 +48,13 @@ body {
     height: 20rem !important;
     overflow-y: auto;
   }
+  .ant-picker-datetime-panel {
+    display: flex;
+    flex-direction: column;
+    width: fit-content !important;
+    height: 20rem !important;
+    overflow-y: auto;
+  }
 }
 
 @media (max-height: 480px) and (orientation: landscape) {
@@ -56,6 +63,14 @@ body {
     flex-direction: column;
     width: fit-content !important;
     height: 15rem !important;
+    overflow-y: auto;
+  }
+
+  .ant-picker-datetime-panel {
+    display: flex;
+    flex-direction: column;
+    width: fit-content !important;
+    height: 8rem !important;
     overflow-y: auto;
   }
 }

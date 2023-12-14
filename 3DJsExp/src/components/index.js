@@ -13,6 +13,7 @@ import WorkTable from "./WorkTable";
 import EditUserModal from "./EditUserModal";
 import EditSchedueModal from "./EditSchedueModal";
 import EditWorkModal from "./EditWorkModal";
+import DataLog from "./dataLog";
 
 export {
   MainLayout,
@@ -30,4 +31,5 @@ export {
   EditUserModal,
   EditSchedueModal,
   EditWorkModal,
+  DataLog,
 };

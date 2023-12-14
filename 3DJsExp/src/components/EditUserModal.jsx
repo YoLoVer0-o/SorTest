@@ -4,6 +4,8 @@ import { PlusOutlined } from "@ant-design/icons";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import { useResponsive } from "../hooks";
 
 const EditUserModal = props => {
 
@@ -13,6 +15,9 @@ const EditUserModal = props => {
 
     const [isModalOpen, setIsModalOpen] = useState(modalToggle);
     const [formData, setFormData] = useState({});
+
+    const { isMobile } = useResponsive();
+
 
     const [form] = Form.useForm();
 
@@ -114,19 +119,25 @@ const EditUserModal = props => {
             >
                 <div className='tw-overflow-y-auto tw-h-full tw-w-full tw-border-black tw-border-2 tw-rounded-md'>
                     <div className='tw-flex tw-flex-col tw-w-full tw-h-full tw-p-4 tw-gap-4'>
-                        <div className='tw-flex tw-flex-col tw-w-96 tw-h-16'>
+                    <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
+                            "tw-w-60": isMobile,
+                        })}>
                             <p>ชื่อบัญชี:</p>
                             <Form.Item name="accName">
                                 <Input className='tw-h-full tw-w-full' placeholder="ชื่อบัญชี" autoComplete="username" />
                             </Form.Item>
                         </div>
-                        <div className='tw-flex tw-flex-col tw-w-96 tw-h-16'>
+                        <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
+                            "tw-w-60": isMobile,
+                        })}>
                             <p>รหัสผ่าน:</p>
                             <Form.Item name="password">
                                 <Input.Password className='tw-h-full tw-w-full' placeholder="รหัสผ่าน" autoComplete="current-password" />
                             </Form.Item>
                         </div>
-                        <div className='tw-flex tw-flex-col tw-w-96 tw-h-16'>
+                        <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
+                            "tw-w-60": isMobile,
+                        })}>
                             <p>Group:</p>
                             <Form.Item name="group">
                                 <Select

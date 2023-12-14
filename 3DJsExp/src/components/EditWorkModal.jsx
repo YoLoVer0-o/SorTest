@@ -3,6 +3,8 @@ import { Form, Modal, Button, Input, Select } from 'antd';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import { useResponsive } from "../hooks";
 
 const EditWorkModal = props => {
 
@@ -12,6 +14,8 @@ const EditWorkModal = props => {
 
     const [isModalOpen, setIsModalOpen] = useState(modalToggle);
     const [formData, setFormData] = useState({});
+
+    const { isMobile } = useResponsive();
 
     const [form] = Form.useForm();
 
@@ -113,13 +117,17 @@ const EditWorkModal = props => {
             >
                 <div className='tw-overflow-y-auto tw-h-full tw-w-full tw-border-black tw-border-2 tw-rounded-md'>
                     <div className='tw-flex tw-flex-col tw-w-full tw-h-full tw-p-4 tw-gap-4'>
-                        <div className='tw-flex tw-flex-col tw-w-96 tw-h-16'>
+                        <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
+                            "tw-w-60": isMobile,
+                        })}>
                             <p>เลขบัญชี/ชื่อบัญชี:</p>
                             <Form.Item name="acc_name">
                                 <Input className='tw-h-full tw-w-full' placeholder="ชื่อบัญชี" autoComplete="username" />
                             </Form.Item>
                         </div>
-                        <div className='tw-flex tw-flex-col tw-w-96 tw-h-16'>
+                        <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
+                            "tw-w-60": isMobile,
+                        })}>
                             <p>งาน:</p>
                             <Form.Item name="work">
                                 <Select
@@ -131,7 +139,9 @@ const EditWorkModal = props => {
                                 />
                             </Form.Item>
                         </div>
-                        <div className='tw-flex tw-flex-col tw-w-96 tw-h-16'>
+                        <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
+                            "tw-w-60": isMobile,
+                        })}>
                             <p>เป้าหมาย:</p>
                             <Form.Item name="target">
                                 <Input className='tw-h-full tw-w-full' placeholder="เป้าหมาย" autoComplete="target" />

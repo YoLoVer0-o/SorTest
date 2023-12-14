@@ -13,7 +13,9 @@ function App() {
     <div className="tw-h-screen tw-w-screen">
       <ConfigProvider
         theme={{
-          token: { fontFamily: '"Noto Sans Thai Variable", "Noto Sans", sans serif' },
+          token: {
+            fontFamily: '"Noto Sans Thai Variable", "Noto Sans", sans serif',
+          },
         }}
       >
         <RouterProvider router={router} />
