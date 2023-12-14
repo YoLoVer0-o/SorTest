@@ -3,7 +3,7 @@ const botStatus = [
     // key: 1,
     id: 1,
     accName: "gcosgreave0@sourceforge.net",
-    group: ["A", "B"],
+    group: ["A", "B", "C", "D"],
     status: "standby",
     details:
       "Aenean fermentum. Donec ut mauris eget massa tempor convallis. Nulla neque libero, convallis eget, eleifend luctus, ultricies eu, nibh.\n\nQuisque id justo sit amet sapien dignissim vestibulum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla dapibus dolor vel est. Donec odio justo, sollicitudin ut, suscipit a, feugiat et, eros.\n\nVestibulum ac est lacinia nisi venenatis tristique. Fusce congue, diam id ornare imperdiet, sapien urna pretium nisl, ut volutpat sapien arcu sed augue. Aliquam erat volutpat.",
@@ -12,7 +12,7 @@ const botStatus = [
     // key: 2,
     id: 2,
     accName: "gmallaby1@wsj.com",
-    group: ["A", "B"],
+    group: ["A", "B", "D"],
     status: "offline",
     details:
       "In congue. Etiam justo. Etiam pretium iaculis justo.\n\nIn hac habitasse platea dictumst. Etiam faucibus cursus urna. Ut tellus.",
@@ -30,7 +30,7 @@ const botStatus = [
     // key: 4,
     id: 4,
     accName: "dwestbury3@hostgator.com",
-    group: ["A", "B"],
+    group: ["A", "B", "D"],
     status: "standby",
     details:
       "Quisque id justo sit amet sapien dignissim vestibulum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla dapibus dolor vel est. Donec odio justo, sollicitudin ut, suscipit a, feugiat et, eros.\n\nVestibulum ac est lacinia nisi venenatis tristique. Fusce congue, diam id ornare imperdiet, sapien urna pretium nisl, ut volutpat sapien arcu sed augue. Aliquam erat volutpat.",

@@ -10,6 +10,7 @@ import SentimentReport from "./SentimentReport";
 import AccountTable from "./AccountTable";
 import SchedueTable from "./SchedueTable";
 import WorkTable from "./WorkTable";
+import EditUserModal from "./EditUserModal";
 
 export {
   MainLayout,
@@ -24,4 +25,5 @@ export {
   AccountTable,
   SchedueTable,
   WorkTable,
+  EditUserModal,
 };
