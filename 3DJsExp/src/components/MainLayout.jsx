@@ -24,7 +24,7 @@ const MainLayout = (props) => {
     isLandscape,
   } = useResponsive();
 
-  let { platform } = useParams();
+  let param = useParams();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -41,16 +41,19 @@ const MainLayout = (props) => {
     '/RPA/job': 'งาน',
     '/RPA/errlog': 'Error Log',
     '/RPA/activlog': 'Activity Log',
+    '/classconfig/': 'Classification Config',
   };
 
   const pathSnippets = location.pathname.split('/').filter((i) => i);
   const breadcrumbItems = pathSnippets.map((_, index) => {
     const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
-    const isDynamic = url.includes(':');
+    const [paramValue] = Object.values(param);
+
+    const isDynamic = url.includes(paramValue);
 
     return {
       key: url,
-      title: <p>{isDynamic ? platform : breadcrumbNameMap[url]}</p>,
+      title: <p>{isDynamic ? paramValue : breadcrumbNameMap[url]}</p>,
     }
   });
 
@@ -86,7 +89,7 @@ const MainLayout = (props) => {
     }
   };
 
-  const showBackButton = breadcrumbItems.length > 1 && !breadcrumbItems.some(item => item.key.includes(':'));
+  const showBackButton = breadcrumbItems.length > 1 && !breadcrumbItems.some(item => item.key.includes('/RPA'));
 
   const { facebook, instagram, twitter, tiktok, youtube } = SocialIcons;
 
@@ -197,27 +200,27 @@ const MainLayout = (props) => {
                       className: "",
                       children: [
                         {
-                          key: "/RPA/account/:facebook",
+                          key: "/RPA/account/facebook",
                           label: "บัญชีและสถานะ",
                           className: "",
                         },
                         {
-                          key: "/RPA/fulltime/:facebook",
+                          key: "/RPA/fulltime/facebook",
                           label: "งานประจำ",
                           className: "",
                         },
                         {
-                          key: "/RPA/job/:facebook",
+                          key: "/RPA/job/facebook",
                           label: "งาน",
                           className: "",
                         },
                         {
-                          key: "/RPA/errlog/:facebook",
+                          key: "/RPA/errlog/facebook",
                           label: "Error Log",
                           className: "",
                         },
                         {
-                          key: "/RPA/activlog/:facebook",
+                          key: "/RPA/activlog/facebook",
                           label: "Activity Log",
                           className: "",
                         },
@@ -229,27 +232,27 @@ const MainLayout = (props) => {
                       className: "",
                       children: [
                         {
-                          key: "/RPA/account/:X",
+                          key: "/RPA/account/X",
                           label: "บัญชีและสถานะ",
                           className: "",
                         },
                         {
-                          key: "/RPA/fulltime/:X",
+                          key: "/RPA/fulltime/X",
                           label: "งานประจำ",
                           className: "",
                         },
                         {
-                          key: "/RPA/job/:X",
+                          key: "/RPA/job/X",
                           label: "งาน",
                           className: "",
                         },
                         {
-                          key: "/RPA/errlog/:X",
+                          key: "/RPA/errlog/X",
                           label: "Error Log",
                           className: "",
                         },
                         {
-                          key: "/RPA/activlog/:X",
+                          key: "/RPA/activlog/X",
                           label: "Activity Log",
                           className: "",
                         },
@@ -261,27 +264,27 @@ const MainLayout = (props) => {
                       className: "",
                       children: [
                         {
-                          key: "/RPA/account/:instagram",
+                          key: "/RPA/account/instagram",
                           label: "บัญชีและสถานะ",
                           className: "",
                         },
                         {
-                          key: "/RPA/fulltime/:instagram",
+                          key: "/RPA/fulltime/instagram",
                           label: "งานประจำ",
                           className: "",
                         },
                         {
-                          key: "/RPA/job/:instagram",
+                          key: "/RPA/job/instagram",
                           label: "งาน",
                           className: "",
                         },
                         {
-                          key: "/RPA/errlog/:instagram",
+                          key: "/RPA/errlog/instagram",
                           label: "Error Log",
                           className: "",
                         },
                         {
-                          key: "/RPA/activlog/:instagram",
+                          key: "/RPA/activlog/instagram",
                           label: "Activity Log",
                           className: "",
                         },
@@ -294,27 +297,27 @@ const MainLayout = (props) => {
                       className: "",
                       children: [
                         {
-                          key: "/RPA/account/:youtube",
+                          key: "/RPA/account/youtube",
                           label: "บัญชีและสถานะ",
                           className: "",
                         },
                         {
-                          key: "/RPA/fulltime/:youtube",
+                          key: "/RPA/fulltime/youtube",
                           label: "งานประจำ",
                           className: "",
                         },
                         {
-                          key: "/RPA/job/:youtube",
+                          key: "/RPA/job/youtube",
                           label: "งาน",
                           className: "",
                         },
                         {
-                          key: "/RPA/errlog/:youtube",
+                          key: "/RPA/errlog/youtube",
                           label: "Error Log",
                           className: "",
                         },
                         {
-                          key: "/RPA/activlog/:youtube",
+                          key: "/RPA/activlog/youtube",
                           label: "Activity Log",
                           className: "",
                         },
@@ -327,27 +330,27 @@ const MainLayout = (props) => {
                       className: "",
                       children: [
                         {
-                          key: "/RPA/account/:tiktok",
+                          key: "/RPA/account/tiktok",
                           label: "บัญชีและสถานะ",
                           className: "",
                         },
                         {
-                          key: "/RPA/fulltime/:tiktok",
+                          key: "/RPA/fulltime/tiktok",
                           label: "งานประจำ",
                           className: "",
                         },
                         {
-                          key: "/RPA/job/:tiktok",
+                          key: "/RPA/job/tiktok",
                           label: "งาน",
                           className: "",
                         },
                         {
-                          key: "/RPA/errlog/:tiktok",
+                          key: "/RPA/errlog/tiktok",
                           label: "Error Log",
                           className: "",
                         },
                         {
-                          key: "/RPA/activlog/:tiktok",
+                          key: "/RPA/activlog/tiktok",
                           label: "Activity Log",
                           className: "",
                         },
