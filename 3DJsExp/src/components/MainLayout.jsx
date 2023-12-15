@@ -56,6 +56,7 @@ const MainLayout = (props) => {
 
   const handleMenuClick = ({ key }) => {
     if (key) {
+      setCollapsed(true);
       navigate(key);
     }
   };
