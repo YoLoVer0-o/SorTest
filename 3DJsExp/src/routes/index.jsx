@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Dashboard, PostTable, PostReport, CreatePost, SentimentTable, SentimentReport, AccountTable, SchedueTable, WorkTable, DataLog } from "../components";
+import { Dashboard, PostTable, PostReport, CreatePost, SentimentTable, SentimentReport, AccountTable, SchedueTable, WorkTable, DataLog, ClassTable, WordTable } from "../components";
 import { LoginPage, MainPage, PostDataPage, CreatePostPage, SentimentPage, RPAManagementPage, ClassConfigPage } from "../pages";
 
 export const router = createBrowserRouter([
@@ -87,11 +87,11 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <SentimentTable />,
+        element: <ClassTable />,
       },
       {
-        path: "/classconfig/edit",
-        element: <SentimentReport />,
+        path: "/classconfig/edit/:cat_id",
+        element: <WordTable />,
       },
     ],
   },

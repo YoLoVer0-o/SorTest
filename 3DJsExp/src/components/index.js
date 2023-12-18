@@ -14,6 +14,8 @@ import EditUserModal from "./EditUserModal";
 import EditSchedueModal from "./EditSchedueModal";
 import EditWorkModal from "./EditWorkModal";
 import DataLog from "./dataLog";
+import ClassTable from "./ClassTable";
+import WordTable from "./WordTable";
 
 export {
   MainLayout,
@@ -32,4 +34,6 @@ export {
   EditSchedueModal,
   EditWorkModal,
   DataLog,
+  ClassTable,
+  WordTable,
 };

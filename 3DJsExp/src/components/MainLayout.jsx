@@ -8,6 +8,7 @@ import {
   ControlOutlined,
   ContainerOutlined,
   CloseOutlined,
+  SlidersOutlined,
 } from "@ant-design/icons";
 import SocialIcons from "../assets/SocialIcons";
 import { Layout, Menu, Button, Breadcrumb, Tooltip } from "antd";
@@ -41,7 +42,8 @@ const MainLayout = (props) => {
     '/RPA/job': 'งาน',
     '/RPA/errlog': 'Error Log',
     '/RPA/activlog': 'Activity Log',
-    '/classconfig/': 'Classification Config',
+    '/classconfig': 'Classification Config',
+    '/classconfig/edit': 'แก้ไข',
   };
 
   const pathSnippets = location.pathname.split('/').filter((i) => i);
@@ -357,6 +359,11 @@ const MainLayout = (props) => {
                       ],
                     },
                   ],
+                },
+                {
+                  key: "/classconfig",
+                  icon: <SlidersOutlined />,
+                  label: "Classification Config",
                 },
               ]}
             />
