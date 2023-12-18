@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Dashboard, PostTable, PostReport, CreatePost, SentimentTable, SentimentReport, AccountTable, SchedueTable, WorkTable, DataLog } from "../components";
-import { LoginPage, MainPage, PostDataPage, CreatePostPage, SentimentPage, RPAManagementPage } from "../pages";
+import { LoginPage, MainPage, PostDataPage, CreatePostPage, SentimentPage, RPAManagementPage, ClassConfigPage } from "../pages";
 
 export const router = createBrowserRouter([
   {
@@ -50,7 +50,7 @@ export const router = createBrowserRouter([
         element: <SentimentTable />,
       },
       {
-        path: "/sentiment/report",
+        path: "/sentiment/report/:id",
         element: <SentimentReport />,
       },
     ],
@@ -78,6 +78,20 @@ export const router = createBrowserRouter([
       {
         path: "/RPA/activlog/:platform",
         element: <DataLog dataType={"active"} />,
+      },
+    ],
+  },
+  {
+    path: "/classconfig",
+    element: <ClassConfigPage />,
+    children: [
+      {
+        path: "",
+        element: <SentimentTable />,
+      },
+      {
+        path: "/classconfig/edit",
+        element: <SentimentReport />,
       },
     ],
   },

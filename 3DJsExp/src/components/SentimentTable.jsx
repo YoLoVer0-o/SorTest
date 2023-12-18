@@ -16,7 +16,6 @@ const SentimentTable = () => {
     const [searchTag, setSearchTag] = useState([]);
     const [searchBot, setSearchBot] = useState([]);
     const [searchDate, setSearchDate] = useState([]);
-    const [selectedRows, setSelectedRows] = useState([]);
     const [pageSize, setPageSize] = useState(5);
 
     const navigate = useNavigate();
@@ -140,7 +139,8 @@ const SentimentTable = () => {
     ];
 
     const toReport = async (data) => {
-        navigate("/sentiment/report", { state: data })
+        navigate(`/sentiment/report/${data.id}`, { state: data })
+        // console.log(data);
     }
 
     return (
@@ -188,9 +188,8 @@ const SentimentTable = () => {
                     columns={columns}
                     data={newSentiment}
                     setPageSize={pageSize}
-                    onRowsSelected={setSelectedRows}
                     useRowClick={true}
-                    onRowClick={() => toReport(selectedRows)}
+                    onRowClick={(selectedRows) => toReport(selectedRows)}
                 />
             </div>
             <div className="tw-flex tw-flex-row tw-my-6 tw-gap-4">

@@ -8,6 +8,7 @@ import socialPlatform from "./socialPlatform";
 import botStatus from "./BotStatusMock";
 import testAcc from "./testAcc_mock";
 import workMock from "./workMock";
+import cat_word from "./cat_word";
 
 export {
   sentimentAll,
@@ -20,4 +21,5 @@ export {
   botStatus,
   testAcc,
   workMock,
+  cat_word,
 };

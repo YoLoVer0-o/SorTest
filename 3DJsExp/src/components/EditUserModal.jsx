@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Form, Modal, Button, Input, Select, Tooltip } from 'antd';
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import PropTypes from 'prop-types';
@@ -119,7 +119,7 @@ const EditUserModal = props => {
             >
                 <div className='tw-overflow-y-auto tw-h-full tw-w-full tw-border-black tw-border-2 tw-rounded-md'>
                     <div className='tw-flex tw-flex-col tw-w-full tw-h-full tw-p-4 tw-gap-4'>
-                    <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
+                        <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
                             "tw-w-60": isMobile,
                         })}>
                             <p>ชื่อบัญชี:</p>
@@ -147,6 +147,12 @@ const EditUserModal = props => {
                                     placeholder="Please select"
                                     onChange={handleChange}
                                     options={[]}
+                                    optionRender={(option) => (
+                                        <div className='tw-flex tw-flex-row tw-justify-between'>
+                                            <p className='tw-font-bold'>{option.data.group}</p>
+                                            <CloseCircleOutlined className='tw-text-2xl tw-text-red-500' />
+                                        </div>
+                                    )}
                                     dropdownRender={(menu) => (
                                         <div className='tw-flex tw-flex-col'>
                                             {menu}

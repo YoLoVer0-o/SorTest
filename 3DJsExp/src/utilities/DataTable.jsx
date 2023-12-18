@@ -18,8 +18,8 @@ const DataTable = props => {
   };
 
   const handleRowClick = (record, index) => {
-    console.log("row clicked");
-    console.log(record, index);
+    // console.log("row clicked");
+    // console.log(record, index);
     onRowClick(record)
   }
 
@@ -28,7 +28,7 @@ const DataTable = props => {
     //   console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
     // },
     onSelect: (record, selected, selectedRows) => {
-      console.log(record, selected, selectedRows);
+      console.log(selectedRows);
       sendRows(selectedRows)
     },
     onSelectAll: (selected, selectedRows, changeRows) => {
