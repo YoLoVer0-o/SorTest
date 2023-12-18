@@ -23,7 +23,7 @@ const TwitterPost = () => {
   const {
     isDesktopOrLaptop,
     isBigScreen,
-    // isTabletOrMobile,
+    isTabletOrMobile,
     isMobile,
     isTablet,
     isPortrait,
@@ -71,32 +71,31 @@ const TwitterPost = () => {
         "tw-h-[70%]": isDesktopOrLaptop,
         "tw-h-[60%] ": isTablet && isPortrait,
         "tw-h-[70%] ": isTablet && isLandscape,
-        "tw-h-[60%]": isMobile && isPortrait,
         "tw-h-screen": isMobile && isLandscape,
       })}
     >
       <div
         className={classNames(
-          "tw-grid tw-justify-center tw-justify-self-center tw-w-max tw-grid-cols-12 tw-grid-rows-6",
+          "tw-grid tw-justify-center tw-justify-self-center tw-w-max ",
           {
-            "tw-grid-cols-12 tw-grid-rows-6 ": isDesktopOrLaptop,
-            "tw-grid-cols-8 tw-grid-rows-6 ":
-              (isTablet && isPortrait) || (isTablet && isLandscape),
             "tw-grid-cols-6 tw-grid-rows-6":
-              (isMobile && isPortrait) || (isMobile && isLandscape),
+              (isMobile && isPortrait) || (isMobile && isLandscape) ,
+            "tw-grid-cols-8 tw-grid-rows-6 ":
+              isTablet && isPortrait ||  isTablet && isLandscape && (isTabletOrMobile && !isDesktopOrLaptop && !isMobile),
+              "tw-grid-cols-12 tw-grid-rows-6 ": isDesktopOrLaptop && isLandscape ,
           }
         )}
       >
         <div
           className={classNames(
-            "tw-grid  tw-grid-cols-3 tw-grid-rows-4 tw-col-span-4  tw-row-span-2 tw-col-start-5 ",
+            "tw-grid ",
             {
-              "tw-grid-cols-3 tw-grid-rows-4 tw-col-span-4  tw-row-span-2 tw-col-start-5 ":
-                isDesktopOrLaptop,
-              "tw-grid-cols-3 tw-grid-rows-4 tw-col-span-4  tw-row-span-2 tw-col-start-3  ":
-                (isTablet && isPortrait) || (isTablet && isLandscape),
               "tw-grid-cols-3 tw-grid-rows-3 tw-col-span-4  tw-row-span-2 tw-col-start-2":
-                (isMobile && isPortrait) || (isMobile && isLandscape),
+              (isMobile && isPortrait) || (isMobile && isLandscape),
+              "tw-grid-cols-3 tw-grid-rows-4 tw-col-span-4  tw-row-span-2 tw-col-start-3  ":
+              isTablet && isPortrait ||  isTablet && isLandscape && (isTabletOrMobile && !isDesktopOrLaptop && !isMobile),
+                "tw-grid-cols-3 tw-grid-rows-4 tw-col-span-4  tw-row-span-2 tw-col-start-5 ":
+                isDesktopOrLaptop,
             }
           )}
         >
@@ -114,13 +113,13 @@ const TwitterPost = () => {
 
         <div
           className={classNames(
-            "tw-flex tw-w-full tw-h-full tw-col-span-6 tw-row-span-3 tw-col-start-4",
+            "tw-flex tw-w-full tw-h-full ",
             {
-              "tw-col-span-6 tw-row-span-3 tw-col-start-4 ": isDesktopOrLaptop,
-              "tw-col-span-6 tw-row-span-3 tw-col-start-2 ":
-                (isTablet && isPortrait) || (isTablet && isLandscape),
               "tw-col-span-4 tw-row-span-3 tw-col-start-2 ":
-                (isMobile && isPortrait) || (isMobile && isLandscape),
+              (isMobile && isPortrait) || (isMobile && isLandscape),
+              "tw-col-span-6 tw-row-span-3 tw-col-start-2 ":
+              isTablet && isPortrait ||  isTablet && isLandscape && (isTabletOrMobile && !isDesktopOrLaptop && !isMobile),
+                "tw-col-span-6 tw-row-span-3 tw-col-start-4 ": isDesktopOrLaptop,
             }
           )}
         >
@@ -137,14 +136,14 @@ const TwitterPost = () => {
 
         <div
           className={classNames(
-            "tw-grid tw-col-start-5 tw-row-start-6 tw-col-span-4 tw-row-span-2",
+            "tw-grid ",
             {
-              "tw-col-start-5 tw-row-start-6 tw-col-span-4 tw-row-span-2 ":
-                isDesktopOrLaptop,
-              "tw-col-start-3 tw-row-start-6 tw-col-span-4 tw-row-span-2 ":
-                (isTablet && isPortrait) || (isTablet && isLandscape),
-              "tw-col-start-2 tw-row-start-6":
+                 "tw-col-start-1 tw-row-start-6 tw-col-span-6":
                 (isMobile && isPortrait) || (isMobile && isLandscape),
+              "tw-col-start-3 tw-row-start-6 tw-col-span-4 tw-row-span-2 ":
+              isTablet && isPortrait ||  isTablet && isLandscape && (isTabletOrMobile && !isDesktopOrLaptop && !isMobile),
+                "tw-col-start-5 tw-row-start-6 tw-col-span-4 tw-row-span-2 ":
+                isDesktopOrLaptop,
             }
           )}
         >
