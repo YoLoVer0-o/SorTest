@@ -66,7 +66,7 @@ const TwitterPost = () => {
 
   return (
     <div
-      className={classNames("tw-w-full tw-h-[80%] tw-flex tw-justify-center", {
+      className={classNames("tw-w-full tw-h-[80%] tw-flex tw-justify-center tw-border-[#0874c4] tw-border-2", {
         "tw-h-[80%]": isBigScreen,
         "tw-h-[70%]": isDesktopOrLaptop,
         "tw-h-[60%] ": isTablet && isPortrait,

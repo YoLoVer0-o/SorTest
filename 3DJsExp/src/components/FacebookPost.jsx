@@ -67,8 +67,13 @@ const FacebookPost = () => {
           "tw-grid tw-justify-center tw-justify-self-center tw-w-max  ",
           {
             "tw-grid-cols-6 tw-grid-rows-6 ":
-              (isMobile && isPortrait) || (isMobile && isLandscape) || (isTabletOrMobile && !isTablet),
-            "tw-grid-cols-8 tw-grid-rows-6 ": isTablet && isPortrait || (isTablet && isLandscape) || (isTabletOrMobile && !isDesktopOrLaptop && !isMobile) ,
+              (isMobile && isPortrait) ||
+              (isMobile && isLandscape) ||
+              (isTabletOrMobile && !isTablet),
+            "tw-grid-cols-8 tw-grid-rows-6 ":
+              (isTablet && isPortrait) ||
+              (isTablet && isLandscape) ||
+              (isTabletOrMobile && !isDesktopOrLaptop && !isMobile),
             "tw-grid-cols-12 tw-grid-rows-8 ": isDesktopOrLaptop && !isTablet,
           }
         )}
@@ -78,9 +83,11 @@ const FacebookPost = () => {
             "tw-grid-cols-4 tw-grid-rows-1 tw-col-span-6  tw-row-span-1 tw-col-start-1":
               (isMobile && isPortrait) || (isMobile && isLandscape),
             "tw-grid-cols-3 tw-grid-rows-1 tw-col-span-4  tw-row-span-1 tw-col-start-3  ":
-              isTablet && isPortrait || (isTablet && isLandscape) || (isTabletOrMobile && !isMobile),
+              (isTablet && isPortrait) ||
+              (isTablet && isLandscape) ||
+              (isTabletOrMobile && !isMobile),
             "tw-grid-cols-3 tw-grid-rows-1 tw-col-span-4 tw-row-span-1 tw-row-start-1 tw-col-start-5 ":
-              isDesktopOrLaptop && !isTablet ,
+              isDesktopOrLaptop && !isTablet,
           })}
         >
           <img
@@ -100,9 +107,11 @@ const FacebookPost = () => {
             " tw-text-xl tw-w-full tw-h-full tw-border-none tw-resize-none tw-outline-none ",
             {
               "tw-col-start-2 tw-row-start-2 tw-row-span-1 tw-col-span-4 ":
-                (isMobile && isPortrait) || (isMobile && isLandscape) ,
+                (isMobile && isPortrait) || (isMobile && isLandscape),
               "tw-col-start-3 tw-row-start-2 tw-row-span-1 tw-col-span-4":
-                (isTablet && isPortrait)|| (isTablet && isLandscape) || (isTabletOrMobile && !isMobile),
+                (isTablet && isPortrait) ||
+                (isTablet && isLandscape) ||
+                (isTabletOrMobile && !isMobile),
               "tw-col-start-5 tw-row-start-2 tw-row-span-2 tw-col-span-4":
                 isDesktopOrLaptop && !isTablet,
             }
@@ -116,19 +125,23 @@ const FacebookPost = () => {
               "tw-col-start-6 tw-row-start-2 tw-justify-self-end":
                 (isMobile && isPortrait) || (isMobile && isLandscape),
               "tw-col-start-7 tw-row-start-2 tw-justify-self-end":
-                (isTablet && isPortrait) || (isTablet && isLandscape) || (isTabletOrMobile && !isMobile) ,
+                (isTablet && isPortrait) ||
+                (isTablet && isLandscape) ||
+                (isTabletOrMobile && !isMobile),
               "tw-col-start-9 tw-row-start-3 tw-justify-self-end":
                 isDesktopOrLaptop && !isTablet,
-            } 
+            }
           )}
           onClick={toggleEmoji}
         />
         <div
           className={classNames("tw-flex tw-w-full tw-h-full ", {
             "tw-col-span-4 tw-row-span-3 tw-col-start-2 tw-row-start-3 ":
-              (isMobile && isPortrait) || (isMobile && isLandscape) ,
+              (isMobile && isPortrait) || (isMobile && isLandscape),
             "tw-col-span-6 tw-row-span-3 tw-col-start-2 tw-row-start-3  ":
-              (isTablet && isPortrait) || (isTablet && isLandscape) || (isTabletOrMobile && !isMobile),
+              (isTablet && isPortrait) ||
+              (isTablet && isLandscape) ||
+              (isTabletOrMobile && !isMobile),
             "tw-col-span-6 tw-row-span-4 tw-col-start-4 tw-row-start-4 ":
               isDesktopOrLaptop && !isTablet,
           })}
@@ -141,9 +154,11 @@ const FacebookPost = () => {
             "tw-grid  tw-border-[1px] tw-h-12 tw-border-gray-300 tw-rounded-md tw-items-center tw-p-4 tw-self-center ",
             {
               "tw-col-start-1 tw-row-start-6 tw-col-span-6 tw-grid-cols-8 tw-grid-rows-1 ":
-                (isMobile && isPortrait) || (isMobile && isLandscape) ,
+                (isMobile && isPortrait) || (isMobile && isLandscape),
               "tw-col-start-2 tw-row-start-6 tw-col-span-6 tw-grid-cols-8 tw-grid-rows-1  ":
-                (isTablet && isPortrait) || (isTablet && isLandscape) || (isTabletOrMobile && !isMobile) ,
+                (isTablet && isPortrait) ||
+                (isTablet && isLandscape) ||
+                (isTabletOrMobile && !isMobile),
               "tw-col-start-4 tw-row-start-8 tw-col-span-6 tw-grid-cols-8 tw-grid-rows-1":
                 isDesktopOrLaptop && !isTablet,
             }
@@ -177,18 +192,30 @@ const FacebookPost = () => {
         </div>
       </div>
       {showEmojiInput && (
-        <div className=" tw-absolute tw-top-0 tw-flex tw-justify-center tw-mt-24 tw-z-20">
-          <EmojiPicker
-            classNames="tw-relative"
-            emojiStyle={EmojiStyle.NATIVE}
-            onEmojiClick={(emoji) => showEmo(emoji)}
-          />
-          <button
-            className="tw-absolute tw-top-0 tw-right-0"
-            onClick={toggleEmoji}
-          >
-            <LiaWindowClose className="tw-text-2xl  tw-bg-red-500" />
-          </button>
+        <div
+          className={classNames(
+            "tw-absolute tw-flex tw-w-full  tw-items-center tw-justify-center",
+            {
+              "tw-h-[40%]":(isMobile && isPortrait) || (isMobile && isLandscape),
+              "tw-h-[60%]":(isTablet && isLandscape) || (isTabletOrMobile && !isMobile) ,
+              "tw-h-[50%]":(isTablet && isPortrait) || (isTabletOrMobile && !isMobile),
+              "tw-h-[70% ]":isDesktopOrLaptop && !isTablet,
+            }
+          )}
+        >
+          <div className=" tw-relative  tw-flex tw-justify-center tw-mt-24 tw-z-20">
+            <EmojiPicker
+              classNames="tw-relative"
+              emojiStyle={EmojiStyle.NATIVE}
+              onEmojiClick={(emoji) => showEmo(emoji)}
+            />
+            <button
+              className="tw-absolute tw-top-0 tw-right-0"
+              onClick={toggleEmoji}
+            >
+              <LiaWindowClose className="tw-text-2xl  tw-bg-red-500" />
+            </button>
+          </div>
         </div>
       )}
     </div>
