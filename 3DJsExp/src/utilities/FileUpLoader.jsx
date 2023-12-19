@@ -7,6 +7,7 @@ import { CloseOutlined } from "@ant-design/icons";
 // import DescriptionPicModal from "./DescriptionPicModal";
 import { PlusOutlined } from "@ant-design/icons";
 import { Modal, Input } from "antd";
+
 const FileUpLoader = (props) => {
   const {
     isDesktopOrLaptop,
@@ -20,7 +21,7 @@ const FileUpLoader = (props) => {
   const isOpen = props.isOpen;
   const isClose = props.isClose;
 
-  const [files, setFiles] = useState([]);
+  // const [files, setFiles] = useState(null);
   const [selectedFile, setSelectedFile] = useState("");
   const [isOpenState, setIsOpenState] = useState(isOpen);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,7 +34,7 @@ const FileUpLoader = (props) => {
   };
   const closeEvent = () => {
     setIsOpenState(false);
-    setFiles([])
+    setFiles([]);
     if (isClose) {
       isClose();
     }
@@ -47,21 +48,19 @@ const FileUpLoader = (props) => {
     setIsModalOpen(false);
   };
 
+  const [files, setFiles] = useState([]);
+
+  const onDrop = (acceptedFiles) => {
+    const newFiles = acceptedFiles.map((file) => ({
+      file,
+      previewUrl: URL.createObjectURL(file),
+    }));
+    setFiles((prevFiles) => [...prevFiles, ...newFiles]);
+  };
+
   const { getRootProps, getInputProps } = useDropzone({
-    accept: {
-      "image/*": [],
-      "video/*": [],
-    },
-    onDrop: (acceptedFiles) => {
-      setFiles((prevFiles) => [
-        ...prevFiles,
-        ...acceptedFiles.map((file) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file),
-          })
-        ),
-      ]);
-    },
+    accept: ["video/*", "image/*"],
+    onDrop,
   });
 
 
@@ -75,64 +74,10 @@ const FileUpLoader = (props) => {
     setFiles(updatedFiles && newDescription);
   };
 
-  const imgType = () =>{
-    files.type === "image/"
-  }
-  const videoType = () =>{
-    files.type === "video/"
-  }
-
-  const thumbs = files.map((file) => {
-    let media
-
-     if (imgType) {
-      media = (
-         <div className="tw-w-full  ">
-           {" "}
-           <div className="tw-flex tw-w-full tw-justify-center">
-            <img
-             src={file.preview}
-             onLoad={() => {
-               URL.revokeObjectURL(file.preview);
-             }}
-             alt={`Preview of ${file.name}`}
-             className="tw-flex tw-justify-center tw-w-[200px] tw-h-[200px]"
-           />
-           </div>
-           <p className="tw-w-full tw-h-10 tw-overflow-x-auto">{file.description}</p>
-           <p onClick={openModal} className="tw-pointer-events-auto  hover:tw-text-gray-800">เพิ่มคําอธิบาย</p>
-         </div>
-       );
-     } else if (videoType) {
-      (
-        media = <div>
-        
-           <video src={file.preview} controls 
-          //  alt={`Preview of ${file.name}`}
-            />
-           
-         </div>
-       );
-     }
-
-    console.log(files ,"From fileupload");
-    // console.log(media)
-
-    return (
-      <div className="tw-w-full " key={file.index} onClick={() => setSelectedFile(file)}>
-        <div className="tw-w-full tw-z-10">
-        {media}
-        </div>
-      </div>
-    );
-  });
-
-
+ 
   useEffect(() => {
     setIsOpenState(isOpen);
   }, [isOpen]);
-
-  
 
   return (
     <div
@@ -146,81 +91,123 @@ const FileUpLoader = (props) => {
       })}
     >
       {isOpenState && (
-        <div className="tw-relative tw-border-dashed tw-border-2 tw-w-full tw-h-full tw-overflow-y-auto">
-          <section className=" tw-w-full tw-h-full">
+        <div className="tw-relative tw-border-dashed tw-border-2 tw-w-full tw-h-full tw-overflow-y-auto tw-z-10">
+          <section className=" tw-w-full tw-h-full tw-relative">
             <button
-              className="tw-flex tw-right-0 tw-absolute tw-z-10"
+              className="tw-flex tw-right-0 tw-absolute tw-z-30"
               onClick={closeEvent}
             >
               <CloseOutlined className=" tw-items-center tw-justify-center tw-w-8 tw-h-8 tw-border-solid tw-border-[1px] tw-border-black tw-justify-self-center tw-rounded-full tw-bg-red-400" />
             </button>
-            <div
-              className="tw-w-full tw-h-full "
-              {...getRootProps({ className: "dropzone tw-h-full" })}
-            >
-              <input {...getInputProps()} className="tw-w-full tw-h-full" />
+            <div className="tw-w-full tw-h-full tw-z-10" {...getRootProps()}>
+              <input {...getInputProps()} />
 
-              {thumbs.length === 0 && (
-                <p className="tw-w-full tw-h-full">
-                  Drag drop some files here, or click to select files
+              {files.length === 0 && (
+                <p className="tw-flex tw-justify-center tw-items-center tw-text-center tw-w-full tw-h-full">
+                  คลิ๊กหรือลากไฟล์เพื่ออัปโหลด
                 </p>
               )}
-            </div>
-            <aside className=" tw-absolute tw-w-full tw-top-0 tw-left-0 ">
-              {thumbs}
-              {thumbs.length !== 0 && (
-                <div
-                  {...getRootProps({
-                    className:
-                      "dropzone tw-h-max tw-flex  tw-sticky tw-w-max tw-bottom-0 tw-left-[100vw]",
-                  })}
-                >
+              {files.length > 0 && (
+                <div className="tw-w-max tw-h-max tw-sticky tw-z-30">
                   <button
                     onClick={getInputProps}
-                    className="tw-sticky tw-flex tw-items-center tw-justify-center tw-rounded-full tw-border-[1px] tw-border-black tw-bg-white tw-z-20 tw-h-8 tw-w-8 "
+                    className="tw-sticky tw-right-0 tw-bottom-0 tw-flex tw-items-center tw-justify-center tw-rounded-full tw-border-[1px] tw-border-black tw-bg-white tw-z-20 tw-h-8 tw-w-8 "
                   >
                     <PlusOutlined />
                   </button>
                 </div>
               )}
-            </aside>
+            </div>
+            <div className="tw-absolute tw-top-0 tw-flex tw-justify-center  tw-flex-col tw-w-full">
+              {files.map((uploadedFile, index) => (
+                <div
+                  key={index}
+                  className="tw-flex tw-justify-center tw-items-center tw-justify-self-center tw-w-full tw-h-full tw-gap-5 tw-z-10  tw-top-0 "
+                >
+                  {uploadedFile.file.type.startsWith("video/") ? (
+                    <video className="tw-h-[30rem] tw-w-[80%]" controls>
+                      <source
+                        src={uploadedFile.previewUrl}
+                        type={uploadedFile.file.type}
+                      />
+                      Your browser does not support the video tag.
+                    </video>
+                  ) : (
+                    <div
+                      className="tw-z-20 tw-flex-col tw-flex tw-items-center tw-justify-center tw-h-full] tw-w-[80%] tw-gap-y-5"
+                      onClick={() => setSelectedFile(uploadedFile)}
+                    >
+                      <img
+                        className="tw-h-[30rem] tw-w-[80%]"
+                        src={uploadedFile.previewUrl}
+                        alt={`Preview ${index}`}
+                      />
+                      <button
+                        onClick={openModal}
+                        className="tw-self-start tw-pointer-events-auto tw-z-20 tw-w-24 tw-h-12 hover:tw-text-gray-800"
+                      >
+                        เพิ่มคําอธิบาย
+                      </button>
+                      <p className="tw-w-full tw-h-10 tw-overflow-x-auto">
+                        {uploadedFile.description}{" "}
+                      </p>
+                    </div>
+                  )}
+                  {/* <p>File Name: {uploadedFile.file.name}</p>
+                <p>File Size: {formatFileSize(uploadedFile.file.size)}</p> */}
+                </div>
+              ))}
+            </div>
 
             {selectedFile && (
-             <Modal
-             title="Add Description"
-             open={isModalOpen}
-             onCancel={closeModal}
-             centered={true}
-             footer={null}
-           >
-             <div>
-               <Input.TextArea
-                 value={description}
-                 onChange={(e) => setDescription(e.target.value, console.log(e))}
-                 placeholder="Add description..."
-               />
-               <div className="tw-flex tw-flex-row tw-justify-end tw-gap-x-5 tw-mt-5">
-                 <button
-                   onClick={closeModal}
-                   className="tw-bg-red-400 tw-rounded-sm tw-w-16 tw-h-8"
-                 >
-                   Cancel
-                 </button>
-                 <button
-                   onClick={handleSave}
-                   className="tw-bg-green-400 tw-rounded-sm tw-w-16 tw-h-8"
-                 >
-                   Save
-                 </button>
-               </div>
-             </div>
-           </Modal>
+              <Modal
+                title="Add Description"
+                open={isModalOpen}
+                onCancel={closeModal}
+                centered={true}
+                footer={null}
+              >
+                <div>
+                  <Input.TextArea
+                    value={description}
+                    onChange={(e) =>
+                      setDescription(e.target.value, console.log(e))
+                    }
+                    placeholder="Add description..."
+                  />
+                  <div className="tw-flex tw-flex-row tw-justify-end tw-gap-x-5 tw-mt-5">
+                    <button
+                      onClick={closeModal}
+                      className="tw-bg-red-400 tw-rounded-sm tw-w-16 tw-h-8"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleSave}
+                      className="tw-bg-green-400 tw-rounded-sm tw-w-16 tw-h-8"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+              </Modal>
             )}
           </section>
         </div>
       )}
     </div>
   );
+
+};
+
+const formatFileSize = (bytes) => {
+  const kbSize = bytes / 1024;
+  if (kbSize < 1024) {
+    return kbSize.toFixed(2) + " KB";
+  } else {
+    const mbSize = kbSize / 1024;
+    return mbSize.toFixed(2) + " MB";
+  }
 };
 
 FileUpLoader.propTypes = {

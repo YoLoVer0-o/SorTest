@@ -52,7 +52,7 @@ const FacebookPost = () => {
   return (
     <div
       className={classNames(
-        "tw-w-full tw-border-[#0874c4] tw-h-[70%] tw-border-solid tw-border-2 tw-flex tw-justify-center tw-overflow-auto",
+        "tw-w-full tw-border-[#0874c4] tw-h-[70%] tw-border-solid tw-border-2 tw-flex tw-justify-center tw-justify-self-center tw-overflow-auto",
         {
           "tw-h-[80%]": isBigScreen,
           "tw-h-[70%]": isDesktopOrLaptop,
@@ -142,7 +142,7 @@ const FacebookPost = () => {
               (isTablet && isPortrait) ||
               (isTablet && isLandscape) ||
               (isTabletOrMobile && !isMobile),
-            "tw-col-span-6 tw-row-span-4 tw-col-start-4 tw-row-start-4 ":
+            "tw-col-span-10 tw-row-span-4 tw-col-start-2 tw-row-start-4 ":
               isDesktopOrLaptop && !isTablet,
           })}
         >
@@ -190,16 +190,22 @@ const FacebookPost = () => {
             ...
           </button>
         </div>
+        {/* <button className="tw-absolute tw-rounded-md tw-h-max tw-self-end tw-justify-self-center tw-w-52 tw-bg-green-500  hover:tw-bg-green-400">
+          Post
+        </button> */}
       </div>
       {showEmojiInput && (
         <div
           className={classNames(
             "tw-absolute tw-flex tw-w-full  tw-items-center tw-justify-center",
             {
-              "tw-h-[40%]":(isMobile && isPortrait) || (isMobile && isLandscape),
-              "tw-h-[60%]":(isTablet && isLandscape) || (isTabletOrMobile && !isMobile) ,
-              "tw-h-[50%]":(isTablet && isPortrait) || (isTabletOrMobile && !isMobile),
-              "tw-h-[70% ]":isDesktopOrLaptop && !isTablet,
+              "tw-h-[40%]":
+                (isMobile && isPortrait) || (isMobile && isLandscape),
+              "tw-h-[60%]":
+                (isTablet && isLandscape) || (isTabletOrMobile && !isMobile),
+              "tw-h-[50%]":
+                (isTablet && isPortrait) || (isTabletOrMobile && !isMobile),
+              "tw-h-[70% ]": isDesktopOrLaptop && !isTablet,
             }
           )}
         >

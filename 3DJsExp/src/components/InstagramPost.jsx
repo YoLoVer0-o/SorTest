@@ -174,6 +174,7 @@ const InstagramPost  = () => {
           >
             ...
           </button>
+          
         </div>
       </div>
       {showEmojiInput && (
@@ -193,6 +194,7 @@ const InstagramPost  = () => {
       )}
     </div>
   );
+  
 };
 
 export default InstagramPost;
