@@ -1,14 +1,25 @@
 import { DataTable } from "../utilities";
 import classNames from "classnames";
 import { useResponsive } from "../hooks";
-import { DeleteOutlined } from "@ant-design/icons";
+import { PlusOutlined, MinusOutlined, DeleteOutlined } from "@ant-design/icons";
 import { Button, Input, InputNumber, Switch, Tooltip } from "antd";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { useLocation } from 'react-router-dom';
 import { useState } from "react";
+import { AddWordModal } from "../components";
 
 const WordTable = () => {
+
+    const [modalToggle, setModalToggle] = useState(false);
+
+    const showModal = () => {
+        setModalToggle(true);
+    };
+
+    const handleCancel = () => {
+        setModalToggle(false);
+    };
 
     const data = useLocation().state;
 
@@ -41,13 +52,38 @@ const WordTable = () => {
 
     const [payload, setPayload] = useState(data.words);
 
-    const handlePlus = (id) => {
-        console.log(payload.find((payload) => payload.id == id));
-        // payload.find((payload) => payload.id == id)
-    }
+    const updateChecked = (checked, id) => {
+        const newState = payload.map(payload => {
+            // 👇️ if id equals 2, update country property
+            if (payload.id === id) {
+                console.log("updateChecked");
+                return { ...payload, absolute: checked };
+            }
+            // 👇️ otherwise return the object as is
+            console.log("none");
+            return payload;
+        });
 
-    const handleMinus = (id) => {
+        setPayload(newState);
+    };
+
+    const handleWeight = (id, operator) => {
         console.log(payload.find((payload) => payload.id == id));
+        const newState = payload.map(payload => {
+            // 👇️ if id equals 2, update country property
+            if (payload.id === id) {
+                console.log("updateChecked");
+                if (operator === "+")
+                    return { ...payload, weight: payload.weight + 1 };
+                else if (operator === "-")
+                    return { ...payload, weight: payload.weight - 1 };
+            }
+            // 👇️ otherwise return the object as is
+            console.log("none");
+            return payload;
+        });
+
+        setPayload(newState);
         // payload.find((payload) => payload.id == id)
     }
 
@@ -60,7 +96,7 @@ const WordTable = () => {
             width: 100,
             className: 'tw-text-amber-600',
         }, {
-            title: 'น้ำหนัก',
+            title: 'น้ำหนัก(1-10)',
             dataIndex: 'weight',
             key: 'weight',
             align: "center",
@@ -69,9 +105,23 @@ const WordTable = () => {
             render: (text, record) => (
                 <div className="tw-flex tw-flex-row tw-justify-center">
                     <InputNumber
-                        addonBefore={<p onClick={() => handleMinus(record?.id)}>-</p>}
-                        addonAfter={<p onClick={() => handlePlus(record?.id)}>+</p>}
-                        defaultValue={record?.weight}
+                        addonBefore={
+                            <Tooltip title="ลดจำนวน">
+                                <Button
+                                    className="tw-w-full tw-h-full tw-flex tw-border-2 tw-rounded-full tw-bg-red-500 hover:tw-border-red-500 hover:tw-text-red-500 hover:tw-bg-white"
+                                    onClick={() => handleWeight(record?.id, "-")}>
+                                    <MinusOutlined />
+                                </Button>
+                            </Tooltip>}
+                        addonAfter={
+                            <Tooltip title="เพิ่มจำนวน">
+                                <Button
+                                    className="tw-w-full tw-h-full tw-flex tw-border-2 tw-rounded-full tw-bg-green-500 hover:tw-border-green-500 hover:tw-text-green-500 hover:tw-bg-white"
+                                    onClick={() => handleWeight(record?.id, "+")}>
+                                    <PlusOutlined />
+                                </Button>
+                            </Tooltip>}
+                        value={payload.find((payload) => payload.id === record?.id).weight}
                         min={1}
                         max={10}
                         readOnly
@@ -87,11 +137,15 @@ const WordTable = () => {
             width: 100,
             className: "tw-text-amber-600",
             render: (text, record) => (
-                <div className="tw-flex tw-flex-row tw-justify-center">
-                    <Switch className={classNames("", {
-                        "tw-bg-black": record?.absolute === false,
-                    })} defaultChecked={record?.absolute} />
-                </div>
+                <Tooltip title="กดเพื่อเปลี่ยนค่า">
+                    <div className="tw-flex tw-flex-row tw-justify-center">
+                        <Switch className={classNames("", {
+                            "tw-bg-black": payload.find((payload) => payload.id === record?.id).absolute === false,
+                            "tw-bg-blue-400": payload.find((payload) => payload.id === record?.id).absolute === true,
+                        })} defaultChecked={payload.find((payload) => payload.id === record?.id).absolute}
+                            onChange={(checked) => updateChecked(checked, record?.id)} />
+                    </div>
+                </Tooltip>
             ),
         },
         {
@@ -123,8 +177,9 @@ const WordTable = () => {
                     <Button
                         className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
                             "tw-w-full": isMobile && isPortrait,
-                        })}>
-                        เพิ่มหมวดหมู่
+                        })}
+                        onClick={() => showModal({})}>
+                        เพิ่มคำคัดกรอง
                     </Button>
                 </div>
                 <div className={classNames("tw-border-2 tw-rounded-md", {
@@ -137,28 +192,12 @@ const WordTable = () => {
                     />
                 </div>
             </div>
-            {/* <div className=" tw-flex tw-flex-row tw-my-6 tw-gap-4">
-                {pageSize < 20 && (
-                    <Tooltip title="แสดงเพิ่มเติม">
-                        <Button className="tw-border-black tw-border-2 tw-bg-green-400 tw-drop-shadow-md hover:tw-bg-white hover:tw-border-green-600 hover:tw-text-green-600"
-                            onClick={() => setPageSize(20)}
-                            icon={<ColumnHeightOutlined />}
-                        >
-                            show more
-                        </Button>
-                    </Tooltip>
-                )}
-                {pageSize >= 20 && (
-                    <Tooltip title="แสดงน้อยลง">
-                        <Button className="tw-border-black tw-border-2 tw-bg-yellow-400 tw-drop-shadow-md hover:tw-bg-white hover:tw-border-yellow-600 hover:tw-text-yellow-600"
-                            onClick={() => setPageSize(5)}
-                            icon={<VerticalAlignMiddleOutlined />}
-                        >
-                            show less
-                        </Button>
-                    </Tooltip>
-                )}
-            </div> */}
+            {modalToggle && (
+                <AddWordModal
+                    modalToggle={modalToggle}
+                    handleCancel={handleCancel}
+                />
+            )}
         </div>
     );
 };

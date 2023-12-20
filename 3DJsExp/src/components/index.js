@@ -16,6 +16,7 @@ import EditWorkModal from "./EditWorkModal";
 import DataLog from "./dataLog";
 import ClassTable from "./ClassTable";
 import WordTable from "./WordTable";
+import AddWordModal from "./AddWordModal";
 
 export {
   MainLayout,
@@ -36,4 +37,5 @@ export {
   DataLog,
   ClassTable,
   WordTable,
+  AddWordModal,
 };
