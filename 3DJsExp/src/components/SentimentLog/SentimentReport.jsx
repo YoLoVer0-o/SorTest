@@ -1,20 +1,21 @@
 import { useState, useRef } from "react";
-import { HorizontalBarChart, DoughnutChart, ToTopButton, DataTable } from "../utilities";
+import { HorizontalBarChart, DoughnutChart, ToTopButton, DataTable } from "../../utilities";
+import { sentimentAll, sentimentNega, sentimentPos } from "../../mock";
 import { Button, FloatButton, Tooltip } from "antd";
-import classNames from "classnames";
-import { useResponsive } from "../hooks";
-import { FeedbackModal } from "../components";
-import { MoreOutlined, FilePdfOutlined } from "@ant-design/icons";
-import { sentimentAll, sentimentNega, sentimentPos } from "../mock";
-import { ColumnHeightOutlined, VerticalAlignMiddleOutlined } from '@ant-design/icons';
+import { useResponsive } from "../../hooks";
+import { FeedbackModal } from "..";
+import { MoreOutlined, FilePdfOutlined, ColumnHeightOutlined, VerticalAlignMiddleOutlined } from "@ant-design/icons";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import classNames from "classnames";
 
 const SentimentReport = () => {
+
     const [details, setDetails] = useState([]);
     const [pageSize, setPageSize] = useState(5);
     const [modalToggle, setModalToggle] = useState(false);
     const [message, setMessage] = useState({});
     const [displayComments, setDisplayComments] = useState("");
+
     const topRef = useRef(null);
 
     const {
@@ -26,6 +27,7 @@ const SentimentReport = () => {
         isPortrait,
     } = useResponsive();
 
+    /////////////////////////////////////////modal toggle/////////////////////////////////////////////////////////////////
     const showModal = (data) => {
         console.log(data);
         setMessage(data);
@@ -35,18 +37,20 @@ const SentimentReport = () => {
     const handleCancel = () => {
         setModalToggle(false);
     };
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    /////////////////////////////////////////////redirect/////////////////////////////////////////////////////////////
     const redirect = (element, data) => {
         if (!element.length) return;
 
         const { index } = element[0];
 
-        // console.log(data[index]);
-
         setDisplayComments(data[index]);
         setDetails(data[index].Comment);
     };
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    ////////////////////////////////////////////color render logic//////////////////////////////////////////////////////////////
     const colorSet = (data) => {
         if (data == "positive") {
             return "#22c55e";
@@ -58,8 +62,9 @@ const SentimentReport = () => {
             return "#0284c7";
         }
     };
-
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /////////////////////////////////////////////sentiment pie/////////////////////////////////////////////////////////////
     const sentimentData = {
         labels: sentimentAll.map(item => item.name),
         datasets: [
@@ -94,7 +99,7 @@ const SentimentReport = () => {
     };
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////// social Bar////////////////////////////////////////////////////////////////
     const posBarData = {
         labels: sentimentPos.map(item => item.name),
         datasets: [
@@ -141,6 +146,7 @@ const SentimentReport = () => {
     };
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    ///////////////////////////////////////////table///////////////////////////////////////////////////////////////
     const columns = [
         {
             title: 'ลำดับ',
@@ -175,6 +181,7 @@ const SentimentReport = () => {
             className: 'tw-text-white tw-bg-[#303c6c]',
         },
     ];
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     return (
         <div className="tw-w-screen tw-h-full tw-p-2 tw-overflow-auto">

@@ -1,14 +1,14 @@
+import { useResponsive } from "../../hooks";
+import { newSentiment } from "../../mock";
 import { DatePicker, ConfigProvider } from "antd"
 import classNames from "classnames"
 import PropTypes from "prop-types";
-import { useResponsive } from "../hooks";
-import { newSentiment } from "../mock";
 
 const DataLog = props => {
 
+    ///////////////////////////////////////////props declaration///////////////////////////////////////////////////////////////
     const dataType = props.dataType;
-
-    console.log(dataType);
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     const { isMobile, isPortrait, isLandscape } = useResponsive();
 
@@ -23,9 +23,7 @@ const DataLog = props => {
             <div className={classNames("tw-flex tw-flex-row tw-w-full tw-h-full tw-overflow-auto tw-gap-4", {
                 "tw-flex-col": isMobile && isPortrait,
             })}>
-                <div className={classNames("tw-flex tw-flex-col tw-w-full tw-h-full tw-gap-8 ", {
-                    // "tw-min-h-screen": isMobile && isLandscape,
-                })}>
+                <div className={classNames("tw-flex tw-flex-col tw-w-full tw-h-full tw-gap-8 ", {})}>
                     <div className={classNames("tw-flex tw-flex-col tw-w-full tw-h-fit tw-p-4 tw-border-4 tw-border-black tw-rounded-lg", {})}>
                         <p className="tw-text-xl tw-font-bold tw-text-center">Time Filter</p>
                         <div className={classNames("tw-flex tw-flex-row tw-w-full tw-h-full tw-gap-2", {})}>

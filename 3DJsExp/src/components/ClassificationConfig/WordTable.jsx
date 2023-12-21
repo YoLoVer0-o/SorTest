@@ -1,18 +1,24 @@
-import { DataTable } from "../utilities";
-import classNames from "classnames";
-import { useResponsive } from "../hooks";
-import { PlusOutlined, MinusOutlined, DeleteOutlined } from "@ant-design/icons";
+import { useState } from "react";
+import { useLocation } from 'react-router-dom';
+import { DataTable } from "../../utilities";
+import { AddWordModal } from "..";
+import { useResponsive } from "../../hooks";
 import { Button, Input, InputNumber, Switch, Tooltip } from "antd";
+import { PlusOutlined, MinusOutlined, DeleteOutlined } from "@ant-design/icons";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import { useLocation } from 'react-router-dom';
-import { useState } from "react";
-import { AddWordModal } from "../components";
+import classNames from "classnames";
 
 const WordTable = () => {
 
-    const [modalToggle, setModalToggle] = useState(false);
+    const data = useLocation().state;
 
+    const [modalToggle, setModalToggle] = useState(false);
+    const [payload, setPayload] = useState(data.words);
+
+    const { isTabletOrMobile, isMobile, isPortrait } = useResponsive();
+
+    ////////////////////////////////////////modal toggle logic//////////////////////////////////////////////////////////////////
     const showModal = () => {
         setModalToggle(true);
     };
@@ -20,11 +26,9 @@ const WordTable = () => {
     const handleCancel = () => {
         setModalToggle(false);
     };
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    const data = useLocation().state;
-
-    const { isTabletOrMobile, isMobile, isPortrait } = useResponsive();
-
+    ///////////////////////////////////////////sweetalert and delete function///////////////////////////////////////////////////////////////
     const MySwal = withReactContent(Swal)
 
     const handleDelete = (value) => {
@@ -49,28 +53,23 @@ const WordTable = () => {
             }
         });
     }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    const [payload, setPayload] = useState(data.words);
-
+    ////////////////////////////////////////////update logic//////////////////////////////////////////////////////////////
     const updateChecked = (checked, id) => {
         const newState = payload.map(payload => {
-            // 👇️ if id equals 2, update country property
             if (payload.id === id) {
                 console.log("updateChecked");
                 return { ...payload, absolute: checked };
             }
-            // 👇️ otherwise return the object as is
-            console.log("none");
             return payload;
         });
-
         setPayload(newState);
     };
 
     const handleWeight = (id, operator) => {
         console.log(payload.find((payload) => payload.id == id));
         const newState = payload.map(payload => {
-            // 👇️ if id equals 2, update country property
             if (payload.id === id) {
                 console.log("updateChecked");
                 if (operator === "+")
@@ -78,15 +77,14 @@ const WordTable = () => {
                 else if (operator === "-")
                     return { ...payload, weight: payload.weight - 1 };
             }
-            // 👇️ otherwise return the object as is
-            console.log("none");
             return payload;
         });
 
         setPayload(newState);
-        // payload.find((payload) => payload.id == id)
     }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    //////////////////////////////////////////////table////////////////////////////////////////////////////////////
     const columns = [
         {
             title: 'คำคัดกรอง',
@@ -158,12 +156,13 @@ const WordTable = () => {
             render: (text, record) => (
                 <div className="tw-flex tw-flex-row tw-justify-center">
                     <Tooltip title="ลบคำคัดกรอง">
-                        <div className="tw-text-3xl tw-text-red-600"><DeleteOutlined onClick={() => handleDelete("wow")} /></div>
+                        <div className="tw-text-3xl tw-text-red-600"><DeleteOutlined onClick={() => handleDelete(record)} /></div>
                     </Tooltip>
                 </div>
             ),
         },
     ];
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     return (
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-y-auto', {})}>

@@ -1,15 +1,14 @@
 import { useRef } from "react";
-import { ListInput, ToTopButton } from "../utilities";
+import { ListInput, ToTopButton, DataTable } from "../../utilities";
+import { useResponsive } from "../../hooks";
 import dayjs from "dayjs";
 import "dayjs/locale/th";
 import buddhistEra from "dayjs/plugin/buddhistEra";
 dayjs.extend(buddhistEra);
-import iLaw from "../assets/iLaw.png";
 import { FloatButton, Tooltip } from "antd";
-import classNames from "classnames";
-import { useResponsive } from "../hooks";
-import { DataTable } from "../utilities";
 import { FormOutlined, MoreOutlined, FilePdfOutlined } from "@ant-design/icons";
+import classNames from "classnames";
+import iLaw from "../../assets/iLaw.png";
 
 const PostReport = () => {
 
@@ -22,6 +21,7 @@ const PostReport = () => {
     isPortrait,
   } = useResponsive();
 
+  //////////////////////////////////////////////focus ref ////////////////////////////////////////////////////////////
   const topRef = useRef(null);
   const summarizeContent = useRef(null);
 
@@ -31,6 +31,9 @@ const PostReport = () => {
     }
   };
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  ////////////////////////////////////////////////table//////////////////////////////////////////////////////////
   const columns = [
     {
       title: 'สื่อประกอบ',
@@ -65,11 +68,10 @@ const PostReport = () => {
       className: 'tw-text-white tw-bg-[#303c6c]',
     },
   ];
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   return (
-
     <div className="tw-w-screen tw-h-full tw-p-2 tw-overflow-auto">
-
       <div
         ref={topRef}
         tabIndex={0}
@@ -186,7 +188,5 @@ const PostReport = () => {
     </div>
   );
 };
-
-PostReport.propTypes = {};
 
 export default PostReport;

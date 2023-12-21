@@ -1,9 +1,8 @@
-import postReportAPI from "../service/postReportAPI";
-
-import { DataTable, SearchBar } from "../utilities";
-import { postMock } from "../mock";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { DataTable, SearchBar } from "../../utilities";
+import { postMock } from "../../mock";
+import { useResponsive } from "../../hooks";
 import { Button, Tooltip } from "antd";
 import {
     ColumnHeightOutlined,
@@ -14,9 +13,9 @@ import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 dayjs.extend(isSameOrBefore)
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import classNames from "classnames";
 dayjs.extend(isSameOrAfter)
-import { useResponsive } from "../hooks";
+import classNames from "classnames";
+// import postReportAPI from "../../service/postReportAPI";
 
 const PostTable = () => {
 
@@ -28,8 +27,9 @@ const PostTable = () => {
 
     const navigate = useNavigate();
 
-    const { isDesktopOrLaptop, isBigScreen, isTabletOrMobile, isPortrait, isLandscape } = useResponsive();
+    const { isTabletOrMobile, isPortrait } = useResponsive();
 
+    ///////////////////////////////////////////table///////////////////////////////////////////////////////////////
     const columns = [
         {
             title: 'update',
@@ -116,28 +116,21 @@ const PostTable = () => {
                 </div>
             ),
         },
-
     ];
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    ////////////////////////////////////////to repot and gen report//////////////////////////////////////////////////////////////////
     const toReport = (data) => {
         navigate("/postlog/report", { state: data })
     }
 
     const genReport = async () => {
-        // console.log("get:", rows);
-        // console.log(selectedRows);
-        // const testData = await postReportAPI.getAllPost();
-        // console.log(testData);
-
         toReport(selectedRows);
     }
-
-
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     return (
-        <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-y-auto', {
-            // "tw-min-h-screen": isTabletOrMobile && isLandscape,
-        })}>
+        <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-y-auto', {})}>
             <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">PostTable</p>
             <div className="tw-flex tw-justify-center tw-w-full">
                 <SearchBar

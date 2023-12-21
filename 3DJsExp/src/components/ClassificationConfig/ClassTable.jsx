@@ -1,23 +1,23 @@
-import { DataTable, SearchBar } from "../utilities";
-import { cat_word } from "../mock";
 import { useState } from "react";
-import classNames from "classnames";
-import { useResponsive } from "../hooks";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
+import { DataTable, SearchBar } from "../../utilities";
+import { cat_word } from "../../mock";
+import { useResponsive } from "../../hooks";
 import { Button, Tooltip } from "antd";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import classNames from "classnames";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import { useNavigate } from "react-router-dom";
 
 const ClassTable = () => {
 
     const [searchVal, setSearchVal] = useState('');
+    const navigate = useNavigate();
 
     const { isTabletOrMobile, isMobile, isPortrait } = useResponsive();
 
+    /////////////////////////////////////sweetalert and delete function/////////////////////////////////////////////////////////////////////
     const MySwal = withReactContent(Swal)
-
-    const navigate = useNavigate();
 
     const handleDelete = (value) => {
         console.log(value);
@@ -42,11 +42,15 @@ const ClassTable = () => {
         });
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /////////////////////////////////////////navigate to edit/////////////////////////////////////////////////////////////////
     const toEdit = async (data) => {
-        // console.log(data);
         navigate(`/classconfig/edit/${data.id}`, { state: data })
     }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    /////////////////////////////////////////table/////////////////////////////////////////////////////////////////
     const columns = [
         {
             title: 'หมวดหมู่',
@@ -101,6 +105,7 @@ const ClassTable = () => {
             ),
         },
     ];
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     return (
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-y-auto', {})}>
@@ -133,28 +138,6 @@ const ClassTable = () => {
                     />
                 </div>
             </div>
-            {/* <div className=" tw-flex tw-flex-row tw-my-6 tw-gap-4">
-                {pageSize < 20 && (
-                    <Tooltip title="แสดงเพิ่มเติม">
-                        <Button className="tw-border-black tw-border-2 tw-bg-green-400 tw-drop-shadow-md hover:tw-bg-white hover:tw-border-green-600 hover:tw-text-green-600"
-                            onClick={() => setPageSize(20)}
-                            icon={<ColumnHeightOutlined />}
-                        >
-                            show more
-                        </Button>
-                    </Tooltip>
-                )}
-                {pageSize >= 20 && (
-                    <Tooltip title="แสดงน้อยลง">
-                        <Button className="tw-border-black tw-border-2 tw-bg-yellow-400 tw-drop-shadow-md hover:tw-bg-white hover:tw-border-yellow-600 hover:tw-text-yellow-600"
-                            onClick={() => setPageSize(5)}
-                            icon={<VerticalAlignMiddleOutlined />}
-                        >
-                            show less
-                        </Button>
-                    </Tooltip>
-                )}
-            </div> */}
         </div>
     );
 };

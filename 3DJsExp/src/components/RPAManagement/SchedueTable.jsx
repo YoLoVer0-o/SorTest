@@ -1,28 +1,28 @@
-import { DataTable, SearchBar } from "../utilities";
-import { testAcc } from "../mock";
 import { useState } from "react";
+import { DataTable, SearchBar } from "../../utilities";
+import { testAcc } from "../../mock";
+import { useResponsive } from "../../hooks";
+import { EditSchedueModal } from "..";
 import { Button, Tooltip } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 dayjs.extend(isSameOrBefore);
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
-import classNames from "classnames";
 dayjs.extend(isSameOrAfter);
-import { useResponsive } from "../hooks";
-import { EditSchedueModal } from "../components";
+import classNames from "classnames";
 
 const SchedueTable = () => {
+
     const [searchAccount, setSearchAccout] = useState("");
     const [searchTarget, setSearchTarget] = useState([]);
     const [searchFrequency, setSearchFrequency] = useState([]);
     const [modalToggle, setModalToggle] = useState(false);
     const [modalData, setModalData] = useState([]);
 
-
-
     const { isTabletOrMobile, isMobile, isPortrait, isLandscape } = useResponsive();
 
+    //////////////////////////////////////////modal toggle logic////////////////////////////////////////////////////////////////
     const showModal = (data) => {
         setModalData(data);
         setModalToggle(true);
@@ -31,7 +31,9 @@ const SchedueTable = () => {
     const handleCancel = () => {
         setModalToggle(false);
     };
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    //////////////////////////////////////////////////table////////////////////////////////////////////////////////
     const columns = [
         {
             title: "id",
@@ -94,6 +96,7 @@ const SchedueTable = () => {
             ),
         },
     ];
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     return (
         <div
