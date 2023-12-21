@@ -52,12 +52,12 @@ const FacebookPost = () => {
   return (
     <div
       className={classNames(
-        "tw-w-full tw-border-[#0874c4] tw-h-[70%] tw-border-solid tw-border-2 tw-flex tw-justify-center tw-justify-self-center tw-overflow-auto",
+        "tw-w-full tw-h-full tw-rounded-md tw-flex tw-justify-center tw-justify-self-center tw-overflow-auto tw-shadow-[0_3px_10px_rgb(0,0,0,0.2)]",
         {
-          "tw-h-[80%]": isBigScreen,
-          "tw-h-[70%]": isDesktopOrLaptop,
-          "tw-h-[80%] ": isTablet && isPortrait,
-          "tw-h-[70%]  ": isTablet && isLandscape,
+          // "tw-h-[80%]": isBigScreen,
+          // "tw-h-[70%]": isDesktopOrLaptop,
+          // "tw-h-[80%] ": isTablet && isPortrait,
+          // "tw-h-[70%]  ": isTablet && isLandscape,
           "tw-h-screen tw-relative": isMobile && isLandscape,
         }
       )}
@@ -74,7 +74,7 @@ const FacebookPost = () => {
               (isTablet && isPortrait) ||
               (isTablet && isLandscape) ||
               (isTabletOrMobile && !isDesktopOrLaptop && !isMobile),
-            "tw-grid-cols-12 tw-grid-rows-8 ": isDesktopOrLaptop && !isTablet,
+            "tw-grid-cols-8 tw-grid-rows-8 ": isDesktopOrLaptop && !isTablet,
           }
         )}
       >
@@ -82,11 +82,11 @@ const FacebookPost = () => {
           className={classNames("tw-grid tw-h-max  ", {
             "tw-grid-cols-4 tw-grid-rows-1 tw-col-span-6  tw-row-span-1 tw-col-start-1":
               (isMobile && isPortrait) || (isMobile && isLandscape),
-            "tw-grid-cols-3 tw-grid-rows-1 tw-col-span-4  tw-row-span-1 tw-col-start-3  ":
+            "tw-grid-cols-3 tw-grid-rows-1 tw-col-span-4  tw-row-span-1 tw-col-start-1  ":
               (isTablet && isPortrait) ||
               (isTablet && isLandscape) ||
               (isTabletOrMobile && !isMobile),
-            "tw-grid-cols-3 tw-grid-rows-1 tw-col-span-4 tw-row-span-1 tw-row-start-1 tw-col-start-5 ":
+            "tw-grid-cols-3 tw-grid-rows-1 tw-col-span-4 tw-row-span-1 tw-row-start-1 tw-col-start-1 ":
               isDesktopOrLaptop && !isTablet,
           })}
         >
@@ -104,47 +104,67 @@ const FacebookPost = () => {
           onChange={handleMessageChange}
           placeholder="คุณกำลังคิดอะไรอยู่"
           className={classNames(
-            " tw-text-xl tw-w-full tw-h-full tw-border-none tw-resize-none tw-outline-none ",
+            " tw-text-xl tw-z-10 tw-w-full tw-h-full tw-border-none tw-resize-none tw-outline-none ",
             {
-              "tw-col-start-2 tw-row-start-2 tw-row-span-1 tw-col-span-4 ":
+              "tw-col-start-1 tw-row-start-2 tw-row-span-1 tw-col-span-6 ":
                 (isMobile && isPortrait) || (isMobile && isLandscape),
-              "tw-col-start-3 tw-row-start-2 tw-row-span-1 tw-col-span-4":
-                (isTablet && isPortrait) ||
-                (isTablet && isLandscape) ||
-                (isTabletOrMobile && !isMobile),
-              "tw-col-start-5 tw-row-start-2 tw-row-span-2 tw-col-span-4":
+                "tw-col-start-1 tw-row-start-2 tw-row-span-4 tw-col-span-6 ":
+                (isMobile && isPortrait) && openUpload === false || (isMobile && isLandscape) && openUpload === false ,
+
+              "tw-col-start-1 tw-row-start-2 tw-row-span-1 tw-col-span-8":
+                isTablet && isPortrait ||
+                isTablet && isLandscape ||
+                isTabletOrMobile && !isMobile,
+                "tw-col-start-1 tw-row-start-2 tw-row-span-4 tw-col-span-8":
+                isTablet && isPortrait && openUpload === false||
+                isTablet && isLandscape && openUpload === false ||
+                isTabletOrMobile && !isMobile  && openUpload === false,
+
+              "tw-col-start-1 tw-row-start-2 tw-row-span-2 tw-col-span-8":
                 isDesktopOrLaptop && !isTablet,
+                "tw-col-start-1 tw-row-start-2 tw-row-span-6 tw-col-span-8":
+                isDesktopOrLaptop && !isTablet && openUpload === false ,
             }
           )}
         />
 
         <BsEmojiSmile
           className={classNames(
-            " tw-text-3xl tw-self-end  tw-text-gray-700 hover:tw-bg-gray-300 tw-rounded-full tw-flex  tw-justify-self-end",
+            " tw-text-3xl tw-self-end tw-z-10 tw-text-gray-700 hover:tw-bg-gray-300 tw-rounded-full tw-flex  tw-justify-self-end",
             {
               "tw-col-start-6 tw-row-start-2 tw-justify-self-end":
                 (isMobile && isPortrait) || (isMobile && isLandscape),
+                "tw-col-start-6 tw-row-start-5 tw-justify-self-end ":
+                (isMobile && isPortrait)  && openUpload === false  || (isMobile && isLandscape)  && openUpload === false,
               "tw-col-start-7 tw-row-start-2 tw-justify-self-end":
                 (isTablet && isPortrait) ||
                 (isTablet && isLandscape) ||
                 (isTabletOrMobile && !isMobile),
-              "tw-col-start-9 tw-row-start-3 tw-justify-self-end":
+                "tw-col-start-8 tw-row-start-5 tw-justify-self-end":
+                isTablet && isPortrait && openUpload === false ||
+                isTablet && isLandscape && openUpload === false ||
+                isTabletOrMobile && !isMobile && openUpload === false,
+              "tw-col-start-8 tw-row-start-3 tw-justify-self-end":
                 isDesktopOrLaptop && !isTablet,
+                "tw-col-start-8 tw-row-start-7 tw-justify-self-end":
+                isDesktopOrLaptop && !isTablet && openUpload === false ,
             }
           )}
           onClick={toggleEmoji}
         />
-        <div
-          className={classNames("tw-flex tw-w-full tw-h-full ", {
-            "tw-col-span-4 tw-row-span-3 tw-col-start-2 tw-row-start-3 ":
+        <div  className={classNames("tw-flex tw-w-full tw-h-full ", {
+            "tw-col-span-6 tw-row-span-3 tw-col-start-1 tw-row-start-3 ":
               (isMobile && isPortrait) || (isMobile && isLandscape),
             "tw-col-span-6 tw-row-span-3 tw-col-start-2 tw-row-start-3  ":
               (isTablet && isPortrait) ||
               (isTablet && isLandscape) ||
               (isTabletOrMobile && !isMobile),
-            "tw-col-span-10 tw-row-span-4 tw-col-start-2 tw-row-start-4 ":
+              
+            "tw-col-span-10 tw-row-span-4 tw-col-start-1 tw-row-start-4  ":
               isDesktopOrLaptop && !isTablet,
+        
           })}
+          
         >
           <FileUpLoader isOpen={openUpload} isClose={closePicUpload} />
         </div>
@@ -159,7 +179,7 @@ const FacebookPost = () => {
                 (isTablet && isPortrait) ||
                 (isTablet && isLandscape) ||
                 (isTabletOrMobile && !isMobile),
-              "tw-col-start-4 tw-row-start-8 tw-col-span-6 tw-grid-cols-8 tw-grid-rows-1":
+              "tw-col-start-2 tw-row-start-8 tw-col-span-6 tw-grid-cols-8 tw-grid-rows-1":
                 isDesktopOrLaptop && !isTablet,
             }
           )}
@@ -190,9 +210,24 @@ const FacebookPost = () => {
             ...
           </button>
         </div>
-        {/* <button className="tw-absolute tw-rounded-md tw-h-max tw-self-end tw-justify-self-center tw-w-52 tw-bg-green-500  hover:tw-bg-green-400">
-          Post
-        </button> */}
+        <button
+          className={classNames(
+            "tw-flex tw-h-10  tw-items-center tw-justify-center tw-p-4 tw-rounded-md tw-bg-green-500  hover:tw-bg-green-400",
+            {
+              "tw-col-start-1 tw-row-start-7 tw-col-span-6 tw-grid-cols-8 tw-grid-rows-1 ":
+                (isMobile && isPortrait) || (isMobile && isLandscape),
+              "tw-col-start-2 tw-row-start-7 tw-col-span-6 tw-grid-cols-8 tw-grid-rows-1  ":
+                (isTablet && isPortrait) ||
+                (isTablet && isLandscape) ||
+                (isTabletOrMobile && !isMobile),
+              "tw-col-start-3 tw-row-start-9 tw-col-span-4 tw-grid-cols-8 tw-grid-rows-1":
+                isDesktopOrLaptop && !isTablet,
+            }
+          )}
+        > Post
+         
+        </button>
+       
       </div>
       {showEmojiInput && (
         <div

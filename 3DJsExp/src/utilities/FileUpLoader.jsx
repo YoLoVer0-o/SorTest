@@ -80,16 +80,17 @@ const FileUpLoader = (props) => {
   }, [isOpen]);
 
   return (
-    <div
-      className={classNames("tw-flex tw-w-full tw-h-full  ", {
-        "tw-col-span-6 tw-row-span-4 tw-col-start-4 tw-row-start-4 ":
-          isDesktopOrLaptop,
-        "tw-col-span-6 tw-row-span-3 tw-col-start-2 tw-row-start-3  ":
-          (isTablet && isPortrait) || (isTablet && isLandscape),
-        "tw-col-span-4 tw-row-span-3 tw-col-start-2 tw-row-start-3 ":
-          (isMobile && isPortrait) || (isMobile && isLandscape),
-      })}
-    >
+    // <div
+    //   className={classNames("tw-flex tw-w-full tw-h-full  ", {
+    //     "tw-col-span-6 tw-row-span-4 tw-col-start-4 tw-row-start-4 ":
+    //       isDesktopOrLaptop,
+    //     "tw-col-span-6 tw-row-span-3 tw-col-start-2 tw-row-start-3  ":
+    //       (isTablet && isPortrait) || (isTablet && isLandscape),
+    //     "tw-col-span-4 tw-row-span-3 tw-col-start-2 tw-row-start-3 ":
+    //       (isMobile && isPortrait) || (isMobile && isLandscape),
+    //   })}
+    // >
+      <div className="tw-w-full tw-h-full">
       {isOpenState && (
         <div className="tw-relative tw-border-dashed tw-border-2 tw-w-full tw-h-full tw-overflow-y-auto tw-z-10">
           <section className=" tw-w-full tw-h-full tw-relative">
@@ -195,7 +196,8 @@ const FileUpLoader = (props) => {
           </section>
         </div>
       )}
-    </div>
+      </div>
+    // </div>
   );
 
 };

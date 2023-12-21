@@ -3,8 +3,18 @@ import SelectPlatform from "../utilities/SelectPlatform";
 import FacebookPost from "./FacebookPost";
 import InstagramPost from "./InstagramPost";
 import TwitterPost from "./TwitterPost";
-
+import { useResponsive } from "../hooks";
+import classNames from "classnames";
 const CreatePost = () => {
+  const {
+    isDesktopOrLaptop,
+    isBigScreen,
+    isTabletOrMobile,
+    isMobile,
+    isTablet,
+    isPortrait,
+    isLandscape,
+  } = useResponsive();
   const [selectedPlatform, setSelectedPlatform] = useState("");
 
   const handlePlatformSelect = (platform) => {
@@ -24,11 +34,14 @@ const CreatePost = () => {
   }
 
   return (
-    <div className="tw-w-screen tw-h-full tw-max-h-full  tw-p-4 tw-overflow-auto tw-flex tw-flex-col tw-items-center">
+    <div className="tw-w-screen tw-h-full tw-max-h-full tw-gap-y-5 tw-p-4 tw-overflow-auto tw-flex tw-flex-col tw-items-center">
       <div className="tw-flex tw-justify-center ">Createpost</div>
       <SelectPlatform onPlatformSelect={handlePlatformSelect} />
-      <hr className="tw-h-px tw-my-8 tw-bg-gray-200 tw-border-0 dark:tw-bg-gray-700"></hr>
-      <div className="tw-flex tw-h-full tw-w-[55%] tw-justify-center tw-items-center tw-justify-self-center">
+     
+    <div className={classNames("tw-flex tw-h-full tw-w-[55%] tw-justify-center tw-items-center tw-justify-self-center",{
+      "tw-w-full ":isMobile,
+      "tw-w-[80%] tw-h-[80%]":isTablet,
+    })}>
         {selectedComponent}
       </div>
     </div>
