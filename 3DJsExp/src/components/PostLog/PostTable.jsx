@@ -144,7 +144,7 @@ const PostTable = () => {
                     keyName={"tag"}
                 />
             </div>
-            <div className={classNames("tw-border-2 tw-rounded-md", {
+            <div className={classNames("tw-rounded-md", {
                 "tw-overflow-auto": isTabletOrMobile && isPortrait,
             })}>
                 <DataTable

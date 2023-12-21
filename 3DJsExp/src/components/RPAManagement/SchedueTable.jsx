@@ -86,7 +86,7 @@ const SchedueTable = () => {
             key: "id",
             align: "center",
             width: 50,
-            className: "tw-text-violet-600 tw-text-2xl",
+            className: "tw-text-blue-500 tw-text-2xl",
             render: (text, record) => (
                 <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
                     <Tooltip key={record.id} title={"กดเพื่อแก้ไข"}>

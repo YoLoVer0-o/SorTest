@@ -88,7 +88,7 @@ const EditUserModal = props => {
 
     return (
         <Modal
-            className='tw-max-h-fit tw-max-w-fit'
+            className='tw-max-h-full tw-max-w-fit'
             title={'แก้ไขข้อมูลบัญชี'}
             open={isModalOpen}
             onCancel={handleCancel}
@@ -121,7 +121,7 @@ const EditUserModal = props => {
                 <div className='tw-overflow-y-auto tw-h-full tw-w-full tw-border-black tw-border-2 tw-rounded-md'>
                     <div className='tw-flex tw-flex-col tw-w-full tw-h-full tw-p-4 tw-gap-4'>
                         <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
-                            "tw-w-60": isMobile,
+                            "tw-w-56": isMobile,
                         })}>
                             <p>ชื่อบัญชี:</p>
                             <Form.Item name="accName">
@@ -129,7 +129,7 @@ const EditUserModal = props => {
                             </Form.Item>
                         </div>
                         <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
-                            "tw-w-60": isMobile,
+                            "tw-w-56": isMobile,
                         })}>
                             <p>รหัสผ่าน:</p>
                             <Form.Item name="password">
@@ -137,7 +137,7 @@ const EditUserModal = props => {
                             </Form.Item>
                         </div>
                         <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
-                            "tw-w-60": isMobile,
+                            "tw-w-56": isMobile,
                         })}>
                             <p>Group:</p>
                             <Form.Item name="group">

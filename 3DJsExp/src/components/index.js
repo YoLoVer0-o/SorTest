@@ -16,7 +16,7 @@ import EditWorkModal from "./RPAManagement/EditWorkModal";
 import DataLog from "./RPAManagement/DataLog";
 import ClassTable from "./ClassificationConfig/ClassTable";
 import WordTable from "./ClassificationConfig/WordTable";
-import AddWordModal from "./RPAManagement/AddWordModal";
+import AddWordModal from "./ClassificationConfig/AddWordModal";
 
 export {
   MainLayout,

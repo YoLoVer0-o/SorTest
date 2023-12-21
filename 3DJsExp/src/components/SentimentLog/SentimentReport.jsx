@@ -195,7 +195,7 @@ const SentimentReport = () => {
                 <div className={classNames("tw-flex tw-flex-row tw-mb-4 tw-w-full tw-h-full", {
                     "tw-flex-col": isTabletOrMobile && isPortrait,
                 })}>
-                    <div className={classNames("tw-flex tw-flex-row tw-justify-around tw-w-full tw-border-stone-400 tw-py-4 tw-border-4 tw-rounded-lg tw-text-md tw-font-bold", {
+                    <div className={classNames("tw-flex tw-flex-row tw-justify-around tw-w-full tw-border-white tw-shadow-xl tw-py-4 tw-border-4 tw-rounded-lg tw-text-md tw-font-bold", {
                         "tw-grid tw-grid-cols-2 tw-gap-1": isTabletOrMobile && isPortrait,
                     })}>
                         <div>
@@ -248,7 +248,7 @@ const SentimentReport = () => {
                 <div className={classNames("tw-flex tw-flex-row tw-justify-around tw-my-4 tw-gap-2", {
                     "tw-flex-col": isTabletOrMobile,
                 })}>
-                    <div className="tw-flex tw-w-full tw-flex-col tw-items-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                    <div className="tw-flex tw-w-full tw-flex-col tw-items-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                         <p className="tw-text-center tw-text-lg">ความรู้สึกเชิงบวก-ลบ</p>
                         <div className="tw-flex tw-flex-row tw-justify-center tw-gap-3">
                             <div className="tw-flex tw-flex-row tw-gap-1 ">
@@ -279,7 +279,7 @@ const SentimentReport = () => {
                             />
                         </div>
                     </div>
-                    <div className="tw-flex tw-w-full tw-flex-col tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                    <div className="tw-flex tw-w-full tw-flex-col tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                         <p className="tw-text-center tw-text-lg">ข้อความเชิงบวกสูงสุด</p>
                         <div className={classNames("tw-w-full tw-h-[38rem]", {
                             "tw-h-96 tw-w-96": isTabletOrMobile,
@@ -293,7 +293,7 @@ const SentimentReport = () => {
                             />
                         </div>
                     </div>
-                    <div className="tw-flex tw-w-full tw-flex-col tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                    <div className="tw-flex tw-w-full tw-flex-col tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                         <p className="tw-text-center tw-text-lg">ข้อความเชิงลบสูงสุด</p>
                         <div className={classNames("tw-w-full tw-h-[38rem]", {
                             "tw-h-96 tw-w-96": isTabletOrMobile,
@@ -311,7 +311,7 @@ const SentimentReport = () => {
 
             </div>
 
-            <div className={classNames("tw-my-12 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4", {
+            <div className={classNames("tw-my-12 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
                 "tw-overflow-auto": isTabletOrMobile && isPortrait,
             })}>
                 {displayComments !== "" && (

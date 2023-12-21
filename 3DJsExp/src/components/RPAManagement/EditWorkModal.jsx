@@ -87,7 +87,7 @@ const EditWorkModal = props => {
 
     return (
         <Modal
-            className='tw-max-h-fit tw-max-w-fit'
+            className='tw-max-h-full tw-max-w-fit'
             title={'แก้ไขข้อมูลงาน'}
             open={isModalOpen}
             onCancel={handleCancel}
@@ -120,7 +120,7 @@ const EditWorkModal = props => {
                 <div className='tw-overflow-y-auto tw-h-full tw-w-full tw-border-black tw-border-2 tw-rounded-md'>
                     <div className='tw-flex tw-flex-col tw-w-full tw-h-full tw-p-4 tw-gap-4'>
                         <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
-                            "tw-w-60": isMobile,
+                            "tw-w-56": isMobile,
                         })}>
                             <p>เลขบัญชี/ชื่อบัญชี:</p>
                             <Form.Item name="acc_name">
@@ -128,7 +128,7 @@ const EditWorkModal = props => {
                             </Form.Item>
                         </div>
                         <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
-                            "tw-w-60": isMobile,
+                            "tw-w-56": isMobile,
                         })}>
                             <p>งาน:</p>
                             <Form.Item name="work">
@@ -141,7 +141,7 @@ const EditWorkModal = props => {
                             </Form.Item>
                         </div>
                         <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
-                            "tw-w-60": isMobile,
+                            "tw-w-56": isMobile,
                         })}>
                             <p>เป้าหมาย:</p>
                             <Form.Item name="target">

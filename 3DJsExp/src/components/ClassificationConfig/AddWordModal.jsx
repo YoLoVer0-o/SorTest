@@ -79,7 +79,7 @@ const AddWordModal = (props) => {
 
     return (
         <Modal
-            className="tw-max-h-fit tw-max-w-fit"
+            className="tw-max-h-full tw-max-w-fit"
             title={"เพิ่มคำคัดกรอง"}
             open={isModalOpen}
             onCancel={handleCancel}
@@ -97,7 +97,7 @@ const AddWordModal = (props) => {
                 <div className="tw-flex tw-flex-col tw-w-full tw-h-full tw-p-4 tw-gap-4">
                     <div
                         className={classNames("tw-flex tw-flex-col tw-w-96 tw-h-16", {
-                            "tw-w-60": isMobile,
+                            "tw-w-56": isMobile,
                         })}
                     >
                         <p>คำคัดกรอง:</p>
@@ -110,7 +110,7 @@ const AddWordModal = (props) => {
                     </div>
                     <div
                         className={classNames("tw-flex tw-flex-col tw-w-96 tw-h-16", {
-                            "tw-w-60": isMobile,
+                            "tw-w-56": isMobile,
                         })}
                     >
                         <p>น้ำหนัก(1-10):</p>
@@ -142,7 +142,7 @@ const AddWordModal = (props) => {
                     </div>
                     <div
                         className={classNames("tw-flex tw-flex-col tw-w-96 tw-h-16", {
-                            "tw-w-60": isMobile,
+                            "tw-w-56": isMobile,
                         })}
                     >
                         <p>หมวดนี้แน่นอน:</p>

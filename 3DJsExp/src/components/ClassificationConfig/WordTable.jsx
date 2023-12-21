@@ -98,10 +98,10 @@ const WordTable = () => {
             dataIndex: 'weight',
             key: 'weight',
             align: "center",
-            width: 100,
+            width: isMobile ? 300 : 100,
             className: 'tw-text-amber-600',
             render: (text, record) => (
-                <div className="tw-flex tw-flex-row tw-justify-center">
+                <div className="tw-flex tw-flex-row tw-w-full tw-justify-center">
                     <InputNumber
                         addonBefore={
                             <Tooltip title="ลดจำนวน">
@@ -123,6 +123,7 @@ const WordTable = () => {
                         min={1}
                         max={10}
                         readOnly
+                        className="tw-w-full"
                     />
                 </div>
             ),

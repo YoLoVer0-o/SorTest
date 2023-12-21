@@ -222,7 +222,7 @@ const Dashboard = () => {
     return (
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto', {})}>
             <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">DashBoard</p>
-            <div className={classNames("tw-flex tw-flex-row tw-max-w-full tw-bg-white tw-justify-center tw-gap-2 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4", {
+            <div className={classNames("tw-flex tw-flex-row tw-max-w-full tw-bg-white tw-justify-center tw-gap-2 tw-border-stone-300 tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
                 "tw-flex-col": isTabletOrMobile && isPortrait,
                 "tw-sticky tw-top-0 tw-z-60": !isTabletOrMobile,
             })}>
@@ -258,15 +258,15 @@ const Dashboard = () => {
                         "tw-w-full": isTabletOrMobile || isTablet,
                         "tw-w-1/3": !isTabletOrMobile && !isTablet,
                     })}>
-                        <div className="tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                        <div className="tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">จำนวนโพสต์</p>
                             <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
                         </div>
-                        <div className="tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                        <div className="tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">การมีส่วนร่วมทั้งหมด</p>
                             <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
                         </div>
-                        <div className="tw-flex tw-flex-col tw-h-full tw-w-full tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                        <div className="tw-flex tw-flex-col tw-h-full tw-w-full tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-center tw-text-lg">จำนวนโพสต์รายวัน</p>
                             <div className="tw-flex tw-w-full tw-h-full tw-overflow-auto tw-items-center">
                                 <div className={classNames("tw-w-full tw-overflow-auto", {
@@ -286,15 +286,15 @@ const Dashboard = () => {
                         "tw-w-full": isTabletOrMobile || isTablet,
                         "tw-w-1/3": !isTabletOrMobile && !isTablet,
                     })}>
-                        <div className="tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                        <div className="tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">จำนวนผู้ใช้งาน</p>
                             <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
                         </div>
-                        <div className="tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                        <div className="tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">การมีส่วนร่วมเฉลี่ย/โพสต์</p>
                             <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
                         </div>
-                        <div className="tw-text-center tw-flex tw-flex-col tw-h-full tw-items-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                        <div className="tw-text-center tw-flex tw-flex-col tw-h-full tw-items-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-center tw-text-lg">ความรู้สึกเชิงบวก-ลบ</p>
                             <div className=" tw-flex tw-flex-row tw-justify-center tw-gap-3">
                                 <div className=" tw-flex tw-flex-row tw-gap-1 ">
@@ -333,7 +333,7 @@ const Dashboard = () => {
                         "tw-w-full": isTabletOrMobile || isTablet,
                         "tw-w-1/3": !isTabletOrMobile && !isTablet,
                     })}>
-                        <div className="tw-flex tw-flex-col tw-gap-y-6 tw-w-full tw-h-full tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                        <div className="tw-flex tw-flex-col tw-gap-y-6 tw-w-full tw-h-full tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-center tw-text-lg">ช่องทางสื่อออนไลน์</p>
                             <div className={classNames("tw-w-full tw-h-[38rem]", {
                                 "tw-h-96 tw-w-96": isTabletOrMobile,
@@ -353,7 +353,7 @@ const Dashboard = () => {
                                 />
                             </div>
                         </div>
-                        <div className="tw-flex tw-flex-col tw-h-full tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                        <div className="tw-flex tw-flex-col tw-h-full tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">แฮชเเท็กที่ถูกใช้งานมากที่สุด</p>
                             <div className="tw-flex tw-flex-col tw-w-full tw-h-full tw-justify-around tw-items-center tw-self-center tw-gap-4">
                                 <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
@@ -366,7 +366,7 @@ const Dashboard = () => {
                 <div className={classNames("tw-flex tw-flex-row tw-justify-around tw-gap-4 tw-my-2", {
                     "tw-flex-col": isTabletOrMobile,
                 })}>
-                    <div className={classNames("tw-flex tw-flex-col tw-h-full tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4", {
+                    <div className={classNames("tw-flex tw-flex-col tw-h-full tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
                         "tw-w-full": isTabletOrMobile,
                         "tw-w-1/2": !isTabletOrMobile,
                     })}>
@@ -375,7 +375,7 @@ const Dashboard = () => {
                             <img className="tw-object-cover tw-h-full tw-w-full" src={carouselPic} />
                         </div>
                     </div>
-                    <div className={classNames("tw-flex tw-flex-col tw-h-full tw-object-contain tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4", {
+                    <div className={classNames("tw-flex tw-flex-col tw-h-full tw-object-contain tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
                         "tw-w-full": isTabletOrMobile,
                         "tw-w-1/2": !isTabletOrMobile,
                     })}>

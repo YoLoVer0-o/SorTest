@@ -1,4 +1,4 @@
-import { Table } from 'antd';
+import { ConfigProvider, Table } from 'antd';
 import PropTypes from 'prop-types';
 import classNames from "classnames";
 
@@ -38,28 +38,40 @@ const DataTable = props => {
   };
 
   return (
-    <div className={classNames("tw-min-h-fit tw-min-w-full tw-overflow-auto", {
-      // "tw-min-h-screen": isMobile && isLandscape,
-    })}>
-      <Table
-        rowClassName={"tw-min-h-fit tw-min-w-fit"}
-        tableLayout={'fixed'}
-        columns={columns}
-        // sticky={{ offsetScroll: 4, }}
-        dataSource={receviedData ? receviedData.map(item => ({ ...item, key: item.id })) : []}
-        onChange={onChange}
-        pagination={{
-          defaultPageSize: 5,
-          pageSize: pageSize,
-        }}
-        onRow={(record, rowIndex) => ({
-          onClick: () => {
-            useRowClick ? handleRowClick(record, rowIndex) : false
-          }
-        })}
-        rowSelection={useRowSelection ? handleRowSelection : false}
-      />
-    </div>
+    <ConfigProvider
+      theme={{
+        components: {
+          Table: {
+            headerBg: "#303c6c",
+            headerColor: "#ffffff !important",
+          },
+        },
+      }}
+    >
+      <div className={classNames("tw-min-h-fit tw-min-w-full tw-overflow-auto tw-shadow-2xl", {
+        // "tw-min-h-screen": isMobile && isLandscape,
+      })}>
+        <Table
+          rowClassName={"tw-min-h-fit tw-min-w-fit"}
+          tableLayout={'fixed'}
+          columns={columns}
+          // sticky={{ offsetScroll: 4, }}
+          dataSource={receviedData ? receviedData.map(item => ({ ...item, key: item.id })) : []}
+          onChange={onChange}
+          pagination={{
+            defaultPageSize: 5,
+            pageSize: pageSize,
+          }}
+          onRow={(record, rowIndex) => ({
+            onClick: () => {
+              useRowClick ? handleRowClick(record, rowIndex) : false
+            }
+          })}
+          rowSelection={useRowSelection ? handleRowSelection : false}
+        />
+      </div>
+    </ConfigProvider>
+
   );
 };
 
