@@ -1,16 +1,17 @@
 import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { Modal } from 'antd';
+import PropTypes from 'prop-types';
 
 const FeedbackModal = props => {
 
+    //////////////////////////////////////////props declaration////////////////////////////////////////////////////////////////
     const modalToggle = props.modalToggle;
     const handleCancel = props.handleCancel;
     const modalData = props.modalData;
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     const [isModalOpen, setIsModalOpen] = useState(modalToggle);
     const [data, setData] = useState(modalData);
-
 
     useEffect(() => {
         setData(modalData);

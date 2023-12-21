@@ -1,16 +1,16 @@
-import { DataTable, SearchBar } from "../utilities";
-import { botStatus } from "../mock";
 import { useState } from "react";
+import { DataTable, SearchBar } from "../../utilities";
+import { botStatus } from "../../mock";
+import { useResponsive } from "../../hooks";
+import { EditUserModal } from "..";
 import { Button, Tooltip } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 dayjs.extend(isSameOrBefore);
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
-import classNames from "classnames";
 dayjs.extend(isSameOrAfter);
-import { useResponsive } from "../hooks";
-import { EditUserModal } from "../components";
+import classNames from "classnames";
 
 const AccountTable = () => {
     const [searchAccount, setSearchAccout] = useState("");
@@ -19,10 +19,9 @@ const AccountTable = () => {
     const [modalToggle, setModalToggle] = useState(false);
     const [modalData, setModalData] = useState([]);
 
-
-
     const { isTabletOrMobile, isMobile, isPortrait, isLandscape } = useResponsive();
 
+    //////////////////////////////////////////modal toggle logic////////////////////////////////////////////////////////////////
     const showModal = (data) => {
         setModalData(data);
         setModalToggle(true);
@@ -31,7 +30,9 @@ const AccountTable = () => {
     const handleCancel = () => {
         setModalToggle(false);
     };
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    ////////////////////////////////////////////table//////////////////////////////////////////////////////////////
     const columns = [
         {
             title: "id",
@@ -121,7 +122,7 @@ const AccountTable = () => {
             key: "id",
             align: "center",
             width: 50,
-            className: "tw-text-violet-600 tw-text-2xl",
+            className: "tw-text-blue-500 tw-text-2xl",
             render: (text, record) => (
                 <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
                     <Tooltip key={record.id} title={"กดเพื่อแก้ไข"}>
@@ -131,6 +132,7 @@ const AccountTable = () => {
             ),
         },
     ];
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     return (
         <div

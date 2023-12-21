@@ -1,18 +1,19 @@
-import { DataTable, SearchBar } from "../utilities";
-import { workMock } from "../mock";
 import { useState } from "react";
+import { DataTable, SearchBar } from "../../utilities";
+import { workMock } from "../../mock";
+import { useResponsive } from "../../hooks";
+import { EditWorkModal } from "..";
 import { Button, Tooltip } from "antd";
 import { EditOutlined, CheckCircleOutlined, PlayCircleOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 dayjs.extend(isSameOrBefore);
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
-import classNames from "classnames";
 dayjs.extend(isSameOrAfter);
-import { useResponsive } from "../hooks";
-import { EditWorkModal } from "../components";
+import classNames from "classnames";
 
 const WorkTable = () => {
+
     const [searchAccount, setSearchAccout] = useState("");
     const [searchTarget, setSearchTarget] = useState([]);
     const [searchWork, setSearchWork] = useState([]);
@@ -21,6 +22,7 @@ const WorkTable = () => {
 
     const { isTabletOrMobile, isMobile, isPortrait, isLandscape } = useResponsive();
 
+    //////////////////////////////////////////modal toggle logic////////////////////////////////////////////////////////////////
     const showModal = (data) => {
         setModalData(data);
         setModalToggle(true);
@@ -29,8 +31,9 @@ const WorkTable = () => {
     const handleCancel = () => {
         setModalToggle(false);
     };
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+    ////////////////////////////////////////////table//////////////////////////////////////////////////////////////
     const columns = [
         {
             title: "",
@@ -108,7 +111,7 @@ const WorkTable = () => {
             key: "id",
             align: "center",
             width: 50,
-            className: "tw-text-violet-600 tw-text-2xl",
+            className: "tw-text-blue-500 tw-text-2xl",
             render: (text, record) => (
                 <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
                     <Tooltip key={record.id} title={"กดเพื่อแก้ไข"}>
@@ -118,6 +121,7 @@ const WorkTable = () => {
             ),
         },
     ];
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     return (
         <div

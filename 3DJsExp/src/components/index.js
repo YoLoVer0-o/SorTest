@@ -1,19 +1,22 @@
 import MainLayout from "./MainLayout";
-import PostTable from "./PostTable";
-import Dashboard from "./Dashboard";
+import PostTable from "./PostLog/PostTable";
+import Dashboard from "./MainDashboard/Dashboard";
 import Feedback from "./Feedback";
-import FeedbackModal from "./FeedbackModal";
-import PostReport from "./PostReport";
+import FeedbackModal from "./SentimentLog/FeedbackModal";
+import PostReport from "./PostLog/PostReport";
 import CreatePost from "./Createpost";
-import SentimentTable from "./SentimentTable";
-import SentimentReport from "./SentimentReport";
-import AccountTable from "./AccountTable";
-import SchedueTable from "./SchedueTable";
-import WorkTable from "./WorkTable";
-import EditUserModal from "./EditUserModal";
-import EditSchedueModal from "./EditSchedueModal";
-import EditWorkModal from "./EditWorkModal";
-import DataLog from "./dataLog";
+import SentimentTable from "./SentimentLog/SentimentTable";
+import SentimentReport from "./SentimentLog/SentimentReport";
+import AccountTable from "./RPAManagement/AccountTable";
+import SchedueTable from "./RPAManagement/SchedueTable";
+import WorkTable from "./RPAManagement/WorkTable";
+import EditUserModal from "./RPAManagement/EditUserModal";
+import EditSchedueModal from "./RPAManagement/EditSchedueModal";
+import EditWorkModal from "./RPAManagement/EditWorkModal";
+import DataLog from "./RPAManagement/DataLog";
+import ClassTable from "./ClassificationConfig/ClassTable";
+import WordTable from "./ClassificationConfig/WordTable";
+import AddWordModal from "./ClassificationConfig/AddWordModal";
 
 export {
   MainLayout,
@@ -32,4 +35,7 @@ export {
   EditSchedueModal,
   EditWorkModal,
   DataLog,
+  ClassTable,
+  WordTable,
+  AddWordModal,
 };

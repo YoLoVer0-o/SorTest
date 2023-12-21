@@ -1,34 +1,35 @@
 import { useState, useEffect } from 'react';
+import { useResponsive } from "../../hooks";
 import { Form, Modal, Button, Input, Select } from 'antd';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { useResponsive } from "../hooks";
+import PropTypes from 'prop-types';
 
 const EditWorkModal = props => {
 
+    //////////////////////////////////////////props declaration////////////////////////////////////////////////////////////////
     const modalToggle = props.modalToggle;
     const handleCancel = props.handleCancel;
     const modalData = props.modalData;
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     const [isModalOpen, setIsModalOpen] = useState(modalToggle);
     const [formData, setFormData] = useState({});
 
     const { isMobile } = useResponsive();
 
+    ////////////////////////////////////////////////////form//////////////////////////////////////////////////////
     const [form] = Form.useForm();
-
-    const MySwal = withReactContent(Swal)
 
     const onFinish = (values) => {
         console.log(values);
         setFormData(values);
     };
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    const handleChange = (value) => {
-        console.log(`selected ${value}`);
-    };
+    ///////////////////////////////////////////sweetalert and save and delete///////////////////////////////////////////////////////////////
+    const MySwal = withReactContent(Swal)
 
     const handleSave = () => {
 
@@ -74,6 +75,7 @@ const EditWorkModal = props => {
             }
         });
     }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     useEffect(() => {
         form.resetFields();
@@ -85,7 +87,7 @@ const EditWorkModal = props => {
 
     return (
         <Modal
-            className='tw-max-h-fit tw-max-w-fit'
+            className='tw-max-h-full tw-max-w-fit'
             title={'แก้ไขข้อมูลงาน'}
             open={isModalOpen}
             onCancel={handleCancel}
@@ -118,7 +120,7 @@ const EditWorkModal = props => {
                 <div className='tw-overflow-y-auto tw-h-full tw-w-full tw-border-black tw-border-2 tw-rounded-md'>
                     <div className='tw-flex tw-flex-col tw-w-full tw-h-full tw-p-4 tw-gap-4'>
                         <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
-                            "tw-w-60": isMobile,
+                            "tw-w-56": isMobile,
                         })}>
                             <p>เลขบัญชี/ชื่อบัญชี:</p>
                             <Form.Item name="acc_name">
@@ -126,7 +128,7 @@ const EditWorkModal = props => {
                             </Form.Item>
                         </div>
                         <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
-                            "tw-w-60": isMobile,
+                            "tw-w-56": isMobile,
                         })}>
                             <p>งาน:</p>
                             <Form.Item name="work">
@@ -134,13 +136,12 @@ const EditWorkModal = props => {
                                     allowClear
                                     className='tw-w-full'
                                     placeholder="Please select"
-                                    onChange={handleChange}
                                     options={[]}
                                 />
                             </Form.Item>
                         </div>
                         <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
-                            "tw-w-60": isMobile,
+                            "tw-w-56": isMobile,
                         })}>
                             <p>เป้าหมาย:</p>
                             <Form.Item name="target">
@@ -151,7 +152,6 @@ const EditWorkModal = props => {
                 </div>
             </Form>
         </Modal >
-
     );
 };
 
@@ -159,7 +159,6 @@ EditWorkModal.propTypes = {
     modalToggle: PropTypes.bool.isRequired,
     handleCancel: PropTypes.func.isRequired,
     modalData: PropTypes.any.isRequired,
-
 }
 
 export default EditWorkModal;

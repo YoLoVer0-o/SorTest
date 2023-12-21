@@ -1,6 +1,7 @@
-import { DataTable, SearchBar } from "../utilities";
-import { newSentiment } from "../mock";
 import { useState } from "react";
+import { DataTable, SearchBar } from "../../utilities";
+import { newSentiment } from "../../mock";
+import { useResponsive } from "../../hooks";
 import { useNavigate } from "react-router-dom";
 import { Button, Tooltip } from "antd";
 import { ColumnHeightOutlined, VerticalAlignMiddleOutlined } from '@ant-design/icons';
@@ -8,11 +9,11 @@ import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 dayjs.extend(isSameOrBefore)
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import classNames from "classnames";
 dayjs.extend(isSameOrAfter)
-import { useResponsive } from "../hooks";
+import classNames from "classnames";
 
 const SentimentTable = () => {
+
     const [searchTag, setSearchTag] = useState([]);
     const [searchBot, setSearchBot] = useState([]);
     const [searchDate, setSearchDate] = useState([]);
@@ -20,8 +21,9 @@ const SentimentTable = () => {
 
     const navigate = useNavigate();
 
-    const { isTabletOrMobile, isMobile, isPortrait, isLandscape } = useResponsive();
+    const { isTabletOrMobile, isPortrait } = useResponsive();
 
+    /////////////////////////////////////////////table/////////////////////////////////////////////////////////////
     const columns = [
         {
             title: 'id',
@@ -137,16 +139,16 @@ const SentimentTable = () => {
             ),
         },
     ];
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    ///////////////////////////////////////////to report///////////////////////////////////////////////////////////////
     const toReport = async (data) => {
         navigate(`/sentiment/report/${data.id}`, { state: data })
-        // console.log(data);
     }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     return (
-        <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto', {
-            // "tw-min-h-screen":isTabletOrMobile,
-        })}>
+        <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto', {})}>
             <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">BotTable</p>
             <div className={classNames("tw-flex tw-flex-row tw-max-w-full tw-justify-center tw-gap-2", {
                 "tw-flex-col": isTabletOrMobile && isPortrait,

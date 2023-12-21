@@ -1,20 +1,20 @@
-import { SearchBar, VerticalBarChart, HorizontalBarChart, DoughnutChart } from "../utilities";
-import { newSentiment, sentimentAll, sentimentPos, socialPlatform } from "../mock";
-import profile from "../assets/profile.png";
-import carouselPic from "../assets/carouselPic.jpg";
 import { useState } from "react";
-import SocialIcons from "../assets/SocialIcons";
+import { SearchBar, VerticalBarChart, HorizontalBarChart, DoughnutChart } from "../../utilities";
+import { newSentiment, sentimentAll, sentimentPos, socialPlatform } from "../../mock";
+import { useResponsive } from "../../hooks";
+import { Button, Tooltip } from "antd";
+import { FilePdfOutlined } from "@ant-design/icons";
+import classNames from "classnames";
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import ReadMoreReact from 'read-more-react';
+import profile from "../../assets/profile.png";
+import carouselPic from "../../assets/carouselPic.jpg";
+import SocialIcons from "../../assets/SocialIcons";
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 dayjs.extend(isSameOrBefore)
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import classNames from "classnames";
 dayjs.extend(isSameOrAfter)
-import { useResponsive } from "../hooks";
-import { Button, Tooltip } from "antd";
-import { FilePdfOutlined } from "@ant-design/icons";
-import ChartDataLabels from 'chartjs-plugin-datalabels';
-import ReadMoreReact from 'read-more-react';
 
 const Dashboard = () => {
 
@@ -23,6 +23,71 @@ const Dashboard = () => {
 
     const { isTabletOrMobile, isTablet, isMobile, isPortrait } = useResponsive();
 
+    ///////////////////////////////////icons render logic///////////////////////////////////////////////////////////////////////
+    const { facebook, instagram, twitter, tiktok, youtube, social_media } = SocialIcons;
+    const sentIcons = (value) => {
+        if (value == "facebook") {
+            return facebook
+        }
+        else if (value == "instagram") {
+            return instagram
+        }
+        else if (value == "twitter") {
+            return twitter
+        }
+        else if (value == "tiktok") {
+            return tiktok
+        }
+        else if (value == "youtube") {
+            return youtube
+        }
+        else {
+            return social_media
+        }
+    };
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    ////////////////////////////////////////////image reder//////////////////////////////////////////////////////////////
+    const imageSettings = {
+        barSize: isMobile ? 30 : 50,
+        imageWidth: isMobile ? 30 : 50,
+        imageHeight: isMobile ? 30 : 50,
+        imageHalfHeight: isMobile ? 30 / 2 : 50 / 2,
+        imageBarOffset: 0,
+    };
+
+    const handleDrawImage = (chart, data) => {
+        const { ctx } = chart;
+
+        const chartHeight = chart.chartArea?.height;
+        const dataLength = data.labels.length;
+
+        const step = (chartHeight - imageSettings.barSize * dataLength) / dataLength;
+        const yOffset = step / 2 + imageSettings.imageBarOffset;
+
+        ctx.save();
+
+        data.labels.forEach((element, i) => {
+
+            const imageY = i * (imageSettings.barSize + step) + yOffset;
+
+            const image = new Image();
+            image.src = sentIcons(element);
+
+            ctx.drawImage(
+                image,
+                0,
+                imageY,
+                imageSettings.imageWidth,
+                imageSettings.imageHeight
+            );
+
+            ctx.restore();
+        });
+    };
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //////////////////////////////////////////color render////////////////////////////////////////////////////////////////
     const colorSet = (data) => {
         if (data == "positive") {
             return "#22c55e";
@@ -34,11 +99,26 @@ const Dashboard = () => {
             return "#0284c7";
         }
     };
-
-    const testText = "Lorem ipsum dolor sit amet,consectetur adipiscing elit.Vivamus odio quam,convallis et pretium consectetur,vestibulum nec tellus.Nulla fringilla sem eu lacinia mollis.Fusce a molestie enim.Duis pellentesque turpis scelerisque efficitur condimentum.Sed pellentesque odio efficitur interdum scelerisque.Nulla euismod erat porta neque mattis lobortis.Praesent consequat mi at pharetra venenatis.Donec leo sapien, blandit porttitor justo nec,sagittis sagittis diam.Nunc elementum neque quis laoreet maximus.Donec dignissim lectus tortor,condimentum egestas lorem volutpat et.Nulla leo orci,euismod et rutrum ut, aliquam non tellus.Proin lectus nulla,finibus eu tortor in, maximus euismod ligula."
-    const readMore = <p className="tw-text-blue-500">อ่านเพิ่มเติม</p>
-
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //////////////////////////////////////////////////read more////////////////////////////////////////////////////////
+    const testText = "Lorem ipsum dolor sit amet,consectetur adipiscing elit.Vivamus odio quam,convallis et pretium consectetur,vestibulum nec tellus.Nulla fringilla sem eu lacinia mollis.Fusce a molestie enim.Duis pellentesque turpis scelerisque efficitur condimentum.Sed pellentesque odio efficitur interdum scelerisque.Nulla euismod erat porta neque mattis lobortis.Praesent consequat mi at pharetra venenatis.Donec leo sapien, blandit porttitor justo nec,sagittis sagittis diam.Nunc elementum neque quis laoreet maximus.Donec dignissim lectus tortor,condimentum egestas lorem volutpat et.Nulla leo orci,euismod et rutrum ut, aliquam non tellus.Proin lectus nulla,finibus eu tortor in, maximus euismod ligula."
+    const readMore = <p className="tw-text-blue-500 tw-cursor-pointer">อ่านเพิ่มเติม</p>
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //////////////////////////////////////////postBar////////////////////////////////////////////////////////////////
+    const postBarData = {
+        labels: sentimentPos.map(item => item.name),
+        datasets: [
+            {
+                label: 'จำนวนโพสต์',
+                data: sentimentPos.map(item => item.value),
+                backgroundColor: sentimentPos.map(item => colorSet(item.commentType)),
+                barThickness: isMobile ? 20 : 50,
+            },
+        ],
+    };
+
     const postBarOptions = {
         responsive: true,
         maintainAspectRatio: false,
@@ -53,23 +133,9 @@ const Dashboard = () => {
             },
         },
     };
-
-    const postBarData = {
-        labels: sentimentPos.map(item => item.name),
-        datasets: [
-            {
-                label: 'จำนวนโพสต์',
-                data: sentimentPos.map(item => item.value),
-                backgroundColor: sentimentPos.map(item => colorSet(item.commentType)),
-                barThickness: isMobile ? 20 : 50,
-            },
-        ],
-    };
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+    ///////////////////////////////////////////sentimentBar///////////////////////////////////////////////////////////////
     const sentimentData = {
         labels: sentimentAll.map(item => item.name),
         datasets: [
@@ -104,69 +170,18 @@ const Dashboard = () => {
     };
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    const { facebook, instagram, twitter, tiktok, youtube, social_media } = SocialIcons;
-    const sentIcons = (value) => {
-        // console.log(value);
-        if (value == "facebook") {
-            return facebook
-        }
-        else if (value == "instagram") {
-            return instagram
-        }
-        else if (value == "twitter") {
-            return twitter
-        }
-        else if (value == "tiktok") {
-            return tiktok
-        }
-        else if (value == "youtube") {
-            return youtube
-        }
-        else {
-            return social_media
-        }
-    };
-
-    const imageSettings = {
-        barSize: isMobile ? 30 : 50,
-        imageWidth: isMobile ? 30 : 50,
-        imageHeight: isMobile ? 30 : 50,
-        imageHalfHeight: isMobile ? 30 / 2 : 50 / 2,
-        imageBarOffset: 0,
-    };
-
-
-    const handleDrawImage = (chart, data) => {
-        const { ctx } = chart;
-
-        const chartHeight = chart.chartArea?.height;
-        const dataLength = data.labels.length;
-
-        const step = (chartHeight - imageSettings.barSize * dataLength) / dataLength;
-        const yOffset = step / 2 + imageSettings.imageBarOffset;
-
-
-        ctx.save();
-
-        data.labels.forEach((element, i) => {
-            // console.log(element);
-
-            const imageY = i * (imageSettings.barSize + step) + yOffset;
-
-            const image = new Image();
-            image.src = sentIcons(element);
-
-            ctx.drawImage(
-                image,
-                0,
-                imageY,
-                imageSettings.imageWidth,
-                imageSettings.imageHeight
-            );
-
-            ctx.restore();
-        });
+    /////////////////////////////////////////////socialBar/////////////////////////////////////////////////////////////
+    const socialBarData = {
+        labels: socialPlatform.map(item => item.platform),
+        datasets: [
+            {
+                label: 'จำนวนความเคลื่อนไหว',
+                data: socialPlatform.map(item => item.usage),
+                borderColor: 'rgb(255, 99, 132)',
+                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                barThickness: isTabletOrMobile ? 30 : 50,
+            },
+        ],
     };
 
     const socialBarOptions = {
@@ -202,25 +217,12 @@ const Dashboard = () => {
             },
         },
     };
-
-    const socialBarData = {
-        labels: socialPlatform.map(item => item.platform),
-        datasets: [
-            {
-                label: 'จำนวนความเคลื่อนไหว',
-                data: socialPlatform.map(item => item.usage),
-                borderColor: 'rgb(255, 99, 132)',
-                backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                barThickness: isTabletOrMobile ? 30 : 50,
-            },
-        ],
-    };
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     return (
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto', {})}>
             <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">DashBoard</p>
-            <div className={classNames("tw-flex tw-flex-row tw-max-w-full tw-bg-white tw-justify-center tw-gap-2 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4", {
+            <div className={classNames("tw-flex tw-flex-row tw-max-w-full tw-bg-white tw-justify-center tw-gap-2 tw-border-stone-300 tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
                 "tw-flex-col": isTabletOrMobile && isPortrait,
                 "tw-sticky tw-top-0 tw-z-60": !isTabletOrMobile,
             })}>
@@ -256,15 +258,15 @@ const Dashboard = () => {
                         "tw-w-full": isTabletOrMobile || isTablet,
                         "tw-w-1/3": !isTabletOrMobile && !isTablet,
                     })}>
-                        <div className="tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                        <div className="tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">จำนวนโพสต์</p>
                             <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
                         </div>
-                        <div className="tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                        <div className="tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">การมีส่วนร่วมทั้งหมด</p>
                             <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
                         </div>
-                        <div className="tw-flex tw-flex-col tw-h-full tw-w-full tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                        <div className="tw-flex tw-flex-col tw-h-full tw-w-full tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-center tw-text-lg">จำนวนโพสต์รายวัน</p>
                             <div className="tw-flex tw-w-full tw-h-full tw-overflow-auto tw-items-center">
                                 <div className={classNames("tw-w-full tw-overflow-auto", {
@@ -284,15 +286,15 @@ const Dashboard = () => {
                         "tw-w-full": isTabletOrMobile || isTablet,
                         "tw-w-1/3": !isTabletOrMobile && !isTablet,
                     })}>
-                        <div className="tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                        <div className="tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">จำนวนผู้ใช้งาน</p>
                             <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
                         </div>
-                        <div className="tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                        <div className="tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">การมีส่วนร่วมเฉลี่ย/โพสต์</p>
                             <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
                         </div>
-                        <div className="tw-text-center tw-flex tw-flex-col tw-h-full tw-items-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                        <div className="tw-text-center tw-flex tw-flex-col tw-h-full tw-items-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-center tw-text-lg">ความรู้สึกเชิงบวก-ลบ</p>
                             <div className=" tw-flex tw-flex-row tw-justify-center tw-gap-3">
                                 <div className=" tw-flex tw-flex-row tw-gap-1 ">
@@ -331,9 +333,8 @@ const Dashboard = () => {
                         "tw-w-full": isTabletOrMobile || isTablet,
                         "tw-w-1/3": !isTabletOrMobile && !isTablet,
                     })}>
-                        <div className="tw-flex tw-flex-col tw-gap-y-6 tw-w-full tw-h-full tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                        <div className="tw-flex tw-flex-col tw-gap-y-6 tw-w-full tw-h-full tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-center tw-text-lg">ช่องทางสื่อออนไลน์</p>
-                            {/* <div className="tw-flex tw-w-full tw-h-full tw-overflow-auto"> */}
                             <div className={classNames("tw-w-full tw-h-[38rem]", {
                                 "tw-h-96 tw-w-96": isTabletOrMobile,
                             })}>
@@ -351,9 +352,8 @@ const Dashboard = () => {
                                     ]}
                                 />
                             </div>
-                            {/* </div> */}
                         </div>
-                        <div className="tw-flex tw-flex-col tw-h-full tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4">
+                        <div className="tw-flex tw-flex-col tw-h-full tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">แฮชเเท็กที่ถูกใช้งานมากที่สุด</p>
                             <div className="tw-flex tw-flex-col tw-w-full tw-h-full tw-justify-around tw-items-center tw-self-center tw-gap-4">
                                 <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
@@ -366,7 +366,7 @@ const Dashboard = () => {
                 <div className={classNames("tw-flex tw-flex-row tw-justify-around tw-gap-4 tw-my-2", {
                     "tw-flex-col": isTabletOrMobile,
                 })}>
-                    <div className={classNames("tw-flex tw-flex-col tw-h-full tw-text-center tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4", {
+                    <div className={classNames("tw-flex tw-flex-col tw-h-full tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
                         "tw-w-full": isTabletOrMobile,
                         "tw-w-1/2": !isTabletOrMobile,
                     })}>
@@ -375,7 +375,7 @@ const Dashboard = () => {
                             <img className="tw-object-cover tw-h-full tw-w-full" src={carouselPic} />
                         </div>
                     </div>
-                    <div className={classNames("tw-flex tw-flex-col tw-h-full tw-object-contain tw-gap-y-6 tw-border-stone-400 tw-border-4 tw-rounded-lg tw-p-4", {
+                    <div className={classNames("tw-flex tw-flex-col tw-h-full tw-object-contain tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
                         "tw-w-full": isTabletOrMobile,
                         "tw-w-1/2": !isTabletOrMobile,
                     })}>
@@ -396,7 +396,6 @@ const Dashboard = () => {
                                     min={80}
                                     ideal={100}
                                     max={200}
-                                    // readMoreText={"read more"}
                                     readMoreText={readMore}
                                 />
                                 <div>

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
-import PropTypes from "prop-types";
+import { useResponsive } from "../hooks";
+import SocialIcons from "../assets/SocialIcons";
+import { Layout, Menu, Button, Breadcrumb, Tooltip } from "antd";
 import {
   BarChartOutlined,
   CommentOutlined,
@@ -8,15 +10,18 @@ import {
   ControlOutlined,
   ContainerOutlined,
   CloseOutlined,
+  SlidersOutlined,
 } from "@ant-design/icons";
-import SocialIcons from "../assets/SocialIcons";
-import { Layout, Menu, Button, Breadcrumb, Tooltip } from "antd";
 import classNames from "classnames";
-import { useResponsive } from "../hooks";
+import PropTypes from "prop-types";
 
 const { Header, Sider, Content } = Layout;
 
 const MainLayout = (props) => {
+
+  const [collapsed, setCollapsed] = useState(true);
+  const [openKeys, setOpenKeys] = useState([]);
+
   const {
     isTabletOrMobile,
     isMobile,
@@ -24,10 +29,13 @@ const MainLayout = (props) => {
     isLandscape,
   } = useResponsive();
 
-  let param = useParams();
   const navigate = useNavigate();
+
   const location = useLocation();
 
+  const param = useParams();
+
+  ///////////////////////////////////////breadcrumb name///////////////////////////////////////////////////////////////////
   const breadcrumbNameMap = {
     '/main': 'รายงานสรุป',
     '/postlog': 'โพสต์และความเคลื่อนไหว',
@@ -41,12 +49,22 @@ const MainLayout = (props) => {
     '/RPA/job': 'งาน',
     '/RPA/errlog': 'Error Log',
     '/RPA/activlog': 'Activity Log',
-    '/classconfig/': 'Classification Config',
+    '/classconfig': 'Classification Config',
+    '/classconfig/edit': 'แก้ไข',
   };
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+  ////////////////////////////////////social icon declaration//////////////////////////////////////////////////////////////////////
+  const { facebook, instagram, twitter, tiktok, youtube } = SocialIcons;
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  ///////////////////////////////////////breadcrumb render logic///////////////////////////////////////////////////////////////////
   const pathSnippets = location.pathname.split('/').filter((i) => i);
+
   const breadcrumbItems = pathSnippets.map((_, index) => {
+
     const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
+
     const [paramValue] = Object.values(param);
 
     const isDynamic = url.includes(paramValue);
@@ -56,6 +74,7 @@ const MainLayout = (props) => {
       title: <p>{isDynamic ? paramValue : breadcrumbNameMap[url]}</p>,
     }
   });
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   const handleMenuClick = ({ key }) => {
     if (key) {
@@ -64,11 +83,8 @@ const MainLayout = (props) => {
     }
   };
 
-  const [collapsed, setCollapsed] = useState(true);
-
+  ///////////////////////////////////////root submenus///////////////////////////////////////////////////////////////////
   const rootSubmenuKeys = ['/RPA/facebook', '/RPA/X', '/RPA/instagram', '/RPA/youtube', '/RPA/tiktok'];
-
-  const [openKeys, setOpenKeys] = useState([]);
 
   const onOpenChange = (keys) => {
     const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
@@ -89,9 +105,11 @@ const MainLayout = (props) => {
     }
   };
 
-  const showBackButton = breadcrumbItems.length > 1 && !breadcrumbItems.some(item => item.key.includes('/RPA'));
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  const { facebook, instagram, twitter, tiktok, youtube } = SocialIcons;
+  //////////////////////////////////////////////back button logic////////////////////////////////////////////////////////////
+  const showBackButton = breadcrumbItems.length > 1 && !breadcrumbItems.some(item => item.key.includes('/RPA'));
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
     if (location.pathname == "/") {
@@ -357,6 +375,11 @@ const MainLayout = (props) => {
                       ],
                     },
                   ],
+                },
+                {
+                  key: "/classconfig",
+                  icon: <SlidersOutlined />,
+                  label: "Classification Config",
                 },
               ]}
             />
