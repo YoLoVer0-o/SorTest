@@ -52,7 +52,7 @@ const FacebookPost = () => {
   return (
     <div
       className={classNames(
-        "tw-w-full tw-h-full tw-rounded-md tw-flex tw-justify-center tw-justify-self-center tw-overflow-auto tw-shadow-[0_3px_10px_rgb(0,0,0,0.2)]",
+        "tw-w-full tw-h-full tw-bg-white tw-rounded-md tw-flex tw-justify-center tw-justify-self-center tw-overflow-auto tw-shadow-[0_3px_10px_rgb(0,0,0,0.2)]",
         {
           // "tw-h-[80%]": isBigScreen,
           // "tw-h-[70%]": isDesktopOrLaptop,

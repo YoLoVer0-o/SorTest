@@ -417,6 +417,7 @@ const MainLayout = (props) => {
               "tw-flex tw-max-w-full tw-max-h-fit tw-justify-center tw-m-4 tw-bg-white tw-object-contain tw-p-4",
               {
                 "tw-overflow-auto": isTabletOrMobile && isLandscape,
+                "tw-bg-[#f5f5f5]": location.pathname == "/createPost",
               }
             )}
           >
