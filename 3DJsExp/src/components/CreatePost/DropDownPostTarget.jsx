@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { Button, Modal, Radio, Space } from "antd";
-import PostTag from "../assets/PostTag";
+import PostTag from "../../assets/PostTag";
+// import {
+//   // Transition,
+//   CSSTransition,
+//   SwitchTransition,
+//   // TransitionGroup,
+// } from "react-transition-group";
 const DropDownPostTarget = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [changeLable, setChangeLable] = useState("เพื่อน");

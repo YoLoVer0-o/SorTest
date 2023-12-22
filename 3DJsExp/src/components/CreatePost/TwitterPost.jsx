@@ -1,8 +1,8 @@
-import profile from "../assets/profile.png";
+import profile from "../../assets/profile.png";
 import EmojiPicker, { EmojiStyle } from "emoji-picker-react";
 import { useState } from "react";
 import classNames from "classnames";
-import { useResponsive } from "../hooks";
+import { useResponsive } from "../../hooks";
 import { BsGlobeAsiaAustralia, BsEmojiSmile } from "react-icons/bs";
 import { LuUserCheck2 } from "react-icons/lu";
 import { MdOutlineVerified } from "react-icons/md";
@@ -11,8 +11,8 @@ import { SlPicture } from "react-icons/sl";
 import { LiaPollHSolid, LiaWindowClose } from "react-icons/lia";
 import { TbCalendarTime } from "react-icons/tb";
 import { Select } from "antd";
-import FileUpLoader from "../utilities/FileUpLoader";
-import TimeSetPost from "../utilities/TimeSetPost";
+import FileUpLoader from "../../utilities/FileUpLoader";
+import TimeSetPost from "../../utilities/TimeSetPost";
 
 const TwitterPost = () => {
   const [message, setMessage] = useState("");
@@ -51,14 +51,14 @@ const TwitterPost = () => {
 
   const openPicUpload = () => {
     setOpenUpLoad(true);
-    setOpenTimeSet(false)
+    setOpenTimeSet(false);
   };
   const closePicUpload = () => {
     setOpenUpLoad(false);
   };
   const openTime = () => {
     setOpenTimeSet(true);
-    setOpenUpLoad(false)
+    setOpenUpLoad(false);
   };
   const closeTimeSet = () => {
     setOpenTimeSet(false);

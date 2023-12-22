@@ -29,6 +29,7 @@
     "react-icons": "^4.11.0",
     "react-responsive": "^9.0.2",
     "react-router-dom": "^6.15.0",
+    "react-transition-group": "^4.4.5",
     "read-more-react": "^1.0.10",
     "sweetalert2": "^11.10.1",
     "sweetalert2-react-content": "^5.0.7"
