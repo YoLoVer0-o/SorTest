@@ -98,7 +98,7 @@ const WordTable = () => {
             dataIndex: 'weight',
             key: 'weight',
             align: "center",
-            width: isMobile ? 300 : 100,
+            width: isTabletOrMobile ? 300 : 100,
             className: 'tw-text-amber-600',
             render: (text, record) => (
                 <div className="tw-flex tw-flex-row tw-w-full tw-justify-center">
