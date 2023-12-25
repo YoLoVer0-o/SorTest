@@ -43,8 +43,9 @@ const CreatePost = () => {
           "tw-flex tw-h-full  tw-justify-center tw-items-center tw-justify-self-center",
           {
             "tw-w-full ": isMobile,
-            "tw-w-[80%] tw-h-[80%]": isTablet && isPortrait,
-            "tw-w-[40%]": isDesktopOrLaptop,
+            "tw-w-[80%] tw-h-[80%]": isTablet && isPortrait || isLandscape && !isDesktopOrLaptop && !isMobile,
+            
+            "tw-w-[40%] ": isDesktopOrLaptop,
           }
         )}
       >

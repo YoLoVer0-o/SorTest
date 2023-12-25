@@ -9,6 +9,7 @@ import botStatus from "./BotStatusMock";
 import testAcc from "./testAcc_mock";
 import workMock from "./workMock";
 import cat_word from "./cat_word";
+import facebookAcc from "./FacebookAcc";
 
 export {
   sentimentAll,
@@ -22,4 +23,5 @@ export {
   testAcc,
   workMock,
   cat_word,
+  facebookAcc,
 };

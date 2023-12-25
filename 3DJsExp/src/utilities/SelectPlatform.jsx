@@ -36,9 +36,9 @@ const SelectPlatform = (props) => {
   return (
     <div
       className={classNames(
-        "tw-flex tw-flex-row tw-w-full tw-h-32 tw-justify-center tw-items-center tw-gap-x-8 tw-bg-white tw-shadow-[0_3px_10px_rgb(0,0,0,0.2)]",
+        "tw-flex tw-flex-row tw-w-full tw-h-40 tw-justify-center tw-items-center tw-gap-x-8 tw-bg-white tw-shadow-[0_3px_10px_rgb(0,0,0,0.2)]",
         {
-          "tw-flex tw-flex-col tw-w-full  tw-h-32 ": isMobile && isPortrait,
+          "tw-flex tw-flex-col tw-w-full  tw-h-36 ": isMobile && isPortrait,
         }
       )}
     >

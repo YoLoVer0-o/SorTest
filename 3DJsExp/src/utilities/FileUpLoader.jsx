@@ -75,7 +75,7 @@ const FileUpLoader = (props) => {
   };
 
  
-  useEffect(() => {
+  useEffect(() => { 
     setIsOpenState(isOpen);
   }, [isOpen]);
 

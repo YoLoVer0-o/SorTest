@@ -6,8 +6,9 @@ import profile from "../../assets/profile.png";
 import { BsEmojiSmile } from "react-icons/bs";
 import { LiaWindowClose } from "react-icons/lia";
 import { useResponsive } from "../../hooks";
+import { facebookAcc } from "../../mock";
 import classNames from "classnames";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "../../assets/PostImage";
 import FileUpLoader from "../../utilities/FileUpLoader";
 import PostTag from "../../assets/PostTag";
@@ -24,14 +25,20 @@ const FacebookPost = () => {
   const [showEmojiInput, setShowEmojiInput] = useState(false);
   const [openUpload, setOpenUpLoad] = useState(false);
   const [currentId, setCurrentId] = useState(1);
-  const [changeLable, setChangeLable] = useState("เพื่อน");
+  const [changeLable, setChangeLable] = useState([
+    { name: "เพื่อน", icon: PostTag.tagFriend },
+  ]);
   const [value, setValue] = useState("เพื่อน");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredFacebookAcc, setFilteredFacebookAcc] = useState(facebookAcc);
 
   const nodeRef = useRef(null);
   const { Search } = Input;
 
   const reset = () => {
     setCurrentId(1);
+    setSearchTerm('');
+    setFilteredFacebookAcc(facebookAcc);
   };
 
   const switchContentPostTaget = () => {
@@ -84,32 +91,57 @@ const FacebookPost = () => {
     console.log("radio checked", e.target.value);
     setValue(e.target.value);
   };
-  const confirmButton = () => {
-    setChangeLable(value);
+  const confirmButton = (name, icon) => {
+    // setChangeLable(value);
     setCurrentId(1);
-    if (changeLable == "สาธารณะ") {
-      return (
-        <img
-        className="tw-bg-gray-200 tw-rounded-full tw-p-3"
-        src={PostTag.publicPost}
-      />
-      
-      )
-      
-    } else if (changeLable == "เพื่อน") {
-      <img
-        className="tw-bg-gray-200 tw-rounded-full tw-p-3"
-        src={PostTag.tagFriend}
-      />;
+    if (value == "สาธารณะ") {
+      name = "สาธารณะ";
+      icon = PostTag.publicPost;
+    } else if (value == "เพื่อน") {
+      name = "เพื่อน";
+      icon = PostTag.tagFriend;
+    } else if (value == "เพื่อนยกเว้น ...") {
+      name = "เพื่อนยกเว้น ...";
+      icon = PostTag.tagExceptFriend;
+    } else if (value == "เฉพาะฉัน") {
+      name = "เฉพาะฉัน";
+      icon = PostTag.onlyMe;
+    } else if (value == "เพื่อนที่เจาะจง") {
+      name = "เพื่อนที่เจาะจง";
+      icon = PostTag.tagSome;
+    } else if (value == "กำหนดเอง") {
+      name = "กำหนดเอง";
+      icon = PostTag.custom;
     }
+    const updatedLabel = {
+      name,
+      icon,
+    };
+    setChangeLable(updatedLabel);
+    setCurrentId(1);
   };
 
-  
   console.log(changeLable);
-  console.log(value);
+  // console.log(value);
 
   ///////////////////////Tags////////////////////////////////////
-  const onSearch = (value, _e, info) => console.log(info?.source, value);
+  const onSearch = (value, _e, info) => {
+    console.log(info?.source, value);
+    setSearchTerm(value);
+
+    // Filter the facebookAcc array based on the search term
+    const filteredArray = facebookAcc.filter(item =>
+      item.first_name.toLowerCase().includes(value.toLowerCase()) ||
+      item.last_name.toLowerCase().includes(value.toLowerCase())
+    );
+
+    setFilteredFacebookAcc(filteredArray);
+  };
+
+  // const reset = () => {
+  //   setSearchTerm('');
+  //   setFilteredFacebookAcc(facebookAcc);
+  // };
   const contentArray = [
     {
       id: 1,
@@ -150,10 +182,13 @@ const FacebookPost = () => {
               <p className="  tw-text-xl">Account Name</p>
               <button
                 onClick={switchContentPostTaget}
-                className="tw-h-max tw-w-28 tw-bg-gray-200 tw-rounded-md tw-justify-center tw-flex tw-flex-row"
-                // onChange={changeIconPic}
+                className="tw-h-max tw-w-28 tw-bg-gray-200 tw-rounded-md tw-justify-center tw-flex tw-flex-row "
               >
-                {changeLable}
+                <img
+                  className="tw-bg-gray-200 tw-flex tw tw-justify-self-start tw-self-center tw-w-4 tw-h-4 tw-rounded-full "
+                  src={changeLable.icon || PostTag.tagFriend}
+                />
+                {changeLable.name || "เพื่อน"}
                 <FaSortDown />
               </button>
             </div>
@@ -404,11 +439,19 @@ const FacebookPost = () => {
           <div className="">
             <button onClick={reset}>Back</button>
             <div className="tw-text-center">เท็กผู้คน</div>
-            <Search
-              placeholder="input search text"
-              allowClear
-              onSearch={onSearch}
-            />
+            <Search placeholder="ค้นหา" allowClear onSearch={onSearch} />
+          </div>
+          <div className={classNames("tw-flex tw-overflow-y-auto tw-w-full tw-flex-col tw-p-5 tw-gap-y-2  ",{
+            "tw-h-[22rem]":isMobile && isPortrait,
+            "tw-h-[42rem]":isTablet && isPortrait ,
+            "tw-h-[25rem]":isDesktopOrLaptop || isTablet && isLandscape ,
+          })}>
+            {filteredFacebookAcc.map(item => (
+        <div key={item.id} className="tw-flex  tw-flex-row tw-h-max tw-w-full tw-rounded-md tw-gap-5 hover:tw-bg-gray-100 ">
+          <img src={item.profilePic} className="tw-w-10 tw-h-10 tw-rounded-full tw-self-center tw-object-cover " alt={`Profile-${item.profilePic}`} />
+          <div className="tw-self-center">{item.first_name}  {item.last_name}</div>
+        </div>
+      ))}
           </div>
         </div>
       ),
