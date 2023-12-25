@@ -1,6 +1,7 @@
 import EmojiPicker, { EmojiStyle } from "emoji-picker-react";
 import { Radio, Space, Input } from "antd";
 import { AudioOutlined } from "@ant-design/icons";
+import { FaSortDown } from "react-icons/fa";
 import profile from "../../assets/profile.png";
 import { BsEmojiSmile } from "react-icons/bs";
 import { LiaWindowClose } from "react-icons/lia";
@@ -86,7 +87,24 @@ const FacebookPost = () => {
   const confirmButton = () => {
     setChangeLable(value);
     setCurrentId(1);
+    if (changeLable == "สาธารณะ") {
+      return (
+        <img
+        className="tw-bg-gray-200 tw-rounded-full tw-p-3"
+        src={PostTag.publicPost}
+      />
+      
+      )
+      
+    } else if (changeLable == "เพื่อน") {
+      <img
+        className="tw-bg-gray-200 tw-rounded-full tw-p-3"
+        src={PostTag.tagFriend}
+      />;
+    }
   };
+
+  
   console.log(changeLable);
   console.log(value);
 
@@ -133,8 +151,10 @@ const FacebookPost = () => {
               <button
                 onClick={switchContentPostTaget}
                 className="tw-h-max tw-w-28 tw-bg-gray-200 tw-rounded-md tw-justify-center tw-flex tw-flex-row"
+                // onChange={changeIconPic}
               >
-                {changeLable}{" "}
+                {changeLable}
+                <FaSortDown />
               </button>
             </div>
           </div>
@@ -388,7 +408,6 @@ const FacebookPost = () => {
               placeholder="input search text"
               allowClear
               onSearch={onSearch}
-              
             />
           </div>
         </div>
