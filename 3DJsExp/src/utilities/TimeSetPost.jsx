@@ -1,35 +1,46 @@
-import { useState, useEffect } from "react";
-import { DatePicker } from "antd";
+import {} from "react";
+import { DatePicker, TimePicker } from "antd";
 import PropTypes from "prop-types";
+import locale from "antd/es/date-picker/locale/th_TH";
+import "dayjs/locale/th";
 // import { useResponsive } from "../hooks";
-import { CloseOutlined } from "@ant-design/icons";
 
-const TimeSetPost = (props) => {
-  const isOpenTime = props.isOpenTime;
-  const isCloseTime = props.isCloseTime;
-
-  const [isOpenState, setIsOpenState] = useState(isOpenTime);
-
-  useEffect(() => {
-    setIsOpenState(isOpenTime);
-  }, [isOpenTime]);
+const TimeSetPost = () => {
+  const onChange = (date, dateString) => {
+    console.log(date, dateString);
+  };
 
   return (
-    <div className="tw-w-full tw-h-full">
-      {isOpenState === true && (
-        <div className="tw-rounded-md tw-border-gray-300 tw-border-[1px] tw-w-full tw-h-full">
-          <div className="tw-flex tw-w-full tw-justify-center">
-            <button
-              className="tw-flex tw-w-full  tw-z-10"
-              onClick={isCloseTime}
-            >
-              <CloseOutlined className=" tw-items-center tw-justify-center tw-w-8 tw-h-8 tw-border-solid tw-border-[1px] tw-border-black tw-justify-self-center tw-rounded-full tw-bg-red-400" />
-            </button>
-          </div>
-
-          <DatePicker picker="month" />
+    <div className="tw-w-full tw-h-full tw-z-10 tw-bg-white">
+      <div className="tw-w-full tw-h-full tw-p-4">
+        <p>วันที่</p>
+        <div className="tw-flex tw-flex-row">
+          <DatePicker
+            onChange={onChange}
+            locale={locale}
+            format="MMMM"
+            picker="month"
+            className="tw-w-full"
+          />
+          <DatePicker
+            locale={locale}
+            onChange={onChange}
+            format="D"
+            className="tw-w-full"
+          />
+          <DatePicker
+            locale={locale}
+            onChange={onChange}
+            picker="year"
+            className="tw-w-full"
+          />
         </div>
-      )}
+
+        <div className="tw-w-full">
+          <p>เวลา</p>
+          <TimePicker className="tw-w-full" onChange={onChange} />
+        </div>
+      </div>
     </div>
   );
 };

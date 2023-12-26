@@ -2,22 +2,22 @@ import { useDropzone } from "react-dropzone";
 import { useState, useEffect } from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import { useResponsive } from "../hooks";
+// import { useResponsive } from "../hooks";
 import { CloseOutlined } from "@ant-design/icons";
 // import DescriptionPicModal from "./DescriptionPicModal";
 import { PlusOutlined } from "@ant-design/icons";
 import { Modal, Input } from "antd";
 
 const FileUpLoader = (props) => {
-  const {
-    isDesktopOrLaptop,
-    // isBigScreen,
-    // isTabletOrMobile,
-    isMobile,
-    isTablet,
-    isPortrait,
-    isLandscape,
-  } = useResponsive();
+  // const {
+  //   isDesktopOrLaptop,
+  //   isBigScreen,
+  //   isTabletOrMobile,
+  //   isMobile,
+  //   isTablet,
+  //   isPortrait,
+  //   isLandscape,
+  // } = useResponsive();
   const isOpen = props.isOpen;
   const isClose = props.isClose;
 

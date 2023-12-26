@@ -8,7 +8,7 @@ import { LiaWindowClose } from "react-icons/lia";
 import { useResponsive } from "../../hooks";
 import { facebookAcc } from "../../mock";
 import classNames from "classnames";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef,  } from "react";
 import Image from "../../assets/PostImage";
 import FileUpLoader from "../../utilities/FileUpLoader";
 import PostTag from "../../assets/PostTag";
@@ -29,7 +29,7 @@ const FacebookPost = () => {
     { name: "เพื่อน", icon: PostTag.tagFriend },
   ]);
   const [value, setValue] = useState("เพื่อน");
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [filteredFacebookAcc, setFilteredFacebookAcc] = useState(facebookAcc);
 
   const nodeRef = useRef(null);
@@ -37,7 +37,7 @@ const FacebookPost = () => {
 
   const reset = () => {
     setCurrentId(1);
-    setSearchTerm('');
+    setSearchTerm("");
     setFilteredFacebookAcc(facebookAcc);
   };
 
@@ -48,6 +48,12 @@ const FacebookPost = () => {
   const switchContentTag = () => {
     setCurrentId(3);
   };
+   const switchEmotion = () => {
+     setCurrentId(4);
+   };
+     const switchLocationPicker= () => {
+       setCurrentId(5);
+     };
 
   const duration = 500;
 
@@ -130,9 +136,10 @@ const FacebookPost = () => {
     setSearchTerm(value);
 
     // Filter the facebookAcc array based on the search term
-    const filteredArray = facebookAcc.filter(item =>
-      item.first_name.toLowerCase().includes(value.toLowerCase()) ||
-      item.last_name.toLowerCase().includes(value.toLowerCase())
+    const filteredArray = facebookAcc.filter(
+      (item) =>
+        item.first_name.toLowerCase().includes(value.toLowerCase()) ||
+        item.last_name.toLowerCase().includes(value.toLowerCase())
     );
 
     setFilteredFacebookAcc(filteredArray);
@@ -142,6 +149,8 @@ const FacebookPost = () => {
   //   setSearchTerm('');
   //   setFilteredFacebookAcc(facebookAcc);
   // };
+
+  
   const contentArray = [
     {
       id: 1,
@@ -261,6 +270,14 @@ const FacebookPost = () => {
                 isDesktopOrLaptop && !isTablet,
             })}
           >
+            {/* <GoogleMap
+              mapContainerStyle={mapContainerStyle}
+              zoom={10}
+              center={center}
+            >
+              <Marker position={center} />
+            </GoogleMap> */}
+
             <FileUpLoader isOpen={openUpload} isClose={closePicUpload} />
           </div>
 
@@ -292,10 +309,16 @@ const FacebookPost = () => {
             >
               <img className="tw-w-6 tw-h-6" src={Image.tagOther} />
             </button>
-            <button className=" tw-rounded-full tw-w-max tw-h-max tw-justify-self-center hover:tw-bg-gray-300">
+            <button
+              onClick={switchEmotion}
+              className=" tw-rounded-full tw-w-max tw-h-max tw-justify-self-center hover:tw-bg-gray-300"
+            >
               <img className="tw-w-6 tw-h-6" src={Image.emoji} />
             </button>
-            <button className=" tw-rounded-full tw-w-max tw-h-max tw-justify-self-center hover:tw-bg-gray-300">
+            <button
+              onClick={switchLocationPicker}
+              className=" tw-rounded-full tw-w-max tw-h-max tw-justify-self-center hover:tw-bg-gray-300"
+            >
               <img className="tw-w-6 tw-h-6" src={Image.checkIn} />
             </button>
             <button className=" tw-rounded-full tw-w-max tw-h-max tw-justify-self-center hover:tw-bg-gray-300">
@@ -441,17 +464,53 @@ const FacebookPost = () => {
             <div className="tw-text-center">เท็กผู้คน</div>
             <Search placeholder="ค้นหา" allowClear onSearch={onSearch} />
           </div>
-          <div className={classNames("tw-flex tw-overflow-y-auto tw-w-full tw-flex-col tw-p-5 tw-gap-y-2  ",{
-            "tw-h-[22rem]":isMobile && isPortrait,
-            "tw-h-[42rem]":isTablet && isPortrait ,
-            "tw-h-[25rem]":isDesktopOrLaptop || isTablet && isLandscape ,
-          })}>
-            {filteredFacebookAcc.map(item => (
-        <div key={item.id} className="tw-flex  tw-flex-row tw-h-max tw-w-full tw-rounded-md tw-gap-5 hover:tw-bg-gray-100 ">
-          <img src={item.profilePic} className="tw-w-10 tw-h-10 tw-rounded-full tw-self-center tw-object-cover " alt={`Profile-${item.profilePic}`} />
-          <div className="tw-self-center">{item.first_name}  {item.last_name}</div>
+          <div
+            className={classNames(
+              "tw-flex tw-overflow-y-auto tw-w-full tw-flex-col tw-p-5 tw-gap-y-2  ",
+              {
+                "tw-h-[22rem]": isMobile && isPortrait,
+                "tw-h-[42rem]": isTablet && isPortrait,
+                "tw-h-[25rem]": isDesktopOrLaptop || (isTablet && isLandscape),
+              }
+            )}
+          >
+            {filteredFacebookAcc.map((item) => (
+              <div
+                key={item.id}
+                className="tw-flex  tw-flex-row tw-h-max tw-w-full tw-rounded-md tw-gap-5 hover:tw-bg-gray-100 "
+              >
+                <img
+                  src={item.profilePic}
+                  className="tw-w-10 tw-h-10 tw-rounded-full tw-self-center tw-object-cover "
+                  alt={`Profile-${item.profilePic}`}
+                />
+                <div className="tw-self-center">
+                  {item.first_name} {item.last_name}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      ))}
+      ),
+    },
+    {
+      id: 4,
+      content: (
+        <div className="tw-w-full tw-h-full tw-flex-col tw-flex ">
+          <div>
+            <button onClick={reset}>Back</button>
+            <div className="tw-text-center">Emotion&Activity</div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: 5,
+      content: (
+        <div className="tw-w-full tw-h-full tw-flex-col tw-flex ">
+          <div>
+            <button onClick={reset}>Back</button>
+            <div className="tw-text-center">Location</div>
           </div>
         </div>
       ),
