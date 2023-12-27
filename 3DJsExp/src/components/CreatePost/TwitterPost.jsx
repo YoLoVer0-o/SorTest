@@ -309,7 +309,7 @@ const TwitterPost = () => {
   return (
     <div
       className={classNames(
-        "tw-w-full tw-h-full tw-flex tw-justify-center tw-bg-white tw-rounded-md tw-border-[#0874c4] tw-border-2",
+        "tw-w-full tw-h-full tw-flex tw-justify-center tw-bg-white tw-rounded-md tw-border-[#0874c4] tw-border-2 tw-p-4",
         {
           // "tw-h-[80%]": isBigScreen,
           // "tw-h-[70%]": isDesktopOrLaptop,

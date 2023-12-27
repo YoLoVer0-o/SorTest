@@ -1,7 +1,7 @@
 import { useState } from "react";
 import SelectPlatform from "../../utilities/SelectPlatform";
 import FacebookPost from "./FacebookPost";
-import InstagramPost from "./InstagramPost";
+// import InstagramPost from "./InstagramPost";
 import TwitterPost from "./TwitterPost";
 import { useResponsive } from "../../hooks";
 import classNames from "classnames";
@@ -25,9 +25,7 @@ const CreatePost = () => {
 
   if (selectedPlatform === "Twitter") {
     selectedComponent = <TwitterPost />;
-  } else if (selectedPlatform === "Instagram") {
-    selectedComponent = <InstagramPost />;
-  } else if (selectedPlatform === "Facebook") {
+  } else if(selectedPlatform === "Facebook") {
     selectedComponent = <FacebookPost />;
   } else {
     selectedComponent = <FacebookPost />;

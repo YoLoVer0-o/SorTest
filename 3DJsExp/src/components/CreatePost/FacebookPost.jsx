@@ -1,5 +1,5 @@
 import EmojiPicker, { EmojiStyle } from "emoji-picker-react";
-import { Radio, Space, Input } from "antd";
+import { Radio, Space, Input, Tag } from "antd";
 import { AudioOutlined } from "@ant-design/icons";
 import { FaSortDown } from "react-icons/fa";
 import profile from "../../assets/profile.png";
@@ -8,7 +8,7 @@ import { LiaWindowClose } from "react-icons/lia";
 import { useResponsive } from "../../hooks";
 import { facebookAcc } from "../../mock";
 import classNames from "classnames";
-import { useState, useRef,  } from "react";
+import { useState, useRef } from "react";
 import Image from "../../assets/PostImage";
 import FileUpLoader from "../../utilities/FileUpLoader";
 import PostTag from "../../assets/PostTag";
@@ -31,6 +31,7 @@ const FacebookPost = () => {
   const [value, setValue] = useState("เพื่อน");
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredFacebookAcc, setFilteredFacebookAcc] = useState(facebookAcc);
+  const [tagFrinends, setTagFriends] = useState("");
 
   const nodeRef = useRef(null);
   const { Search } = Input;
@@ -48,12 +49,12 @@ const FacebookPost = () => {
   const switchContentTag = () => {
     setCurrentId(3);
   };
-   const switchEmotion = () => {
-     setCurrentId(4);
-   };
-     const switchLocationPicker= () => {
-       setCurrentId(5);
-     };
+  const switchEmotion = () => {
+    setCurrentId(4);
+  };
+  const switchLocationPicker = () => {
+    setCurrentId(5);
+  };
 
   const duration = 500;
 
@@ -127,9 +128,6 @@ const FacebookPost = () => {
     setCurrentId(1);
   };
 
-  console.log(changeLable);
-  // console.log(value);
-
   ///////////////////////Tags////////////////////////////////////
   const onSearch = (value, _e, info) => {
     console.log(info?.source, value);
@@ -145,12 +143,35 @@ const FacebookPost = () => {
     setFilteredFacebookAcc(filteredArray);
   };
 
+  const handleId = () => {
+    setTagFriends(facebookAcc.id);
+  };
+
+  // const tagRender = (props) => {
+  //   const { label, value, closable, onClose } = props;
+  //   const onPreventMouseDown = (event) => {
+  //     event.preventDefault();
+  //     event.stopPropagation();
+  //   };
+  //   return (
+  //     <Tag
+  //       color={value}
+  //       onMouseDown={onPreventMouseDown}
+  //       closable={closable}
+  //       onClose={onClose}
+  //       style={{
+  //         marginRight: 3,
+  //       }}
+  //     >
+  //       {label}
+  //     </Tag>
+  //   );
+  // };
   // const reset = () => {
   //   setSearchTerm('');
   //   setFilteredFacebookAcc(facebookAcc);
   // };
-
-  
+  console.log(tagFrinends);
   const contentArray = [
     {
       id: 1,
@@ -464,31 +485,38 @@ const FacebookPost = () => {
             <div className="tw-text-center">เท็กผู้คน</div>
             <Search placeholder="ค้นหา" allowClear onSearch={onSearch} />
           </div>
-          <div
-            className={classNames(
-              "tw-flex tw-overflow-y-auto tw-w-full tw-flex-col tw-p-5 tw-gap-y-2  ",
-              {
-                "tw-h-[22rem]": isMobile && isPortrait,
-                "tw-h-[42rem]": isTablet && isPortrait,
-                "tw-h-[25rem]": isDesktopOrLaptop || (isTablet && isLandscape),
-              }
-            )}
-          >
-            {filteredFacebookAcc.map((item) => (
-              <div
-                key={item.id}
-                className="tw-flex  tw-flex-row tw-h-max tw-w-full tw-rounded-md tw-gap-5 hover:tw-bg-gray-100 "
-              >
-                <img
-                  src={item.profilePic}
-                  className="tw-w-10 tw-h-10 tw-rounded-full tw-self-center tw-object-cover "
-                  alt={`Profile-${item.profilePic}`}
-                />
-                <div className="tw-self-center">
-                  {item.first_name} {item.last_name}
-                </div>
-              </div>
-            ))}
+          <div>
+            <div
+              className={classNames(
+                "tw-flex tw-overflow-y-auto tw-w-full tw-flex-col tw-p-5 tw-gap-y-2  ",
+                {
+                  "tw-h-[22rem]": isMobile && isPortrait,
+                  "tw-h-[42rem]": isTablet && isPortrait,
+                  "tw-h-[25rem]":
+                    isDesktopOrLaptop || (isTablet && isLandscape),
+                }
+              )}
+            >
+              {filteredFacebookAcc.map((item) => (
+          
+                  <button  key={item.id} onClick={handleId} className="tw-flex  tw-flex-row tw-h-max tw-w-full tw-rounded-md tw-gap-5 hover:tw-bg-gray-100 ">
+                    <img
+                      src={item.profilePic}
+                      className="tw-w-10 tw-h-10 tw-rounded-full tw-self-center tw-object-cover "
+                      alt={`Profile-${item.profilePic}`}
+                    />
+                    <div className="tw-self-center">
+                      {item.first_name} {item.last_name}
+                    </div>
+                  </button>
+               
+              ))}
+            </div>
+            <div className="tw-w-full tw-h-full">
+              <p>แท็กแล้ว</p>
+              <div className=" tw-border-[1px] tw-w-full tw-h-max "></div>
+              <div></div>
+            </div>
           </div>
         </div>
       ),
