@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useLocation } from 'react-router-dom';
 import { DataTable } from "../../utilities";
-import { AddWordModal } from "..";
+import { AddWordModal, InfoModal } from "..";
 import { useResponsive } from "../../hooks";
 import { Button, Input, InputNumber, Switch, Tooltip } from "antd";
-import { PlusOutlined, MinusOutlined, DeleteOutlined } from "@ant-design/icons";
+import { PlusOutlined, MinusOutlined, DeleteOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import classNames from "classnames";
@@ -14,6 +14,7 @@ const WordTable = () => {
     const data = useLocation().state;
 
     const [modalToggle, setModalToggle] = useState(false);
+    const [infoModalToggle, setInfoModalToggle] = useState(false);
     const [payload, setPayload] = useState(data.words);
 
     const { isTabletOrMobile, isMobile, isPortrait } = useResponsive();
@@ -25,6 +26,14 @@ const WordTable = () => {
 
     const handleCancel = () => {
         setModalToggle(false);
+    };
+
+    const showInfoModal = () => {
+        setInfoModalToggle(true);
+    };
+
+    const handleInfoCancel = () => {
+        setInfoModalToggle(false);
     };
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -173,12 +182,19 @@ const WordTable = () => {
                 <Input value={data.category} />
             </div>
             <div className="tw-flex tw-flex-col tw-w-full tw-h-full tw-gap-4 tw-py-2">
-                <div className="tw-flex tw-w-full tw-h-fit tw-justify-end tw-px-8">
+                <div className="tw-flex tw-flex-row tw-w-full tw-h-fit tw-justify-end tw-gap-4 tw-px-8">
+                    <Button
+                        className={classNames("tw-flex tw-flex-row tw-items-center tw-self-center tw-text-yellow-600 tw-border-yellow-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-yellow-600 hover:tw-border-black hover:tw-text-white", {
+                            "tw-w-full": isMobile && isPortrait,
+                        })}
+                        onClick={() => showInfoModal()}>
+                        <QuestionCircleOutlined className="tw-text-xl"/>ช่วยเหลือ
+                    </Button>
                     <Button
                         className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
                             "tw-w-full": isMobile && isPortrait,
                         })}
-                        onClick={() => showModal({})}>
+                        onClick={() => showModal()}>
                         เพิ่มคำคัดกรอง
                     </Button>
                 </div>
@@ -192,6 +208,12 @@ const WordTable = () => {
                     />
                 </div>
             </div>
+            {infoModalToggle && (
+                <InfoModal
+                    modalToggle={infoModalToggle}
+                    handleCancel={handleInfoCancel}
+                />
+            )}
             {modalToggle && (
                 <AddWordModal
                     modalToggle={modalToggle}
