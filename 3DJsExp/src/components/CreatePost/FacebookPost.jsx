@@ -1,6 +1,6 @@
 import EmojiPicker, { EmojiStyle } from "emoji-picker-react";
 import { Radio, Space, Input, Tag } from "antd";
-import { AudioOutlined } from "@ant-design/icons";
+import { CloseCircleOutlined } from "@ant-design/icons";
 import { FaSortDown } from "react-icons/fa";
 import profile from "../../assets/profile.png";
 import { BsEmojiSmile } from "react-icons/bs";
@@ -31,7 +31,7 @@ const FacebookPost = () => {
   const [value, setValue] = useState("เพื่อน");
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredFacebookAcc, setFilteredFacebookAcc] = useState(facebookAcc);
-  const [tagFrinends, setTagFriends] = useState("");
+  const [tagFriends, setTagFriends] = useState("");
 
   const nodeRef = useRef(null);
   const { Search } = Input;
@@ -143,8 +143,10 @@ const FacebookPost = () => {
     setFilteredFacebookAcc(filteredArray);
   };
 
-  const handleId = () => {
-    setTagFriends(facebookAcc.id);
+  const handleId = (item) => {
+    console.log(`Button with ID ${item} clicked`);
+    setTagFriends(item);
+
   };
 
   // const tagRender = (props) => {
@@ -171,7 +173,7 @@ const FacebookPost = () => {
   //   setSearchTerm('');
   //   setFilteredFacebookAcc(facebookAcc);
   // };
-  console.log(tagFrinends);
+  console.log(tagFriends);
   const contentArray = [
     {
       id: 1,
@@ -498,24 +500,33 @@ const FacebookPost = () => {
               )}
             >
               {filteredFacebookAcc.map((item) => (
-          
-                  <button  key={item.id} onClick={handleId} className="tw-flex  tw-flex-row tw-h-max tw-w-full tw-rounded-md tw-gap-5 hover:tw-bg-gray-100 ">
-                    <img
-                      src={item.profilePic}
-                      className="tw-w-10 tw-h-10 tw-rounded-full tw-self-center tw-object-cover "
-                      alt={`Profile-${item.profilePic}`}
-                    />
-                    <div className="tw-self-center">
-                      {item.first_name} {item.last_name}
-                    </div>
-                  </button>
-               
+                <button
+                  key={item.id}
+                  onClick={() => handleId(item)}
+                  className="tw-flex  tw-flex-row tw-h-max tw-w-full tw-rounded-md tw-gap-5 hover:tw-bg-gray-100 "
+                >
+                  <img
+                    src={item.profilePic}
+                    className="tw-w-10 tw-h-10 tw-rounded-full tw-self-center tw-object-cover "
+                    alt={`Profile-${item.profilePic}`}
+                  />
+                  <div className="tw-self-center">
+                    {item.first_name} {item.last_name}
+                  </div>
+                </button>
               ))}
             </div>
             <div className="tw-w-full tw-h-full">
               <p>แท็กแล้ว</p>
               <div className=" tw-border-[1px] tw-w-full tw-h-max "></div>
-              <div></div>
+              {tagFriends && (
+        <Tag
+          closeIcon={<CloseCircleOutlined />}
+          // onClose={closable}
+        >
+          {`${tagFriends.first_name} ${tagFriends.last_name}`}
+        </Tag>
+      )}
             </div>
           </div>
         </div>
