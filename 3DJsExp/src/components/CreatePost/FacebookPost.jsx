@@ -129,6 +129,8 @@ const FacebookPost = () => {
   };
 
   ///////////////////////Tags////////////////////////////////////
+  const displayCount = 1;
+  const [selectedItems, setSelectedItems] = useState([]);
   const onSearch = (value, _e, info) => {
     console.log(info?.source, value);
     setSearchTerm(value);
@@ -145,10 +147,21 @@ const FacebookPost = () => {
 
   const handleId = (item) => {
     console.log(`Button with ID ${item} clicked`);
-    setTagFriends(item);
-
+    if (!selectedItems.some((selectedItem) => selectedItem.id === item.id)) {
+      setSelectedItems((prevSelectedItems) => [...prevSelectedItems, item]);
+    }
+    setTagFriends((prevTag) => [...prevTag, item]);
   };
 
+  const handleClose = (removedTag) => {
+    const newTags = tagFriends.filter((tag) => tag !== removedTag);
+    console.log(newTags);
+    setTagFriends(newTags);
+    setSelectedItems(newTags)
+  };
+  const confirmTagFriends = () => {
+    setCurrentId(1);
+  };
   // const tagRender = (props) => {
   //   const { label, value, closable, onClose } = props;
   //   const onPreventMouseDown = (event) => {
@@ -196,13 +209,13 @@ const FacebookPost = () => {
         >
           <div
             className={classNames("tw-grid tw-h-max  ", {
-              "tw-grid-cols-4 tw-grid-rows-1 tw-col-span-6  tw-row-span-1 tw-col-start-1":
+              "tw-grid-cols-6 tw-grid-rows-1 tw-col-span-6  tw-row-span-1 tw-col-start-1":
                 (isMobile && isPortrait) || (isMobile && isLandscape),
-              "tw-grid-cols-3 tw-grid-rows-1 tw-col-span-4  tw-row-span-1 tw-col-start-1  ":
+              "tw-grid-cols-8 tw-grid-rows-1 tw-col-span-8  tw-row-span-1 tw-col-start-1  ":
                 (isTablet && isPortrait) ||
                 (isTablet && isLandscape) ||
                 (isTabletOrMobile && !isMobile),
-              "tw-grid-cols-3 tw-grid-rows-1 tw-col-span-4 tw-row-span-1 tw-row-start-1 tw-col-start-1 ":
+              "tw-grid-cols-8 tw-grid-rows-1 tw-col-span-8 tw-row-span-1 tw-row-start-1 tw-col-start-1 ":
                 isDesktopOrLaptop && !isTablet,
             })}
           >
@@ -210,8 +223,11 @@ const FacebookPost = () => {
               className="tw-col-start-1 tw-justify-self-center tw-w-12 tw-h-12 tw-rounded-full tw-border-2 tw-border-black"
               src={profile}
             />
-            <div className="tw-col-start-2 tw-col-span-3">
-              <p className="  tw-text-xl">Account Name</p>
+            <div className="tw-col-start-2 tw-col-span-2">
+              <div className="tw-flex tw-flex-row">
+                <p className="tw-text-xl  ">Account Name</p>
+
+              </div>
               <button
                 onClick={switchContentPostTaget}
                 className="tw-h-max tw-w-28 tw-bg-gray-200 tw-rounded-md tw-justify-center tw-flex tw-flex-row "
@@ -224,6 +240,29 @@ const FacebookPost = () => {
                 <FaSortDown />
               </button>
             </div>
+            {tagFriends && (
+                  <div className={classNames("tw-flex tw-flex-row tw-gap-3 tw-w-max ",{})}>
+                    <p>อยู่กับ</p>
+                    {tagFriends.slice(0, displayCount).map((allTag) => (
+                      <p
+                        key={allTag.id}
+                        className="tw-flex tw-flex-row tw-cursor-pointer hover:tw-underline tw-underline-offset-2"
+                        onClick={switchContentTag}
+                      >
+                        {`${allTag.first_name} ${allTag.last_name}`}
+                      </p>
+                    ))}
+
+                    {tagFriends.length > displayCount && (
+                      <p
+                        className="tw-cursor-pointer hover:tw-underline tw-underline-offset-2"
+                        onClick={switchContentTag}
+                      >
+                        เเละคนอื่นอีก ({tagFriends.length - displayCount})
+                      </p>
+                    )}
+                  </div>
+                )}
           </div>
           <textarea
             value={message}
@@ -340,11 +379,11 @@ const FacebookPost = () => {
             </button>
             <button
               onClick={switchLocationPicker}
-              className=" tw-rounded-full tw-w-max tw-h-max tw-justify-self-center hover:tw-bg-gray-300"
+              className="tw-hidden tw-rounded-full tw-w-max tw-h-max tw-justify-self-center hover:tw-bg-gray-300"
             >
               <img className="tw-w-6 tw-h-6" src={Image.checkIn} />
             </button>
-            <button className=" tw-rounded-full tw-w-max tw-h-max tw-justify-self-center hover:tw-bg-gray-300">
+            <button className="tw-hidden tw-rounded-full tw-w-max tw-h-max tw-justify-self-center hover:tw-bg-gray-300">
               <img className="tw-w-6 tw-h-6" src={Image.Gif} />
             </button>
             <button
@@ -485,7 +524,15 @@ const FacebookPost = () => {
           <div className="">
             <button onClick={reset}>Back</button>
             <div className="tw-text-center">เท็กผู้คน</div>
-            <Search placeholder="ค้นหา" allowClear onSearch={onSearch} />
+            <div className="tw-w-full tw-flex tw-flex-row tw-gap-x-5  ">
+              <Search placeholder="ค้นหา" allowClear onSearch={onSearch} />
+              <button
+                className=" tw-text-cyan-500 tw-text-base"
+                onClick={confirmTagFriends}
+              >
+                เรียบร้อย
+              </button>
+            </div>
           </div>
           <div>
             <div
@@ -503,7 +550,16 @@ const FacebookPost = () => {
                 <button
                   key={item.id}
                   onClick={() => handleId(item)}
-                  className="tw-flex  tw-flex-row tw-h-max tw-w-full tw-rounded-md tw-gap-5 hover:tw-bg-gray-100 "
+                  className={`tw-flex tw-flex-row tw-h-max tw-w-full tw-rounded-md tw-gap-5 hover:tw-bg-gray-100 ${
+                    selectedItems.some(
+                      (selectedItem) => selectedItem.id === item.id
+                    )
+                      ? "tw-hidden"
+                      : ""
+                  }`}
+                  disabled={selectedItems.some(
+                    (selectedItem) => selectedItem.id === item.id
+                  )}
                 >
                   <img
                     src={item.profilePic}
@@ -516,17 +572,24 @@ const FacebookPost = () => {
                 </button>
               ))}
             </div>
-            <div className="tw-w-full tw-h-full">
+            <div className="tw-w-full tw-h-max">
               <p>แท็กแล้ว</p>
-              <div className=" tw-border-[1px] tw-w-full tw-h-max "></div>
-              {tagFriends && (
-        <Tag
-          closeIcon={<CloseCircleOutlined />}
-          // onClose={closable}
-        >
-          {`${tagFriends.first_name} ${tagFriends.last_name}`}
-        </Tag>
-      )}
+              <div className="tw-flex tw-flex-row tw-border-[1px] tw-w-full tw-h-max tw-overflow-y-auto ">
+                {tagFriends &&
+                  tagFriends.map((allTag) => (
+                    <Tag
+                      key={allTag.id}
+                      color="blue"
+                      closeIcon={<CloseCircleOutlined />}
+                      className="tw-flex tw-flex-row tw-w-max"
+                      onClose={() => handleClose(allTag)}
+                    >
+                      <div>
+                        {allTag.first_name} {allTag.last_name}
+                      </div>
+                    </Tag>
+                  ))}
+              </div>
             </div>
           </div>
         </div>
