@@ -17,6 +17,7 @@ import DataLog from "./RPAManagement/DataLog";
 import ClassTable from "./ClassificationConfig/ClassTable";
 import WordTable from "./ClassificationConfig/WordTable";
 import AddWordModal from "./ClassificationConfig/AddWordModal";
+import InfoModal from "./ClassificationConfig/InfoModal";
 
 export {
   MainLayout,
@@ -38,4 +39,5 @@ export {
   ClassTable,
   WordTable,
   AddWordModal,
+  InfoModal,
 };
