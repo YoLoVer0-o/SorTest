@@ -1,6 +1,10 @@
 import EmojiPicker, { EmojiStyle } from "emoji-picker-react";
-import { Radio, Space, Input, Tag, Checkbox } from "antd";
-import { CloseCircleOutlined, MinusCircleOutlined } from "@ant-design/icons";
+import { Radio, Space, Input, Tag, Checkbox, Select } from "antd";
+import {
+  CloseCircleOutlined,
+  MinusCircleOutlined,
+  CheckCircleOutlined,
+} from "@ant-design/icons";
 import { FaSortDown } from "react-icons/fa";
 import profile from "../../assets/profile.png";
 import { BsEmojiSmile } from "react-icons/bs";
@@ -33,20 +37,26 @@ const FacebookPost = () => {
   const [filteredFacebookAcc, setFilteredFacebookAcc] = useState(facebookAcc);
   const [tagFriends, setTagFriends] = useState("");
   const [tagExceptFriends, setTagExceptFriends] = useState("");
+  const [tagSpecifictFriends, setTagSpecificFriends] = useState("");
 
   const nodeRef = useRef(null);
   const { Search } = Input;
 
-  const reset = () => {
-    setCurrentId(1);
-    setSearchTerm("");
-    setFilteredFacebookAcc(facebookAcc);
+  const reset = (clickedFrom) => {
+    if (clickedFrom == 1) {
+      setCurrentId(2);
+      setTagExceptFriends("");
+      setSelectedItemsForExceptFriend([]);
+    } else {
+      setCurrentId(1);
+      setSearchTerm("");
+      setFilteredFacebookAcc(facebookAcc);
+    }
   };
 
   const switchContentPostTaget = () => {
     setCurrentId(2);
   };
-
   const switchContentTag = () => {
     setCurrentId(3);
   };
@@ -55,6 +65,12 @@ const FacebookPost = () => {
   };
   const switchToExceptFriend = () => {
     setCurrentId(5);
+  };
+  const switchToSpecificFriend = () => {
+    setCurrentId(6);
+  };
+  const switchToCustom = () => {
+    setCurrentId(7);
   };
 
   const duration = 500;
@@ -137,6 +153,9 @@ const FacebookPost = () => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectedItemsForExceptFriend, setSelectedItemsForExceptFriend] =
     useState([]);
+  const [selectedItemsForSpecifictFriend, setSelectedItemsForSpecifictFriend] =
+    useState([]);
+
   const onSearch = (value, _e, info) => {
     console.log(info?.source, value);
     setSearchTerm(value);
@@ -156,13 +175,29 @@ const FacebookPost = () => {
         setTagFriends((prevTag) => [...prevTag, item]);
       }
     } else if (button == 2) {
-      if (!selectedItemsForExceptFriend.some((selectedItem) => selectedItem.id === item.id)) {
+      if (
+        !selectedItemsForExceptFriend.some(
+          (selectedItem) => selectedItem.id === item.id
+        )
+      ) {
         setSelectedItemsForExceptFriend((prevSelectedItems) => [
           ...prevSelectedItems,
           item,
         ]);
       }
       setTagExceptFriends((prevTag) => [...prevTag, item]);
+    } else if (button == 3) {
+      if (
+        !selectedItemsForSpecifictFriend.some(
+          (selectedItem) => selectedItem.id === item.id
+        )
+      ) {
+        setSelectedItemsForSpecifictFriend((prevSelectedItems) => [
+          ...prevSelectedItems,
+          item,
+        ]);
+      }
+      setTagSpecificFriends((prevTag) => [...prevTag, item]);
     }
   };
 
@@ -178,7 +213,13 @@ const FacebookPost = () => {
       );
       setSelectedItemsForExceptFriend(newExceptTags);
       setTagExceptFriends(newExceptTags);
-      console.log(newExceptTags,"TagExceptFriends");
+      console.log(newExceptTags, "TagExceptFriends");
+    } else if (button == 3) {
+      const newSpecificTags = tagSpecifictFriends.filter(
+        (tag) => tag !== removedTag
+      );
+      setSelectedItemsForSpecifictFriend(newSpecificTags);
+      setTagSpecificFriends(newSpecificTags);
     }
   };
 
@@ -186,9 +227,48 @@ const FacebookPost = () => {
     setCurrentId(1);
   };
 
-  console.log(tagFriends);
-  console.log(tagExceptFriends);
-  console.log(selectedItemsForExceptFriend);
+  const [selectedShare, setSelectedShare] = useState([]);
+  const [selectedNotShare, setSelectedNotShare] = useState([]);
+  const handleChange = (value, type) => {
+    console.log(value);
+    if (type === 1) {
+      setSelectedShare(value);
+      // Filter options for the second Select
+      const filteredOptions = facebookAcc.filter(option => !value.includes(option.id));
+      
+      console.log(filteredOptions);
+    } else if (type === 2) {
+      setSelectedNotShare(value);
+      // Filter options for the first Select
+      const filteredOptions = facebookAcc.filter(option => !value.includes(option.id));
+      setSelectedShare(filteredOptions);
+    }
+  };
+  // console.log(selectedShare);
+  // console.log(selectedNotShare);
+  const { Option } = Select;
+  // const options = facebookAcc.map((option) => (
+
+  // ));
+  const tagRender = (props) => {
+    const { label, closable, onClose } = props;
+
+    return (
+      <Tag
+        color="blue"
+        closable={closable}
+        onClose={onClose}
+        className="tw-flex tw-gap-2 tw-mt-1"
+      >
+        {label}
+      </Tag>
+    );
+  };
+
+  // console.log(tagFriends);
+  // console.log(tagExceptFriends);
+  console.log(tagSpecifictFriends);
+  // console.log(selectedItemsForExceptFriend);
   const contentArray = [
     {
       id: 1,
@@ -458,40 +538,84 @@ const FacebookPost = () => {
                   <div>
                     <p>เพื่อน</p>
                     <p className="tw-text-gray-500">เพื่อนของคุณบน Facebook</p>
+                    {tagFriends.length != 0 && (
+                      <div className="tw-flex tw-flex-col ">
+                        <Checkbox onChange={onCheckBox}>
+                          เพื่อนของผู้ที่อยู่ในเเท็ก
+                        </Checkbox>
+                        <Checkbox
+                          onChange={onCheckBox}
+                          disabled={true}
+                          defaultChecked={true}
+                        >
+                          ผู้ที่อยู่ในเเท็ก
+                        </Checkbox>
+                      </div>
+                    )}
                   </div>
                 </div>
-                {tagFriends.length != 0 && (
-                  <div className="tw-flex tw-flex-col ">
-                    <Checkbox onChange={onCheckBox}>
-                      เพื่อนของผู้ที่อยู่ในเเท็ก
-                    </Checkbox>
-                    <Checkbox
-                      onChange={onCheckBox}
-                      disabled={true}
-                      defaultChecked={true}
-                    >
-                      ผู้ที่อยู่ในเเท็ก
-                    </Checkbox>
-                  </div>
-                )}
               </Radio>
               <Radio
                 value={"เพื่อนยกเว้น ..."}
                 label="เพื่อนยกเว้น ..."
-                className="hover:tw-bg-gray-200 tw-items-center tw-rounded-md tw-h-16 tw-w-full"
+                className={classNames(
+                  "hover:tw-bg-gray-200 tw-items-center tw-rounded-md tw-h-16 tw-w-full",
+                  {
+                    "tw-h-32": tagFriends.length != 0,
+                  }
+                )}
                 onClick={switchToExceptFriend}
               >
-                <div className="tw-flex tw-flex-row tw-items-center tw-gap-x-2">
+                <div className="tw-flex tw-w-full tw-flex-row tw-items-center tw-gap-x-2">
                   <img
                     className="tw-bg-gray-200 tw-rounded-full tw-p-3"
                     src={PostTag.tagExceptFriend}
                   />
                   <div>
-                    {" "}
                     <p>เพื่อนยกเว้น ...</p>
-                    <p className="tw-text-gray-500">
-                      ไม่ต้องแสดงให้เพื่อนบางคนเห็น
-                    </p>
+                    <div className="tw-w-full tw-flex tw-flex-row tw-gap-x-2">
+                      {" "}
+                      {(tagExceptFriends.length === 0 && (
+                        <p className="tw-text-gray-500">
+                          ไม่ต้องแสดงให้เพื่อนบางคนเห็น
+                        </p>
+                      )) ||
+                        (tagExceptFriends.length !== 0 && (
+                          <p className="tw-text-gray-500">เพื่อน ยกเว้น:</p>
+                        ))}
+                      {tagExceptFriends.length > 0 &&
+                        tagExceptFriends
+                          .slice(0, displayCount)
+                          .map((showExcept) => (
+                            <p
+                              key={showExcept.id}
+                              className="tw-flex tw-flex-row tw-text-gray-500 "
+                            >
+                              {showExcept.first_name}
+                              {showExcept.last_name}
+                            </p>
+                          ))}
+                      {tagExceptFriends.length > displayCount && (
+                        <p className="tw-text-gray-500">
+                          อีก ({tagExceptFriends.length - displayCount}) คน
+                        </p>
+                      )}
+                    </div>
+
+                    {tagFriends.length != 0 && (
+                      <div className="tw-flex tw-flex-col ">
+                        <Checkbox onChange={onCheckBox}>
+                          เพื่อนของผู้ที่อยู่ในเเท็ก
+                        </Checkbox>
+                        <Checkbox
+                          onChange={onCheckBox}
+                          disabled={true}
+                          defaultChecked={true}
+                        >
+                          ผู้ที่อยู่ในเเท็ก
+                        </Checkbox>
+                      </div>
+                    )}
                   </div>
                 </div>
               </Radio>
@@ -512,6 +636,7 @@ const FacebookPost = () => {
                 value={"เพื่อนที่เจาะจง"}
                 label="เพื่อนที่เจาะจง"
                 className="hover:tw-bg-gray-200 tw-items-center tw-rounded-md tw-h-16 tw-w-full"
+                onClick={switchToSpecificFriend}
               >
                 <div className="tw-flex tw-flex-row tw-items-center tw-gap-x-2">
                   <img
@@ -520,9 +645,31 @@ const FacebookPost = () => {
                   />
                   <div>
                     <p>เพื่อนที่เจาะจง</p>
-                    <p className="tw-text-gray-500">
-                      แสดงต่อเพื่อนบางคนเท่านั้น
-                    </p>
+                    <div className="tw-w-full tw-flex tw-flex-row tw-gap-x-2">
+                      {" "}
+                      {tagSpecifictFriends.length === 0 && (
+                        <p className="tw-text-gray-500">
+                          แสดงต่อเพื่อนบางคนเท่านั้น
+                        </p>
+                      )}
+                      {tagSpecifictFriends.length > 0 &&
+                        tagSpecifictFriends
+                          .slice(0, displayCount)
+                          .map((showSpecifict) => (
+                            <p
+                              key={showSpecifict.id}
+                              className="tw-flex tw-flex-row tw-text-gray-500 "
+                            >
+                              {showSpecifict.first_name}
+                              {showSpecifict.last_name}
+                            </p>
+                          ))}
+                      {tagSpecifictFriends.length > displayCount && (
+                        <p className="tw-text-gray-500">
+                          อีก ({tagSpecifictFriends.length - displayCount}) คน
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </div>
               </Radio>
@@ -530,6 +677,7 @@ const FacebookPost = () => {
                 value={"กำหนดเอง"}
                 label="กำหนดเอง"
                 className="hover:tw-bg-gray-200 tw-items-center tw-rounded-md tw-h-16 tw-w-full"
+                onClick={switchToCustom}
               >
                 <div className="tw-flex tw-flex-row tw-items-center tw-gap-x-2">
                   <img
@@ -654,7 +802,7 @@ const FacebookPost = () => {
       content: (
         <div className="tw-w-full tw-h-full tw-flex-col tw-flex ">
           <div className="">
-            <button onClick={reset}>Back</button>
+            <button onClick={switchContentPostTaget}>Back</button>
             <div className="tw-text-center">เพื่อนยกเว้น...</div>
             <div className="tw-w-full tw-flex tw-flex-row tw-gap-x-5  ">
               <Search placeholder="ค้นหา" allowClear onSearch={onSearch} />
@@ -676,21 +824,19 @@ const FacebookPost = () => {
                 <button
                   key={item.id}
                   onClick={() => {
-                    if (selectedItemsForExceptFriend.id !== item.id ) {
-                      handleId(item,2);
-                    } else if (selectedItemsForExceptFriend.id == item.id ) {
-                      handleClose(item,2);
-                      alert("clicked")
+                    const selectedIndex =
+                      selectedItemsForExceptFriend.findIndex(
+                        (unselect) => unselect.id === item.id
+                      );
+                    if (selectedIndex === -1) {
+                      handleId(item, 2);
+                    } else {
+                      handleClose(item, 2);
+                      // alert("clicked")
                     }
                   }}
-                  className={`tw-flex tw-flex-row tw-h-max tw-w-full tw-rounded-md tw-gap-5 hover:tw-bg-gray-100 ${
-                    selectedItemsForExceptFriend.some(
-                      (selectedItemsForExceptFriend) =>
-                        selectedItemsForExceptFriend.id === item.id
-                    )
-                      ? ""
-                      : ""
-                  }`}
+                  className="tw-flex tw-flex-row tw-h-max tw-w-full tw-rounded-md tw-gap-5 hover:tw-bg-gray-100 "
+
                   // disabled={selectedItemsForExceptFriend.some(
                   //   (selectedItemsForExceptFriend) =>
                   //     selectedItemsForExceptFriend.id === item.id
@@ -707,7 +853,7 @@ const FacebookPost = () => {
                   <button className="tw-flex  tw-items-center tw-justify-end tw-w-full tw-h-full">
                     <MinusCircleOutlined
                       className={classNames(
-                        "tw-text-gray-200 hover:tw-text-red-600 tw-border-[1px]  tw-rounded-full tw-text-2xl",
+                        "tw-text-gray-200 tw-border-[1px]  tw-rounded-full tw-text-2xl",
                         {
                           "tw-text-white tw-border-red-600 tw-bg-red-600":
                             selectedItemsForExceptFriend.some(
@@ -740,12 +886,197 @@ const FacebookPost = () => {
                   ))}
               </div>
               <div className="tw-flex tw-justify-end tw-w-full tw-gap-x-4 tw-mt-4 ">
-                <button className=" tw-w-12 tw-h-8 tw-rounded-md tw-text-blue-500 hover:tw-bg-gray-200">
+                <button
+                  onClick={() => reset(1)}
+                  className=" tw-w-12 tw-h-8 tw-rounded-md tw-text-blue-500 hover:tw-bg-gray-200"
+                >
                   ยกเลิก
                 </button>
-                <button>บันทึกการเปลี่ยนเเปลง</button>
+                <button onClick={switchContentPostTaget}>
+                  บันทึกการเปลี่ยนเเปลง
+                </button>
               </div>
             </div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: 6,
+      content: (
+        <div className="tw-w-full tw-h-full tw-flex-col tw-flex ">
+          <div className="">
+            <button onClick={switchContentPostTaget}>Back</button>
+            <div className="tw-text-center">เพื่อนที่เจาะจง</div>
+            <div className="tw-w-full tw-flex tw-flex-row tw-gap-x-5  ">
+              <Search placeholder="ค้นหา" allowClear onSearch={onSearch} />
+            </div>
+          </div>
+          <div>
+            <div
+              className={classNames(
+                "tw-flex tw-overflow-y-auto tw-w-full tw-flex-col tw-p-5 tw-gap-y-2  ",
+                {
+                  "tw-h-[22rem]": isMobile && isPortrait,
+                  "tw-h-[42rem]": isTablet && isPortrait,
+                  "tw-h-[25rem]":
+                    isDesktopOrLaptop || (isTablet && isLandscape),
+                }
+              )}
+            >
+              {filteredFacebookAcc.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    const selectedIndex =
+                      selectedItemsForSpecifictFriend.findIndex(
+                        (unselect) => unselect.id === item.id
+                      );
+                    if (selectedIndex === -1) {
+                      handleId(item, 3);
+                    } else {
+                      handleClose(item, 3);
+                    }
+                  }}
+                  className="tw-flex tw-flex-row tw-h-max tw-w-full tw-rounded-md tw-gap-5 hover:tw-bg-gray-100 "
+
+                  // disabled={selectedItemsForExceptFriend.some(
+                  //   (selectedItemsForExceptFriend) =>
+                  //     selectedItemsForExceptFriend.id === item.id
+                  // )}
+                >
+                  <img
+                    src={item.profilePic}
+                    className="tw-w-10 tw-h-10 tw-rounded-full tw-self-center tw-object-cover "
+                    alt={`Profile-${item.profilePic}`}
+                  />
+                  <div className="tw-flex tw-self-center tw-justify-start tw-w-full">
+                    {item.first_name} {item.last_name}
+                  </div>
+                  <button className="tw-flex  tw-items-center tw-justify-end tw-w-full tw-h-full">
+                    <CheckCircleOutlined
+                      className={classNames(
+                        "tw-text-gray-200 tw-border-[1px]  tw-rounded-full tw-text-2xl",
+                        {
+                          "tw-text-white tw-border-blue-600 tw-bg-blue-600":
+                            selectedItemsForSpecifictFriend.some(
+                              (selected) => selected.id === item.id
+                            ),
+                        }
+                      )}
+                    />
+                  </button>
+                </button>
+              ))}
+            </div>
+            <div className="tw-w-full tw-h-max tw-sticky">
+              <p>เพื่อนที่จะเห็นโพสต์ของคุณ</p>
+              <div className="tw-flex tw-flex-row tw-border-[1px] tw-w-full tw-h-max tw-overflow-y-auto ">
+                {tagSpecifictFriends &&
+                  tagSpecifictFriends.map((allTag) => (
+                    <Tag
+                      key={allTag.id}
+                      color="blue"
+                      closeIcon={<CloseCircleOutlined />}
+                      className="tw-flex tw-flex-row tw-w-max"
+                      onClose={() => handleClose(allTag, 3)}
+                    >
+                      <div>
+                        {allTag.first_name} {allTag.last_name}
+                      </div>
+                    </Tag>
+                  ))}
+              </div>
+              <div className="tw-flex tw-justify-end tw-w-full tw-gap-x-4 tw-mt-4 ">
+                <button
+                  onClick={() => reset(1)}
+                  className=" tw-w-12 tw-h-8 tw-rounded-md tw-text-blue-500 hover:tw-bg-gray-200"
+                >
+                  ยกเลิก
+                </button>
+                <button onClick={switchContentPostTaget}>
+                  บันทึกการเปลี่ยนเเปลง
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: 7,
+      content: (
+        <div className="tw-w-full tw-h-full tw-flex-col tw-flex ">
+          <div className="">
+            <button onClick={reset}>Back</button>
+            <div className="tw-text-center">ความเป็นส่วนตัวที่กำหนดเอง</div>
+            <div className="tw-w-full tw-flex tw-flex-row tw-gap-x-5  ">
+              {/* <Search placeholder="ค้นหา" allowClear onSearch={onSearch} /> */}
+            </div>
+          </div>
+          <div className="tw-h-[50%]">
+            <p>แชร์ให้</p>
+            <Select
+              showSearch
+              // onSearch={()=>onSearch(1)}
+              labelInValue
+              mode="tags"
+              placeholder="Search and select users"
+              optionFilterProp="children"
+              onChange={(value) => handleChange(value, 1)}
+              // value={selectedShare}
+              tagRender={tagRender}
+              className="tw-w-full tw-h-max"
+            >
+               {facebookAcc.map((option) => (
+                // console.log(option),
+                <Option key={option.id} value={option.id}>
+                  <div className="tw-flex tw-flex-row tw-w-max tw-items-center  ">
+                    <img
+                      src={option.profilePic}
+                      className="tw-w-6 tw-h-6 tw-rounded-full"
+                    />
+                    <p>
+                      {option.first_name} {option.last_name}
+                    </p>
+                  </div>
+                </Option>
+              ))}
+            </Select>
+          </div>
+          <Checkbox onChange={onChange}>เพื่อนของผู้ที่อยู่ในแท็ก</Checkbox>
+          <p className="tw-text-gray-500">
+            ใครก็ตามที่ติดอยู่ในแท็กจะสามารถเห็นโพสต์นี้ได้
+          </p>
+          <div className="tw-h-[50%] ">
+            <p>ไม่ต้องแชร์ให้</p>
+            <Select
+              showSearch
+              // onSearch={()=>onSearch(1)}
+              labelInValue
+              mode="tags"
+              placeholder="Search and select users"
+              optionFilterProp="children"
+              onChange={(value) => handleChange(value, 2)}
+              // value={selectedNotShare}
+              tagRender={tagRender}
+              className="tw-w-full tw-h-max"
+            >
+              {facebookAcc.map((option) => (
+                // console.log(option),
+                <Option key={option.id} value={option.id}>
+                  <div className="tw-flex tw-flex-row tw-w-max tw-items-center  ">
+                    <img
+                      src={option.profilePic}
+                      className="tw-w-6 tw-h-6 tw-rounded-full"
+                    />
+                    <p>
+                      {option.first_name} {option.last_name}
+                    </p>
+                  </div>
+                </Option>
+              ))}
+            </Select>
           </div>
         </div>
       ),
