@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useResponsive } from "../hooks";
 import SocialIcons from "../assets/SocialIcons";
+import profile from "../assets/profile.png";
 import { Layout, Menu, Button, Breadcrumb, Tooltip } from "antd";
 import {
   BarChartOutlined,
@@ -11,6 +12,7 @@ import {
   ContainerOutlined,
   CloseOutlined,
   SlidersOutlined,
+  TrademarkCircleOutlined,
 } from "@ant-design/icons";
 import classNames from "classnames";
 import PropTypes from "prop-types";
@@ -32,6 +34,10 @@ const MainLayout = (props) => {
   const navigate = useNavigate();
 
   const location = useLocation();
+
+  const loginKey = location.state;
+
+  const [isLogin, setIsLogin] = useState(loginKey);
 
   const param = useParams();
 
@@ -118,6 +124,19 @@ const MainLayout = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
+  useEffect(() => {
+    setIsLogin(loginKey)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loginKey]);
+
+  useEffect(() => {
+    if (!isLogin) {
+      navigate("/login");
+    }
+    console.log(isLogin);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLogin]);
+
   return (
     <Layout
       className={classNames(
@@ -130,14 +149,27 @@ const MainLayout = (props) => {
     >
       <Header
         className={classNames(
-          "tw-p-0 tw-flex tw-bg-[#303c6c] tw-object-contain ",
+          "tw-p-0 tw-flex tw-flex-row tw-justify-between tw-bg-[#303c6c] tw-object-contain ",
           {
             "tw-sticky tw-top-0 tw-z-10": isTabletOrMobile && isLandscape,
           }
         )}
       >
-        <div className="tw-text-white tw-flex tw-jsutify-self-center">
-          Project
+        <div className="tw-text-white tw-flex tw-items-center">
+          <h1 className="tw-font-bold tw-mx-4 tw-text-2xl tw-h-fit">กังวาน</h1>
+        </div>
+        <div className="tw-flex tw-flex-row tw-gap-2 tw-mx-8 tw-py-4 tw-items-center">
+          <div className="tw-w-max tw-h-max tw-border-2 tw-border-white tw-rounded-full">
+            <img className="tw-rounded-full tw-h-10 tw-w-10" src={profile} />
+          </div>
+          <div className="tw-flex tw-flex-col tw-text-white tw-items-center">
+            <p className="tw-text-xl">นายวินัย ใจรัก</p>
+            <Button
+              className="tw-h-min tw-w-fit tw-text-white tw-bg-red-600 tw-border-2 tw-border-white hover:tw-border-red-600 hover:tw-bg-white hover:tw-text-red-600"
+              onClick={() => setIsLogin(false)}>
+              Log Out
+            </Button>
+          </div>
         </div>
       </Header>
 
@@ -380,6 +412,11 @@ const MainLayout = (props) => {
                   key: "/classconfig",
                   icon: <SlidersOutlined />,
                   label: "Classification Config",
+                },
+                {
+                  key: "",
+                  icon: <TrademarkCircleOutlined />,
+                  label: "Recommendation",
                 },
               ]}
             />

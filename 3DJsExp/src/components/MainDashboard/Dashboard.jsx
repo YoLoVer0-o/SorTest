@@ -45,6 +45,27 @@ const Dashboard = () => {
             return social_media
         }
     };
+
+    const socialBarColor = (value) => {
+        if (value == "facebook") {
+            return "#1974ec"
+        }
+        else if (value == "instagram") {
+            return "#833AB4"
+        }
+        else if (value == "twitter") {
+            return "#1DA1F2"
+        }
+        else if (value == "tiktok") {
+            return "#ff0050"
+        }
+        else if (value == "youtube") {
+            return "#FF0000"
+        }
+        else {
+            return "#282828"
+        }
+    };
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     ////////////////////////////////////////////image reder//////////////////////////////////////////////////////////////
@@ -177,8 +198,8 @@ const Dashboard = () => {
             {
                 label: 'จำนวนความเคลื่อนไหว',
                 data: socialPlatform.map(item => item.usage),
-                borderColor: 'rgb(255, 99, 132)',
-                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                borderColor: socialPlatform.map(item => socialBarColor(item.platform)),
+                backgroundColor: socialPlatform.map(item => socialBarColor(item.platform)),
                 barThickness: isTabletOrMobile ? 30 : 50,
             },
         ],

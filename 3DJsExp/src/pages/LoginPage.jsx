@@ -1,11 +1,17 @@
 import { LockOutlined, UserOutlined, MailOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
 import background from '../assets/loginBG.jpg';
+import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
+
+    const navigate = useNavigate();
+
     const onFinish = (values) => {
         console.log('Received values of form: ', values);
+        navigate("/main", { state: true });
     };
+
     return (
         <div className="tw-grid tw-grid-flow-col tw-auto-cols-auto tw-h-full tw-w-full tw-max-w-full tw-max-h-full tw-bg-white">
             <div className='tw-flex tw-h-full tw-w-full tw-max-w-full'>
