@@ -33,21 +33,21 @@ const InfoModal = (props) => {
                             "tw-w-56": isMobile,
                         })}
                     >
-                        <p>คำคัดกรอง:</p>
+                        <p>คำคัดกรอง:คำในหวดหมู่</p>
                     </div>
                     <div
                         className={classNames("tw-flex tw-flex-col tw-w-96 tw-h-fit", {
                             "tw-w-56": isMobile,
                         })}
                     >
-                        <p>น้ำหนัก(1-10):</p>
+                        <p>น้ำหนัก(1-10):ความเกี่ยวข้องระหว่างคำและหมวดหมู่</p>
                     </div>
                     <div
                         className={classNames("tw-flex tw-flex-col tw-w-96 tw-h-fit", {
                             "tw-w-56": isMobile,
                         })}
                     >
-                        <p>หมวดนี้แน่นอน:</p>
+                        <p>หมวดนี้แน่นอน:คำคัดกรองอยู่ในหวดนี้แน่นอน</p>
                     </div>
                 </div>
             </div>
