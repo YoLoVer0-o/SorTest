@@ -4,6 +4,5 @@ const socialPlatform = [
   { platform: "twitter", usage: 163 },
   { platform: "tiktok", usage: 481 },
   { platform: "youtube", usage: 230 },
-  { platform: "It", usage: 149 },
 ];
 export default socialPlatform;

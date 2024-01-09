@@ -1,6 +1,7 @@
 import MainLayout from "./MainLayout";
 import PostTable from "./PostLog/PostTable";
 import Dashboard from "./MainDashboard/Dashboard";
+import SubDashboard from "./MainDashboard/SubDashboard";
 import Feedback from "./Feedback";
 import FeedbackModal from "./SentimentLog/FeedbackModal";
 import PostReport from "./PostLog/PostReport";
@@ -23,6 +24,7 @@ export {
   MainLayout,
   PostTable,
   Dashboard,
+  SubDashboard,
   Feedback,
   FeedbackModal,
   PostReport,

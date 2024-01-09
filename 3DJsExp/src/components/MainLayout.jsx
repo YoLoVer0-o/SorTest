@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux'
+import { getUser, logOut } from '../libs/loginSlice'
 import { useResponsive } from "../hooks";
 import SocialIcons from "../assets/SocialIcons";
 import profile from "../assets/profile.png";
@@ -21,8 +23,11 @@ const { Header, Sider, Content } = Layout;
 
 const MainLayout = (props) => {
 
+  const isLogin = useSelector(getUser)[0].status
+
   const [collapsed, setCollapsed] = useState(true);
   const [openKeys, setOpenKeys] = useState([]);
+  // const [isLogin, setIsLogin] = useState(useSelector(getUser)[0].status);
 
   const {
     isTabletOrMobile,
@@ -35,11 +40,9 @@ const MainLayout = (props) => {
 
   const location = useLocation();
 
-  const loginKey = location.state;
-
-  const [isLogin, setIsLogin] = useState(loginKey);
-
   const param = useParams();
+
+  const dispatch = useDispatch()
 
   ///////////////////////////////////////breadcrumb name///////////////////////////////////////////////////////////////////
   const breadcrumbNameMap = {
@@ -90,16 +93,19 @@ const MainLayout = (props) => {
   };
 
   ///////////////////////////////////////root submenus///////////////////////////////////////////////////////////////////
-  const rootSubmenuKeys = ['/RPA/facebook', '/RPA/X', '/RPA/instagram', '/RPA/youtube', '/RPA/tiktok'];
+  const rootSubmenuKeys = ['/RPA/facebook', '/RPA/X', '/RPA/instagram', '/RPA/youtube', '/RPA/tiktok', '/main/religion', '/main/army', '/main/government', '/main/rally'];
 
   const onOpenChange = (keys) => {
+    // console.log(openKeys);
     const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
 
     if (latestOpenKey) {
-      const topLevelKeys = ['/RPA'];
+      console.log(latestOpenKey);
+      const topLevelKeys = ['/RPA', '/main'];
 
       const parentKey = latestOpenKey.split('/').slice(0, -1).join('/');
-      if (parentKey === '/RPA' || rootSubmenuKeys.indexOf(parentKey) === -1) {
+      if (parentKey === '/RPA' || parentKey === '/main' || rootSubmenuKeys.indexOf(parentKey) === -1) {
+        // console.log(parentKey);
         topLevelKeys.push(latestOpenKey);
       } else {
         topLevelKeys.push(parentKey);
@@ -114,7 +120,7 @@ const MainLayout = (props) => {
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   //////////////////////////////////////////////back button logic////////////////////////////////////////////////////////////
-  const showBackButton = breadcrumbItems.length > 1 && !breadcrumbItems.some(item => item.key.includes('/RPA'));
+  const showBackButton = breadcrumbItems.length > 1 && !(breadcrumbItems.some(item => item.key.includes('/RPA')) || breadcrumbItems.some(item => item.key.includes('/main')));
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
@@ -123,11 +129,6 @@ const MainLayout = (props) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
-
-  useEffect(() => {
-    setIsLogin(loginKey)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loginKey]);
 
   useEffect(() => {
     if (!isLogin) {
@@ -166,7 +167,7 @@ const MainLayout = (props) => {
             <p className="tw-text-xl">นายวินัย ใจรัก</p>
             <Button
               className="tw-h-min tw-w-fit tw-text-white tw-bg-red-600 tw-border-2 tw-border-white hover:tw-border-red-600 hover:tw-bg-white hover:tw-text-red-600"
-              onClick={() => setIsLogin(false)}>
+              onClick={() => dispatch(logOut())}>
               Log Out
             </Button>
           </div>
@@ -218,6 +219,33 @@ const MainLayout = (props) => {
                   key: "/main",
                   icon: <BarChartOutlined />,
                   label: "รายงานสรุป",
+                  children: [
+                    {
+                      key: "/main",
+                      label: "ภาพรวม",
+                      className: "",
+                    },
+                    {
+                      key: "/main/religion",
+                      label: "-สถาบัน",
+                      className: "",
+                    },
+                    {
+                      key: "/main/army",
+                      label: "-กองทัพ",
+                      className: "",
+                    },
+                    {
+                      key: "/main/government",
+                      label: "-รัฐบาล",
+                      className: "",
+                    },
+                    {
+                      key: "/main/rally",
+                      label: "-ชุมนุม",
+                      className: "",
+                    },
+                  ]
                 },
                 {
                   key: "/sentiment",

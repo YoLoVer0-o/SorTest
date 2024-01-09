@@ -1,15 +1,13 @@
 import { useState } from "react";
-import { SearchBar, VerticalBarChart, HorizontalBarChart, DoughnutChart } from "../../utilities";
-import { sentimentAll, sentimentPos, socialPlatform } from "../../mock";
+import { useParams } from "react-router-dom";
+import { SearchBar, VerticalBarChart, DoughnutChart } from "../../utilities";
+import { sentimentAll, sentimentPos, dashboardMock } from "../../mock";
 import { useResponsive } from "../../hooks";
 import { Button, Tooltip } from "antd";
 import { FilePdfOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import ReadMoreReact from 'read-more-react';
-import overallP from "../../assets/PostPic/overallP.jpg";
-import SocialIcons from "../../assets/SocialIcons";
-import PostPics from "../../assets/PostPics";
 import WordClouds from "../../assets/WordClouds";
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
@@ -17,101 +15,54 @@ dayjs.extend(isSameOrBefore)
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 dayjs.extend(isSameOrAfter)
 
-const Dashboard = () => {
+const SubDashboard = () => {
 
     // const [searchTag, setSearchTag] = useState([]);
     const [searchDate, setSearchDate] = useState([]);
 
     const { isTabletOrMobile, isTablet, isMobile, isPortrait, isLandscape } = useResponsive();
 
-    const { ภาพรวม } = WordClouds;
+    ///////////////////////////////////WordClouds logic///////////////////////////////////////////////////////////////////////
+    const { กองทัพ, รัฐบาล, ชุมนุม, สถาบัน } = WordClouds;
 
-    const { overall } = PostPics;
+    const param = useParams();
 
-    ///////////////////////////////////icons render logic///////////////////////////////////////////////////////////////////////
-    const { facebook, instagram, twitter, tiktok, youtube, social_media } = SocialIcons;
-    const sentIcons = (value) => {
-        if (value == "facebook") {
-            return facebook
+    const displayTopic = () => {
+
+        if (param.topic == "army") {
+            return "กองทัพ"
         }
-        else if (value == "instagram") {
-            return instagram
+        else if (param.topic == "government") {
+            return "รัฐบาล"
         }
-        else if (value == "twitter") {
-            return twitter
+        else if (param.topic == "rally") {
+            return "ชุมนุม"
         }
-        else if (value == "tiktok") {
-            return tiktok
-        }
-        else if (value == "youtube") {
-            return youtube
-        }
-        else {
-            return social_media
+        else if (param.topic == "religion") {
+            return "สถาบัน"
         }
     };
 
-    const socialBarColor = (value) => {
-        if (value == "facebook") {
-            return "#1974ec"
-        }
-        else if (value == "instagram") {
-            return "#833AB4"
-        }
-        else if (value == "twitter") {
-            return "#1DA1F2"
-        }
-        else if (value == "tiktok") {
-            return "#ff0050"
-        }
-        else if (value == "youtube") {
-            return "#FF0000"
-        }
-        else {
-            return "#282828"
-        }
-    };
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    ////////////////////////////////////////////image reder//////////////////////////////////////////////////////////////
-    const imageSettings = {
-        barSize: isMobile ? 30 : 50,
-        imageWidth: isMobile ? 30 : 50,
-        imageHeight: isMobile ? 30 : 50,
-        imageHalfHeight: isMobile ? 30 / 2 : 50 / 2,
-        imageBarOffset: 0,
+    const dashboardData = dashboardMock.filter(data => data.topic == (param.topic))[0];
+
+    const sentWordClouds = () => {
+
+        if (param.topic == "army") {
+            return กองทัพ
+        }
+        else if (param.topic == "government") {
+            return รัฐบาล
+        }
+        else if (param.topic == "rally") {
+            return ชุมนุม
+        }
+        else if (param.topic == "religion") {
+            return สถาบัน
+        }
     };
 
-    const handleDrawImage = (chart, data) => {
-        const { ctx } = chart;
-
-        const chartHeight = chart.chartArea?.height;
-        const dataLength = data.labels.length;
-
-        const step = (chartHeight - imageSettings.barSize * dataLength) / dataLength;
-        const yOffset = step / 2 + imageSettings.imageBarOffset;
-
-        ctx.save();
-
-        data.labels.forEach((element, i) => {
-
-            const imageY = i * (imageSettings.barSize + step) + yOffset;
-
-            const image = new Image();
-            image.src = sentIcons(element);
-
-            ctx.drawImage(
-                image,
-                0,
-                imageY,
-                imageSettings.imageWidth,
-                imageSettings.imageHeight
-            );
-
-            ctx.restore();
-        });
-    };
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     //////////////////////////////////////////color render////////////////////////////////////////////////////////////////
     const colorSet = (data) => {
@@ -128,7 +79,6 @@ const Dashboard = () => {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     //////////////////////////////////////////////////read more////////////////////////////////////////////////////////
-    const testText = "เงินดิจิตอล 1 หมื่นบาท ยังไม่ถึงไหน!รมช.คลังบอกกฤษฎีกายังตีความร่างพ.ร.บ.เงินกู้ 5แสนล้านไม่เสร็จ คาดได้คำตอบช่วงเดือนม.ค.นี้#อนุวัตจัดให้"
     const readMore = <p className="tw-text-blue-500 tw-cursor-pointer">อ่านเพิ่มเติม</p>
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -196,58 +146,10 @@ const Dashboard = () => {
     };
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    /////////////////////////////////////////////socialBar/////////////////////////////////////////////////////////////
-    const socialBarData = {
-        labels: socialPlatform.map(item => item.platform),
-        datasets: [
-            {
-                label: 'จำนวนความเคลื่อนไหว',
-                data: socialPlatform.map(item => item.usage),
-                borderColor: socialPlatform.map(item => socialBarColor(item.platform)),
-                backgroundColor: socialPlatform.map(item => socialBarColor(item.platform)),
-                barThickness: isTabletOrMobile ? 30 : 50,
-            },
-        ],
-    };
-
-    const socialBarOptions = {
-        indexAxis: 'y',
-        elements: {
-            bar: {
-                borderWidth: 2,
-            },
-        },
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                position: 'right',
-                display: false,
-            },
-            title: {
-                display: false,
-                text: 'Chart.js Horizontal Bar Chart',
-            },
-        },
-        scales: {
-            y: {
-                ticks: {
-                    display: false,
-                },
-                grid: {
-                    display: false,
-                },
-                afterFit: (scaleInstance) => {
-                    scaleInstance.width = 60;
-                },
-            },
-        },
-    };
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     return (
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto', {})}>
-            <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">DashBoard</p>
+            <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">DashBoard หวดหมู่: {displayTopic()}</p>
             <div className={classNames("tw-flex tw-flex-row tw-max-w-full tw-bg-white tw-justify-center tw-gap-2 tw-border-stone-300 tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
                 "tw-flex-col": isTabletOrMobile && isPortrait,
                 "tw-sticky tw-top-0 tw-z-60": !isTabletOrMobile,
@@ -355,30 +257,10 @@ const Dashboard = () => {
                             </div>
                         </div>
                     </div>
-                    <div className={classNames("tw-flex tw-flex-col tw-gap-4", {
+                    <div className={classNames("tw-flex tw-flex-col tw-gap-4 tw-h-[46rem]", {
                         "tw-w-full": isTabletOrMobile || isTablet,
                         "tw-w-1/3": !isTabletOrMobile && !isTablet,
                     })}>
-                        <div className="tw-flex tw-flex-col tw-gap-y-6 tw-w-full tw-h-full tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
-                            <p className="tw-text-center tw-text-lg">ช่องทางสื่อออนไลน์</p>
-                            <div className={classNames("tw-w-full tw-h-[38rem]", {
-                                "tw-h-96 tw-w-96": isTabletOrMobile,
-                            })}>
-                                <HorizontalBarChart
-                                    chartOptions={socialBarOptions}
-                                    chartData={socialBarData}
-                                    redraw={true}
-                                    imageSettings={imageSettings}
-                                    plugins={[
-                                        {
-                                            id: "sectorBackground",
-                                            beforeDraw: (chart) => handleDrawImage(chart, socialBarData),
-                                            resize: (chart) => handleDrawImage(chart, socialBarData)
-                                        }
-                                    ]}
-                                />
-                            </div>
-                        </div>
                         <div className="tw-flex tw-flex-col tw-h-full tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">แฮชเเท็กที่ถูกใช้งานมากที่สุด</p>
                             <div className="tw-grid tw-grid-cols-3 tw-w-full tw-h-full tw-justify-around tw-items-center tw-self-center tw-gap-4">
@@ -404,7 +286,7 @@ const Dashboard = () => {
                         </div>
                     </div>
                 </div>
-                <div className={classNames("tw-flex tw-flex-row tw-justify-around tw-h-full tw-gap-4 tw-my-2", {
+                <div className={classNames("tw-flex tw-flex-row tw-justify-around tw-gap-4 tw-my-2", {
                     "tw-flex-col": isTabletOrMobile,
                 })}>
                     <div className={classNames("tw-flex tw-flex-col tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
@@ -416,10 +298,10 @@ const Dashboard = () => {
                             "tw-h-[16rem]": isMobile && isPortrait,
                             "tw-h-full": !isMobile || (isMobile && isLandscape),
                         })}>
-                            <img className="tw-object-fill tw-h-full tw-w-full" src={ภาพรวม} />
+                            <img className="tw-object-fill tw-h-full tw-w-full" src={sentWordClouds()} />
                         </div>
                     </div>
-                    <div className={classNames("tw-flex tw-flex-col tw-h-fit tw-object-contain tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
+                    <div className={classNames("tw-flex tw-flex-col tw-h-full tw-object-contain tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
                         "tw-w-full": isTabletOrMobile,
                         "tw-w-1/2": !isTabletOrMobile,
                     })}>
@@ -427,16 +309,16 @@ const Dashboard = () => {
                         <div>
                             <div className="tw-flex tw-flex-row tw-gap-2">
                                 <div className="tw-w-max tw-h-max tw-border-2 tw-border-black tw-rounded-full">
-                                    <img className="tw-rounded-full tw-h-10 tw-w-10" src={overallP} />
+                                    <img className="tw-rounded-full tw-h-12 tw-w-12" src={dashboardData.profile} />
                                 </div>
                                 <div className="tw-flex tw-flex-col">
-                                    <p className="tw-text-xl">อนุวัต จัดให้</p>
-                                    <p className="tw-text-lg tw-font-thin">2 มกราคม เวลา 09:26 น. </p>
+                                    <p className="tw-text-2xl">{dashboardData.username}</p>
+                                    <p className="tw-text-lg tw-font-thin">{dashboardData.date}</p>
                                 </div>
                             </div>
                             <div className="tw-text-lg">
                                 <ReadMoreReact
-                                    text={testText}
+                                    text={dashboardData.text}
                                     min={100}
                                     ideal={180}
                                     max={300}
@@ -444,22 +326,22 @@ const Dashboard = () => {
                                 />
                                 <div className={classNames("tw-flex tw-justify-center tw-h-96", {
                                 })}>
-                                    <img className="tw-object-scale-down" src={overall} />
+                                    <img className="tw-object-scale-down" src={dashboardData.image} />
                                 </div>
                             </div>
                             <div className="tw-flex tw-flex-row tw-min-w-full tw-justify-between">
-                                <p className="tw-flex tw-text-lg tw-self-start tw-w-max">2.2หมื่น{ } likes</p>
+                                <p className="tw-flex tw-text-lg tw-self-start tw-w-max">150{ } likes</p>
                                 <div className="tw-flex tw-flex-row tw-gap-2 tw-w-max tw-text-lg tw-self-end">
-                                    <p>765 { } comments</p>
-                                    <p>219 { } shares</p>
+                                    <p>2.1k { } comments</p>
+                                    <p>8.5k { } shares</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div >
+        </div>
     );
 }
 
-export default Dashboard;
+export default SubDashboard;
