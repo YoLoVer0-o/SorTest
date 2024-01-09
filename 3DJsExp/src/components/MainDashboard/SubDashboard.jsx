@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { SearchBar, VerticalBarChart, DoughnutChart } from "../../utilities";
 import { sentimentAll, sentimentPos, dashboardMock } from "../../mock";
@@ -46,6 +46,14 @@ const SubDashboard = () => {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     const dashboardData = dashboardMock.filter(data => data.topic == (param.topic))[0];
+
+    const [displayData, setDisplayedData] = useState(dashboardData)
+
+    useEffect(() => {
+        setDisplayedData(dashboardData)
+    }, [dashboardData, param.topic])
+
+
 
     const sentWordClouds = () => {
 
@@ -301,43 +309,46 @@ const SubDashboard = () => {
                             <img className="tw-object-fill tw-h-full tw-w-full" src={sentWordClouds()} />
                         </div>
                     </div>
-                    <div className={classNames("tw-flex tw-flex-col tw-h-full tw-object-contain tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
-                        "tw-w-full": isTabletOrMobile,
-                        "tw-w-1/2": !isTabletOrMobile,
-                    })}>
-                        <p className="tw-text-lg tw-text-center">โพสต์ที่มีส่วนร่วมสูงสด</p>
-                        <div>
-                            <div className="tw-flex tw-flex-row tw-gap-2">
-                                <div className="tw-w-max tw-h-max tw-border-2 tw-border-black tw-rounded-full">
-                                    <img className="tw-rounded-full tw-h-12 tw-w-12" src={dashboardData.profile} />
+                    {displayData && (
+                        <div className={classNames("tw-flex tw-flex-col tw-h-full tw-object-contain tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
+                            "tw-w-full": isTabletOrMobile,
+                            "tw-w-1/2": !isTabletOrMobile,
+                        })}>
+                            <p className="tw-text-lg tw-text-center">โพสต์ที่มีส่วนร่วมสูงสด</p>
+                            <div>
+                                <div className="tw-flex tw-flex-row tw-gap-2">
+                                    <div className="tw-w-max tw-h-max tw-border-2 tw-border-black tw-rounded-full">
+                                        <img className="tw-rounded-full tw-h-12 tw-w-12" src={displayData.profile} />
+                                    </div>
+                                    <div className="tw-flex tw-flex-col">
+                                        <p className="tw-text-2xl">{displayData.username}</p>
+                                        <p className="tw-text-lg tw-font-thin">{displayData.date}</p>
+                                    </div>
                                 </div>
-                                <div className="tw-flex tw-flex-col">
-                                    <p className="tw-text-2xl">{dashboardData.username}</p>
-                                    <p className="tw-text-lg tw-font-thin">{dashboardData.date}</p>
+                                <div className="tw-text-lg">
+                                    {/* <ReadMoreReact
+                                        text={displayData.text}
+                                        min={100}
+                                        ideal={180}
+                                        max={300}
+                                        readMoreText={readMore}
+                                    /> */}
+                                    {displayData.text}
+                                    <div className={classNames("tw-flex tw-justify-center tw-h-96", {
+                                    })}>
+                                        <img className="tw-object-scale-down" src={displayData.image} />
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="tw-text-lg">
-                                <ReadMoreReact
-                                    text={dashboardData.text}
-                                    min={100}
-                                    ideal={180}
-                                    max={300}
-                                    readMoreText={readMore}
-                                />
-                                <div className={classNames("tw-flex tw-justify-center tw-h-96", {
-                                })}>
-                                    <img className="tw-object-scale-down" src={dashboardData.image} />
-                                </div>
-                            </div>
-                            <div className="tw-flex tw-flex-row tw-min-w-full tw-justify-between">
-                                <p className="tw-flex tw-text-lg tw-self-start tw-w-max">150{ } likes</p>
-                                <div className="tw-flex tw-flex-row tw-gap-2 tw-w-max tw-text-lg tw-self-end">
-                                    <p>2.1k { } comments</p>
-                                    <p>8.5k { } shares</p>
+                                <div className="tw-flex tw-flex-row tw-min-w-full tw-justify-between">
+                                    <p className="tw-flex tw-text-lg tw-self-start tw-w-max">150{ } likes</p>
+                                    <div className="tw-flex tw-flex-row tw-gap-2 tw-w-max tw-text-lg tw-self-end">
+                                        <p>2.1k { } comments</p>
+                                        <p>8.5k { } shares</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    )}
                 </div>
             </div>
         </div>
