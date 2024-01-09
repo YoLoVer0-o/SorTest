@@ -10,7 +10,7 @@ import profile from "../../assets/profile.png";
 import { BsEmojiSmile } from "react-icons/bs";
 import { LiaWindowClose } from "react-icons/lia";
 import { useResponsive } from "../../hooks";
-import { facebookAcc } from "../../mock";
+import { facebookAcc, emotionEmoji } from "../../mock";
 import classNames from "classnames";
 import { useState, useRef } from "react";
 import Image from "../../assets/PostImage";
@@ -38,6 +38,7 @@ const FacebookPost = () => {
   const [tagFriends, setTagFriends] = useState("");
   const [tagExceptFriends, setTagExceptFriends] = useState("");
   const [tagSpecifictFriends, setTagSpecificFriends] = useState("");
+  const [emotionAct, setEmotionAct] = useState([]);
 
   const nodeRef = useRef(null);
   const { Search } = Input;
@@ -229,45 +230,61 @@ const FacebookPost = () => {
 
   const [selectedShare, setSelectedShare] = useState([]);
   const [selectedNotShare, setSelectedNotShare] = useState([]);
-  const handleChange = (value, type) => {
-    console.log(value);
-    if (type === 1) {
-      setSelectedShare(value);
-      // Filter options for the second Select
-      const filteredOptions = facebookAcc.filter(option => !value.includes(option.id));
-      
-      console.log(filteredOptions);
-    } else if (type === 2) {
+  const [selectedTheSame, setSelectedTheSame] = useState([]);
+  const handleSelected = (value, button) => {
+      const option = facebookAcc.find((acc) => acc.id === value)
+     
+    if (button === 1) {
+      setSelectedShare(option.id);
+      handleCompare();
+    } else if (button === 2) {
       setSelectedNotShare(value);
-      // Filter options for the first Select
-      const filteredOptions = facebookAcc.filter(option => !value.includes(option.id));
-      setSelectedShare(filteredOptions);
+      handleCompare();
     }
   };
-  // console.log(selectedShare);
-  // console.log(selectedNotShare);
-  const { Option } = Select;
-  // const options = facebookAcc.map((option) => (
-
-  // ));
-  const tagRender = (props) => {
-    const { label, closable, onClose } = props;
-
-    return (
-      <Tag
-        color="blue"
-        closable={closable}
-        onClose={onClose}
-        className="tw-flex tw-gap-2 tw-mt-1"
-      >
-        {label}
-      </Tag>
+  const handleCompare = () => {
+    //   // alert("compareHandle");
+    let sameData = selectedShare.filter((dataValue) =>
+      selectedNotShare.includes(dataValue)
     );
+    setSelectedTheSame(sameData);
   };
+   const customTagRender = (props) => {
+     const { label, value, closable, onClose } = props;
+     const option = facebookAcc.find((acc) => acc.id === value);
 
-  // console.log(tagFriends);
-  // console.log(tagExceptFriends);
-  console.log(tagSpecifictFriends);
+     return (
+       <Tag
+       color="blue"
+         closable={closable}
+         onClose={onClose}
+         style={{ display: "flex", alignItems: "center" }}
+       >
+         <img
+           src={option.profilePic}
+           className="tw-w-6 tw-h-6 tw-rounded-full"
+           alt={`${option.first_name} ${option.last_name}`}
+         />
+         <div style={{ marginLeft: 8 }}>
+           {option.first_name} {option.last_name}
+         </div>
+       </Tag>
+     );
+   };
+ /////////////////////////////Emotion&Activity//////////////////////////////
+ const handelEmotion = (emotion) =>{
+setEmotionAct(emotion);
+setCurrentId(1);
+ }
+ const cancelEmoAct = () =>{
+  setEmotionAct("");
+  setCurrentId(1);
+ }
+   // console.log(selectedShare);
+   // console.log(selectedNotShare);
+   // console.log(tagFriends);
+   // console.log(tagExceptFriends);
+  //  console.log(emotionAct);
   // console.log(selectedItemsForExceptFriend);
   const contentArray = [
     {
@@ -321,10 +338,38 @@ const FacebookPost = () => {
                 <FaSortDown />
               </button>
             </div>
+            {emotionAct.length != 0 && (
+              <div
+                className={classNames(
+                  "tw-flex tw-flex-row tw-h-max tw-gap-3 tw-w-max ",
+                  {}
+                )}
+              >
+                <p>กำลัง</p>
+
+                <div
+                  key={emotionAct.id}
+                  className="tw-w-full tw-h-max tw-flex tw-flex-row tw-rounded-md"
+                >
+                  <p
+                    onClick={switchEmotion}
+                    className="tw-w-full tw-h-10 tw-flex tw-flex-row tw-gap-2"
+                  >
+                    <div className="tw-flex tw-text-l tw-rounded-full  ">
+                      {emotionAct.emoji}
+                    </div>
+                    <p> รู้สึก</p>
+                    <p className="tw-cursor-pointer hover:tw-underline tw-underline-offset-2">
+                      {emotionAct.feeling}
+                    </p>
+                  </p>
+                </div>
+              </div>
+            )}
             {tagFriends.length != 0 && (
               <div
                 className={classNames(
-                  "tw-flex tw-flex-row tw-gap-3 tw-w-max ",
+                  "tw-flex tw-flex-row tw-gap-3 tw-w-max tw-ml-16",
                   {}
                 )}
               >
@@ -789,11 +834,44 @@ const FacebookPost = () => {
     {
       id: 4,
       content: (
-        <div className="tw-w-full tw-h-full tw-flex-col tw-flex ">
-          <div>
-            <button onClick={reset}>Back</button>
-            <div className="tw-text-center">Emotion&Activity</div>
+        <div className="tw-w-full tw-h-full ">
+          <div className="tw-w-full tw-h-[90%] tw-flex-col tw-flex ">
+            <button
+              onClick={reset}
+              className="tw-bg-gray-200 hover:tw-bg-gray-300 tw-w-10 tw-h-6 tw-rounded-md"
+            >
+              Back
+            </button>
+            <div className="tw-text-center">คุณรู้สึกอย่างไร</div>
+            <div className="tw-w-full tw-flex tw-flex-row tw-gap-5">
+              <button>คุณรู้สึก</button>
+              <button>กิจกรรม</button>
+            </div>
+            <div className="tw-w-full tw-h-full tw-overflow-y-auto">
+              {emotionEmoji.map((emoji) => (
+                <div
+                  key={emoji.id}
+                  className="tw-w-full tw-h-10 tw-flex tw-flex-row tw-items-center tw-rounded-md hover:tw-bg-gray-200 "
+                >
+                  <button
+                    onClick={() => handelEmotion(emoji)}
+                    className="tw-w-full tw-h-10 tw-flex tw-flex-row tw-items-center"
+                  >
+                    <div className="tw-flex tw-items-center tw-text-xl tw-rounded-full tw-bg-gray-300 ">
+                      {emoji.emoji}
+                    </div>
+                    <p>{emoji.feeling}</p>
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
+          <button
+            onClick={cancelEmoAct}
+            className="tw-flex tw-bg-red-400 tw-rounded-lg tw-w-12 tw-h-6  t tw-justify-center"
+          >
+            ยกเลิก
+          </button>
         </div>
       ),
     },
@@ -802,7 +880,12 @@ const FacebookPost = () => {
       content: (
         <div className="tw-w-full tw-h-full tw-flex-col tw-flex ">
           <div className="">
-            <button onClick={switchContentPostTaget}>Back</button>
+            <button
+              onClick={switchContentPostTaget}
+              className="tw-bg-gray-200 hover:tw-bg-gray-300 tw-w-10 tw-h-6 tw-rounded-md"
+            >
+              Back
+            </button>
             <div className="tw-text-center">เพื่อนยกเว้น...</div>
             <div className="tw-w-full tw-flex tw-flex-row tw-gap-x-5  ">
               <Search placeholder="ค้นหา" allowClear onSearch={onSearch} />
@@ -906,7 +989,12 @@ const FacebookPost = () => {
       content: (
         <div className="tw-w-full tw-h-full tw-flex-col tw-flex ">
           <div className="">
-            <button onClick={switchContentPostTaget}>Back</button>
+            <button
+              onClick={switchContentPostTaget}
+              className="tw-bg-gray-200 hover:tw-bg-gray-300 tw-w-10 tw-h-6 tw-rounded-md"
+            >
+              Back
+            </button>
             <div className="tw-text-center">เพื่อนที่เจาะจง</div>
             <div className="tw-w-full tw-flex tw-flex-row tw-gap-x-5  ">
               <Search placeholder="ค้นหา" allowClear onSearch={onSearch} />
@@ -994,7 +1082,10 @@ const FacebookPost = () => {
                 >
                   ยกเลิก
                 </button>
-                <button onClick={switchContentPostTaget}>
+                <button
+                  onClick={switchContentPostTaget}
+                  className=" tw-flex tw-w-max tw-p-2 tw-items-center tw-h-8 tw-rounded-md tw-text-white tw-bg-blue-500 "
+                >
                   บันทึกการเปลี่ยนเเปลง
                 </button>
               </div>
@@ -1008,7 +1099,12 @@ const FacebookPost = () => {
       content: (
         <div className="tw-w-full tw-h-full tw-flex-col tw-flex ">
           <div className="">
-            <button onClick={reset}>Back</button>
+            <button
+              onClick={reset}
+              className="tw-bg-gray-200 hover:tw-bg-gray-300 tw-w-10 tw-h-6 tw-rounded-md"
+            >
+              Back
+            </button>
             <div className="tw-text-center">ความเป็นส่วนตัวที่กำหนดเอง</div>
             <div className="tw-w-full tw-flex tw-flex-row tw-gap-x-5  ">
               {/* <Search placeholder="ค้นหา" allowClear onSearch={onSearch} /> */}
@@ -1017,32 +1113,29 @@ const FacebookPost = () => {
           <div className="tw-h-[50%]">
             <p>แชร์ให้</p>
             <Select
-              showSearch
-              // onSearch={()=>onSearch(1)}
-              labelInValue
-              mode="tags"
-              placeholder="Search and select users"
-              optionFilterProp="children"
-              onChange={(value) => handleChange(value, 1)}
-              // value={selectedShare}
-              tagRender={tagRender}
-              className="tw-w-full tw-h-max"
-            >
-               {facebookAcc.map((option) => (
-                // console.log(option),
-                <Option key={option.id} value={option.id}>
-                  <div className="tw-flex tw-flex-row tw-w-max tw-items-center  ">
+              className="tw-w-full"
+              mode="multiple"
+              placeholder="Select one country"
+              defaultValue={selectedShare}
+              onChange={(value) => handleSelected(value, 1)}
+              onDeselect={handleCompare}
+              optionLabelProp="label"
+              tagRender={customTagRender}
+              options={facebookAcc.map((option) => ({
+                label: (
+                  <Space>
                     <img
                       src={option.profilePic}
                       className="tw-w-6 tw-h-6 tw-rounded-full"
                     />
-                    <p>
-                      {option.first_name} {option.last_name}
-                    </p>
-                  </div>
-                </Option>
-              ))}
-            </Select>
+
+                    {option.first_name}
+                    {option.last_name}
+                  </Space>
+                ),
+                value: option.id,
+              }))}
+            />
           </div>
           <Checkbox onChange={onChange}>เพื่อนของผู้ที่อยู่ในแท็ก</Checkbox>
           <p className="tw-text-gray-500">
@@ -1051,32 +1144,44 @@ const FacebookPost = () => {
           <div className="tw-h-[50%] ">
             <p>ไม่ต้องแชร์ให้</p>
             <Select
-              showSearch
-              // onSearch={()=>onSearch(1)}
-              labelInValue
-              mode="tags"
-              placeholder="Search and select users"
-              optionFilterProp="children"
-              onChange={(value) => handleChange(value, 2)}
-              // value={selectedNotShare}
-              tagRender={tagRender}
-              className="tw-w-full tw-h-max"
-            >
-              {facebookAcc.map((option) => (
-                // console.log(option),
-                <Option key={option.id} value={option.id}>
-                  <div className="tw-flex tw-flex-row tw-w-max tw-items-center  ">
+              className="tw-w-full"
+              mode="multiple"
+              placeholder="Select one country"
+              defaultValue={selectedNotShare}
+              onChange={(value) => handleSelected(value, 2)}
+              onDeselect={handleCompare}
+              optionLabelProp="label"
+              tagRender={customTagRender}
+              options={facebookAcc.map((option) => ({
+                label: (
+                  <Space>
                     <img
                       src={option.profilePic}
                       className="tw-w-6 tw-h-6 tw-rounded-full"
                     />
-                    <p>
-                      {option.first_name} {option.last_name}
-                    </p>
-                  </div>
-                </Option>
-              ))}
-            </Select>
+
+                    {option.first_name}
+                    {option.last_name}
+                  </Space>
+                ),
+                value: option.id,
+              }))}
+            />
+          </div>
+          <div className="tw-flex tw-justify-end tw-w-full tw-gap-x-4 tw-mt-4 ">
+            {" "}
+            <button
+              onClick={switchContentPostTaget}
+              className=" tw-w-12 tw-h-8 tw-rounded-md tw-text-blue-500 hover:tw-bg-gray-200"
+            >
+              ยกเลิก
+            </button>
+            <button
+              onClick={switchContentPostTaget}
+              className=" tw-flex tw-w-max tw-h-8 tw-p-2 tw-items-center tw-rounded-md tw-text-white tw-bg-blue-500 "
+            >
+              บันทึก
+            </button>
           </div>
         </div>
       ),

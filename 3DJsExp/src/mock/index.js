@@ -10,6 +10,7 @@ import testAcc from "./testAcc_mock";
 import workMock from "./workMock";
 import cat_word from "./cat_word";
 import facebookAcc from "./FacebookAcc";
+import emotionEmoji from "./emotionEmoji";
 
 export {
   sentimentAll,
@@ -24,4 +25,5 @@ export {
   workMock,
   cat_word,
   facebookAcc,
+  emotionEmoji,
 };
