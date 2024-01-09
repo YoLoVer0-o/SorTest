@@ -975,7 +975,10 @@ setCurrentId(1);
                 >
                   ยกเลิก
                 </button>
-                <button onClick={switchContentPostTaget}>
+                <button
+                  onClick={switchContentPostTaget}
+                  className=" tw-flex tw-w-max tw-p-2 tw-items-center tw-h-8 tw-rounded-md tw-text-white tw-bg-blue-500 "
+                >
                   บันทึกการเปลี่ยนเเปลง
                 </button>
               </div>
