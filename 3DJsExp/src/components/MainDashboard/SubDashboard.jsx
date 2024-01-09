@@ -4,7 +4,7 @@ import { SearchBar, VerticalBarChart, DoughnutChart } from "../../utilities";
 import { sentimentAll, sentimentPos, dashboardMock } from "../../mock";
 import { useResponsive } from "../../hooks";
 import { Button, Tooltip } from "antd";
-import { FilePdfOutlined } from "@ant-design/icons";
+import { FilePdfOutlined, SendOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import ReadMoreReact from 'read-more-react';
@@ -316,14 +316,20 @@ const SubDashboard = () => {
                         })}>
                             <p className="tw-text-lg tw-text-center">โพสต์ที่มีส่วนร่วมสูงสด</p>
                             <div>
-                                <div className="tw-flex tw-flex-row tw-gap-2">
-                                    <div className="tw-w-max tw-h-max tw-border-2 tw-border-black tw-rounded-full">
-                                        <img className="tw-rounded-full tw-h-12 tw-w-12" src={displayData.profile} />
+                                <div className="tw-flex tw-flex-row tw-justify-between">
+                                    <div className="tw-flex tw-flex-row tw-gap-2">
+                                        <div className="tw-w-max tw-h-max tw-border-2 tw-border-black tw-rounded-full">
+                                            <img className="tw-rounded-full tw-h-12 tw-w-12" src={displayData.profile} />
+                                        </div>
+                                        <div className="tw-flex tw-flex-col">
+                                            <p className="tw-text-2xl">{displayData.username}</p>
+                                            <p className="tw-text-lg tw-font-thin">{displayData.date}</p>
+                                        </div>
                                     </div>
-                                    <div className="tw-flex tw-flex-col">
-                                        <p className="tw-text-2xl">{displayData.username}</p>
-                                        <p className="tw-text-lg tw-font-thin">{displayData.date}</p>
-                                    </div>
+                                    <a className="tw-w-fit tw-mx-4 tw-text-lg" target="blank"
+                                        href={displayData.link} >
+                                        <SendOutlined />ไปที่โพสต์
+                                    </a>
                                 </div>
                                 <div className="tw-text-lg">
                                     {/* <ReadMoreReact

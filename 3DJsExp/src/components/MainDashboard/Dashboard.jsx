@@ -3,7 +3,7 @@ import { SearchBar, VerticalBarChart, HorizontalBarChart, DoughnutChart } from "
 import { sentimentAll, sentimentPos, socialPlatform } from "../../mock";
 import { useResponsive } from "../../hooks";
 import { Button, Tooltip } from "antd";
-import { FilePdfOutlined } from "@ant-design/icons";
+import { FilePdfOutlined,SendOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import ReadMoreReact from 'read-more-react';
@@ -286,11 +286,11 @@ const Dashboard = () => {
                     })}>
                         <div className="tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">จำนวนโพสต์</p>
-                            <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
+                            <p className="tw-text-6xl tw-font-bold tw-text-blue-400">2,570{ }</p>
                         </div>
                         <div className="tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">การมีส่วนร่วมทั้งหมด</p>
-                            <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
+                            <p className="tw-text-6xl tw-font-bold tw-text-blue-400">2,600,000{ }</p>
                         </div>
                         <div className="tw-flex tw-flex-col tw-h-full tw-w-full tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-center tw-text-lg">จำนวนโพสต์รายวัน</p>
@@ -314,11 +314,11 @@ const Dashboard = () => {
                     })}>
                         <div className="tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">จำนวนผู้ใช้งาน</p>
-                            <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
+                            <p className="tw-text-6xl tw-font-bold tw-text-blue-400">620{ }</p>
                         </div>
                         <div className="tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">การมีส่วนร่วมเฉลี่ย/โพสต์</p>
-                            <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
+                            <p className="tw-text-6xl tw-font-bold tw-text-blue-400">370,000{ }</p>
                         </div>
                         <div className="tw-text-center tw-flex tw-flex-col tw-h-full tw-items-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-center tw-text-lg">ความรู้สึกเชิงบวก-ลบ</p>
@@ -425,14 +425,20 @@ const Dashboard = () => {
                     })}>
                         <p className="tw-text-lg tw-text-center">โพสต์ที่มีส่วนร่วมสูงสด</p>
                         <div>
-                            <div className="tw-flex tw-flex-row tw-gap-2">
-                                <div className="tw-w-max tw-h-max tw-border-2 tw-border-black tw-rounded-full">
-                                    <img className="tw-rounded-full tw-h-10 tw-w-10" src={overallP} />
+                            <div className="tw-flex tw-flex-row tw-justify-between">
+                                <div className="tw-flex tw-flex-row tw-gap-2">
+                                    <div className="tw-w-max tw-h-max tw-border-2 tw-border-black tw-rounded-full">
+                                        <img className="tw-rounded-full tw-h-10 tw-w-10" src={overallP} />
+                                    </div>
+                                    <div className="tw-flex tw-flex-col">
+                                        <p className="tw-text-xl">อนุวัต จัดให้</p>
+                                        <p className="tw-text-lg tw-font-thin">2 มกราคม เวลา 09:26 น. </p>
+                                    </div>
                                 </div>
-                                <div className="tw-flex tw-flex-col">
-                                    <p className="tw-text-xl">อนุวัต จัดให้</p>
-                                    <p className="tw-text-lg tw-font-thin">2 มกราคม เวลา 09:26 น. </p>
-                                </div>
+                                <a className="tw-w-fit tw-mx-4 tw-text-lg" target="blank"
+                                    href="https://www.facebook.com/anuwatf.ch7/posts/pfbid0f1ui1iaiZX9ibN44euDsa5N6yJ5hEWm7tY4XLsjAd8AcUfGsY8DjosJi8qmLhPYol" >
+                                    <SendOutlined />ไปที่โพสต์
+                                </a>
                             </div>
                             <div className="tw-text-lg">
                                 <ReadMoreReact
