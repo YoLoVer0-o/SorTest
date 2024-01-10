@@ -7,7 +7,8 @@ import { Button, Tooltip } from "antd";
 import { FilePdfOutlined, SendOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import ReadMoreReact from 'read-more-react';
+// import ReadMoreReact from 'read-more-react';
+import ClampLines from "react-clamp-line";
 import WordClouds from "../../assets/WordClouds";
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
@@ -332,6 +333,17 @@ const SubDashboard = () => {
                                     </a>
                                 </div>
                                 <div className="tw-text-lg">
+                                    <ClampLines
+                                        text={displayData.text}
+                                        id='really-unique-id'
+                                        type='html'
+                                        lines={3}
+                                        ellipsis='...'
+                                        moreText={<p className="tw-text-blue-500">เพิ่มเติม</p>}
+                                        lessText={<p className="tw-text-blue-500">น้อยลง</p>}
+                                        className=''
+                                        innerElement='p'
+                                    />
                                     {/* <ReadMoreReact
                                         text={displayData.text}
                                         min={100}
@@ -339,7 +351,7 @@ const SubDashboard = () => {
                                         max={300}
                                         readMoreText={readMore}
                                     /> */}
-                                    {displayData.text}
+                                    {/* {displayData.text} */}
                                     <div className={classNames("tw-flex tw-justify-center tw-h-96", {
                                     })}>
                                         <img className="tw-object-scale-down" src={displayData.image} />
