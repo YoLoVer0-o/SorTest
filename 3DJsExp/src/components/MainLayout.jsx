@@ -27,7 +27,6 @@ const MainLayout = (props) => {
 
   const [collapsed, setCollapsed] = useState(true);
   const [openKeys, setOpenKeys] = useState([]);
-  // const [isLogin, setIsLogin] = useState(useSelector(getUser)[0].status);
 
   const {
     isTabletOrMobile,
@@ -47,6 +46,7 @@ const MainLayout = (props) => {
   ///////////////////////////////////////breadcrumb name///////////////////////////////////////////////////////////////////
   const breadcrumbNameMap = {
     '/main': 'รายงานสรุป',
+    '/main/overall': 'ภาพรวม',
     '/postlog': 'โพสต์และความเคลื่อนไหว',
     '/postlog/report': 'รายงานโพสต์',
     '/createPost': 'สร้างโพสต์ใหม่',
@@ -93,24 +93,26 @@ const MainLayout = (props) => {
   };
 
   ///////////////////////////////////////root submenus///////////////////////////////////////////////////////////////////
-  const rootSubmenuKeys = ['/RPA/facebook', '/RPA/X', '/RPA/instagram', '/RPA/youtube', '/RPA/tiktok', '/main/religion', '/main/army', '/main/government', '/main/rally'];
+  // const rootSubmenuKeys = [
+  //   '/RPA/facebook', '/RPA/X', '/RPA/instagram', '/RPA/youtube', '/RPA/tiktok',
+  //   '/main/overall', '/main/religion', '/main/army', '/main/government', '/main/rally'
+  // ];
 
   const onOpenChange = (keys) => {
-    // console.log(openKeys);
-    const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
+    const latestOpenKey = keys.find((key) => !openKeys.includes(key));
 
     if (latestOpenKey) {
-      console.log(latestOpenKey);
-      const topLevelKeys = ['/RPA', '/main'];
-
-      const parentKey = latestOpenKey.split('/').slice(0, -1).join('/');
-      if (parentKey === '/RPA' || parentKey === '/main' || rootSubmenuKeys.indexOf(parentKey) === -1) {
-        // console.log(parentKey);
+      const topLevelKeys = [];
+      if (latestOpenKey.startsWith('/RPA')) {
+        console.log("hit1");
+        topLevelKeys.push('/RPA');
         topLevelKeys.push(latestOpenKey);
-      } else {
-        topLevelKeys.push(parentKey);
+      } else if (latestOpenKey.startsWith('/main')) {
+        console.log("hit2");
+        topLevelKeys.push('/main');
+        topLevelKeys.push(latestOpenKey);
       }
-
+      console.log(topLevelKeys);
       setOpenKeys(topLevelKeys);
     } else {
       setOpenKeys([]);
@@ -216,12 +218,12 @@ const MainLayout = (props) => {
               onOpenChange={onOpenChange}
               items={[
                 {
-                  key: "/",
+                  key: "/main",
                   icon: <BarChartOutlined />,
                   label: "รายงานสรุป",
                   children: [
                     {
-                      key: "/main",
+                      key: "/main/overall",
                       label: "ภาพรวม",
                       className: "",
                     },
