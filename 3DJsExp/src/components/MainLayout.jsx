@@ -216,7 +216,7 @@ const MainLayout = (props) => {
               onOpenChange={onOpenChange}
               items={[
                 {
-                  key: "/main",
+                  key: "/",
                   icon: <BarChartOutlined />,
                   label: "รายงานสรุป",
                   children: [
