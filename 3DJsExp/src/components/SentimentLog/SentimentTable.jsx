@@ -184,6 +184,7 @@ const SentimentTable = () => {
                         keyName={"group"}
                     />
                 </div>
+
             </div>
             <div className={classNames("tw-border-2 tw-rounded-md", {})}>
                 <DataTable

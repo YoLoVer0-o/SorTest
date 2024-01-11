@@ -3,11 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { DataTable, SearchBar } from "../../utilities";
 import { postMock } from "../../mock";
 import { useResponsive } from "../../hooks";
-import { Button, Tooltip } from "antd";
+import { Button, Input, Switch, Tooltip } from "antd";
 import {
     ColumnHeightOutlined,
     VerticalAlignMiddleOutlined,
     FileTextOutlined,
+    SearchOutlined,
+    MinusOutlined,
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
@@ -22,6 +24,7 @@ const PostTable = () => {
     const [searchVal, setSearchVal] = useState('');
     const [searchTag, setSearchTag] = useState([]);
     const [searchDate, setSearchDate] = useState([]);
+    const [searchPlatform, setSearchPlatform] = useState([]);
     const [selectedRows, setSelectedRows] = useState([]);
     const [pageSize, setPageSize] = useState(5);
 
@@ -51,6 +54,18 @@ const PostTable = () => {
                     return record?.update
                 }
             },
+        },
+        {
+            title: 'platform',
+            dataIndex: 'platform',
+            key: 'platform',
+            align: "center",
+            width: 150,
+            className: 'tw-truncate',
+            filteredValue: [searchPlatform],
+            onFilter: (value, record) => (
+                (value.split(",")).every(platform => String(record?.platform).includes(platform))
+            ),
         },
         {
             title: 'post',
@@ -132,8 +147,44 @@ const PostTable = () => {
     return (
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-y-auto', {})}>
             <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">PostTable</p>
-            <div className="tw-flex tw-justify-center tw-w-full">
-                <SearchBar
+            <div className="tw-flex tw-flex-col tw-justify-center tw-w-full">
+                <div className={classNames("tw-w-full", {})}>
+                    <p className="tw-text-lg">ค้นหา:</p>
+                    <SearchBar
+                        useTextSearch={true}
+                        data={postMock}
+                        onChangeSearch={setSearchVal}
+                    />
+                </div>
+                <div className='tw-flex tw-flex-row tw-justify-center tw-w-full tw-gap-6'>
+                    <div className={classNames("tw-w-full", {})}>
+                        <p className="tw-text-lg">แพลตฟอร์ม:</p>
+                        <SearchBar
+                            useTagSearch={true}
+                            data={postMock}
+                            onChangeFilter={setSearchPlatform}
+                            keyName={"platform"}
+                        />
+                    </div>
+                    <div className={classNames("tw-w-full", {})}>
+                        <p className="tw-text-lg">Tag:</p>
+                        <SearchBar
+                            useTagSearch={true}
+                            data={postMock}
+                            onChangeFilter={setSearchTag}
+                            keyName={"tag"}
+                        />
+                    </div>
+                    <div className={classNames("tw-w-full", {})}>
+                        <p className="tw-text-lg">เวลา:</p>
+                        <SearchBar
+                            useDateSearch={true}
+                            onChangeDate={setSearchDate}
+                            keyName={"tag"}
+                        />
+                    </div>
+                </div>
+                {/* <SearchBar
                     data={postMock}
                     useTextSearch={true}
                     useTagSearch={true}
@@ -142,7 +193,57 @@ const PostTable = () => {
                     onChangeFilter={setSearchTag}
                     onChangeDate={setSearchDate}
                     keyName={"tag"}
-                />
+                /> */}
+                <div className="tw-flex tw-flex-col tw-justify-center tw-w-full tw-gap-6">
+                    <div className='tw-flex tw-flex-col tw-justify-center tw-w-full'>
+                        <p className="tw-text-lg">มีคำเหล่านี้:</p>
+                        <Input
+                            addonBefore={<SearchOutlined />}
+                            // placeholder="พิมพ์สิ่งที่ต้องการค้นหา"
+                            // onChange={onTextChange}
+                            className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md hover:tw-border-sky-700 tw-w-full'
+                        />
+                    </div>
+                    <div className='tw-flex tw-flex-col tw-justify-center tw-w-full'>
+                        <p className="tw-text-lg">ไม่มีคำเหล่านี้:</p>
+                        <Input
+                            addonBefore={<SearchOutlined />}
+                            // placeholder="พิมพ์สิ่งที่ต้องการค้นหา"
+                            // onChange={onTextChange}
+                            className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md hover:tw-border-sky-700 tw-w-full'
+                        />
+                    </div>
+                    <div className='tw-flex tw-flex-row tw-justify-center tw-w-full tw-gap-6'>
+                        <div className='tw-flex tw-flex-col tw-justify-center tw-w-full'>
+                            <p className="tw-text-lg">จำนวนการมีส่วนร่วม:</p>
+                            <div className='tw-flex tw-flex-row tw-w-full tw-gap-4'>
+                                <Input
+                                    // onChange={onTextChange}
+                                    className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md hover:tw-border-sky-700 tw-w-full'
+                                />
+                                <MinusOutlined className="tw-text-lg" />
+                                <Input
+                                    // onChange={onTextChange}
+                                    className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md hover:tw-border-sky-700 tw-w-full'
+                                />
+                            </div>
+                        </div>
+                        <div className='tw-flex tw-flex-col tw-justify-center tw-w-full'>
+                            <p className="tw-text-lg">Facebook ID:</p>
+                            <Input
+                                addonBefore={<SearchOutlined />}
+                                // placeholder="พิมพ์สิ่งที่ต้องการค้นหา"
+                                // onChange={onTextChange}
+                                className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md hover:tw-border-sky-700 tw-w-full'
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div className={classNames("tw-flex tw-flex-row tw-w-full", {
+                })}>
+                    <Switch defaultChecked />
+                    <p className="tw-text-lg">เปิดใช้การค้นหาขั้นสูง</p>
+                </div>
             </div>
             <div className={classNames("tw-rounded-md", {
                 "tw-overflow-auto": isTabletOrMobile && isPortrait,
