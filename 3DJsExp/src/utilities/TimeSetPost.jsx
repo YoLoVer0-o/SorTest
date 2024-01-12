@@ -1,5 +1,5 @@
 import {} from "react";
-import { Select, Space } from "antd";
+import { Select, } from "antd";
 import PropTypes from "prop-types";
 
 import "dayjs/locale/th";
@@ -36,8 +36,25 @@ const TimeSetPost = () => {
   console.log("maxDateoftheMonth", daysInMonth);
   console.log(toDay, thaiMonth, years);
   ///////////////////////////////Time////////////////////////////////////////
-  const toDayHours = date.getHours();
+  // const toDayHours = date.getHours();
   const toDayMinutes = date.getMinutes();
+  const getAmPmHours = () => {
+    let hours = date.getHours();
+    const amPm = hours >= 12 ? 'PM' : 'AM';
+  
+    // Convert hours to 12-hour format
+    hours = hours % 12 || 12;
+  
+    return {
+      hours: hours < 10 ? `0${hours}` : `${hours}`,
+      amPm,
+    };
+  }
+  
+  // Example usage:
+  const { hours, amPm } = getAmPmHours();
+  console.log(`Current time: ${hours}:${new Date().getMinutes()} ${amPm}`);
+
 
   return (
     <div className="tw-w-full tw-h-full tw-z-10 tw-bg-white">
@@ -131,9 +148,58 @@ const TimeSetPost = () => {
           <p>เวลา</p>
           <div className="tw-flex tw-flex-row tw-gap-x-3">
             <Select
-              defaultValue={toDayHours}
+              defaultValue={hours}
               onChange={handleChange}
-              options={options}
+              options={[
+                {
+                  value: "01",
+                  label: "1",
+                },
+                {
+                  value: "02",
+                  label: "2",
+                },
+                {
+                  value: "03",
+                  label: "3",
+                },
+                {
+                  value: "04",
+                  label: "4",
+                },
+                {
+                  value: "05",
+                  label: "5  ",
+                },
+                {
+                  value: "06",
+                  label: "6  ",
+                },
+                {
+                  value: "07",
+                  label: "7",
+                },
+                {
+                  value: "08",
+                  label: "8",
+                },
+                {
+                  value: "09",
+                  label: "9",
+                },
+                {
+                  value: "10",
+                  label: "10",
+                },
+                {
+                  value: "11",
+                  label: "11",
+                },
+                {
+                  value: "12",
+                  label: "12",
+                },
+              ]}
               className="tw-w-full"
             />
             <Select
@@ -143,7 +209,7 @@ const TimeSetPost = () => {
               className="tw-w-full"
             />
             <Select
-              // defaultValue={}
+              defaultValue={amPm}
               onChange={handleChange}
               options={[
                 {
