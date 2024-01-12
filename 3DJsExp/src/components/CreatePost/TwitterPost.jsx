@@ -89,7 +89,7 @@ const TwitterPost = () => {
   const onFinish = (values) => {
     console.log("Received values of form:", values);
   };
-
+  
   const onChange = (date, dateString) => {
     console.log(date, dateString);
   };
@@ -384,7 +384,7 @@ const TwitterPost = () => {
             </Form>
             <div>ความยาวของโพล</div>
             <div className="tw-w-full tw-flex tw-gap-6 tw-justify-center">
-              <DatePicker locale={locale} format="D" onChange={onChange} className="tw-w-full"/>
+              <DatePicker  locale={locale} format="D" onChange={onChange} className="tw-w-full"/>
               <TimePicker locale={locale} format="H" onChange={onChange} className="tw-w-full"/>
               <TimePicker locale={locale} format="m" onChange={onChange} className="tw-w-full"/>
             </div>
@@ -437,7 +437,7 @@ const TwitterPost = () => {
           className={classNames(
             " tw-absolute tw-flex tw-justify-start  tw-z-20",
             {
-              " ": isDesktopOrLaptop,
+              "": isDesktopOrLaptop,
               " tw-mb-96": isMobile && isPortrait,
             }
           )}
