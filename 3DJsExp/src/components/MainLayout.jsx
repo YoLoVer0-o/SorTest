@@ -127,7 +127,7 @@ const MainLayout = (props) => {
 
   useEffect(() => {
     if (location.pathname == "/") {
-      navigate("/main");
+      navigate("/main/overall");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
