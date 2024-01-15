@@ -86,13 +86,25 @@ const TwitterPost = () => {
     setCurrentId(2);
   };
   //////////////////////////PoleVotes///////////////////////////
+  const getDate = new Date();
   const onFinish = (values) => {
     console.log("Received values of form:", values);
   };
-  
-  const onChange = (date, dateString) => {
-    console.log(date, dateString);
+  const handleChange = (value) => {
+    console.log(`selected ${value}`);
   };
+  const dateOptionPole = Array.from({ length: 8 }, (_, index) => ({
+    value: index,
+    label: index,
+  }));
+  const hoursOptionPole = Array.from({ length: 24 }, (_, index) => ({
+    value: index,
+    label: index,
+  }));
+  const minutesOptionPole = Array.from({ length: 60 }, (_, index) => ({
+    value: index,
+    label: index,
+  }));
 
   console.log(openTimeSet);
   const contentArray = [
@@ -384,9 +396,25 @@ const TwitterPost = () => {
             </Form>
             <div>ความยาวของโพล</div>
             <div className="tw-w-full tw-flex tw-gap-6 tw-justify-center">
-              <DatePicker  locale={locale} format="D" onChange={onChange} className="tw-w-full"/>
-              <TimePicker locale={locale} format="H" onChange={onChange} className="tw-w-full"/>
-              <TimePicker locale={locale} format="m" onChange={onChange} className="tw-w-full"/>
+              <Select
+                defaultValue={dateOptionPole[1]}
+                onChange={handleChange}
+                options={dateOptionPole}
+                className="tw-w-full"
+              />
+                
+              <Select
+                defaultValue={hoursOptionPole[0]}
+                onChange={handleChange}
+                options={hoursOptionPole}
+                className="tw-w-full"
+              />
+              <Select
+                defaultValue={minutesOptionPole[0]}
+                onChange={handleChange}
+                options={minutesOptionPole}
+                className="tw-w-full"
+              />
             </div>
           </div>
         </div>
@@ -397,7 +425,10 @@ const TwitterPost = () => {
       content: (
         <div className="tw-w-full tw-h-full">
           <div className="tw-flex tw-justify-center tw-flex-col ">
-            <button className="tw-w-24 tw-h-10" onClick={reset}>
+            <button
+              className="tw-bg-gray-200 hover:tw-bg-gray-300 tw-w-10 tw-h-6 tw-rounded-md"
+              onClick={reset}
+            >
               Back
             </button>
             <TimeSetPost isOpenTime={openTimeSet} isCloseTime={closeTimeSet} />

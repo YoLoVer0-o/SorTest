@@ -1,5 +1,5 @@
 import {} from "react";
-import { Select, } from "antd";
+import { Select } from "antd";
 import PropTypes from "prop-types";
 
 import "dayjs/locale/th";
@@ -40,21 +40,25 @@ const TimeSetPost = () => {
   const toDayMinutes = date.getMinutes();
   const getAmPmHours = () => {
     let hours = date.getHours();
-    const amPm = hours >= 12 ? 'PM' : 'AM';
-  
+    const amPm = hours >= 12 ? "PM" : "AM";
+
     // Convert hours to 12-hour format
     hours = hours % 12 || 12;
-  
+
     return {
       hours: hours < 10 ? `0${hours}` : `${hours}`,
       amPm,
     };
-  }
-  
+  };
+
+  const minutesOptions = Array.from({ length: 60 }, (_, index) => ({
+    value: index ,
+    label: index,
+  }));
+
   // Example usage:
   const { hours, amPm } = getAmPmHours();
   console.log(`Current time: ${hours}:${new Date().getMinutes()} ${amPm}`);
-
 
   return (
     <div className="tw-w-full tw-h-full tw-z-10 tw-bg-white">
@@ -205,7 +209,7 @@ const TimeSetPost = () => {
             <Select
               defaultValue={toDayMinutes}
               onChange={handleChange}
-              options={options}
+              options={minutesOptions}
               className="tw-w-full"
             />
             <Select
@@ -226,6 +230,8 @@ const TimeSetPost = () => {
           </div>
         </div>
       </div>
+      <p>เขตเวลา</p>
+      <p className=" tw-text-xl"> เวลาอินโดจีน</p>
     </div>
   );
 };
