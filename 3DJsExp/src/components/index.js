@@ -19,6 +19,8 @@ import ClassTable from "./ClassificationConfig/ClassTable";
 import WordTable from "./ClassificationConfig/WordTable";
 import AddWordModal from "./ClassificationConfig/AddWordModal";
 import InfoModal from "./ClassificationConfig/InfoModal";
+import SimilarPost from "./Recommendation/SimilarPost";
+import Trending from "./Recommendation/trending";
 
 export {
   MainLayout,
@@ -42,4 +44,6 @@ export {
   WordTable,
   AddWordModal,
   InfoModal,
+  SimilarPost,
+  Trending,
 };

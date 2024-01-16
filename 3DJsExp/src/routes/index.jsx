@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Dashboard, SubDashboard, PostTable, PostReport, CreatePost, SentimentTable, SentimentReport, AccountTable, SchedueTable, WorkTable, DataLog, ClassTable, WordTable } from "../components";
-import { LoginPage, MainPage, PostDataPage, CreatePostPage, SentimentPage, RPAManagementPage, ClassConfigPage } from "../pages";
+import { Dashboard, SubDashboard, PostTable, PostReport, CreatePost, SentimentTable, SentimentReport, AccountTable, SchedueTable, WorkTable, DataLog, ClassTable, WordTable, SimilarPost, Trending } from "../components";
+import { LoginPage, MainPage, PostDataPage, CreatePostPage, SentimentPage, RPAManagementPage, ClassConfigPage, RecommendationPage } from "../pages";
 
 export const router = createBrowserRouter([
   {
@@ -96,6 +96,20 @@ export const router = createBrowserRouter([
       {
         path: "/classconfig/edit/:cat_id",
         element: <WordTable />,
+      },
+    ],
+  },
+  {
+    path: "/recommendation",
+    element: <RecommendationPage />,
+    children: [
+      {
+        path: "/recommendation/similarpost",
+        element: <SimilarPost />,
+      },
+      {
+        path: "/recommendation/trending",
+        element: <Trending />,
       },
     ],
   },

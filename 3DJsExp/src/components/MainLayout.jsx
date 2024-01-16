@@ -60,6 +60,9 @@ const MainLayout = (props) => {
     '/RPA/activlog': 'Activity Log',
     '/classconfig': 'Classification Config',
     '/classconfig/edit': 'แก้ไข',
+    '/recommendation': 'Recommendation',
+    '/recommendation/similarpost': 'ผลลัพธ์ของโพสต์ใกล้เคียง',
+    '/recommendation/trending': 'เนื้อหาที่กำลังได้รับความนิยม',
   };
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -93,10 +96,6 @@ const MainLayout = (props) => {
   };
 
   ///////////////////////////////////////root submenus///////////////////////////////////////////////////////////////////
-  // const rootSubmenuKeys = [
-  //   '/RPA/facebook', '/RPA/X', '/RPA/instagram', '/RPA/youtube', '/RPA/tiktok',
-  //   '/main/overall', '/main/religion', '/main/army', '/main/government', '/main/rally'
-  // ];
 
   const onOpenChange = (keys) => {
     const latestOpenKey = keys.find((key) => !openKeys.includes(key));
@@ -112,6 +111,11 @@ const MainLayout = (props) => {
         topLevelKeys.push('/main');
         topLevelKeys.push(latestOpenKey);
       }
+      else if (latestOpenKey.startsWith('/recommendation')) {
+        console.log("hit3");
+        topLevelKeys.push('/recommendation');
+        topLevelKeys.push(latestOpenKey);
+      }
       console.log(topLevelKeys);
       setOpenKeys(topLevelKeys);
     } else {
@@ -122,7 +126,12 @@ const MainLayout = (props) => {
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   //////////////////////////////////////////////back button logic////////////////////////////////////////////////////////////
-  const showBackButton = breadcrumbItems.length > 1 && !(breadcrumbItems.some(item => item.key.includes('/RPA')) || breadcrumbItems.some(item => item.key.includes('/main')));
+  const showBackButton = breadcrumbItems.length > 1 &&
+    !(
+      breadcrumbItems.some(item => item.key.includes('/RPA'))
+      || breadcrumbItems.some(item => item.key.includes('/main'))
+      || breadcrumbItems.some(item => item.key.includes('/recommendation'))
+    )
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
@@ -444,9 +453,21 @@ const MainLayout = (props) => {
                   label: "Classification Config",
                 },
                 {
-                  key: "",
+                  key: "/recommendation",
                   icon: <TrademarkCircleOutlined />,
                   label: "Recommendation",
+                  children: [
+                    {
+                      key: "/recommendation/similarpost",
+                      label: "ผลลัพธ์ของโพสต์ใกล้เคียง",
+                      className: "",
+                    },
+                    {
+                      key: "/recommendation/trending",
+                      label: "นื้อหาที่กำลังได้รับความนิยม",
+                      className: "",
+                    },
+                  ]
                 },
               ]}
             />

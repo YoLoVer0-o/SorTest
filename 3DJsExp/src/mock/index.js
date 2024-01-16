@@ -12,6 +12,7 @@ import cat_word from "./cat_word";
 import facebookAcc from "./FacebookAcc";
 import emotionEmoji from "./emotionEmoji";
 import dashboardMock from "./dashboardMock";
+import recmock from "./recmock";
 
 export {
   sentimentAll,
@@ -28,4 +29,5 @@ export {
   facebookAcc,
   emotionEmoji,
   dashboardMock,
+  recmock,
 };

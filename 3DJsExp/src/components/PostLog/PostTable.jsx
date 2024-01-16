@@ -27,6 +27,7 @@ const PostTable = () => {
     const [searchPlatform, setSearchPlatform] = useState([]);
     const [selectedRows, setSelectedRows] = useState([]);
     const [pageSize, setPageSize] = useState(5);
+    const [advancedSearch, setAdvancedSearch] = useState(false);
 
     const navigate = useNavigate();
 
@@ -184,52 +185,10 @@ const PostTable = () => {
                         />
                     </div>
                 </div>
-                {/* <SearchBar
-                    data={postMock}
-                    useTextSearch={true}
-                    useTagSearch={true}
-                    useDateSearch={true}
-                    onChangeSearch={setSearchVal}
-                    onChangeFilter={setSearchTag}
-                    onChangeDate={setSearchDate}
-                    keyName={"tag"}
-                /> */}
-                <div className="tw-flex tw-flex-col tw-justify-center tw-w-full tw-gap-6">
-                    <div className='tw-flex tw-flex-col tw-justify-center tw-w-full'>
-                        <p className="tw-text-lg">มีคำเหล่านี้:</p>
-                        <Input
-                            addonBefore={<SearchOutlined />}
-                            // placeholder="พิมพ์สิ่งที่ต้องการค้นหา"
-                            // onChange={onTextChange}
-                            className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md hover:tw-border-sky-700 tw-w-full'
-                        />
-                    </div>
-                    <div className='tw-flex tw-flex-col tw-justify-center tw-w-full'>
-                        <p className="tw-text-lg">ไม่มีคำเหล่านี้:</p>
-                        <Input
-                            addonBefore={<SearchOutlined />}
-                            // placeholder="พิมพ์สิ่งที่ต้องการค้นหา"
-                            // onChange={onTextChange}
-                            className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md hover:tw-border-sky-700 tw-w-full'
-                        />
-                    </div>
-                    <div className='tw-flex tw-flex-row tw-justify-center tw-w-full tw-gap-6'>
+                {advancedSearch && (
+                    <div className="tw-flex tw-flex-col tw-justify-center tw-w-full tw-gap-6">
                         <div className='tw-flex tw-flex-col tw-justify-center tw-w-full'>
-                            <p className="tw-text-lg">จำนวนการมีส่วนร่วม:</p>
-                            <div className='tw-flex tw-flex-row tw-w-full tw-gap-4'>
-                                <Input
-                                    // onChange={onTextChange}
-                                    className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md hover:tw-border-sky-700 tw-w-full'
-                                />
-                                <MinusOutlined className="tw-text-lg" />
-                                <Input
-                                    // onChange={onTextChange}
-                                    className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md hover:tw-border-sky-700 tw-w-full'
-                                />
-                            </div>
-                        </div>
-                        <div className='tw-flex tw-flex-col tw-justify-center tw-w-full'>
-                            <p className="tw-text-lg">Facebook ID:</p>
+                            <p className="tw-text-lg">มีคำเหล่านี้:</p>
                             <Input
                                 addonBefore={<SearchOutlined />}
                                 // placeholder="พิมพ์สิ่งที่ต้องการค้นหา"
@@ -237,11 +196,53 @@ const PostTable = () => {
                                 className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md hover:tw-border-sky-700 tw-w-full'
                             />
                         </div>
+                        <div className='tw-flex tw-flex-col tw-justify-center tw-w-full'>
+                            <p className="tw-text-lg">ไม่มีคำเหล่านี้:</p>
+                            <Input
+                                addonBefore={<SearchOutlined />}
+                                // placeholder="พิมพ์สิ่งที่ต้องการค้นหา"
+                                // onChange={onTextChange}
+                                className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md hover:tw-border-sky-700 tw-w-full'
+                            />
+                        </div>
+                        <div className='tw-flex tw-flex-row tw-justify-center tw-w-full tw-gap-6'>
+                            <div className='tw-flex tw-flex-col tw-justify-center tw-w-full'>
+                                <p className="tw-text-lg">จำนวนการมีส่วนร่วม:</p>
+                                <div className='tw-flex tw-flex-row tw-w-full tw-gap-4'>
+                                    <Input
+                                        // onChange={onTextChange}
+                                        className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md hover:tw-border-sky-700 tw-w-full'
+                                    />
+                                    <MinusOutlined className="tw-text-lg" />
+                                    <Input
+                                        // onChange={onTextChange}
+                                        className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md hover:tw-border-sky-700 tw-w-full'
+                                    />
+                                </div>
+                            </div>
+                            <div className='tw-flex tw-flex-col tw-justify-center tw-w-full'>
+                                <p className="tw-text-lg">Facebook ID:</p>
+                                <Input
+                                    addonBefore={<SearchOutlined />}
+                                    // placeholder="พิมพ์สิ่งที่ต้องการค้นหา"
+                                    // onChange={onTextChange}
+                                    className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md hover:tw-border-sky-700 tw-w-full'
+                                />
+                            </div>
+                        </div>
                     </div>
-                </div>
+                )}
+
                 <div className={classNames("tw-flex tw-flex-row tw-w-full", {
                 })}>
-                    <Switch defaultChecked />
+                    <Switch
+                        className={classNames("", {
+                            "tw-bg-blue-500": advancedSearch,
+                            "tw-bg-slate-500": !advancedSearch,
+                        })}
+                        defaultChecked={false}
+                        onChange={() => setAdvancedSearch(!advancedSearch)}
+                    />
                     <p className="tw-text-lg">เปิดใช้การค้นหาขั้นสูง</p>
                 </div>
             </div>

@@ -5,6 +5,7 @@ import CreatePostPage from "./CreatePostPage";
 import SentimentPage from "./SentimentPage";
 import RPAManagementPage from "./RPAManagementPage";
 import ClassConfigPage from "./ClassConfigPage";
+import RecommendationPage from "./RecommendationPage";
 
 export {
   MainPage,
@@ -14,4 +15,5 @@ export {
   SentimentPage,
   RPAManagementPage,
   ClassConfigPage,
+  RecommendationPage,
 };
