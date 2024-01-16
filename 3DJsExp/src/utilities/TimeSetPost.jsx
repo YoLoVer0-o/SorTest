@@ -1,4 +1,4 @@
-import {} from "react";
+import { useState } from "react";
 import { Select } from "antd";
 import PropTypes from "prop-types";
 
@@ -6,10 +6,29 @@ import "dayjs/locale/th";
 // import { useResponsive } from "../hooks";
 
 const TimeSetPost = () => {
-  const handleChange = (value) => {
+  const [handleMonth, setHandleMonth] = useState(null);
+  const [handleDate, setHandleDate] = useState(null);
+  const [handleYear, setHandleYear] = useState(null);
+  const [handleHours, setHandleHours] = useState(null);
+  const [handleMinutes, setHandleMinutes] = useState(null);
+  const [handleAmPm, setHandleAmPm] = useState(null);
+  const handleChange = (value, type) => {
+    if (type === 1) {
+      setHandleMonth(value);
+    } else if (type === 2) {
+      setHandleDate(value);
+    } else if (type === 3) {
+      setHandleYear(value);
+    } else if (type === 4) {
+      setHandleHours(value);
+    } else if (type === 5) {
+      setHandleMinutes(value);
+    } else if (type === 6) {
+      setHandleAmPm(value);
+    }
     console.log(`selected ${value}`);
   };
-
+  console.log(handleMonth);
   ////////////////////////Date//////////////////////////////////
   const date = new Date();
   const toDay = date.getDate();
@@ -35,6 +54,8 @@ const TimeSetPost = () => {
   }));
   console.log("maxDateoftheMonth", daysInMonth);
   console.log(toDay, thaiMonth, years);
+  console.log(date);
+
   ///////////////////////////////Time////////////////////////////////////////
   // const toDayHours = date.getHours();
   const toDayMinutes = date.getMinutes();
@@ -52,8 +73,8 @@ const TimeSetPost = () => {
   };
 
   const minutesOptions = Array.from({ length: 60 }, (_, index) => ({
-    value: index ,
-    label: index,
+    value: index < 10 ? `0${index}` : `${index}`,
+    label: index < 10 ? `0${index}` : `${index}`,
   }));
 
   // Example usage:
@@ -62,59 +83,82 @@ const TimeSetPost = () => {
 
   return (
     <div className="tw-w-full tw-h-full tw-z-10 tw-bg-white">
+      <p className="tw-flex tw-flex-row ">
+        <p className="tw-gap-1 tw-flex tw-flex-row">
+          จะส่งในวันที่
+          {handleDate === null && <p>{toDay}</p>}
+          <p>{handleDate}</p>
+          {handleMonth === null && <p>{thaiMonth}</p>}
+          <p>{handleMonth}</p>
+          {handleYear === null && <p>{years}</p>}
+          <p>{handleYear}</p>
+        </p>
+        <p className="tw-flex tw-flex-row tw-gap-1">
+          เวลา
+          <div className="tw-flex tw-flex-row">
+            {" "}
+            {handleHours === null && <p>{hours}</p>}
+            <p>{handleHours}</p>:
+            {handleMinutes === null && <p>{toDayMinutes}</p>}
+            <p>{handleMinutes}</p>
+          </div>
+          {handleAmPm === null && <p>{amPm}</p>}
+          <p>{handleAmPm}</p>
+        </p>
+      </p>
       <div className="tw-w-full tw-h-full tw-p-4 ">
         <p>วันที่</p>
         <div className="tw-flex tw-flex-row tw-gap-x-3">
           <Select
             defaultValue={thaiMonth}
-            onChange={handleChange}
+            onChange={(value) => handleChange(value, 1)}
             options={[
               {
-                value: "01",
+                value: "มกราคม",
                 label: "มกราคม",
               },
               {
-                value: "02",
+                value: "กุมภาพันธ์",
                 label: "กุมภาพันธ์",
               },
               {
-                value: "03",
+                value: "มีนาคม",
                 label: "มีนาคม",
               },
               {
-                value: "04",
+                value: "เมษายน",
                 label: "เมษายน",
               },
               {
-                value: "05",
+                value: "พฤษภาคม",
                 label: "พฤษภาคม  ",
               },
               {
-                value: "06",
+                value: "มิถุนายน",
                 label: "มิถุนายน  ",
               },
               {
-                value: "07",
+                value: "กรกฎาคม",
                 label: "กรกฎาคม",
               },
               {
-                value: "08",
+                value: "สิงหาคม",
                 label: "สิงหาคม",
               },
               {
-                value: "09",
+                value: "กันยายน",
                 label: "กันยายน",
               },
               {
-                value: "10",
+                value: "ตุลาคม",
                 label: "ตุลาคม",
               },
               {
-                value: "11",
+                value: "พฤศจิกายน",
                 label: "พฤศจิกายน",
               },
               {
-                value: "12",
+                value: "ธันวาคม",
                 label: "ธันวาคม",
               },
             ]}
@@ -122,13 +166,13 @@ const TimeSetPost = () => {
           />
           <Select
             defaultValue={toDay}
-            onChange={handleChange}
+            onChange={(value) => handleChange(value, 2)}
             options={options}
             className="tw-w-full"
           />
           <Select
             defaultValue={years}
-            onChange={handleChange}
+            onChange={(value) => handleChange(value, 3)}
             options={[
               {
                 value: years,
@@ -153,42 +197,42 @@ const TimeSetPost = () => {
           <div className="tw-flex tw-flex-row tw-gap-x-3">
             <Select
               defaultValue={hours}
-              onChange={handleChange}
+              onChange={(value) => handleChange(value, 4)}
               options={[
                 {
-                  value: "01",
+                  value: "1",
                   label: "1",
                 },
                 {
-                  value: "02",
+                  value: "2",
                   label: "2",
                 },
                 {
-                  value: "03",
+                  value: "3",
                   label: "3",
                 },
                 {
-                  value: "04",
+                  value: "4",
                   label: "4",
                 },
                 {
-                  value: "05",
+                  value: "5",
                   label: "5  ",
                 },
                 {
-                  value: "06",
+                  value: "6",
                   label: "6  ",
                 },
                 {
-                  value: "07",
+                  value: "7",
                   label: "7",
                 },
                 {
-                  value: "08",
+                  value: "8",
                   label: "8",
                 },
                 {
-                  value: "09",
+                  value: "9",
                   label: "9",
                 },
                 {
@@ -208,13 +252,13 @@ const TimeSetPost = () => {
             />
             <Select
               defaultValue={toDayMinutes}
-              onChange={handleChange}
+              onChange={(value) => handleChange(value, 5)}
               options={minutesOptions}
               className="tw-w-full"
             />
             <Select
               defaultValue={amPm}
-              onChange={handleChange}
+              onChange={(value) => handleChange(value, 6)}
               options={[
                 {
                   value: "AM",
