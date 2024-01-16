@@ -349,8 +349,7 @@ const TwitterPost = () => {
                               {
                                 required: true,
                                 whitespace: true,
-                                message:
-                                  "Please input passenger's name or delete this field.",
+                               
                               },
                             ]}
                             noStyle
