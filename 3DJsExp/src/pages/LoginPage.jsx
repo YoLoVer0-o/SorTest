@@ -16,7 +16,7 @@ function LoginPage() {
 
         dispatch(logIn())
 
-        navigate("/main");
+        navigate("/");
     };
 
     return (
