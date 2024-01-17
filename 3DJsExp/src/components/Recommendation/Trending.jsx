@@ -10,6 +10,7 @@ const Trending = () => {
   const {
     isTabletOrMobile,
     isMobile,
+    isTablet,
     isLandscape,
     isPortrait,
   } = useResponsive();
@@ -95,6 +96,7 @@ const Trending = () => {
       <div
         className={classNames("tw-flex tw-flex-row tw-border-2 tw-gap-4 tw-p-6 tw-my-4 ", {
           "tw-overflow-auto": isTabletOrMobile && isPortrait,
+          "tw-flex-col": isTabletOrMobile,
         })} >
         <div className={classNames("tw-flex tw-flex-col tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
           "tw-w-full": isTabletOrMobile,
@@ -108,27 +110,30 @@ const Trending = () => {
             <img className="tw-object-fill tw-h-full tw-w-full" src={ภาพรวม} />
           </div>
         </div>
-        <div className="tw-flex tw-flex-col tw-w-1/2 tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
+        <div className="tw-flex tw-flex-col tw-w-full tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
           <p className="tw-text-lg">แฮชเเท็กที่ถูกใช้งานมากที่สุด</p>
-          <div className="tw-grid tw-grid-cols-3 tw-w-full tw-h-full tw-justify-around tw-items-center tw-self-center tw-gap-4">
-            <p className="tw-text-xl tw-font-bold tw-text-blue-400">#แอมมี่{ }</p>
-            <p className="tw-text-xl tw-font-bold tw-text-blue-400">#คบกันตอนไหน{ }</p>
-            <p className="tw-text-xl tw-font-bold tw-text-blue-400">#แบงค์ศุภณัฐ{ }</p>
-            <p className="tw-text-xl tw-font-bold tw-text-blue-400">#แม่แตงโม</p>
-            <p className="tw-text-xl tw-font-bold tw-text-blue-400">#สมุดหนังหมาHayDay{ }</p>
-            <p className="tw-text-xl tw-font-bold tw-text-blue-400">#dek67{ }</p>
-            <p className="tw-text-xl tw-font-bold tw-text-blue-400">#กรรมกรข่าวคุยนอกจอ{ }</p>
-            <p className="tw-text-xl tw-font-bold tw-text-blue-400">#BuildJakapan{ }</p>
-            <p className="tw-text-xl tw-font-bold tw-text-blue-400">#엔시티존{ }</p>
-            <p className="tw-text-xl tw-font-bold tw-text-blue-400">#ทาลอนเก่งอะ{ }</p>
-            <p className="tw-text-xl tw-font-bold tw-text-blue-400">#ตํานานวินเมธวิน</p>
-            <p className="tw-text-xl tw-font-bold tw-text-blue-400">#อิงฟ้ามหาชน</p>
-            <p className="tw-text-xl tw-font-bold tw-text-blue-400">#cnfact</p>
-            <p className="tw-text-xl tw-font-bold tw-text-blue-400">#ชาล็อตออสติน</p>
-            <p className="tw-text-xl tw-font-bold tw-text-blue-400">#นิทานพันดาว</p>
-            <p className="tw-text-xl tw-font-bold tw-text-blue-400">#30บาทรักษาทุกที่</p>
-            <p className="tw-text-xl tw-font-bold tw-text-blue-400">#เงินเฟ้อ</p>
-            <p className="tw-text-xl tw-font-bold tw-text-blue-400">#ขอแจมอีกที</p>
+          <div className={classNames("tw-grid tw-w-full tw-h-full tw-justify-around tw-items-center tw-self-center tw-gap-4 tw-font-bold tw-text-blue-400", {
+            "tw-grid-cols-3 tw-text-xl": !(isMobile && isPortrait),
+            "tw-grid-cols-2 tw-text-md": isMobile && isPortrait,
+          })}>
+            <p >#แอมมี่{ }</p>
+            <p >#คบกันตอนไหน{ }</p>
+            <p >#แบงค์ศุภณัฐ{ }</p>
+            <p >#แม่แตงโม</p>
+            <p >#สมุดหนังหมาHayDay{ }</p>
+            <p >#dek67{ }</p>
+            <p >#กรรมกรข่าวคุยนอกจอ{ }</p>
+            <p >#BuildJakapan{ }</p>
+            <p>#엔시티존{ }</p>
+            <p >#ทาลอนเก่งอะ{ }</p>
+            <p >#ตํานานวินเมธวิน</p>
+            <p >#อิงฟ้ามหาชน</p>
+            <p >#cnfact</p>
+            <p >#ชาล็อตออสติน</p>
+            <p >#นิทานพันดาว</p>
+            <p >#30บาทรักษาทุกที่</p>
+            <p >#เงินเฟ้อ</p>
+            <p >#ขอแจมอีกที</p>
           </div>
         </div>
       </div>
