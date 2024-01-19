@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { DataTable, SearchBar } from "../../utilities";
 import { cat_word } from "../../mock";
@@ -8,13 +8,19 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import classificationAPI from "../../service/classificationAPI";
 
 const ClassTable = () => {
 
     const [searchVal, setSearchVal] = useState('');
+    const [catData, setCatData] = useState([]);
+
     const navigate = useNavigate();
 
     const { isTabletOrMobile, isMobile, isPortrait } = useResponsive();
+
+
+
 
     /////////////////////////////////////sweetalert and delete function/////////////////////////////////////////////////////////////////////
     const MySwal = withReactContent(Swal)
@@ -106,6 +112,16 @@ const ClassTable = () => {
         },
     ];
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    useEffect(() => {
+        setCatData(classificationAPI.getAllCat())
+    }, [])
+
+    useEffect(() => {
+        console.log(catData);
+    }, [catData])
+
+
 
     return (
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-y-auto', {})}>
