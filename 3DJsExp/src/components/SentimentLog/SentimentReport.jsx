@@ -326,6 +326,7 @@ const SentimentReport = () => {
                         setPageSize={pageSize}
                         useRowClick={true}
                         onRowClick={(selectedRows) => showModal(selectedRows)}
+                        keyName={"id"}
                     />
                 </div>
                 <FeedbackModal

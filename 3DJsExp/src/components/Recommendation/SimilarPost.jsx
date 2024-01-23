@@ -131,6 +131,7 @@ const SimilarPost = () => {
         <DataTable
           data={recmock}
           columns={columns}
+          keyName={"id"}
         />
       </div>
     </div>

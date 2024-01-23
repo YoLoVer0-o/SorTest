@@ -255,6 +255,7 @@ const PostTable = () => {
                     setPageSize={pageSize}
                     onRowsSelected={setSelectedRows}
                     useRowSelection={true}
+                    keyName={"id"}
                 />
             </div>
             <div className=" tw-flex tw-flex-row tw-my-6 tw-gap-4">

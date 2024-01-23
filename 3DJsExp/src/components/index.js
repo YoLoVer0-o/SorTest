@@ -16,6 +16,7 @@ import EditSchedueModal from "./RPAManagement/EditSchedueModal";
 import EditWorkModal from "./RPAManagement/EditWorkModal";
 import DataLog from "./RPAManagement/DataLog";
 import ClassTable from "./ClassificationConfig/ClassTable";
+import AddCatModal from "./ClassificationConfig/AddCatModal";
 import WordTable from "./ClassificationConfig/WordTable";
 import AddWordModal from "./ClassificationConfig/AddWordModal";
 import InfoModal from "./ClassificationConfig/InfoModal";
@@ -41,6 +42,7 @@ export {
   EditWorkModal,
   DataLog,
   ClassTable,
+  AddCatModal,
   WordTable,
   AddWordModal,
   InfoModal,

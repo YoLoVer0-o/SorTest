@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from 'react-router-dom';
 import { DataTable } from "../../utilities";
 import { AddWordModal, InfoModal } from "..";
@@ -8,16 +8,28 @@ import { PlusOutlined, MinusOutlined, DeleteOutlined, QuestionCircleOutlined } f
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import classNames from "classnames";
+import classificationAPI from "../../service/classificationAPI";
 
 const WordTable = () => {
 
-    const data = useLocation().state;
+    const category = useLocation().state;
 
     const [modalToggle, setModalToggle] = useState(false);
     const [infoModalToggle, setInfoModalToggle] = useState(false);
-    const [payload, setPayload] = useState(data.words);
+    const [payload, setPayload] = useState();
 
     const { isTabletOrMobile, isMobile, isPortrait } = useResponsive();
+
+    const fetchWord = async () => {
+        console.log(category._id);
+        const data = await classificationAPI.getCatWord(category._id);
+        setPayload(data);
+    }
+
+    const updateWord = async (keyword, wordObj) => {
+        await classificationAPI.editKeyWord(category._id, keyword, wordObj);
+    }
+
 
     ////////////////////////////////////////modal toggle logic//////////////////////////////////////////////////////////////////
     const showModal = () => {
@@ -54,42 +66,53 @@ const WordTable = () => {
             cancelButtonText: "ยกเลิก",
         }).then((result) => {
             if (result.isConfirmed) {
+                classificationAPI.removeKeyWord(category._id, value.keyword);
                 MySwal.fire({
                     title: "เรียบร้อย!",
                     text: "หมวดหมู่ถูกลบแล้ว",
                     icon: "success"
                 });
+                fetchWord()
             }
         });
     }
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     ////////////////////////////////////////////update logic//////////////////////////////////////////////////////////////
-    const updateChecked = (checked, id) => {
+    const updateChecked = (checked, keyword) => {
+
         const newState = payload.map(payload => {
-            if (payload.id === id) {
+            if (payload.keyword === keyword) {
                 console.log("updateChecked");
-                return { ...payload, absolute: checked };
+                return { ...payload, actual: checked };
             }
             return payload;
         });
         setPayload(newState);
+        const wordPayLoad = (({ score, actual }) => ({ score, actual }))(newState.find((newState) => newState.keyword == keyword));
+        console.log(wordPayLoad);
+        updateWord(keyword, wordPayLoad)
+        // fetchWord()
     };
 
-    const handleWeight = (id, operator) => {
-        console.log(payload.find((payload) => payload.id == id));
+    const handleWeight = (keyword, operator) => {
+
         const newState = payload.map(payload => {
-            if (payload.id === id) {
+            if (payload.keyword === keyword) {
                 console.log("updateChecked");
-                if (operator === "+")
-                    return { ...payload, weight: payload.weight + 1 };
-                else if (operator === "-")
-                    return { ...payload, weight: payload.weight - 1 };
+                if (operator === "+" && payload.score < 10)
+                    return { ...payload, score: payload.score + 1 };
+                else if (operator === "-" && payload.score > 1)
+                    return { ...payload, score: payload.score - 1 };
             }
             return payload;
         });
-
         setPayload(newState);
+        const wordPayLoad = (({ score, actual }) => ({ score, actual }))(newState.find((newState) => newState.keyword == keyword));
+        console.log(wordPayLoad);
+        updateWord(keyword, wordPayLoad)
+        // fetchWord()
+
     }
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -97,15 +120,15 @@ const WordTable = () => {
     const columns = [
         {
             title: 'คำคัดกรอง',
-            dataIndex: 'word',
-            key: 'word',
+            dataIndex: 'keyword',
+            key: 'keyword',
             align: "center",
             width: 100,
             className: 'tw-text-amber-600',
         }, {
             title: 'น้ำหนัก(1-10)',
-            dataIndex: 'weight',
-            key: 'weight',
+            dataIndex: 'score',
+            key: 'score',
             align: "center",
             width: isTabletOrMobile ? 300 : 100,
             className: 'tw-text-amber-600',
@@ -116,7 +139,8 @@ const WordTable = () => {
                             <Tooltip title="ลดจำนวน">
                                 <Button
                                     className="tw-w-full tw-h-full tw-flex tw-border-2 tw-rounded-full tw-bg-red-500 hover:tw-border-red-500 hover:tw-text-red-500 hover:tw-bg-white"
-                                    onClick={() => handleWeight(record?.id, "-")}>
+                                    onClick={() => handleWeight(record?.keyword, "-")}
+                                    disabled={record?.score > 1 ? false : true}>
                                     <MinusOutlined />
                                 </Button>
                             </Tooltip>}
@@ -124,11 +148,13 @@ const WordTable = () => {
                             <Tooltip title="เพิ่มจำนวน">
                                 <Button
                                     className="tw-w-full tw-h-full tw-flex tw-border-2 tw-rounded-full tw-bg-green-500 hover:tw-border-green-500 hover:tw-text-green-500 hover:tw-bg-white"
-                                    onClick={() => handleWeight(record?.id, "+")}>
+                                    onClick={() => handleWeight(record?.keyword, "+")}
+                                    disabled={record?.score < 10 ? false : true}
+                                >
                                     <PlusOutlined />
                                 </Button>
                             </Tooltip>}
-                        value={payload.find((payload) => payload.id === record?.id).weight}
+                        value={payload.find((payload) => payload.keyword === record?.keyword).score}
                         min={1}
                         max={10}
                         readOnly
@@ -139,8 +165,8 @@ const WordTable = () => {
         },
         {
             title: "หมวดนี้แน่นอน",
-            dataIndex: "id",
-            key: "id",
+            dataIndex: "",
+            key: "",
             align: "center",
             width: 100,
             className: "tw-text-amber-600",
@@ -148,18 +174,18 @@ const WordTable = () => {
                 <Tooltip title="กดเพื่อเปลี่ยนค่า">
                     <div className="tw-flex tw-flex-row tw-justify-center">
                         <Switch className={classNames("", {
-                            "tw-bg-black": payload.find((payload) => payload.id === record?.id).absolute === false,
-                            "tw-bg-blue-400": payload.find((payload) => payload.id === record?.id).absolute === true,
-                        })} defaultChecked={payload.find((payload) => payload.id === record?.id).absolute}
-                            onChange={(checked) => updateChecked(checked, record?.id)} />
+                            "tw-bg-black": payload.find((payload) => payload.keyword === record?.keyword).actual === false,
+                            "tw-bg-blue-400": payload.find((payload) => payload.keyword === record?.keyword).actual === true,
+                        })} defaultChecked={payload.find((payload) => payload.keyword === record?.keyword).actual}
+                            onChange={(checked) => updateChecked(checked, record?.keyword)} />
                     </div>
                 </Tooltip>
             ),
         },
         {
             title: "",
-            dataIndex: "id",
-            key: "id",
+            dataIndex: "",
+            key: "",
             align: "center",
             width: 100,
             className: "tw-text-amber-600",
@@ -174,12 +200,18 @@ const WordTable = () => {
     ];
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    useEffect(() => {
+        fetchWord()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [category])
+
+
     return (
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-y-auto', {})}>
             <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">WordTable</p>
             <div className="tw-flex tw-flex-col tw-justify-center tw-w-full tw-px-4">
                 <p className="tw-text-lg">ชื่อหมวดหมู่:</p>
-                <Input value={data.category} />
+                <Input value={category.category_name} />
             </div>
             <div className="tw-flex tw-flex-col tw-w-full tw-h-full tw-gap-4 tw-py-2">
                 <div className="tw-flex tw-flex-row tw-w-full tw-h-fit tw-justify-end tw-gap-4 tw-px-8">
@@ -188,7 +220,7 @@ const WordTable = () => {
                             "tw-w-full": isMobile && isPortrait,
                         })}
                         onClick={() => showInfoModal()}>
-                        <QuestionCircleOutlined className="tw-text-xl"/>ช่วยเหลือ
+                        <QuestionCircleOutlined className="tw-text-xl" />ช่วยเหลือ
                     </Button>
                     <Button
                         className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
@@ -201,11 +233,14 @@ const WordTable = () => {
                 <div className={classNames("tw-border-2 tw-rounded-md", {
                     "tw-overflow-auto": isTabletOrMobile && isPortrait,
                 })}>
-                    <DataTable
-                        data={data.words}
-                        columns={columns}
-                        setPageSize={data.words.length}
-                    />
+                    {payload && (
+                        <DataTable
+                            data={payload}
+                            columns={columns}
+                            setPageSize={payload.length}
+                            keyName={"keyword"}
+                        />
+                    )}
                 </div>
             </div>
             {infoModalToggle && (
@@ -216,7 +251,9 @@ const WordTable = () => {
             )}
             {modalToggle && (
                 <AddWordModal
+                    category={category._id}
                     modalToggle={modalToggle}
+                    fetchWord={fetchWord}
                     handleCancel={handleCancel}
                 />
             )}
