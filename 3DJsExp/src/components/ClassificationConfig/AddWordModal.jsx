@@ -6,68 +6,86 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import classNames from "classnames";
 import PropTypes from "prop-types";
+import classificationAPI from "../../service/classificationAPI";
 
 const AddWordModal = (props) => {
     /////////////////////////////////////props declaration/////////////////////////////////////////////////////////////////////
     const modalToggle = props.modalToggle;
     const handleCancel = props.handleCancel;
+    const category = props.category;
+    const fetchWord = props.fetchWord;
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     const [isModalOpen, setIsModalOpen] = useState(modalToggle);
-    const [formData, setFormData] = useState({});
+    const [formData, setFormData] = useState({
+        keyword: "",
+        score: 0,
+        actual: false,
+    });
 
-    const { isMobile } = useResponsive();
+    const { isMobile,isPortrait } = useResponsive();
 
     ///////////////////////////////////sweetalert and save logic///////////////////////////////////////////////////////////////////////
     const MySwal = withReactContent(Swal);
 
-    const handleSave = () => {
+    const handleSave = async () => {
         console.log(formData);
-        MySwal.fire({
-            title: "ต้องการบันทึกคำคัดกรอง?",
-            text: "กดตกลงเพื่อบันทึก",
-            icon: "info",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "ตกลง",
-            cancelButtonText: "ยกเลิก",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                MySwal.fire({
-                    title: "เรียบร้อย!",
-                    text: "บันทึกคำคัดกรองแล้ว!",
-                    icon: "success",
-                });
-                handleCancel();
-            }
-        });
+        if (formData.keyword !== "") {
+            MySwal.fire({
+                title: "ต้องการบันทึกคำคัดกรอง?",
+                text: "กดตกลงเพื่อบันทึก",
+                icon: "info",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "ตกลง",
+                cancelButtonText: "ยกเลิก",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    classificationAPI.addKeyWord(category, formData).then(() => {
+                        fetchWord()
+                    })
+                    MySwal.fire({
+                        title: "เรียบร้อย!",
+                        text: "บันทึกคำคัดกรองแล้ว!",
+                        icon: "success",
+                    });
+                    handleCancel();
+                }
+            })
+        }
+        else if (formData.keyword == "") {
+            MySwal.fire({
+                title: "ล้มเหลว!",
+                text: "กรุณากรอกคำ",
+            })
+        }
     };
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /////////////////////////////////////////field update logic/////////////////////////////////////////////////////////////////
     const handleText = (e) => {
         if (e.target.value !== null && e.target.value !== undefined) {
-            setFormData({ ...formData, word: e.target.value });
+            setFormData({ ...formData, keyword: e.target.value });
         }
     };
 
     const handleChecked = (checked) => {
         if (checked !== null && checked !== undefined) {
-            setFormData({ ...formData, absolute: checked });
+            setFormData({ ...formData, actual: checked });
         }
     };
 
     const handleWeight = (operator) => {
         if (operator) {
-            if (formData.weight) {
+            if (formData.score) {
                 if (operator === "+") {
-                    setFormData({ ...formData, weight: formData.weight + 1 });
+                    setFormData({ ...formData, score: formData.score + 1 });
                 } else if (operator === "-") {
-                    setFormData({ ...formData, weight: formData.weight - 1 });
+                    setFormData({ ...formData, score: formData.score - 1 });
                 }
             } else {
-                setFormData({ ...formData, weight: 1 });
+                setFormData({ ...formData, score: 1 });
             }
         }
     };
@@ -96,8 +114,9 @@ const AddWordModal = (props) => {
             <div className="tw-overflow-y-auto tw-h-full tw-w-full tw-border-black tw-border-2 tw-rounded-md">
                 <div className="tw-flex tw-flex-col tw-w-full tw-h-full tw-p-4 tw-gap-4">
                     <div
-                        className={classNames("tw-flex tw-flex-col tw-w-96 tw-h-16", {
-                            "tw-w-56": isMobile,
+                        className={classNames("tw-flex tw-flex-col tw-h-16", {
+                            "tw-w-56": isMobile&& isPortrait,
+                            "tw-w-96": !isMobile
                         })}
                     >
                         <p>คำคัดกรอง:</p>
@@ -109,8 +128,9 @@ const AddWordModal = (props) => {
                         />
                     </div>
                     <div
-                        className={classNames("tw-flex tw-flex-col tw-w-96 tw-h-16", {
-                            "tw-w-56": isMobile,
+                        className={classNames("tw-flex tw-flex-col tw-h-16", {
+                            "tw-w-56": isMobile&& isPortrait,
+                            "tw-w-96": !isMobile
                         })}
                     >
                         <p>น้ำหนัก(1-10):</p>
@@ -120,6 +140,7 @@ const AddWordModal = (props) => {
                                     <Button
                                         className="tw-w-full tw-h-full tw-flex tw-border-2 tw-rounded-full tw-bg-red-500 hover:tw-border-red-500 hover:tw-text-red-500 hover:tw-bg-white"
                                         onClick={() => handleWeight("-")}
+                                        disabled={formData.score > 1 ? false : true}
                                     >
                                         <MinusOutlined />
                                     </Button>
@@ -130,19 +151,22 @@ const AddWordModal = (props) => {
                                     <Button
                                         className="tw-w-full tw-h-full tw-flex tw-border-2 tw-rounded-full tw-bg-green-500 hover:tw-border-green-500 hover:tw-text-green-500 hover:tw-bg-white"
                                         onClick={() => handleWeight("+")}
+                                        disabled={formData.score < 10 ? false : true}
                                     >
                                         <PlusOutlined />
                                     </Button>
                                 </Tooltip>
                             }
-                            value={formData.weight}
+                            value={formData.score}
+                            readOnly
                             min={1}
                             max={10}
                         />
                     </div>
                     <div
-                        className={classNames("tw-flex tw-flex-col tw-w-96 tw-h-16", {
-                            "tw-w-56": isMobile,
+                        className={classNames("tw-flex tw-flex-col tw-h-16", {
+                            "tw-w-56": isMobile&& isPortrait,
+
                         })}
                     >
                         <p>หมวดนี้แน่นอน:</p>
@@ -151,12 +175,12 @@ const AddWordModal = (props) => {
                                 <Switch
                                     className={classNames("", {
                                         "tw-bg-black":
-                                            formData?.absolute === false ||
-                                            formData?.absolute === null ||
-                                            formData?.absolute === undefined,
-                                        "tw-bg-blue-400": formData?.absolute === true,
+                                            formData?.actual === false ||
+                                            formData?.actual === null ||
+                                            formData?.actual === undefined,
+                                        "tw-bg-blue-400": formData?.actual === true,
                                     })}
-                                    checked={formData?.absolute}
+                                    checked={formData?.actual}
                                     onChange={(checked) => handleChecked(checked)}
                                 />
                             </div>
@@ -171,6 +195,8 @@ const AddWordModal = (props) => {
 AddWordModal.propTypes = {
     modalToggle: PropTypes.bool.isRequired,
     handleCancel: PropTypes.func.isRequired,
+    category: PropTypes.string || PropTypes.number,
+    fetchWord: PropTypes.func,
 };
 
 export default AddWordModal;

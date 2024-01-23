@@ -177,6 +177,7 @@ const SchedueTable = () => {
                         columns={columns}
                         data={testAcc}
                         setPageSize={testAcc.length}
+                        keyName={"id"}
                     />
                     {modalToggle && (
                         <EditSchedueModal

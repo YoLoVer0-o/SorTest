@@ -11,6 +11,7 @@ const DataTable = props => {
   const sendRows = props.onRowsSelected;
   const useRowSelection = props.useRowSelection;
   const useRowClick = props.useRowClick;
+  const keyName = props.keyName;
 
 
   const onChange = (pagination, filters, sorter, extra) => {
@@ -56,7 +57,7 @@ const DataTable = props => {
           tableLayout={'fixed'}
           columns={columns}
           // sticky={{ offsetScroll: 4, }}
-          dataSource={receviedData ? receviedData.map(item => ({ ...item, key: item.id })) : []}
+          dataSource={receviedData ? receviedData.map(item => ({ ...item, key: item[keyName] })) : []}
           onChange={onChange}
           pagination={{
             defaultPageSize: 5,
@@ -83,6 +84,7 @@ DataTable.propTypes = {
   setPageSize: PropTypes.number,
   useRowSelection: PropTypes.bool,
   useRowClick: PropTypes.bool,
+  keyName: PropTypes.string,
 }
 
 export default DataTable;

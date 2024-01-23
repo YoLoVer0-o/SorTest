@@ -211,6 +211,7 @@ const WorkTable = () => {
                         columns={columns}
                         data={workMock}
                         setPageSize={workMock.length}
+                        keyName={"id"}
                     />
                     {modalToggle && (
                         <EditWorkModal

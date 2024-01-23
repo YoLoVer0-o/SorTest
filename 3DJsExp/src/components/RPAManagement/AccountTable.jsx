@@ -213,6 +213,7 @@ const AccountTable = () => {
                         columns={columns}
                         data={botStatus}
                         setPageSize={botStatus.length}
+                        keyName={"id"}
                     />
                     {modalToggle && (
                         <EditUserModal

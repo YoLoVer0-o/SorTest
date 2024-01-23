@@ -94,7 +94,7 @@ export const router = createBrowserRouter([
         element: <ClassTable />,
       },
       {
-        path: "/classconfig/edit/:cat_id",
+        path: "/classconfig/edit/:category_name",
         element: <WordTable />,
       },
     ],

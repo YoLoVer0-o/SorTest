@@ -193,6 +193,7 @@ const SentimentTable = () => {
                     setPageSize={pageSize}
                     useRowClick={true}
                     onRowClick={(selectedRows) => toReport(selectedRows)}
+                    keyName={"id"}
                 />
             </div>
             <div className="tw-flex tw-flex-row tw-my-6 tw-gap-4">

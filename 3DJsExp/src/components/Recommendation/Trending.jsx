@@ -144,6 +144,7 @@ const Trending = () => {
         <DataTable
           data={recmock}
           columns={columns}
+          keyName={"id"}
         />
       </div>
     </div>

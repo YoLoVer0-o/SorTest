@@ -1,17 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { DataTable, SearchBar } from "../../utilities";
 import { cat_word } from "../../mock";
+import { AddCatModal } from "..";
 import { useResponsive } from "../../hooks";
 import { Button, Tooltip } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import classificationAPI from "../../service/classificationAPI";
 
 const ClassTable = () => {
 
+    const [modalToggle, setModalToggle] = useState(false);
     const [searchVal, setSearchVal] = useState('');
+    const [catData, setCatData] = useState([]);
+
     const navigate = useNavigate();
 
     const { isTabletOrMobile, isMobile, isPortrait } = useResponsive();
@@ -33,6 +38,9 @@ const ClassTable = () => {
             cancelButtonText: "ยกเลิก",
         }).then((result) => {
             if (result.isConfirmed) {
+                classificationAPI.deleteCat(value).then(() => {
+                    fetchCat()
+                })
                 MySwal.fire({
                     title: "เรียบร้อย!",
                     text: "หมวดหมู่ถูกลบแล้ว",
@@ -44,9 +52,22 @@ const ClassTable = () => {
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    ////////////////////////////////////////modal toggle logic//////////////////////////////////////////////////////////////////
+    const showModal = () => {
+        setModalToggle(true);
+    };
+
+    const handleCancel = () => {
+        setModalToggle(false);
+    };
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
     /////////////////////////////////////////navigate to edit/////////////////////////////////////////////////////////////////
     const toEdit = async (data) => {
-        navigate(`/classconfig/edit/${data.id}`, { state: data })
+        // console.log(data._id);
+        navigate(`/classconfig/edit/${data.category_name}`, { state: data })
     }
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -54,49 +75,49 @@ const ClassTable = () => {
     const columns = [
         {
             title: 'หมวดหมู่',
-            dataIndex: 'category',
-            key: 'category',
+            dataIndex: 'category_name',
+            key: 'category_name',
             align: "center",
             width: 100,
             className: 'tw-text-amber-600',
             filteredValue: [searchVal],
             onFilter: (value, record) => (
-                String(record?.category).toLowerCase().includes(value.toLowerCase())
+                String(record?.category_name).toLowerCase().includes(value.toLowerCase())
             ),
             render: (text, record) => (
                 <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
                     <div className="tw-text-3xl">
-                        {record?.category}
+                        {record?.category_name}
                     </div>
                 </div>
             ),
         },
         {
             title: 'จำนวนคำคัดกรอง',
-            dataIndex: 'words',
-            key: 'words',
+            dataIndex: 'keyword_count',
+            key: 'keyword_count',
             align: "center",
             width: 100,
             className: 'tw-text-violet-600',
             render: (text, record) => (
                 <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
                     <div className="tw-text-3xl">
-                        {record?.words.length}
+                        {record?.keyword_count}
                     </div>
                 </div>
             ),
         },
         {
             title: "",
-            dataIndex: "id",
-            key: "id",
+            dataIndex: "_id",
+            key: "_id",
             align: "center",
             width: 100,
             className: "tw-text-amber-600",
             render: (text, record) => (
                 <div className="tw-flex tw-flex-row tw-gap-8 tw-justify-center">
                     <Tooltip title="ลบหมวดหมู่">
-                        <div className="tw-text-3xl tw-text-red-600"><DeleteOutlined onClick={() => handleDelete("wow")} /></div>
+                        <div className="tw-text-3xl tw-text-red-600"><DeleteOutlined onClick={() => handleDelete(record._id)} /></div>
                     </Tooltip>
                     <Tooltip title="แก้ไขหมวดหมู่">
                         <div className="tw-text-3xl tw-text-blue-600"><EditOutlined onClick={() => toEdit(record)} /></div>
@@ -106,6 +127,21 @@ const ClassTable = () => {
         },
     ];
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    const fetchCat = async () => {
+        const data = await classificationAPI.getAllCat();
+        setCatData(data);
+    }
+
+    useEffect(() => {
+        fetchCat();
+    }, [])
+
+    useEffect(() => {
+        console.log(catData);
+    }, [catData])
+
+
 
     return (
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-y-auto', {})}>
@@ -124,7 +160,8 @@ const ClassTable = () => {
                     <Button
                         className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
                             "tw-w-full": isMobile && isPortrait,
-                        })}>
+                        })}
+                        onClick={() => showModal()}>
                         เพิ่มหมวดหมู่
                     </Button>
                 </div>
@@ -132,12 +169,20 @@ const ClassTable = () => {
                     "tw-overflow-auto": isTabletOrMobile && isPortrait,
                 })}>
                     <DataTable
-                        data={cat_word}
+                        data={catData}
                         columns={columns}
-                        setPageSize={cat_word.length}
+                        setPageSize={catData.length}
+                        keyName={"_id"}
                     />
                 </div>
             </div>
+            {modalToggle && (
+                <AddCatModal
+                    modalToggle={modalToggle}
+                    fetchData={fetchCat}
+                    handleCancel={handleCancel}
+                />
+            )}
         </div>
     );
 };
