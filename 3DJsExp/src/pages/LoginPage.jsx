@@ -15,20 +15,14 @@ function LoginPage() {
     const onFinish = async (values) => {
         console.log('Received values of form: ', values);
 
-        const form = {
-            grant_type: null,
-            username: values.username,
-            password: values.password,
-            scope: "",
-            client_id: null,
-            client_secret: null,
-        }
+        await loginAPI.login(values)
+            .then((response) => dispatch(logIn(response.access_token)))
 
-        // const getToken = await loginAPI.login(form)
+        //  loginAPI.getUser(getToken.token)
 
         // console.log(getToken);
 
-        dispatch(logIn())
+        // dispatch(logIn())
 
         navigate("/");
     };

@@ -3,9 +3,16 @@ import axios from "axios";
 const loginAPI = {
   login: async (formData) => {
     try {
+      const urlEncodedData = new URLSearchParams(formData).toString();
+
       const response = await axios.post(
         `http://192.168.10.111:8000/auth/token`,
-        formData
+        urlEncodedData,
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
       );
       return response.data;
     } catch (e) {

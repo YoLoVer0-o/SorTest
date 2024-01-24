@@ -23,7 +23,7 @@ const { Header, Sider, Content } = Layout;
 
 const MainLayout = (props) => {
 
-  const isLogin = useSelector(getUser)[0].status
+  const isLogin = useSelector(getUser)[0]
 
   const [collapsed, setCollapsed] = useState(true);
   const [openKeys, setOpenKeys] = useState([]);
@@ -135,14 +135,14 @@ const MainLayout = (props) => {
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
-    if (location.pathname == "/" ||location.pathname == "/main") {
+    if (location.pathname == "/" || location.pathname == "/main") {
       navigate("/main/overall");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
   useEffect(() => {
-    if (!isLogin) {
+    if (!isLogin.status) {
       navigate("/login");
     }
     console.log(isLogin);
@@ -186,7 +186,7 @@ const MainLayout = (props) => {
       </Header>
 
       <Layout className={"tw-relative"}>
-        
+
         <div
           className={classNames(
             "tw-flex tw-h-full tw-flex-row tw-absolute tw-z-40",
