@@ -1,9 +1,10 @@
-import { LockOutlined, UserOutlined, MailOutlined } from '@ant-design/icons';
+import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
 import background from '../assets/loginBG.jpg';
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux'
 import { logIn } from '../libs/loginSlice'
+import loginAPI from '../service/loginAPI';
 
 function LoginPage() {
 
@@ -11,8 +12,21 @@ function LoginPage() {
 
     const navigate = useNavigate();
 
-    const onFinish = (values) => {
+    const onFinish = async (values) => {
         console.log('Received values of form: ', values);
+
+        const form = {
+            grant_type: null,
+            username: values.username,
+            password: values.password,
+            scope: "",
+            client_id: null,
+            client_secret: null,
+        }
+
+        // const getToken = await loginAPI.login(form)
+
+        // console.log(getToken);
 
         dispatch(logIn())
 
