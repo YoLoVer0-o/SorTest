@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { DataTable, SearchBar } from "../../utilities";
 import { botStatus } from "../../mock";
 import { useResponsive } from "../../hooks";
-import { EditUserModal } from "..";
+import { AddUserModal, EditUserModal } from "..";
 import { Button, Tooltip } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
@@ -11,12 +11,17 @@ dayjs.extend(isSameOrBefore);
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 dayjs.extend(isSameOrAfter);
 import classNames from "classnames";
+import RPAUserAPI from "../../service/RPAUserAPI";
+import { getUser } from '../../libs/loginSlice'
+import { useSelector } from 'react-redux'
 
 const AccountTable = () => {
+    const [botData, setBotData] = useState([]);
     const [searchAccount, setSearchAccout] = useState("");
     const [searchGroup, setSearchGroup] = useState([]);
     const [searchStatus, setSearchStatus] = useState([]);
     const [modalToggle, setModalToggle] = useState(false);
+    const [addModalToggle, setAddModalToggle] = useState(false);
     const [modalData, setModalData] = useState([]);
 
     const { isTabletOrMobile, isMobile, isPortrait, isLandscape } = useResponsive();
@@ -30,33 +35,90 @@ const AccountTable = () => {
     const handleCancel = () => {
         setModalToggle(false);
     };
+
+    const showAddModal = () => {
+        setAddModalToggle(true);
+    };
+
+    const handleAddCancel = () => {
+        setAddModalToggle(false);
+    };
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    const token = useSelector(getUser)[0].token
+
+    const fetchAcc = async () => {
+        const data = await RPAUserAPI.fbGetBotConfig(token);
+        setBotData(data);
+    }
+
+    useEffect(() => {
+        fetchAcc();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    const downloadFile = async () => {
+        try {
+            await RPAUserAPI.fbDownloadUser().then((response) => {
+                const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = blobUrl;
+                link.setAttribute('download', "user_format.xlsx");
+                document.body.appendChild(link);
+                link.click();
+                window.URL.revokeObjectURL(blobUrl);
+            })
+
+        } catch (error) {
+            console.error('Error downloading file:', error);
+        }
+    };
+
+
+
+    const hiddenFileInput = useRef(null);
+
+    const handleClick = () => {
+        hiddenFileInput.current.click();
+    };
+
+    const handleChange = async (event) => {
+        const fileUploaded = event.target.files[0];
+        // console.log(fileUploaded);
+        await RPAUserAPI.fbUploadUser(fileUploaded).then((response) => { console.log(response); })
+    };
+
+
+
 
     ////////////////////////////////////////////table//////////////////////////////////////////////////////////////
     const columns = [
         {
-            title: "id",
-            dataIndex: "id",
-            key: "id",
-            align: "center",
-            width: 150,
-            className: "tw-truncate",
-        },
-        {
-            title: "accName",
-            dataIndex: "accName",
-            key: "accName",
+            title: "name",
+            dataIndex: "botname",
+            key: "botname",
             align: "center",
             width: 150,
             className: "tw-truncate",
             filteredValue: [searchAccount],
             onFilter: (value, record) =>
-                String(record?.accName).toLowerCase().includes(value.toLowerCase()),
+                String(record?.botname).toLowerCase().includes(value.toLowerCase()),
         },
         {
-            title: "group",
-            dataIndex: "group",
-            key: "group",
+            title: "accName",
+            dataIndex: "username",
+            key: "username",
+            align: "center",
+            width: 150,
+            className: "tw-truncate",
+            filteredValue: [searchAccount],
+            onFilter: (value, record) =>
+                String(record?.username).toLowerCase().includes(value.toLowerCase()),
+        },
+        {
+            title: "groups",
+            dataIndex: "groups",
+            key: "groups",
             align: "center",
             width: 150,
             className: "tw-text-violet-600",
@@ -64,13 +126,13 @@ const AccountTable = () => {
             onFilter: (value, record) =>
                 value
                     .split(",")
-                    .every((group) => String(record?.group).includes(group)),
+                    .every((groups) => String(record?.groups).includes(groups)),
             render: (text, record) => (
                 <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
-                    {record?.group.map((group) => (
-                        <Tooltip key={group} title={group}>
+                    {record?.groups.map((groups) => (
+                        <Tooltip key={groups} title={groups}>
                             <div className=" tw-w-max tw-rounded-md tw-p-2 tw-border-2 tw-border-black tw-text-center tw-text-white tw-bg-violet-600">
-                                {group}
+                                {groups}
                             </div>
                         </Tooltip>
                     ))}
@@ -96,7 +158,7 @@ const AccountTable = () => {
                             className={classNames(
                                 "tw-rounded-md tw-border-2 tw-border-black tw-w-max tw-text-center tw-text-white tw-p-2",
                                 {
-                                    "tw-bg-green-600": record?.status == "online",
+                                    "tw-bg-green-600": record?.status == "Running",
                                     "tw-bg-red-600": record?.status == "offline",
                                     "tw-bg-yellow-600": record?.status == "standby",
                                 }
@@ -110,22 +172,22 @@ const AccountTable = () => {
         },
         {
             title: "details",
-            dataIndex: "details",
-            key: "details",
+            dataIndex: "job",
+            key: "job",
             align: "center",
             width: 150,
             className: "tw-text-lime-600 tw-truncate",
         },
         {
             title: "",
-            dataIndex: "id",
-            key: "id",
+            dataIndex: "botname",
+            key: "botname",
             align: "center",
             width: 50,
             className: "tw-text-blue-500 tw-text-2xl",
             render: (text, record) => (
                 <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
-                    <Tooltip key={record.id} title={"กดเพื่อแก้ไข"}>
+                    <Tooltip key={record.botname} title={"กดเพื่อแก้ไข"}>
                         <EditOutlined onClick={() => showModal(record)} />
                     </Tooltip>
                 </div>
@@ -136,95 +198,127 @@ const AccountTable = () => {
 
     return (
         <div
-            className={classNames(
-                "tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto",
-                {}
-            )}
+            className={
+                classNames(
+                    "tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto",
+                    {}
+                )
+            }
         >
             <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">
                 AccountTable
             </p>
-            <div
-                className={classNames(
-                    "tw-flex tw-flex-row tw-max-w-full tw-justify-center tw-gap-2",
-                    {
-                        "tw-flex-col": isTabletOrMobile,
-                    }
-                )}
-            >
-                <div className={classNames("tw-w-full", {})}>
-                    <p className="tw-text-lg">เลขบัญชี/ชื่อบัญชี:</p>
-                    <SearchBar
-                        useTextSearch={true}
-                        data={botStatus}
-                        onChangeSearch={setSearchAccout}
-                    />
-                </div>
-                <div className={classNames("tw-w-full", {})}>
-                    <p className="tw-text-lg">กลุ่ม:</p>
-                    <SearchBar
-                        useTagSearch={true}
-                        data={botStatus}
-                        onChangeFilter={setSearchGroup}
-                        keyName={"group"}
-                    />
-                </div>
-                <div className={classNames("tw-w-full", {})}>
-                    <p className="tw-text-lg">สถานะ:</p>
-                    <SearchBar
-                        useTagSearch={true}
-                        data={botStatus}
-                        onChangeFilter={setSearchStatus}
-                        keyName={"status"}
-                    />
-                </div>
-            </div>
-            <div className={classNames("tw-flex tw-flex-col tw-h-full tw-w-full tw-gap-2", {})}>
-                <div className={classNames("tw-flex tw-flex-row tw-h-fit tw-my-2", {
-                    "tw-flex-col tw-w-full tw-gap-2": isMobile && isPortrait,
-                    "tw-self-end tw-w-fit tw-gap-2": isMobile && isLandscape,
-                    "tw-gap-4 tw-self-end tw-w-fit": !isMobile,
-                })}>
-                    <Button
-                        className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
-                            "tw-w-full": isMobile && isPortrait,
-                        })}>
-                        ดาวน์โหลด Format
-                    </Button>
-                    <Button
-                        className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
-                            "tw-w-full": isMobile && isPortrait,
-                        })}>
-                        เพิ่มบัญชี Excel
-                    </Button>
-                    <Button
-                        className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
-                            "tw-w-full": isMobile && isPortrait,
-                        })}>
-                        เพิ่มบัญชีใหม่
-                    </Button>
-                </div>
-                <div
-                    className={classNames("tw-border-2 tw-rounded-md", {
-                        "tw-overflow-auto tw-min-h-fit": isTabletOrMobile && isPortrait,
-                    })}
-                >
-                    <DataTable
-                        columns={columns}
-                        data={botStatus}
-                        setPageSize={botStatus.length}
-                        keyName={"id"}
-                    />
-                    {modalToggle && (
-                        <EditUserModal
-                            modalToggle={modalToggle}
-                            handleCancel={handleCancel}
-                            modalData={modalData}
-                        />
+            {
+                botData.length > 0 && (<div
+                    className={classNames(
+                        "tw-flex tw-flex-row tw-max-w-full tw-justify-center tw-gap-2",
+                        {
+                            "tw-flex-col": isTabletOrMobile,
+                        }
                     )}
-                </div>
-            </div>
-        </div>
+                >
+                    <div className={classNames("tw-w-full", {})}>
+                        <p className="tw-text-lg">เลขบัญชี/ชื่อบัญชี:</p>
+                        <SearchBar
+                            useTextSearch={true}
+                            data={botStatus}
+                            onChangeSearch={setSearchAccout}
+                        />
+                    </div>
+                    <div className={classNames("tw-w-full", {})}>
+                        <p className="tw-text-lg">กลุ่ม:</p>
+                        <SearchBar
+                            useTagSearch={true}
+                            data={botData}
+                            onChangeFilter={setSearchGroup}
+                            keyName={"groups"}
+                        />
+                    </div>
+                    <div className={classNames("tw-w-full", {})}>
+                        <p className="tw-text-lg">สถานะ:</p>
+                        <SearchBar
+                            useTagSearch={true}
+                            data={botData}
+                            onChangeFilter={setSearchStatus}
+                            keyName={"status"}
+                        />
+                    </div>
+                </div>)
+            }
+
+            {
+                botData.length > 0 && (
+                    <div className={classNames("tw-flex tw-flex-col tw-h-full tw-w-full tw-gap-2", {})}>
+                        <div className={classNames("tw-flex tw-flex-row tw-h-fit tw-my-2", {
+                            "tw-flex-col tw-w-full tw-gap-2": isMobile && isPortrait,
+                            "tw-self-end tw-w-fit tw-gap-2": isMobile && isLandscape,
+                            "tw-gap-4 tw-self-end tw-w-fit": !isMobile,
+                        })}>
+                            <Button
+                                className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
+                                    "tw-w-full": isMobile && isPortrait,
+                                })}
+                                onClick={() => downloadFile()}>
+                                ดาวน์โหลด Format
+                            </Button>
+                            <input
+                                type="file"
+                                onChange={handleChange}
+                                ref={hiddenFileInput}
+                                style={{ display: 'none' }}
+                            />
+                            <Button
+                                className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
+                                    "tw-w-full": isMobile && isPortrait,
+                                })}
+                                onClick={() => handleClick()}>
+                                เพิ่มบัญชี Excel
+                            </Button>
+                            <Button
+                                className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
+                                    "tw-w-full": isMobile && isPortrait,
+                                })}
+                                onClick={() => showAddModal()}
+                            >
+                                เพิ่มบัญชีใหม่
+                            </Button>
+                        </div>
+                        <div
+                            className={classNames("tw-border-2 tw-rounded-md", {
+                                "tw-overflow-auto tw-min-h-fit": isTabletOrMobile && isPortrait,
+                            })}
+                        >
+                            <DataTable
+                                columns={columns}
+                                data={botData}
+                                setPageSize={botData.length}
+                                keyName={"id"}
+                            />
+                            {modalToggle && (
+                                <EditUserModal
+                                    fetch={fetchAcc}
+                                    token={token}
+                                    modalToggle={modalToggle}
+                                    handleCancel={handleCancel}
+                                    modalData={modalData}
+                                    data={botData}
+                                />
+                            )}
+                            {addModalToggle && (
+                                <AddUserModal
+                                    fetch={fetchAcc}
+                                    token={token}
+                                    modalToggle={addModalToggle}
+                                    handleCancel={handleAddCancel}
+                                    data={botData}
+                                />
+                            )}
+                        </div>
+                    </div>
+                )}
+
+        </div >
+
     );
 };
 

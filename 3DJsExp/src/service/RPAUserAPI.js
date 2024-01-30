@@ -22,9 +22,12 @@ const RPAUserAPI = {
   fbDownloadUser: async () => {
     try {
       const response = await axios.get(
-        `http://192.168.10.111:8000/facebook/download/user_format/`
+        `http://192.168.10.111:8000/facebook/download/user_format/`,
+        {
+          responseType: "blob",
+        }
       );
-      return response.data;
+      return response;
     } catch (e) {
       console.log(e);
       throw e;
@@ -32,10 +35,18 @@ const RPAUserAPI = {
   },
 
   fbUploadUser: async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
     try {
       const response = await axios.post(
         `http://192.168.10.111:8000/facebook/upload/user_format/`,
-        file
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
       return response.data;
     } catch (e) {
@@ -44,11 +55,16 @@ const RPAUserAPI = {
     }
   },
 
-  fbAddUser: async (user) => {
+  fbAddUser: async (token, user) => {
     try {
       const response = await axios.post(
         "http://192.168.10.111:8000/facebook/insert_bot_config/",
-        user
+        user,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
       );
       return response;
     } catch (e) {
@@ -57,11 +73,16 @@ const RPAUserAPI = {
     }
   },
 
-  fbUpdateBotConfig: async (bot_name, bot_config) => {
+  fbUpdateBotConfig: async (token, bot_name, bot_config) => {
     try {
       const response = await axios.put(
         `http://192.168.10.111:8000/facebook/update_bot_config/${bot_name}`,
-        bot_config
+        bot_config,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
       );
       return response;
     } catch (e) {
@@ -70,10 +91,15 @@ const RPAUserAPI = {
     }
   },
 
-  fbDeleteBotConfig: async (bot_name) => {
+  fbDeleteBotConfig: async (token, bot_name) => {
     try {
       const response = await axios.delete(
-        `http://192.168.10.111:8000/facebook/update_bot_config/${bot_name}`
+        `http://192.168.10.111:8000/facebook/update_bot_config/${bot_name}`,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
       );
       return response;
     } catch (e) {

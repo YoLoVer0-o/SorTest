@@ -12,6 +12,7 @@ import AccountTable from "./RPAManagement/AccountTable";
 import SchedueTable from "./RPAManagement/SchedueTable";
 import WorkTable from "./RPAManagement/WorkTable";
 import EditUserModal from "./RPAManagement/EditUserModal";
+import AddUserModal from "./RPAManagement/AddUserModal";
 import EditSchedueModal from "./RPAManagement/EditSchedueModal";
 import EditWorkModal from "./RPAManagement/EditWorkModal";
 import DataLog from "./RPAManagement/DataLog";
@@ -37,6 +38,7 @@ export {
   AccountTable,
   SchedueTable,
   WorkTable,
+  AddUserModal,
   EditUserModal,
   EditSchedueModal,
   EditWorkModal,
