@@ -4,7 +4,7 @@ const classificationAPI = {
   getAllCat: async () => {
     try {
       const response = await axios.get(
-        "http://192.168.10.121:8000/contentkeyword/categories"
+        "http://192.168.10.121:8000/contentkeyword/categories?page=1&items_per_page=10"
       );
       return response.data;
     } catch (e) {
@@ -13,10 +13,10 @@ const classificationAPI = {
     }
   },
 
-  getCatWord: async (cid) => {
+  getCatWord: async (cid, page, item) => {
     try {
       const response = await axios.get(
-        `http://192.168.10.121:8000/contentkeyword/categories/${cid}/keywords`
+        `http://192.168.10.121:8000/contentkeyword/categories/${cid}/keywords?page=${page}&items_per_page=${item}`
       );
       return response.data;
     } catch (e) {

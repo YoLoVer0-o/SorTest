@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SearchBar, VerticalBarChart, HorizontalBarChart, DoughnutChart } from "../../utilities";
 import { sentimentAll, sentimentPos, socialPlatform } from "../../mock";
 import { useResponsive } from "../../hooks";
@@ -130,7 +130,7 @@ const Dashboard = () => {
 
     //////////////////////////////////////////////////read more////////////////////////////////////////////////////////
     const testText = "เงินดิจิตอล 1 หมื่นบาท ยังไม่ถึงไหน!รมช.คลังบอกกฤษฎีกายังตีความร่างพ.ร.บ.เงินกู้ 5แสนล้านไม่เสร็จ คาดได้คำตอบช่วงเดือนม.ค.นี้#อนุวัตจัดให้"
-    const readMore = <p className="tw-text-blue-500 tw-cursor-pointer">อ่านเพิ่มเติม</p>
+    // const readMore = <p className="tw-text-blue-500 tw-cursor-pointer">อ่านเพิ่มเติม</p>
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     //////////////////////////////////////////postBar////////////////////////////////////////////////////////////////
@@ -245,6 +245,11 @@ const Dashboard = () => {
         },
     };
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    useEffect(() => {
+        console.log(searchDate);
+    }, [searchDate])
+
 
     return (
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto', {})}>

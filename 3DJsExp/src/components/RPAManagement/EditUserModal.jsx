@@ -14,51 +14,39 @@ const EditUserModal = props => {
     const modalToggle = props.modalToggle;
     const handleCancel = props.handleCancel;
     const modalData = props.modalData;
-    const receviedData = props.data;
     const token = props.token;
     const fetch = props.fetch;
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     const [isModalOpen, setIsModalOpen] = useState(modalToggle);
-    const [inputValue, setInputValue] = useState('');
+    // const [inputValue, setInputValue] = useState('');
     const [availableGroup, setAvailableGroup] = useState([]);
     const { isMobile } = useResponsive();
 
     //////////////////////////////////////group////////////////////////////////////////////////////////////////////
-    const uniqueTagsSet = new Set();
-
-    {
-        typeof receviedData[0].groups === "object" && (receviedData.forEach((receviedData) => {
-            receviedData.groups.forEach((tag) => {
-                uniqueTagsSet.add(tag);
-            });
-        }))
+    const fetchGroup = async () => {
+        await RPAUserAPI.fbGetBotGroup(token)
+            .then((response) => setAvailableGroup(response.map((response) => (
+                {
+                    label: response.group_name,
+                    value: response.group_id,
+                }
+            )))
+            )
     }
 
-    {
-        typeof receviedData[0].groups === "string" && (receviedData.forEach((receviedData) => {
-            uniqueTagsSet.add(receviedData.groups);
-        }))
-    }
+    // const addGroup = (group) => {
 
-    const uniqueTagsArray = () => {
-        setAvailableGroup([...uniqueTagsSet].map((tag) => ({
-            label: tag,
-            value: tag,
-        })))
-    }
+    //     setAvailableGroup(prevTarray => [...prevTarray, {
+    //         label: group,
+    //         value: group,
+    //     }])
+    // };
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     ////////////////////////////////////////form//////////////////////////////////////////////////////////////////
     const [form] = Form.useForm();
-
-    const addGroup = (group) => {
-
-        setAvailableGroup(prevTarray => [...prevTarray, {
-            label: group,
-            value: group,
-        }])
-    };
 
     const formData = Form.useWatch([], form);
 
@@ -128,13 +116,14 @@ const EditUserModal = props => {
     }, [modalToggle]);
 
     useEffect(() => {
+        fetchGroup()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
         console.log(availableGroup);
     }, [availableGroup]);
 
-    useEffect(() => {
-        uniqueTagsArray()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [receviedData]);
 
     return (
         <Modal
@@ -200,31 +189,31 @@ const EditUserModal = props => {
                                     optionRender={(option) => (
                                         <div className='tw-flex tw-flex-row tw-justify-between'>
                                             {/* <CloseCircleOutlined className='tw-text-2xl tw-text-red-500' /> */}
-                                            <p className='tw-font-bold'>{option.value}</p>
+                                            <p className='tw-font-bold'>{option.label}</p>
                                         </div>
                                     )}
-                                    dropdownRender={(menu) => (
-                                        <div className='tw-flex tw-flex-col'>
-                                            {menu}
-                                            <div className='tw-flex tw-flex-row tw-border-2 tw-border-black tw-rounded-md tw-p-1'>
-                                                <Input
-                                                    placeholder="สร้างกลุ่มใหม่"
-                                                    onKeyDown={(e) => e.stopPropagation()}
-                                                    addonAfter={<Tooltip title={"กดเพื่อเพิ่มกลุ่ม(จำเป็นต้องกรอกชื่อกลุ่ม)"}>
-                                                        <Button
-                                                            icon={<PlusOutlined />}
-                                                            className='tw-bg-green-500 tw-text-white tw-border-white hover:tw-bg-white hover:tw-text-green-500 hover:tw-border-green-500'
-                                                            onClick={() => addGroup(inputValue)}
-                                                        >
-                                                            เพิ่มกลุ่ม
-                                                        </Button>
-                                                    </Tooltip>}
-                                                    value={inputValue}
-                                                    onChange={(e) => setInputValue(e.target.value)}
-                                                />
-                                            </div>
-                                        </div>
-                                    )}
+                                // dropdownRender={(menu) => (
+                                //     <div className='tw-flex tw-flex-col'>
+                                //         {menu}
+                                //         <div className='tw-flex tw-flex-row tw-border-2 tw-border-black tw-rounded-md tw-p-1'>
+                                //             <Input
+                                //                 placeholder="สร้างกลุ่มใหม่"
+                                //                 onKeyDown={(e) => e.stopPropagation()}
+                                //                 addonAfter={<Tooltip title={"กดเพื่อเพิ่มกลุ่ม(จำเป็นต้องกรอกชื่อกลุ่ม)"}>
+                                //                     <Button
+                                //                         icon={<PlusOutlined />}
+                                //                         className='tw-bg-green-500 tw-text-white tw-border-white hover:tw-bg-white hover:tw-text-green-500 hover:tw-border-green-500'
+                                //                         onClick={() => addGroup(inputValue)}
+                                //                     >
+                                //                         เพิ่มกลุ่ม
+                                //                     </Button>
+                                //                 </Tooltip>}
+                                //                 value={inputValue}
+                                //                 onChange={(e) => setInputValue(e.target.value)}
+                                //             />
+                                //         </div>
+                                //     </div>
+                                // )}
                                 />
                             </Form.Item>
                         </div>
@@ -261,7 +250,8 @@ EditUserModal.propTypes = {
     modalData: PropTypes.any.isRequired,
     data: PropTypes.array,
     token: PropTypes.string,
-    fetch: PropTypes.func
+    fetch: PropTypes.func,
+
 }
 
 export default EditUserModal;

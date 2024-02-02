@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
-import { getUser, logOut } from '../libs/loginSlice'
+import { getLogin, logOut } from '../libs/loginSlice'
+import { setUserData } from "../libs/userSlice";
+import mainUserAPI from "../service/mainUserAPI";
 import { useResponsive } from "../hooks";
 import SocialIcons from "../assets/SocialIcons";
 import profile from "../assets/profile.png";
@@ -23,9 +25,12 @@ const { Header, Sider, Content } = Layout;
 
 const MainLayout = (props) => {
 
-  const isLogin = useSelector(getUser)[0]
+  const isLogin = useSelector((state) => getLogin(state));
+
+  // const isLogin = useSelector((state) => state.login?.items[0]);
 
   const [collapsed, setCollapsed] = useState(true);
+
   const [openKeys, setOpenKeys] = useState([]);
 
   const {
@@ -134,6 +139,14 @@ const MainLayout = (props) => {
     )
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  const getUserGroup = async () => {
+    await mainUserAPI.getAllRole(isLogin.token)
+      .then((response) => { dispatch(setUserData({ owner: response })) });
+  }
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
   useEffect(() => {
     if (location.pathname == "/" || location.pathname == "/main") {
       navigate("/main/overall");
@@ -142,12 +155,18 @@ const MainLayout = (props) => {
   }, [location.pathname]);
 
   useEffect(() => {
-    if (!isLogin.status) {
+    if (!isLogin?.status) {
       navigate("/login");
     }
     console.log(isLogin);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLogin]);
+
+  useEffect(() => {
+    getUserGroup()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
 
   return (
     <Layout

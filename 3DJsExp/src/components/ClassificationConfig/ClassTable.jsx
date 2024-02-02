@@ -16,6 +16,7 @@ const ClassTable = () => {
     const [modalToggle, setModalToggle] = useState(false);
     const [searchVal, setSearchVal] = useState('');
     const [catData, setCatData] = useState([]);
+    const [pageIndex, setPageIndex] = useState({ current: 1, pageSize: 5 });
 
     const navigate = useNavigate();
 
@@ -25,7 +26,7 @@ const ClassTable = () => {
     const MySwal = withReactContent(Swal)
 
     const handleDelete = (value) => {
-        console.log(value);
+        // console.log(value);
 
         MySwal.fire({
             title: "ต้องการลบหมวดหมู่?",
@@ -135,13 +136,7 @@ const ClassTable = () => {
 
     useEffect(() => {
         fetchCat();
-    }, [])
-
-    useEffect(() => {
-        console.log(catData);
-    }, [catData])
-
-
+    }, [pageIndex])
 
     return (
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-y-auto', {})}>
@@ -169,10 +164,12 @@ const ClassTable = () => {
                     "tw-overflow-auto": isTabletOrMobile && isPortrait,
                 })}>
                     <DataTable
-                        data={catData}
+                        data={catData.categories}
                         columns={columns}
-                        setPageSize={catData.length}
+                        setPageSize={5}
                         keyName={"_id"}
+                        totalPages={catData.total_categories}
+                        sendPages={setPageIndex}
                     />
                 </div>
             </div>

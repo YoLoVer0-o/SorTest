@@ -12,11 +12,13 @@ import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 dayjs.extend(isSameOrAfter);
 import classNames from "classnames";
 import RPAUserAPI from "../../service/RPAUserAPI";
-import { getUser } from '../../libs/loginSlice'
 import { useSelector } from 'react-redux'
+import { getLogin } from '../../libs/loginSlice'
+import { getUser } from "../../libs/userSlice";
 
 const AccountTable = () => {
     const [botData, setBotData] = useState([]);
+    const [botGroup, setBotGroup] = useState([]);
     const [searchAccount, setSearchAccout] = useState("");
     const [searchGroup, setSearchGroup] = useState([]);
     const [searchStatus, setSearchStatus] = useState([]);
@@ -45,15 +47,27 @@ const AccountTable = () => {
     };
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    const token = useSelector(getUser)[0].token
+    const token = useSelector((state) => getLogin(state).token);
+
+    const ownerGroup = useSelector((state) => getUser(state)[0].owner);
+
+    useEffect(() => {
+        console.log('user', ownerGroup);
+    }, [ownerGroup])
+
 
     const fetchAcc = async () => {
         const data = await RPAUserAPI.fbGetBotConfig(token);
         setBotData(data);
     }
 
+    const fetchGroup = async () => {
+        await RPAUserAPI.fbGetBotGroup(token).then((response) => setBotGroup(response));
+    }
+
     useEffect(() => {
         fetchAcc();
+        fetchGroup()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -74,8 +88,6 @@ const AccountTable = () => {
         }
     };
 
-
-
     const hiddenFileInput = useRef(null);
 
     const handleClick = () => {
@@ -87,9 +99,6 @@ const AccountTable = () => {
         // console.log(fileUploaded);
         await RPAUserAPI.fbUploadUser(fileUploaded).then((response) => { console.log(response); })
     };
-
-
-
 
     ////////////////////////////////////////////table//////////////////////////////////////////////////////////////
     const columns = [
@@ -130,9 +139,10 @@ const AccountTable = () => {
             render: (text, record) => (
                 <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
                     {record?.groups.map((groups) => (
-                        <Tooltip key={groups} title={groups}>
-                            <div className=" tw-w-max tw-rounded-md tw-p-2 tw-border-2 tw-border-black tw-text-center tw-text-white tw-bg-violet-600">
-                                {groups}
+                        <Tooltip key={groups} title={botGroup?.find((botGroup) => botGroup.group_id == groups) ? botGroup?.find((botGroup) => botGroup.group_id == groups)?.group_name : "ไม่ระบุ"}>
+                            <div className="tw-w-max tw-rounded-md tw-p-2 tw-border-2 tw-border-black tw-text-center tw-text-white tw-bg-violet-600">
+                                {botGroup?.find((botGroup) => botGroup.group_id == groups) ? botGroup?.find((botGroup) => botGroup.group_id == groups)?.group_name : "ไม่ระบุ"}
+                                {/* {groups} */}
                             </div>
                         </Tooltip>
                     ))}
@@ -159,7 +169,7 @@ const AccountTable = () => {
                                 "tw-rounded-md tw-border-2 tw-border-black tw-w-max tw-text-center tw-text-white tw-p-2",
                                 {
                                     "tw-bg-green-600": record?.status == "Running",
-                                    "tw-bg-red-600": record?.status == "offline",
+                                    "tw-bg-red-600": record?.status == "Not start",
                                     "tw-bg-yellow-600": record?.status == "standby",
                                 }
                             )}
@@ -209,7 +219,7 @@ const AccountTable = () => {
                 AccountTable
             </p>
             {
-                botData.length > 0 && (<div
+                botData.length > 0 && botGroup.length > 0 && (<div
                     className={classNames(
                         "tw-flex tw-flex-row tw-max-w-full tw-justify-center tw-gap-2",
                         {
@@ -229,9 +239,9 @@ const AccountTable = () => {
                         <p className="tw-text-lg">กลุ่ม:</p>
                         <SearchBar
                             useTagSearch={true}
-                            data={botData}
+                            data={botGroup}
                             onChangeFilter={setSearchGroup}
-                            keyName={"groups"}
+                            keyName={"group_name"}
                         />
                     </div>
                     <div className={classNames("tw-w-full", {})}>
@@ -292,7 +302,7 @@ const AccountTable = () => {
                                 columns={columns}
                                 data={botData}
                                 setPageSize={botData.length}
-                                keyName={"id"}
+                                keyName={"botname"}
                             />
                             {modalToggle && (
                                 <EditUserModal
@@ -301,7 +311,7 @@ const AccountTable = () => {
                                     modalToggle={modalToggle}
                                     handleCancel={handleCancel}
                                     modalData={modalData}
-                                    data={botData}
+                                    sentOwner={ownerGroup}
                                 />
                             )}
                             {addModalToggle && (
@@ -310,7 +320,7 @@ const AccountTable = () => {
                                     token={token}
                                     modalToggle={addModalToggle}
                                     handleCancel={handleAddCancel}
-                                    data={botData}
+                                    sentOwner={ownerGroup}
                                 />
                             )}
                         </div>

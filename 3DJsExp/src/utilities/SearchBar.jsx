@@ -23,7 +23,7 @@ const SearchBar = props => {
 
     {
         useTagSearch && typeof receviedData[0][`${keyName}`] === "object" && (receviedData.forEach((receviedData) => {
-            receviedData[`${keyName}`].forEach((tag) => {
+            receviedData[`${keyName}`]?.forEach((tag) => {
                 uniqueTagsSet.add(tag);
             });
         }))
@@ -57,6 +57,7 @@ const SearchBar = props => {
     };
 
     const onTimeChange = (value) => {
+        console.log(value);
         const times = value?.map((e) => {
             return (dayjs(e).format('YYYY-MM-DD'));
         })

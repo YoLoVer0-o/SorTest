@@ -29,7 +29,7 @@ const AddWordModal = (props) => {
     const MySwal = withReactContent(Swal);
 
     const handleSave = async () => {
-        console.log(formData);
+        // console.log(formData);
         if (formData.keyword !== "") {
             MySwal.fire({
                 title: "ต้องการบันทึกคำคัดกรอง?",

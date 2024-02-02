@@ -19,6 +19,23 @@ const RPAUserAPI = {
     }
   },
 
+  fbGetBotGroup: async (token) => {
+    try {
+      const response = await axios.get(
+        "http://192.168.10.111:8000/facebook/get_all_groups/",
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      return response.data;
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
+  },
+
   fbDownloadUser: async () => {
     try {
       const response = await axios.get(
