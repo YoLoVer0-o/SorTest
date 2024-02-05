@@ -67,7 +67,7 @@ const AccountTable = () => {
 
     useEffect(() => {
         fetchAcc();
-        fetchGroup()
+        fetchGroup();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 

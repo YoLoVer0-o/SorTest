@@ -22,7 +22,10 @@ const RPASchedueAPI = {
   fbDownloadSchedule: async () => {
     try {
       const response = await axios.get(
-        `http://192.168.10.111:8000/facebook/download/schedule_format/`
+        `http://192.168.10.111:8000/facebook/download/schedule_format/`,
+        {
+          responseType: "blob",
+        }
       );
       return response.data;
     } catch (e) {
@@ -32,10 +35,18 @@ const RPASchedueAPI = {
   },
 
   fbUploadSchedule: async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
     try {
       const response = await axios.post(
         `http://192.168.10.111:8000/facebook/upload/schedule_format/`,
-        file
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
       return response.data;
     } catch (e) {
@@ -83,7 +94,6 @@ const RPASchedueAPI = {
   },
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
 };
 
 export default RPASchedueAPI;
