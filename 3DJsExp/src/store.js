@@ -16,14 +16,6 @@ const mergeReducer = combineReducers({
 
 const rootReducer = persistReducer(persistConfig, mergeReducer);
 
-// const persistedLoginReducer = persistReducer(persistConfig, loginReducer);
-// const persistedUserReducer = persistReducer(persistConfig, userReducer);
-
-// const rootReducer = combineReducers({
-//   login: persistedLoginReducer,
-//   user: persistedUserReducer,
-// });
-
 export const store = configureStore({
   reducer: rootReducer,
 });

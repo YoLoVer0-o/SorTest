@@ -21,7 +21,7 @@ const AddUserModal = props => {
 
     const [isModalOpen, setIsModalOpen] = useState(modalToggle);
     // const [formData, setFormData] = useState({});
-    // const [inputValue, setInputValue] = useState('');
+    const [inputValue, setInputValue] = useState('');
     const [availableGroup, setAvailableGroup] = useState([]);
     const { isMobile } = useResponsive();
 
@@ -38,14 +38,46 @@ const AddUserModal = props => {
             )
     }
 
-    // const addGroup = (group) => {
+    const addGroup = async (group) => {
 
-    //     setAvailableGroup(prevTarray => [...prevTarray, {
-    //         id: prevTarray.length,
-    //         label: group,
-    //         value: group,
-    //     }])
-    // };
+        const payload = { group_name: group }
+
+        await RPAUserAPI.fbAddBotGroup(token, payload).then(() => {
+            MySwal.fire({
+                title: "เรียบร้อย!",
+                text: "เพื่มกลุ่มแล้ว!",
+                icon: "success"
+            });
+        })
+        fetchGroup()
+
+    };
+
+    const deleteGroup = async (id) => {
+        const payload = { group_id: id }
+        MySwal.fire({
+            title: "ต้องการลบข้อมูล?",
+            text: "กดตกลงเพื่อลบ",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "ตกลง",
+            cancelButtonText: "ยกเลิก",
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                await RPAUserAPI.fbDeleteBotGroup(token, payload).then(() => {
+                    MySwal.fire({
+                        title: "เรียบร้อย!",
+                        text: "ลบกลุ่มแล้ว!",
+                        icon: "success"
+                    });
+                })
+            }
+            fetchGroup()
+        });
+    }
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     ////////////////////////////////////////form//////////////////////////////////////////////////////////////////
@@ -167,32 +199,34 @@ const AddUserModal = props => {
                                     options={availableGroup.length > 0 ? availableGroup : false}
                                     optionRender={(option) => (
                                         <div className='tw-flex tw-flex-row tw-justify-between'>
-                                            {/* <CloseCircleOutlined className='tw-text-2xl tw-text-red-500' /> */}
+                                            <Tooltip title={"ลบกลุ่มจากระบบ"}>
+                                                <CloseCircleOutlined className='tw-text-2xl tw-text-red-500' onClick={() => deleteGroup(option.value)} />
+                                            </Tooltip>
                                             <p className='tw-font-bold'>{option.label}</p>
                                         </div>
                                     )}
-                                // dropdownRender={(menu) => (
-                                //     <div className='tw-flex tw-flex-col'>
-                                //         {menu}
-                                //         <div className='tw-flex tw-flex-row tw-border-2 tw-border-black tw-rounded-md tw-p-1'>
-                                //             <Input
-                                //                 placeholder="สร้างกลุ่มใหม่"
-                                //                 onKeyDown={(e) => e.stopPropagation()}
-                                //                 addonAfter={<Tooltip title={"กดเพื่อเพิ่มกลุ่ม(จำเป็นต้องกรอกชื่อกลุ่ม)"}>
-                                //                     <Button
-                                //                         icon={<PlusOutlined />}
-                                //                         className='tw-bg-green-500 tw-text-white tw-border-white hover:tw-bg-white hover:tw-text-green-500 hover:tw-border-green-500'
-                                //                         onClick={() => addGroup(inputValue)}
-                                //                     >
-                                //                         เพิ่มกลุ่ม
-                                //                     </Button>
-                                //                 </Tooltip>}
-                                //                 value={inputValue}
-                                //                 onChange={(e) => setInputValue(e.target.value)}
-                                //             />
-                                //         </div>
-                                //     </div>
-                                // )}
+                                    dropdownRender={(menu) => (
+                                        <div className='tw-flex tw-flex-col'>
+                                            {menu}
+                                            <div className='tw-flex tw-flex-row tw-border-2 tw-border-black tw-rounded-md tw-p-1'>
+                                                <Input
+                                                    placeholder="สร้างกลุ่มใหม่"
+                                                    onKeyDown={(e) => e.stopPropagation()}
+                                                    addonAfter={<Tooltip title={"กดเพื่อเพิ่มกลุ่ม(จำเป็นต้องกรอกชื่อกลุ่ม)"}>
+                                                        <Button
+                                                            icon={<PlusOutlined />}
+                                                            className='tw-bg-green-500 tw-text-white tw-border-white hover:tw-bg-white hover:tw-text-green-500 hover:tw-border-green-500'
+                                                            onClick={() => addGroup(inputValue)}
+                                                        >
+                                                            เพิ่มกลุ่ม
+                                                        </Button>
+                                                    </Tooltip>}
+                                                    value={inputValue}
+                                                    onChange={(e) => setInputValue(e.target.value)}
+                                                />
+                                            </div>
+                                        </div>
+                                    )}
                                 />
                             </Form.Item>
                         </div>

@@ -36,6 +36,42 @@ const RPAUserAPI = {
     }
   },
 
+  fbAddBotGroup: async (token, group) => {
+    try {
+      const response = await axios.post(
+        "http://192.168.10.111:8000/facebook/add_group/",
+        group,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      return response.data;
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
+  },
+
+  fbDeleteBotGroup: async (token, id) => {
+    try {
+      const response = await axios.delete(
+        "http://192.168.10.111:8000/facebook/delete_group/",
+        id,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      return response.data;
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
+  },
+
   fbDownloadUser: async () => {
     try {
       const response = await axios.get(
