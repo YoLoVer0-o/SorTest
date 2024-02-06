@@ -173,7 +173,7 @@ const StatusTable = () => {
             }
         >
             <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">
-                AccountTable
+                PostStatus
             </p>
             {/* {botData.length > 0 && ( */}
             <div
