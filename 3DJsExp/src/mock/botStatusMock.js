@@ -4,7 +4,8 @@ const botStatus = [
     id: 1,
     accName: "gcosgreave0@sourceforge.net",
     group: ["A", "B", "C", "D"],
-    status: "standby",
+    status: "queue",
+    timestamp: "2022/09/04",
     details:
       "Aenean fermentum. Donec ut mauris eget massa tempor convallis. Nulla neque libero, convallis eget, eleifend luctus, ultricies eu, nibh.\n\nQuisque id justo sit amet sapien dignissim vestibulum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla dapibus dolor vel est. Donec odio justo, sollicitudin ut, suscipit a, feugiat et, eros.\n\nVestibulum ac est lacinia nisi venenatis tristique. Fusce congue, diam id ornare imperdiet, sapien urna pretium nisl, ut volutpat sapien arcu sed augue. Aliquam erat volutpat.",
   },
@@ -13,7 +14,8 @@ const botStatus = [
     id: 2,
     accName: "gmallaby1@wsj.com",
     group: ["A", "B", "D"],
-    status: "offline",
+    status: "processing",
+    timestamp: "2022/09/04",
     details:
       "In congue. Etiam justo. Etiam pretium iaculis justo.\n\nIn hac habitasse platea dictumst. Etiam faucibus cursus urna. Ut tellus.",
   },
@@ -22,7 +24,8 @@ const botStatus = [
     id: 3,
     accName: "dhollingby2@usa.gov",
     group: ["A", "B"],
-    status: "online",
+    status: "finish",
+    timestamp: "2022/09/04",
     details:
       "Etiam vel augue. Vestibulum rutrum rutrum neque. Aenean auctor gravida sem.",
   },
@@ -31,7 +34,8 @@ const botStatus = [
     id: 4,
     accName: "dwestbury3@hostgator.com",
     group: ["A", "B", "D"],
-    status: "standby",
+    status: "error",
+    timestamp: "2022/09/04",
     details:
       "Quisque id justo sit amet sapien dignissim vestibulum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla dapibus dolor vel est. Donec odio justo, sollicitudin ut, suscipit a, feugiat et, eros.\n\nVestibulum ac est lacinia nisi venenatis tristique. Fusce congue, diam id ornare imperdiet, sapien urna pretium nisl, ut volutpat sapien arcu sed augue. Aliquam erat volutpat.",
   },
@@ -40,7 +44,8 @@ const botStatus = [
     id: 5,
     accName: "cgillings4@sakura.ne.jp",
     group: ["A", "B"],
-    status: "online",
+    status: "queue",
+    timestamp: "2022/09/04",
     details:
       "Vestibulum ac est lacinia nisi venenatis tristique. Fusce congue, diam id ornare imperdiet, sapien urna pretium nisl, ut volutpat sapien arcu sed augue. Aliquam erat volutpat.\n\nIn congue. Etiam justo. Etiam pretium iaculis justo.",
   },
@@ -49,7 +54,8 @@ const botStatus = [
     id: 6,
     accName: "eisard5@themeforest.net",
     group: ["A", "B"],
-    status: "online",
+    status: "queue",
+    timestamp: "2022/09/04",
     details:
       "Phasellus in felis. Donec semper sapien a libero. Nam dui.\n\nProin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis. Ut at dolor quis odio consequat varius.\n\nInteger ac leo. Pellentesque ultrices mattis odio. Donec vitae nisi.",
   },
@@ -58,7 +64,8 @@ const botStatus = [
     id: 7,
     accName: "egabbetis6@nih.gov",
     group: ["A", "B"],
-    status: "standby",
+    status: "queue",
+    timestamp: "2022/09/04",
     details:
       "Nulla ut erat id mauris vulputate elementum. Nullam varius. Nulla facilisi.\n\nCras non velit nec nisi vulputate nonummy. Maecenas tincidunt lacus at velit. Vivamus vel nulla eget eros elementum pellentesque.\n\nQuisque porta volutpat erat. Quisque erat eros, viverra eget, congue eget, semper rutrum, nulla. Nunc purus.",
   },
@@ -67,7 +74,8 @@ const botStatus = [
     id: 8,
     accName: "tmacdearmont7@addtoany.com",
     group: ["A", "B"],
-    status: "offline",
+    status: "queue",
+    timestamp: "2022/09/04",
     details:
       "Praesent id massa id nisl venenatis lacinia. Aenean sit amet justo. Morbi ut odio.\n\nCras mi pede, malesuada in, imperdiet et, commodo vulputate, justo. In blandit ultrices enim. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.\n\nProin interdum mauris non ligula pellentesque ultrices. Phasellus id sapien in sapien iaculis congue. Vivamus metus arcu, adipiscing molestie, hendrerit at, vulputate vitae, nisl.",
   },
@@ -76,7 +84,8 @@ const botStatus = [
     id: 9,
     accName: "agodsell8@shop-pro.jp",
     group: ["A", "B"],
-    status: "standby",
+    status: "queue",
+    timestamp: "2022/09/04",
     details: "Fusce consequat. Nulla nisl. Nunc nisl.",
   },
   {
@@ -84,7 +93,8 @@ const botStatus = [
     id: 10,
     accName: "zratke9@altervista.org",
     group: ["A", "B"],
-    status: "online",
+    status: "queue",
+    timestamp: "2022/09/04",
     details:
       "Praesent blandit. Nam nulla. Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede.",
   },

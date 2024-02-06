@@ -54,7 +54,9 @@ const MainLayout = (props) => {
     '/main/overall': 'ภาพรวม',
     '/postlog': 'โพสต์และความเคลื่อนไหว',
     '/postlog/report': 'รายงานโพสต์',
-    '/createPost': 'สร้างโพสต์ใหม่',
+    '/postCreation': 'สร้างโพสต์และสถานะ',
+    '/postCreation/createPost': 'สร้างโพสต์ใหม่',
+    '/postCreation/postStatus': 'สถานะการโพส',
     '/sentiment': 'ความคิดเห็น',
     '/sentiment/report': 'รายงานความคิดเห็น',
     '/RPA': 'RPA',
@@ -108,17 +110,22 @@ const MainLayout = (props) => {
     if (latestOpenKey) {
       const topLevelKeys = [];
       if (latestOpenKey.startsWith('/RPA')) {
-        console.log("hit1");
+        // console.log("hit1");
         topLevelKeys.push('/RPA');
         topLevelKeys.push(latestOpenKey);
       } else if (latestOpenKey.startsWith('/main')) {
-        console.log("hit2");
+        // console.log("hit2");
         topLevelKeys.push('/main');
         topLevelKeys.push(latestOpenKey);
       }
       else if (latestOpenKey.startsWith('/recommendation')) {
-        console.log("hit3");
+        // console.log("hit3");
         topLevelKeys.push('/recommendation');
+        topLevelKeys.push(latestOpenKey);
+      }
+      else if (latestOpenKey.startsWith('/postCreation')) {
+        // console.log("hit4");
+        topLevelKeys.push('/postCreation');
         topLevelKeys.push(latestOpenKey);
       }
       console.log(topLevelKeys);
@@ -136,6 +143,7 @@ const MainLayout = (props) => {
       breadcrumbItems.some(item => item.key.includes('/RPA'))
       || breadcrumbItems.some(item => item.key.includes('/main'))
       || breadcrumbItems.some(item => item.key.includes('/recommendation'))
+      || breadcrumbItems.some(item => item.key.includes('/postCreation'))
     )
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -291,10 +299,24 @@ const MainLayout = (props) => {
                   className: "",
                 },
                 {
-                  key: "/createPost",
+                  key: "/postCreation",
                   icon: <UploadOutlined />,
-                  label: "สร้างโพสต์ใหม่",
+                  label: "สร้างโพสต์และสถานะ",
                   className: "",
+                  children: [
+                    {
+                      key: "/postCreation/createPost",
+                      icon: <UploadOutlined />,
+                      label: "สร้างโพสต์ใหม่",
+                      className: "",
+                    },
+                    {
+                      key: "/postCreation/postStatus",
+                      icon: <UploadOutlined />,
+                      label: "สถานะการโพส",
+                      className: "",
+                    },
+                  ]
                 },
                 {
                   key: "/RPA",

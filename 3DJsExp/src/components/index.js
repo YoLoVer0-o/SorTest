@@ -6,6 +6,7 @@ import Feedback from "./Feedback";
 import FeedbackModal from "./SentimentLog/FeedbackModal";
 import PostReport from "./PostLog/PostReport";
 import CreatePost from "./CreatePost/CreatePost";
+import StatusTable from "./CreatePost/StatusTable";
 import SentimentTable from "./SentimentLog/SentimentTable";
 import SentimentReport from "./SentimentLog/SentimentReport";
 import AccountTable from "./RPAManagement/AccountTable";
@@ -34,6 +35,7 @@ export {
   FeedbackModal,
   PostReport,
   CreatePost,
+  StatusTable,
   SentimentTable,
   SentimentReport,
   AccountTable,
