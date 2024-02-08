@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useResponsive } from "../../hooks";
-import { newSentiment } from "../../mock";
 import { DatePicker, ConfigProvider } from "antd"
 import classNames from "classnames"
 import PropTypes from "prop-types";
@@ -17,22 +16,23 @@ const DataLog = props => {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    const [startDate, setStartDate] = useState(dayjs().format('YYYY-MM-DD'));
-    const [endDate, setEndDate] = useState(dayjs().format('YYYY-MM-DD'));
+    const [startDate, setStartDate] = useState(dayjs().format('YYYY-MM-DD HH:mm:ss'));
+    const [endDate, setEndDate] = useState(dayjs().format('YYYY-MM-DD HH:mm:ss'));
     const [displayData, setDisplayData] = useState([]);
+    const [logData, setLogData] = useState({});
 
     const token = useSelector((state) => getLogin(state).token);
 
     const { isMobile, isPortrait, isLandscape } = useResponsive();
 
     const addStartTime = (value) => {
-        const times = dayjs(value).format('YYYY-MM-DD');
+        const times = dayjs(value).format('YYYY-MM-DD HH:mm:ss');
         console.log(times);
         setStartDate(times)
     };
 
     const addEndTime = (value) => {
-        const times = dayjs(value).format('YYYY-MM-DD');
+        const times = dayjs(value).format('YYYY-MM-DD HH:mm:ss');
         console.log(times);
         setEndDate(times)
     };
@@ -53,6 +53,9 @@ const DataLog = props => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [startDate, endDate])
 
+    useEffect(() => {
+        console.log(displayData);
+    }, [displayData])
 
     return (
         <ConfigProvider
@@ -65,56 +68,63 @@ const DataLog = props => {
             <div className={classNames("tw-flex tw-flex-row tw-w-full tw-h-full tw-overflow-auto tw-gap-4", {
                 "tw-flex-col": isMobile && isPortrait,
             })}>
-                <div className={classNames("tw-flex tw-flex-col tw-w-full tw-h-full tw-gap-8 ", {})}>
+                <div className={classNames("tw-flex tw-flex-col tw-gap-8 ", {
+                    "tw-min-h-screen tw-h-screen": isMobile && isLandscape,
+                    "tw-h-full tw-w-1/2": !isMobile,
+                    "tw-w-full": isMobile && isPortrait,
+                })}>
                     <div className={classNames("tw-flex tw-flex-col tw-w-full tw-h-fit tw-p-4 tw-border-4 tw-border-blue-800 tw-shadow-xl tw-rounded-lg", {})}>
                         <p className="tw-text-xl tw-font-bold tw-text-center">Time Filter</p>
                         <div className={classNames("tw-flex tw-flex-row tw-w-full tw-h-full tw-gap-2", {})}>
                             <div className={classNames("tw-flex tw-flex-col tw-w-full tw-h-full", {})}>
                                 <p>จาก:</p>
-                                <DatePicker onChange={addStartTime} placement={"bottomLeft"} />
+                                <DatePicker showTime onChange={addStartTime} placement={"bottomLeft"} />
                             </div>
                             <div className={classNames("tw-flex tw-flex-col tw-w-full tw-h-full", {})}>
                                 <p>ถึง:</p>
-                                <DatePicker onChange={addEndTime} placement={"bottomLeft"} />
+                                <DatePicker showTime onChange={addEndTime} placement={"bottomLeft"} />
                             </div>
                         </div>
                     </div>
-                    <div className={classNames("tw-flex tw-flex-col tw-w-full tw-h-full tw-p-4 tw-gap-2 tw-border-4 tw-border-blue-800 tw-shadow-xl tw-rounded-lg", {})}>
+                    <div className={classNames("tw-flex tw-flex-col tw-w-full tw-h-full tw-p-4 tw-gap-2 tw-border-4 tw-border-blue-800 tw-shadow-xl tw-rounded-lg", {
+                    })}>
                         <p className="tw-text-xl tw-font-bold tw-text-center">{dataType === "error" ? "Error Log" : "Active Log"}</p>
                         <div className={classNames("tw-flex tw-flex-col tw-overflow-y-auto tw-w-full tw-h-full tw-p-1 tw-border-2 tw-border-[#d9d9d9] tw-shadow-xl tw-rounded-lg tw-bg-[#d9d9d9]", {})}>
-                            {newSentiment.map((data) =>
+                            {displayData.map((data) =>
                                 // {displayData.map((data) =>
-                                <div className="tw-flex tw-flex-col tw-w-full tw-h-full tw-items-center tw-align-middle tw-border-2 tw-border-blue-800 tw-shadow-xl tw-my-1 tw-bg-white hover:tw-bg-blue-400" key={data.id}>
-                                    <p className="tw-w-fit tw-h-full tw-text-xl tw-font-bold">{data.timestamp}</p>
+                                <div className="tw-flex tw-flex-col tw-w-full tw-h-fit tw-items-center tw-align-middle tw-border-2 tw-border-blue-800 tw-shadow-xl tw-my-1 tw-bg-white hover:tw-bg-blue-400"
+                                    key={data.tstamp}
+                                    onClick={() => setLogData(data)}
+                                >
+                                    <p className="tw-w-fit tw-h-full tw-text-xl tw-font-bold">{data.tstamp}</p>
                                 </div>
                             )}
                         </div>
                     </div>
                 </div>
-                <div className={classNames("tw-flex tw-flex-col tw-w-full tw-min-h-full tw-p-4 tw-gap-2 tw-border-4 tw-border-blue-800 tw-shadow-xl tw-rounded-lg", {
-                    "tw-min-h-screen tw-h-screen": isMobile && isLandscape,
+                <div className={classNames("tw-flex tw-flex-col tw-min-h-full tw-p-4 tw-gap-2 tw-border-4 tw-border-blue-800 tw-shadow-xl tw-rounded-lg", {
+                    "tw-min-h-fit tw-h-screen tw-w-1/2": isMobile && isLandscape,
+                    "tw-w-full": isMobile && !isLandscape,
+                    "tw-w-1/2": !isMobile,
                 })}>
                     <p className="tw-text-xl tw-font-bold tw-text-center">Detail</p>
                     <div className={classNames("tw-flex tw-flex-col tw-w-full tw-h-full tw-overflow-y-auto tw-border-2 tw-border-[#d9d9d9] tw-shadow-xl tw-rounded-lg tw-bg-[#d9d9d9] tw-gap-8 tw-p-4", {})}>
                         <div className={classNames("tw-flex tw-flex-col tw-w-fit tw-h-fit", {})}>
                             <div className={classNames("tw-flex tw-flex-row tw-w-fit tw-h-fit tw-gap-2", {})}>
-                                <p className="tw-text-lg tw-font-bold">Task:</p>
-                                <p className="tw-text-lg ">xxxxxxxxxxxxxxxxxxxxx</p>
+                                <p className="tw-text-lg tw-font-bold">BotName:</p>
+                                {/* <p className="tw-text-lg ">xxxxxxxxxxxxxxxxxxxxx</p> */}
+                                <p className="tw-text-lg ">{logData?.botname}</p>
                             </div>
                             <div className={classNames("tw-flex tw-flex-row tw-w-fit tw-h-fit tw-gap-2", {})}>
-                                <p className="tw-text-lg tw-font-bold">Error:</p>
-                                <p className="tw-text-lg ">xxxxxxxxxxxxxxxxxxxxx</p>
+                                <p className="tw-text-lg tw-font-bold">Status:</p>
+                                <p className="tw-text-lg ">{logData?.log_level}</p>
                             </div>
                         </div>
-                        <p>
-                            Lorem ipsum dolor sit amet,
-                            consectetur adipiscing elit.
-                            Praesent vitae urna libero.
-                            Sed placerat tempus justo,
-                            quis ultricies massa dictum at.
-                            Nullam sed nisi pharetra mauris ultrices viverra vitae sit amet diam.
-                            Morbi nec elit sit amet turpis dignissim fringilla at ac sapien.
-                        </p>
+                        <div className="tw-w-full tw-overflow-auto">
+                            <p className="tw-w-fit tw-h-fit">
+                                {logData?.activity}
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -7,9 +7,14 @@ const classificationAPI = {
         "http://192.168.10.121:8000/contentkeyword/categories?page=1&items_per_page=10"
       );
       return response.data;
-    } catch (e) {
-      console.log(e);
-      throw e;
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
     }
   },
 
@@ -19,9 +24,14 @@ const classificationAPI = {
         `http://192.168.10.121:8000/contentkeyword/categories/${cid}/keywords?page=${page}&items_per_page=${item}`
       );
       return response.data;
-    } catch (e) {
-      console.log(e);
-      throw e;
+    }  catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
     }
   },
 
@@ -32,9 +42,14 @@ const classificationAPI = {
         cat
       );
       return response;
-    } catch (e) {
-      console.log(e);
-      throw e;
+    }  catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
     }
   },
 
@@ -45,9 +60,14 @@ const classificationAPI = {
         keywords
       );
       return response;
-    } catch (e) {
-      console.log(e);
-      throw e;
+    }  catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
     }
   },
 
@@ -57,9 +77,14 @@ const classificationAPI = {
         `http://192.168.10.121:8000/contentkeyword/categories/${cid}/remove_keyword?keyword=${keywords}`
       );
       return response;
-    } catch (e) {
-      console.log(e);
-      throw e;
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
     }
   },
 
@@ -70,9 +95,14 @@ const classificationAPI = {
         newStat
       );
       return response;
-    } catch (e) {
-      console.log(e);
-      throw e;
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
     }
   },
 
@@ -82,9 +112,14 @@ const classificationAPI = {
         `http://192.168.10.121:8000/contentkeyword/categories/${cid}`
       );
       return response;
-    } catch (e) {
-      console.log(e);
-      throw e;
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
     }
   },
 };

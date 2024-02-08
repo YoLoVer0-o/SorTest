@@ -13,9 +13,14 @@ const RPAUserAPI = {
         }
       );
       return response.data;
-    } catch (e) {
-      console.log(e);
-      throw e;
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
     }
   },
 
@@ -30,9 +35,14 @@ const RPAUserAPI = {
         }
       );
       return response.data;
-    } catch (e) {
-      console.log(e);
-      throw e;
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
     }
   },
 
@@ -48,9 +58,14 @@ const RPAUserAPI = {
         }
       );
       return response.data;
-    } catch (e) {
-      console.log(e);
-      throw e;
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
     }
   },
 
@@ -66,9 +81,14 @@ const RPAUserAPI = {
         }
       );
       return response.data;
-    } catch (e) {
-      console.log(e);
-      throw e;
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
     }
   },
 
@@ -81,9 +101,14 @@ const RPAUserAPI = {
         }
       );
       return response;
-    } catch (e) {
-      console.log(e);
-      throw e;
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
     }
   },
 
@@ -102,9 +127,14 @@ const RPAUserAPI = {
         }
       );
       return response.data;
-    } catch (e) {
-      console.log(e);
-      throw e;
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
     }
   },
 
@@ -120,9 +150,14 @@ const RPAUserAPI = {
         }
       );
       return response;
-    } catch (e) {
-      console.log(e);
-      throw e;
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
     }
   },
 
@@ -138,9 +173,14 @@ const RPAUserAPI = {
         }
       );
       return response;
-    } catch (e) {
-      console.log(e);
-      throw e;
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
     }
   },
 
@@ -155,9 +195,14 @@ const RPAUserAPI = {
         }
       );
       return response;
-    } catch (e) {
-      console.log(e);
-      throw e;
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
     }
   },
 

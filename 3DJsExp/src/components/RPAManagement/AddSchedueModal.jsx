@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useResponsive } from "../../hooks";
-import { Form, Modal, Button, Input, Select, TimePicker, ConfigProvider } from 'antd';
+import { Form, Modal, Button, Input, Select, Switch, TimePicker, ConfigProvider, InputNumber } from 'antd';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import PropTypes from 'prop-types';
@@ -18,6 +18,7 @@ const AddSchedueModal = props => {
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     const [isModalOpen, setIsModalOpen] = useState(modalToggle);
+    const [taskConfig, setTaskConfig] = useState();
     // const [formData, setFormData] = useState({});
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -77,6 +78,11 @@ const AddSchedueModal = props => {
         setIsModalOpen(modalToggle);
     }, [modalToggle]);
 
+    useEffect(() => {
+        console.log(taskConfig);
+    }, [taskConfig]);
+
+
     return (
         <Modal
             className='tw-max-h-full tw-max-w-full'
@@ -101,6 +107,36 @@ const AddSchedueModal = props => {
                 name="editForm"
                 id="editForm"
                 onFinish={onFinish}
+                initialValues={taskConfig ? {
+                    botname: "",
+                    task: "",
+                    frequency: "",
+                    execution_time: "",
+                    task_config: {
+                        post_configures: {
+                            "limit_comment": 300,
+                            "need_reaction": true,
+                            "need_comment": true,
+                            "need_comment_posttime": false,
+                            "need_comment_reaction": false,
+                            "need_subcomment": false,
+                            "need_subcomment_posttime": false,
+                            "need_subcomment_reaction": false,
+                            "need_reply_subcomment": false,
+                            "need_reply_subcomment_posttime": false,
+                            "need_reply_subcomment_reaction": false,
+                            "comment_type": "ความคิดเห็นทั้งหมด"
+                        }
+                    }
+                } :
+                    {
+                        botname: "",
+                        task: "",
+                        frequency: "",
+                        execution_time: "",
+                        task_config: {}
+                    }
+                }
             >
                 <div className='tw-overflow-y-auto tw-h-full tw-w-full tw-border-black tw-border-2 tw-rounded-md'>
                     <div className='tw-flex tw-flex-col tw-w-full tw-h-full tw-p-4 tw-gap-4'>
@@ -153,17 +189,120 @@ const AddSchedueModal = props => {
                                     </ConfigProvider>
                                 </Form.Item>
                             </div>
-                            <div className='tw-flex tw-flex-col tw-w-full'>
-                                <p>task_config:</p>
-                                <Form.Item name="task_config">
-                                    <Select
-                                        allowClear
-                                        className='tw-w-full'
-                                        placeholder="Please select"
-                                        options={[{ label: "test", value: "test" }]}
-                                    />
-                                </Form.Item>
-                            </div>
+                        </div>
+                        <div className='tw-flex tw-flex-col tw-w-full'>
+                            <p>task_config:</p>
+                            <Switch
+                                onChange={(checked) => setTaskConfig(checked)}
+                                className='tw-w-fit'
+                            />
+                            {taskConfig && (
+                                <div className='tw-flex tw-flex-col tw-w-full'>
+                                    <div className='tw-flex tw-flex-col tw-w-full tw-gap-4'>
+                                        <p>post_configures</p>
+                                        <div className='tw-flex tw-flex-row tw-w-full'>
+                                            <p>limit_comment:</p>
+                                            <Form.Item name={["task_config", "post_configures", "limit_comment"]}>
+                                                <InputNumber
+                                                    type="number"
+                                                    className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md hover:tw-border-sky-700 tw-w-full'
+                                                />
+                                            </Form.Item>
+                                        </div>
+                                        <div className='tw-flex tw-flex-row tw-w-full'>
+                                            <p>need_reaction:</p>
+                                            <Form.Item name={["task_config", "post_configures", "need_reaction"]}>
+                                                <Switch
+                                                    className='tw-w-fit'
+                                                />
+                                            </Form.Item>
+                                        </div>
+                                        <div className='tw-flex tw-flex-row tw-w-full'>
+                                            <p>need_comment:</p>
+                                            <Form.Item name={["task_config", "post_configures", "need_comment"]}>
+                                                <Switch
+                                                    className='tw-w-fit'
+                                                />
+                                            </Form.Item>
+                                        </div>
+                                        <div className='tw-flex tw-flex-row tw-w-full'>
+                                            <p>need_comment_posttime:</p>
+                                            <Form.Item name={["task_config", "post_configures", "need_comment_posttime"]}>
+                                                <Switch
+                                                    className='tw-w-fit'
+                                                />
+                                            </Form.Item>
+                                        </div>
+                                        <div className='tw-flex tw-flex-row tw-w-full'>
+                                            <p>need_comment_reaction:</p>
+                                            <Form.Item name={["task_config", "post_configures", "need_comment_reaction"]}>
+                                                <Switch
+                                                    className='tw-w-fit'
+                                                />
+                                            </Form.Item>
+                                        </div>
+                                        <div className='tw-flex tw-flex-row tw-w-full'>
+                                            <p>need_subcomment:</p>
+                                            <Form.Item name={["task_config", "post_configures", "need_subcomment"]}>
+                                                <Switch
+                                                    className='tw-w-fit'
+                                                />
+                                            </Form.Item>
+                                        </div>
+                                        <div className='tw-flex tw-flex-row tw-w-full'>
+                                            <p>need_subcomment_posttime:</p>
+                                            <Form.Item name={["task_config", "post_configures", "need_subcomment_posttime"]}>
+                                                <Switch
+                                                    className='tw-w-fit'
+                                                />
+                                            </Form.Item>
+                                        </div>
+                                        <div className='tw-flex tw-flex-row tw-w-full'>
+                                            <p>need_subcomment_reaction:</p>
+                                            <Form.Item name={["task_config", "post_configures", "need_subcomment_reaction"]}>
+                                                <Switch
+                                                    className='tw-w-fit'
+                                                />
+                                            </Form.Item>
+                                        </div>
+                                        <div className='tw-flex tw-flex-row tw-w-full'>
+                                            <p>need_reply_subcomment:</p>
+                                            <Form.Item name={["task_config", "post_configures", "need_reply_subcomment"]}>
+                                                <Switch
+                                                    className='tw-w-fit'
+                                                />
+                                            </Form.Item>
+                                        </div>
+                                        <div className='tw-flex tw-flex-row tw-w-full'>
+                                            <p>need_reply_subcomment_posttime:</p>
+                                            <Form.Item name={["task_config", "post_configures", "need_reply_subcomment_posttime"]}>
+                                                <Switch
+                                                    className='tw-w-fit'
+                                                />
+                                            </Form.Item>
+                                        </div>
+                                        <div className='tw-flex tw-flex-row tw-w-full'>
+                                            <p>need_reply_subcomment_reaction:</p>
+                                            <Form.Item name={["task_config", "post_configures", "need_reply_subcomment_reaction"]}>
+                                                <Switch
+                                                    className='tw-w-fit'
+                                                />
+                                            </Form.Item>
+                                        </div>
+                                        <div className='tw-flex tw-flex-row tw-w-full'>
+                                            <p>comment_type:</p>
+                                            <Form.Item name={["task_config", "post_configures", "comment_type"]}>
+                                                <Select
+                                                    allowClear
+                                                    className='tw-w-full'
+                                                    placeholder="Please select"
+                                                    options={[{ label: "ความคิดเห็นทั้งหมด", value: "ความคิดเห็นทั้งหมด" }]}
+                                                />
+                                            </Form.Item>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

@@ -13,9 +13,14 @@ const RPASchedueAPI = {
         }
       );
       return response.data;
-    } catch (e) {
-      console.log(e);
-      throw e;
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
     }
   },
 
@@ -28,9 +33,14 @@ const RPASchedueAPI = {
         }
       );
       return response.data;
-    } catch (e) {
-      console.log(e);
-      throw e;
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
     }
   },
 
@@ -49,9 +59,14 @@ const RPASchedueAPI = {
         }
       );
       return response.data;
-    } catch (e) {
-      console.log(e);
-      throw e;
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
     }
   },
 
@@ -62,9 +77,14 @@ const RPASchedueAPI = {
         schedule
       );
       return response;
-    } catch (e) {
-      console.log(e);
-      throw e;
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
     }
   },
 
@@ -75,9 +95,14 @@ const RPASchedueAPI = {
         task
       );
       return response;
-    } catch (e) {
-      console.log(e);
-      throw e;
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
     }
   },
 
@@ -87,9 +112,14 @@ const RPASchedueAPI = {
         `http://192.168.10.111:8000/facebook/delete_schedule_task/${task_id}`
       );
       return response;
-    } catch (e) {
-      console.log(e);
-      throw e;
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
     }
   },
 
