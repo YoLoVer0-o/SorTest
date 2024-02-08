@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { DataTable, SearchBar } from "../../utilities";
+import { DataTable, SearchBar, Loading } from "../../utilities";
 import { botStatus } from "../../mock";
 import { useResponsive } from "../../hooks";
 import { AddUserModal, EditUserModal } from "..";
@@ -17,6 +17,7 @@ import { getLogin } from '../../libs/loginSlice'
 import { getUser } from "../../libs/userSlice";
 
 const AccountTable = () => {
+
     const [botData, setBotData] = useState([]);
     const [botGroup, setBotGroup] = useState([]);
     const [searchAccount, setSearchAccout] = useState("");
@@ -25,6 +26,8 @@ const AccountTable = () => {
     const [modalToggle, setModalToggle] = useState(false);
     const [addModalToggle, setAddModalToggle] = useState(false);
     const [modalData, setModalData] = useState([]);
+
+    const [showLoading, setShowLoading] = useState(false);
 
     const { isTabletOrMobile, isMobile, isPortrait, isLandscape } = useResponsive();
 
@@ -57,12 +60,26 @@ const AccountTable = () => {
 
 
     const fetchAcc = async () => {
-        const data = await RPAUserAPI.fbGetBotConfig(token);
-        setBotData(data);
+        try {
+            setShowLoading(true);
+            const data = await RPAUserAPI.fbGetBotConfig(token);
+            setBotData(data);
+        } catch (error) {
+            console.error('Error fetching bot config:', error);
+        } finally {
+            setShowLoading(false);
+        }
     }
 
     const fetchGroup = async () => {
-        await RPAUserAPI.fbGetBotGroup(token).then((response) => setBotGroup(response));
+        try {
+            setShowLoading(true);
+            await RPAUserAPI.fbGetBotGroup(token).then((response) => setBotGroup(response));
+        } catch (error) {
+            console.error('Error fetching bot config:', error);
+        } finally {
+            setShowLoading(false);
+        }
     }
 
     useEffect(() => {
@@ -142,7 +159,6 @@ const AccountTable = () => {
                         <Tooltip key={groups} title={botGroup?.find((botGroup) => botGroup.group_id == groups) ? botGroup?.find((botGroup) => botGroup.group_id == groups)?.group_name : "ไม่ระบุ"}>
                             <div className="tw-w-max tw-rounded-md tw-p-2 tw-border-2 tw-border-black tw-text-center tw-text-white tw-bg-violet-600">
                                 {botGroup?.find((botGroup) => botGroup.group_id == groups) ? botGroup?.find((botGroup) => botGroup.group_id == groups)?.group_name : "ไม่ระบุ"}
-                                {/* {groups} */}
                             </div>
                         </Tooltip>
                     ))}
@@ -215,6 +231,7 @@ const AccountTable = () => {
                 )
             }
         >
+            <Loading isShown={showLoading} />
             <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">
                 AccountTable
             </p>
@@ -326,7 +343,6 @@ const AccountTable = () => {
                         </div>
                     </div>
                 )}
-
         </div >
 
     );

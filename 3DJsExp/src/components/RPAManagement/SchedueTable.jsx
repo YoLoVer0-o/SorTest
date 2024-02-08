@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { DataTable, SearchBar } from "../../utilities";
+import { DataTable, SearchBar, Loading } from "../../utilities";
 // import { testAcc } from "../../mock";
 import { useResponsive } from "../../hooks";
 import { EditSchedueModal, AddSchedueModal } from "..";
@@ -25,9 +25,9 @@ const SchedueTable = () => {
     const [modalData, setModalData] = useState([]);
     const [addModalToggle, setAddModalToggle] = useState(false);
     const [scheduleData, setScheduleData] = useState([]);
+    const [showLoading, setShowLoading] = useState(false);
 
     const { isTabletOrMobile, isMobile, isPortrait, isLandscape } = useResponsive();
-
 
     const token = useSelector((state) => getLogin(state).token);
 
@@ -52,14 +52,20 @@ const SchedueTable = () => {
 
 
     const fetchSch = async () => {
-        const data = await RPASchedueAPI.fbGetSchedule(token);
-        setScheduleData(data);
+        try {
+            setShowLoading(true);
+            const data = await RPASchedueAPI.fbGetSchedule(token);
+            setScheduleData(data);
+        } catch (error) {
+            console.error('Error fetching bot config:', error);
+        } finally {
+            setShowLoading(false);
+        }
     }
-
-
 
     const downloadFile = async () => {
         try {
+            setShowLoading(true);
             await RPASchedueAPI.fbDownloadSchedule().then((response) => {
                 const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
                 const link = document.createElement('a');
@@ -73,6 +79,9 @@ const SchedueTable = () => {
         } catch (error) {
             console.error('Error downloading file:', error);
         }
+        finally {
+            setShowLoading(false);
+        }
     };
 
     const hiddenFileInput = useRef(null);
@@ -84,9 +93,15 @@ const SchedueTable = () => {
     const handleChange = async (event) => {
         const fileUploaded = event.target.files[0];
         // console.log(fileUploaded);
-        await RPASchedueAPI.fbUploadSchedule(fileUploaded).then((response) => { console.log(response); })
+        try {
+            setShowLoading(true);
+            await RPASchedueAPI.fbUploadSchedule(fileUploaded).then((response) => { console.log(response); })
+        } catch (error) {
+            console.error('Error fetching bot config:', error);
+        } finally {
+            setShowLoading(false);
+        }
     };
-
 
     //////////////////////////////////////////////////table////////////////////////////////////////////////////////
     const columns = [
@@ -165,6 +180,7 @@ const SchedueTable = () => {
                 {}
             )}
         >
+            <Loading isShown={showLoading} />
             <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">
                 SchedueTable
             </p>
@@ -276,6 +292,7 @@ const SchedueTable = () => {
                     </div>
                 )}
             </div>
+
         </div>
     );
 };

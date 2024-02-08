@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import RPASchedueAPI from "../../service/RPASchedueAPI";
 import dayjs from 'dayjs';
+import { Loading } from "../../utilities";
 
 const AddSchedueModal = props => {
     ///////////////////////////////////////////props declaration///////////////////////////////////////////////////////////////
@@ -18,7 +19,8 @@ const AddSchedueModal = props => {
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     const [isModalOpen, setIsModalOpen] = useState(modalToggle);
-    const [taskConfig, setTaskConfig] = useState();
+    const [taskConfig, setTaskConfig] = useState(false);
+    const [showLoading, setShowLoading] = useState(false);
     // const [formData, setFormData] = useState({});
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -56,15 +58,22 @@ const AddSchedueModal = props => {
             cancelButtonText: "ยกเลิก",
         }).then((result) => {
             if (result.isConfirmed) {
-                RPASchedueAPI.fbAddSchedule(token, formData).then(() => {
-                    MySwal.fire({
-                        title: "เรียบร้อย!",
-                        text: "บันทึกข้อมูลแล้ว!",
-                        icon: "success"
-                    });
-                })
+                try {
+                    setShowLoading(true);
+                    RPASchedueAPI.fbAddSchedule(token, formData).then(() => {
+                        MySwal.fire({
+                            title: "เรียบร้อย!",
+                            text: "บันทึกข้อมูลแล้ว!",
+                            icon: "success"
+                        });
+                    })
+                } catch (error) {
+                    console.error('Error fetching bot config:', error);
+                } finally {
+                    fetch()
+                    setShowLoading(false);
+                }
             }
-            fetch()
         });
     }
 
@@ -166,7 +175,7 @@ const AddSchedueModal = props => {
                                         allowClear
                                         className='tw-w-full'
                                         placeholder="Please select"
-                                        options={[{ label: "test", value: "test" }]}
+                                        options={[{ label: "วันละครั้ง", value: "Once a day" }, { label: "ชั่วโมงละครั่ง", value: "Hourly" }]}
                                     />
                                 </Form.Item>
                             </div>
@@ -193,6 +202,7 @@ const AddSchedueModal = props => {
                         <div className='tw-flex tw-flex-col tw-w-full'>
                             <p>task_config:</p>
                             <Switch
+                                defaultChecked={taskConfig}
                                 onChange={(checked) => setTaskConfig(checked)}
                                 className='tw-w-fit'
                             />
@@ -307,6 +317,7 @@ const AddSchedueModal = props => {
                     </div>
                 </div>
             </Form>
+            <Loading isShown={showLoading} />
         </Modal >
 
     );

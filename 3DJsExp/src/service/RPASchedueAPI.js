@@ -70,11 +70,16 @@ const RPASchedueAPI = {
     }
   },
 
-  fbAddSchedule: async (schedule) => {
+  fbAddSchedule: async (token, schedule) => {
     try {
       const response = await axios.post(
         "http://192.168.10.111:8000/facebook/insert_schedule_task/",
-        schedule
+        schedule,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
       );
       return response;
     } catch (error) {
@@ -88,11 +93,16 @@ const RPASchedueAPI = {
     }
   },
 
-  fbUpdateSchedule: async (task_id, task) => {
+  fbUpdateSchedule: async (token, task_id, task) => {
     try {
       const response = await axios.put(
         `http://192.168.10.111:8000/facebook/update_schedule_task/${task_id}`,
-        task
+        task,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
       );
       return response;
     } catch (error) {

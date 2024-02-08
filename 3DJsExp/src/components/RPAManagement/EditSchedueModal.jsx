@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import RPASchedueAPI from "../../service/RPASchedueAPI";
+import { Loading } from "../../utilities";
 
 const EditSchedueModal = props => {
     ///////////////////////////////////////////props declaration///////////////////////////////////////////////////////////////
@@ -21,6 +22,7 @@ const EditSchedueModal = props => {
     const [isModalOpen, setIsModalOpen] = useState(modalToggle);
     const [taskConfig, setTaskConfig] = useState();
     const [formData, setFormData] = useState({});
+    const [showLoading, setShowLoading] = useState(false);
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     const { isMobile } = useResponsive();
@@ -33,6 +35,7 @@ const EditSchedueModal = props => {
     }
 
     const onFinish = (values) => {
+        console.log(modalData);
         console.log(values);
         setFormData(values);
     };
@@ -54,15 +57,22 @@ const EditSchedueModal = props => {
             cancelButtonText: "ยกเลิก",
         }).then((result) => {
             if (result.isConfirmed) {
-                RPASchedueAPI.fbUpdateSchedule(token, formData).then(() => {
-                    MySwal.fire({
-                        title: "เรียบร้อย!",
-                        text: "บันทึกข้อมูลแล้ว!",
-                        icon: "success"
-                    });
-                })
+                try {
+                    setShowLoading(true);
+                    RPASchedueAPI.fbUpdateSchedule(token, modalData.task_id, formData).then(() => {
+                        MySwal.fire({
+                            title: "เรียบร้อย!",
+                            text: "บันทึกข้อมูลแล้ว!",
+                            icon: "success"
+                        });
+                    })
+                } catch (error) {
+                    console.error('Error fetching bot config:', error);
+                } finally {
+                    fetch()
+                    setShowLoading(false);
+                }
             }
-            fetch()
         });
     }
 
@@ -80,13 +90,21 @@ const EditSchedueModal = props => {
             cancelButtonText: "ยกเลิก",
         }).then((result) => {
             if (result.isConfirmed) {
-                RPASchedueAPI.fbDeleteSchedule(token, modalData.botname).then(() => {
-                    MySwal.fire({
-                        title: "เรียบร้อย!",
-                        text: "งานประจำถูกลบแล้ว",
-                        icon: "success"
-                    });
-                })
+                try {
+                    setShowLoading(true);
+                    RPASchedueAPI.fbDeleteSchedule(token, modalData.botname).then(() => {
+                        MySwal.fire({
+                            title: "เรียบร้อย!",
+                            text: "งานประจำถูกลบแล้ว",
+                            icon: "success"
+                        });
+                    })
+                } catch (error) {
+                    console.error('Error fetching bot config:', error);
+                } finally {
+                    fetch()
+                    setShowLoading(false);
+                }
             }
         });
     }
@@ -137,18 +155,18 @@ const EditSchedueModal = props => {
                         modalData,
                         task_config: {
                             post_configures: {
-                                "limit_comment": 300,
-                                "need_reaction": true,
-                                "need_comment": true,
-                                "need_comment_posttime": false,
-                                "need_comment_reaction": false,
-                                "need_subcomment": false,
-                                "need_subcomment_posttime": false,
-                                "need_subcomment_reaction": false,
-                                "need_reply_subcomment": false,
-                                "need_reply_subcomment_posttime": false,
-                                "need_reply_subcomment_reaction": false,
-                                "comment_type": "ความคิดเห็นทั้งหมด"
+                                limit_comment: 300,
+                                need_reaction: true,
+                                need_comment: true,
+                                need_comment_posttime: false,
+                                need_comment_reaction: false,
+                                need_subcomment: false,
+                                need_subcomment_posttime: false,
+                                need_subcomment_reaction: false,
+                                need_reply_subcomment: false,
+                                need_reply_subcomment_posttime: false,
+                                need_reply_subcomment_reaction: false,
+                                comment_type: "ความคิดเห็นทั้งหมด"
                             }
                         }
                     }
@@ -184,7 +202,7 @@ const EditSchedueModal = props => {
                                         allowClear
                                         className='tw-w-full'
                                         placeholder="Please select"
-                                        options={[{ label: "test", value: "test" }]}
+                                        options={[{ label: "วันละครั้ง", value: "Once a day" }, { label: "ชั่วโมงละครั้ง", value: "Hourly" }]}
                                     />
                                 </Form.Item>
                             </div>
@@ -325,6 +343,7 @@ const EditSchedueModal = props => {
                     </div>
                 </div>
             </Form>
+            <Loading isShown={showLoading} />
         </Modal >
 
     );

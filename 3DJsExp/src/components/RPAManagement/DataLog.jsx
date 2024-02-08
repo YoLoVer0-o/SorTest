@@ -7,7 +7,7 @@ import RPALogAPI from "../../service/RPALogAPI";
 import dayjs from "dayjs";
 import { useSelector } from 'react-redux'
 import { getLogin } from '../../libs/loginSlice'
-
+import { Loading } from "../../utilities";
 
 const DataLog = props => {
 
@@ -20,6 +20,7 @@ const DataLog = props => {
     const [endDate, setEndDate] = useState(dayjs().format('YYYY-MM-DD HH:mm:ss'));
     const [displayData, setDisplayData] = useState([]);
     const [logData, setLogData] = useState({});
+    const [showLoading, setShowLoading] = useState(false);
 
     const token = useSelector((state) => getLogin(state).token);
 
@@ -40,10 +41,26 @@ const DataLog = props => {
     const fetchLog = async () => {
 
         if (dataType === "error") {
-            await RPALogAPI.fbErrlog(token, startDate, endDate).then((response) => setDisplayData(response))
+            try {
+                setShowLoading(true);
+                await RPALogAPI.fbErrlog(token, startDate, endDate).then((response) => setDisplayData(response))
+            } catch (error) {
+                console.error('Error fetching bot config:', error);
+            } finally {
+                fetch()
+                setShowLoading(false);
+            }
         }
         else if (dataType === "active") {
-            await RPALogAPI.fbInfolog(token, startDate, endDate).then((response) => setDisplayData(response))
+            try {
+                setShowLoading(true);
+                await RPALogAPI.fbInfolog(token, startDate, endDate).then((response) => setDisplayData(response))
+            } catch (error) {
+                console.error('Error fetching bot config:', error);
+            } finally {
+                fetch()
+                setShowLoading(false);
+            }
         }
 
     }
@@ -68,6 +85,7 @@ const DataLog = props => {
             <div className={classNames("tw-flex tw-flex-row tw-w-full tw-h-full tw-overflow-auto tw-gap-4", {
                 "tw-flex-col": isMobile && isPortrait,
             })}>
+                <Loading isShown={showLoading} />
                 <div className={classNames("tw-flex tw-flex-col tw-gap-8 ", {
                     "tw-min-h-screen tw-h-screen": isMobile && isLandscape,
                     "tw-h-full tw-w-1/2": !isMobile,

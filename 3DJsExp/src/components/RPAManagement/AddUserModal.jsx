@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useResponsive } from "../../hooks";
+import { Loading } from "../../utilities";
 import { Form, Modal, Button, Input, Select, Tooltip } from 'antd';
 import { PlusOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import Swal from 'sweetalert2';
@@ -9,7 +10,6 @@ import PropTypes from 'prop-types';
 import RPAUserAPI from "../../service/RPAUserAPI";
 
 const AddUserModal = props => {
-
     ////////////////////////////////////////////props declaration//////////////////////////////////////////////////////////////
     const modalToggle = props.modalToggle;
     const handleCancel = props.handleCancel;
@@ -23,33 +23,48 @@ const AddUserModal = props => {
     // const [formData, setFormData] = useState({});
     const [inputValue, setInputValue] = useState('');
     const [availableGroup, setAvailableGroup] = useState([]);
+    const [showLoading, setShowLoading] = useState(false);
     const { isMobile } = useResponsive();
 
     //////////////////////////////////////group////////////////////////////////////////////////////////////////////
 
     const fetchGroup = async () => {
-        await RPAUserAPI.fbGetBotGroup(token)
-            .then((response) => setAvailableGroup(response.map((response) => (
-                {
-                    label: response.group_name,
-                    value: response.group_id,
-                }
-            )))
-            )
+        try {
+            setShowLoading(true);
+            await RPAUserAPI.fbGetBotGroup(token)
+                .then((response) => setAvailableGroup(response.map((response) => (
+                    {
+                        label: response.group_name,
+                        value: response.group_id,
+                    }
+                )))
+                )
+        } catch (error) {
+            console.error('Error fetching bot config:', error);
+        } finally {
+            setShowLoading(false);
+        }
     }
 
     const addGroup = async (group) => {
 
         const payload = { group_name: group }
 
-        await RPAUserAPI.fbAddBotGroup(token, payload).then(() => {
-            MySwal.fire({
-                title: "เรียบร้อย!",
-                text: "เพื่มกลุ่มแล้ว!",
-                icon: "success"
-            });
-        })
-        fetchGroup()
+        try {
+            setShowLoading(true);
+            await RPAUserAPI.fbAddBotGroup(token, payload).then(() => {
+                MySwal.fire({
+                    title: "เรียบร้อย!",
+                    text: "เพื่มกลุ่มแล้ว!",
+                    icon: "success"
+                });
+            })
+            fetchGroup()
+        } catch (error) {
+            console.error('Error fetching bot config:', error);
+        } finally {
+            setShowLoading(false);
+        }
 
     };
 
@@ -66,15 +81,23 @@ const AddUserModal = props => {
             cancelButtonText: "ยกเลิก",
         }).then(async (result) => {
             if (result.isConfirmed) {
-                await RPAUserAPI.fbDeleteBotGroup(token, payload).then(() => {
-                    MySwal.fire({
-                        title: "เรียบร้อย!",
-                        text: "ลบกลุ่มแล้ว!",
-                        icon: "success"
-                    });
-                })
+                try {
+                    setShowLoading(true);
+                    await RPAUserAPI.fbDeleteBotGroup(token, payload).then(() => {
+                        MySwal.fire({
+                            title: "เรียบร้อย!",
+                            text: "ลบกลุ่มแล้ว!",
+                            icon: "success"
+                        });
+                    })
+                } catch (error) {
+                    console.error('Error fetching bot config:', error);
+                } finally {
+                    fetchGroup()
+                    setShowLoading(false);
+                }
             }
-            fetchGroup()
+
         });
     }
 
@@ -103,15 +126,22 @@ const AddUserModal = props => {
             cancelButtonText: "ยกเลิก",
         }).then((result) => {
             if (result.isConfirmed) {
-                RPAUserAPI.fbAddUser(token, formData).then(() => {
-                    MySwal.fire({
-                        title: "เรียบร้อย!",
-                        text: "บันทึกข้อมูลแล้ว!",
-                        icon: "success"
-                    });
-                })
+                try {
+                    setShowLoading(true);
+                    RPAUserAPI.fbAddUser(token, formData).then(() => {
+                        MySwal.fire({
+                            title: "เรียบร้อย!",
+                            text: "บันทึกข้อมูลแล้ว!",
+                            icon: "success"
+                        });
+                    })
+                } catch (error) {
+                    console.error('Error fetching bot config:', error);
+                } finally {
+                    fetch()
+                    setShowLoading(false);
+                }
             }
-            fetch()
         });
     }
 
@@ -258,6 +288,7 @@ const AddUserModal = props => {
                     </div>
                 </div>
             </Form>
+            <Loading isShown={showLoading} />
         </Modal >
     );
 };

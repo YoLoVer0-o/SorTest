@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useResponsive } from "../../hooks";
+import { Loading } from "../../utilities";
 import { Form, Modal, Button, Input, Select, Tooltip } from 'antd';
 import { PlusOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import Swal from 'sweetalert2';
@@ -22,33 +23,47 @@ const EditUserModal = props => {
     const [isModalOpen, setIsModalOpen] = useState(modalToggle);
     const [inputValue, setInputValue] = useState('');
     const [availableGroup, setAvailableGroup] = useState([]);
+    const [showLoading, setShowLoading] = useState(false);
+    
     const { isMobile } = useResponsive();
 
     //////////////////////////////////////group////////////////////////////////////////////////////////////////////
     const fetchGroup = async () => {
-        await RPAUserAPI.fbGetBotGroup(token)
-            .then((response) => setAvailableGroup(response.map((response) => (
-                {
-                    label: response.group_name,
-                    value: response.group_id,
-                }
-            )))
-            )
+        try {
+            setShowLoading(true);
+            await RPAUserAPI.fbGetBotGroup(token)
+                .then((response) => setAvailableGroup(response.map((response) => (
+                    {
+                        label: response.group_name,
+                        value: response.group_id,
+                    }
+                )))
+                )
+        } catch (error) {
+            console.error('Error fetching bot config:', error);
+        } finally {
+            setShowLoading(false);
+        }
     }
 
     const addGroup = async (group) => {
 
         const payload = { group_name: group }
-
-        await RPAUserAPI.fbAddBotGroup(token, payload).then(() => {
-            MySwal.fire({
-                title: "เรียบร้อย!",
-                text: "เพื่มกลุ่มแล้ว!",
-                icon: "success"
-            });
-        })
-        fetchGroup()
-
+        try {
+            setShowLoading(true);
+            await RPAUserAPI.fbAddBotGroup(token, payload).then(() => {
+                MySwal.fire({
+                    title: "เรียบร้อย!",
+                    text: "เพื่มกลุ่มแล้ว!",
+                    icon: "success"
+                });
+            })
+        } catch (error) {
+            console.error('Error fetching bot config:', error);
+        } finally {
+            fetchGroup()
+            setShowLoading(false);
+        }
     };
 
     const deleteGroup = async (id) => {
@@ -64,15 +79,22 @@ const EditUserModal = props => {
             cancelButtonText: "ยกเลิก",
         }).then(async (result) => {
             if (result.isConfirmed) {
-                await RPAUserAPI.fbDeleteBotGroup(token, payload).then(() => {
-                    MySwal.fire({
-                        title: "เรียบร้อย!",
-                        text: "ลบกลุ่มแล้ว!",
-                        icon: "success"
-                    });
-                })
+                try {
+                    setShowLoading(true);
+                    await RPAUserAPI.fbDeleteBotGroup(token, payload).then(() => {
+                        MySwal.fire({
+                            title: "เรียบร้อย!",
+                            text: "ลบกลุ่มแล้ว!",
+                            icon: "success"
+                        });
+                    })
+                } catch (error) {
+                    console.error('Error fetching bot config:', error);
+                } finally {
+                    fetchGroup()
+                    setShowLoading(false);
+                }
             }
-            fetchGroup()
         });
     }
 
@@ -101,15 +123,22 @@ const EditUserModal = props => {
             cancelButtonText: "ยกเลิก",
         }).then((result) => {
             if (result.isConfirmed) {
-                RPAUserAPI.fbUpdateBotConfig(token, modalData.botname, formData).then(() => {
-                    MySwal.fire({
-                        title: "เรียบร้อย!",
-                        text: "บันทึกข้อมูลแล้ว!",
-                        icon: "success"
-                    });
-                })
+                try {
+                    setShowLoading(true);
+                    RPAUserAPI.fbUpdateBotConfig(token, modalData.botname, formData).then(() => {
+                        MySwal.fire({
+                            title: "เรียบร้อย!",
+                            text: "บันทึกข้อมูลแล้ว!",
+                            icon: "success"
+                        });
+                    })
+                } catch (error) {
+                    console.error('Error fetching bot config:', error);
+                } finally {
+                    fetch()
+                    setShowLoading(false);
+                }
             }
-            fetch()
         });
     }
 
@@ -127,15 +156,22 @@ const EditUserModal = props => {
             cancelButtonText: "ยกเลิก",
         }).then((result) => {
             if (result.isConfirmed) {
-                RPAUserAPI.fbDeleteBotConfig(token, modalData.botname).then(() => {
-                    MySwal.fire({
-                        title: "เรียบร้อย!",
-                        text: "ผู้ใช้ถูกลบแล้ว",
-                        icon: "success"
-                    });
-                })
+                try {
+                    setShowLoading(true);
+                    RPAUserAPI.fbDeleteBotConfig(token, modalData.botname).then(() => {
+                        MySwal.fire({
+                            title: "เรียบร้อย!",
+                            text: "ผู้ใช้ถูกลบแล้ว",
+                            icon: "success"
+                        });
+                    })
+                } catch (error) {
+                    console.error('Error fetching bot config:', error);
+                } finally {
+                    fetch()
+                    setShowLoading(false);
+                }
             }
-            fetch()
         });
     }
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -280,6 +316,7 @@ const EditUserModal = props => {
                     </div>
                 </div>
             </Form>
+            <Loading isShown={showLoading} />
         </Modal >
     );
 };

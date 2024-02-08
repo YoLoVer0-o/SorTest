@@ -187,7 +187,7 @@ const RPAUserAPI = {
   fbDeleteBotConfig: async (token, bot_name) => {
     try {
       const response = await axios.delete(
-        `http://192.168.10.111:8000/facebook/update_bot_config/${bot_name}`,
+        `http://192.168.10.111:8000/facebook/delete_bot_config/${bot_name}`,
         {
           headers: {
             Authorization: "Bearer " + token,
