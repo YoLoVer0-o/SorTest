@@ -59,10 +59,11 @@ const AddUserModal = props => {
                     icon: "success"
                 });
             })
-            fetchGroup()
+
         } catch (error) {
             console.error('Error fetching bot config:', error);
         } finally {
+            fetchGroup()
             setShowLoading(false);
         }
 
@@ -124,11 +125,11 @@ const AddUserModal = props => {
             cancelButtonColor: "#d33",
             confirmButtonText: "ตกลง",
             cancelButtonText: "ยกเลิก",
-        }).then((result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
                     setShowLoading(true);
-                    RPAUserAPI.fbAddUser(token, formData).then(() => {
+                    await RPAUserAPI.fbAddUser(token, formData).then(() => {
                         MySwal.fire({
                             title: "เรียบร้อย!",
                             text: "บันทึกข้อมูลแล้ว!",
@@ -140,6 +141,7 @@ const AddUserModal = props => {
                 } finally {
                     fetch()
                     setShowLoading(false);
+                    handleCancel();
                 }
             }
         });
@@ -177,7 +179,7 @@ const AddUserModal = props => {
                         htmlType="submit"
                         form="editForm"
                         className='tw-bg-blue-500 tw-text-white tw-border-white hover:tw-bg-white hover:tw-text-blue-500 hover:tw-border-blue-500'
-                        onClick={() => handleSave()}
+                    // onClick={() => handleSave()}
                     >
                         บันทึก
                     </Button>
@@ -187,7 +189,7 @@ const AddUserModal = props => {
                 form={form}
                 name="editForm"
                 id="editForm"
-                // onFinish={onFinish}
+                onFinish={() => handleSave()}
                 autoComplete='off'
             >
                 <div className='tw-overflow-y-auto tw-h-full tw-w-full tw-border-black tw-border-2 tw-rounded-md'>
@@ -197,7 +199,7 @@ const AddUserModal = props => {
                         })}>
                             <p>ชื่อบัญชี:</p>
                             <Form.Item name="username">
-                                <Input className='tw-h-full tw-w-full' placeholder="ชื่อบัญชี" autoComplete='off' />
+                                <Input className='tw-h-full tw-w-full' placeholder="ชื่อบัญชี" required={true} autoComplete='off' />
                             </Form.Item>
                         </div>
                         <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
@@ -205,7 +207,7 @@ const AddUserModal = props => {
                         })}>
                             <p>รหัสผ่าน:</p>
                             <Form.Item name="password">
-                                <Input.Password className='tw-h-full tw-w-full' placeholder="รหัสผ่าน" autoComplete='off' />
+                                <Input.Password className='tw-h-full tw-w-full' placeholder="รหัสผ่าน" required={true} autoComplete='off' />
                             </Form.Item>
                         </div>
                         <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
@@ -213,14 +215,22 @@ const AddUserModal = props => {
                         })}>
                             <p>ชื่อเล่น:</p>
                             <Form.Item name="botname">
-                                <Input className='tw-h-full tw-w-full' placeholder="ชื่อเล่น" autoComplete='off' />
+                                <Input className='tw-h-full tw-w-full' placeholder="ชื่อเล่น" required={true} autoComplete='off' />
                             </Form.Item>
                         </div>
                         <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
                             "tw-w-56": isMobile,
                         })}>
                             <p>Group:</p>
-                            <Form.Item name="groups">
+                            <Form.Item
+                                name="groups"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Please select an groups!',
+                                    },
+                                ]}
+                            >
                                 <Select
                                     mode="multiple"
                                     allowClear
@@ -264,7 +274,15 @@ const AddUserModal = props => {
                             "tw-w-56": isMobile,
                         })}>
                             <p>Owner:</p>
-                            <Form.Item name="owner">
+                            <Form.Item
+                                name="owner"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Please select an option!',
+                                    },
+                                ]}
+                            >
                                 <Select
                                     mode="multiple"
                                     allowClear

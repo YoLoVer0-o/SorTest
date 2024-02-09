@@ -21,7 +21,7 @@ const EditSchedueModal = props => {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     const [isModalOpen, setIsModalOpen] = useState(modalToggle);
     const [taskConfig, setTaskConfig] = useState();
-    const [formData, setFormData] = useState({});
+    // const [formData, setFormData] = useState({});
     const [showLoading, setShowLoading] = useState(false);
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -30,15 +30,12 @@ const EditSchedueModal = props => {
     //////////////////////////////////////////form////////////////////////////////////////////////////////////////
     const [form] = Form.useForm();
 
+    const formData = Form.useWatch([], form);
+
     const handleTimeChange = (value) => {
         console.log(dayjs(value).format('HH:mm'));
     }
 
-    const onFinish = (values) => {
-        console.log(modalData);
-        console.log(values);
-        setFormData(values);
-    };
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////sweetalert and save and delete logic///////////////////////////////////////////////////////////////
@@ -55,11 +52,11 @@ const EditSchedueModal = props => {
             cancelButtonColor: "#d33",
             confirmButtonText: "ตกลง",
             cancelButtonText: "ยกเลิก",
-        }).then((result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
                     setShowLoading(true);
-                    RPASchedueAPI.fbUpdateSchedule(token, modalData.task_id, formData).then(() => {
+                    await RPASchedueAPI.fbUpdateSchedule(token, modalData.task_id, formData).then(() => {
                         MySwal.fire({
                             title: "เรียบร้อย!",
                             text: "บันทึกข้อมูลแล้ว!",
@@ -71,13 +68,13 @@ const EditSchedueModal = props => {
                 } finally {
                     fetch()
                     setShowLoading(false);
+                    handleCancel();
                 }
             }
         });
     }
 
-    const handleDelete = (value) => {
-        console.log(value);
+    const handleDelete = () => {
 
         MySwal.fire({
             title: "ต้องการลบงานประจำ?",
@@ -88,11 +85,11 @@ const EditSchedueModal = props => {
             cancelButtonColor: "#d33",
             confirmButtonText: "ตกลง",
             cancelButtonText: "ยกเลิก",
-        }).then((result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
                     setShowLoading(true);
-                    RPASchedueAPI.fbDeleteSchedule(token, modalData.botname).then(() => {
+                    await RPASchedueAPI.fbDeleteSchedule(token, modalData.botname).then(() => {
                         MySwal.fire({
                             title: "เรียบร้อย!",
                             text: "งานประจำถูกลบแล้ว",
@@ -104,6 +101,7 @@ const EditSchedueModal = props => {
                 } finally {
                     fetch()
                     setShowLoading(false);
+                    handleCancel();
                 }
             }
         });
@@ -113,7 +111,7 @@ const EditSchedueModal = props => {
 
     useEffect(() => {
         form.resetFields();
-    }, [form, formData]);
+    }, [form]);
 
     useEffect(() => {
         setIsModalOpen(modalToggle);
@@ -138,7 +136,7 @@ const EditSchedueModal = props => {
                     htmlType="submit"
                     form="editForm"
                     className='tw-bg-blue-500 tw-text-white tw-border-white hover:tw-bg-white hover:tw-text-blue-500 hover:tw-border-blue-500'
-                    onClick={() => handleSave(formData)}
+                // onClick={() => handleSave(formData)}
                 >
                     บันทึก
                 </Button>
@@ -148,7 +146,7 @@ const EditSchedueModal = props => {
                 form={form}
                 name="editForm"
                 id="editForm"
-                onFinish={onFinish}
+                onFinish={() => handleSave(formData)}
                 // initialValues={modalData}
                 initialValues={taskConfig ?
                     {

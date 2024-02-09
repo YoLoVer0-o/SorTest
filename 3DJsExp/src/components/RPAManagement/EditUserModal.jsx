@@ -24,7 +24,7 @@ const EditUserModal = props => {
     const [inputValue, setInputValue] = useState('');
     const [availableGroup, setAvailableGroup] = useState([]);
     const [showLoading, setShowLoading] = useState(false);
-    
+
     const { isMobile } = useResponsive();
 
     //////////////////////////////////////group////////////////////////////////////////////////////////////////////
@@ -121,11 +121,11 @@ const EditUserModal = props => {
             cancelButtonColor: "#d33",
             confirmButtonText: "ตกลง",
             cancelButtonText: "ยกเลิก",
-        }).then((result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
                     setShowLoading(true);
-                    RPAUserAPI.fbUpdateBotConfig(token, modalData.botname, formData).then(() => {
+                    await RPAUserAPI.fbUpdateBotConfig(token, modalData.botname, formData).then(() => {
                         MySwal.fire({
                             title: "เรียบร้อย!",
                             text: "บันทึกข้อมูลแล้ว!",
@@ -137,6 +137,7 @@ const EditUserModal = props => {
                 } finally {
                     fetch()
                     setShowLoading(false);
+                    handleCancel();
                 }
             }
         });
@@ -154,11 +155,11 @@ const EditUserModal = props => {
             cancelButtonColor: "#d33",
             confirmButtonText: "ตกลง",
             cancelButtonText: "ยกเลิก",
-        }).then((result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
                     setShowLoading(true);
-                    RPAUserAPI.fbDeleteBotConfig(token, modalData.botname).then(() => {
+                    await RPAUserAPI.fbDeleteBotConfig(token, modalData.botname).then(() => {
                         MySwal.fire({
                             title: "เรียบร้อย!",
                             text: "ผู้ใช้ถูกลบแล้ว",
@@ -170,6 +171,7 @@ const EditUserModal = props => {
                 } finally {
                     fetch()
                     setShowLoading(false);
+                    handleCancel();
                 }
             }
         });
@@ -213,7 +215,7 @@ const EditUserModal = props => {
                     htmlType="submit"
                     form="editForm"
                     className='tw-bg-blue-500 tw-text-white tw-border-white hover:tw-bg-white hover:tw-text-blue-500 hover:tw-border-blue-500'
-                    onClick={() => handleSave()}
+                // onClick={() => handleSave()}
                 >
                     บันทึก
                 </Button>
@@ -224,6 +226,7 @@ const EditUserModal = props => {
                 name="editForm"
                 id="editForm"
                 initialValues={modalData}
+                onFinish={() => handleSave()}
                 autoComplete='off'
             >
                 <div className='tw-overflow-y-auto tw-h-full tw-w-full tw-border-black tw-border-2 tw-rounded-md'>
@@ -233,7 +236,7 @@ const EditUserModal = props => {
                         })}>
                             <p>ชื่อบัญชี:</p>
                             <Form.Item name="username">
-                                <Input className='tw-h-full tw-w-full' placeholder="ชื่อบัญชี" autoComplete='off' />
+                                <Input className='tw-h-full tw-w-full' placeholder="ชื่อบัญชี" required={true} autoComplete='off' />
                             </Form.Item>
                         </div>
                         <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
@@ -241,16 +244,25 @@ const EditUserModal = props => {
                         })}>
                             <p>รหัสผ่าน:</p>
                             <Form.Item name="password">
-                                <Input.Password className='tw-h-full tw-w-full' placeholder="รหัสผ่าน" autoComplete='off' />
+                                <Input.Password className='tw-h-full tw-w-full' placeholder="รหัสผ่าน" required={true} autoComplete='off' />
                             </Form.Item>
                         </div>
                         <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
                             "tw-w-56": isMobile,
                         })}>
                             <p>Group:</p>
-                            <Form.Item name="groups">
+                            <Form.Item
+                                name="groups"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Please select an groups!',
+                                    },
+                                ]}
+                            >
                                 <Select
                                     mode="multiple"
+                                    required={true}
                                     allowClear
                                     className='tw-w-full'
                                     placeholder="Please select"
@@ -292,7 +304,15 @@ const EditUserModal = props => {
                             "tw-w-56": isMobile,
                         })}>
                             <p>Owner:</p>
-                            <Form.Item name="owner">
+                            <Form.Item
+                                name="owner"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Please select an option!',
+                                    },
+                                ]}
+                            >
                                 <Select
                                     mode="multiple"
                                     allowClear
