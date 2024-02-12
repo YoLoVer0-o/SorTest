@@ -222,7 +222,6 @@ const AddSchedueModal = props => {
                             </div>
                             <div className='tw-flex tw-flex-col tw-w-full'>
                                 <p>เวลา:</p>
-
                                 <ConfigProvider
                                     theme={{
                                         token: {

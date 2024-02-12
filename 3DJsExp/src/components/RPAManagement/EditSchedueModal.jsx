@@ -23,6 +23,7 @@ const EditSchedueModal = props => {
     const [taskConfig, setTaskConfig] = useState();
     // const [formData, setFormData] = useState({});
     const [showLoading, setShowLoading] = useState(false);
+    const [defaultData, setDefaultData] = useState({ ...modalData, execution_time: "" });
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     const { isMobile } = useResponsive();
@@ -32,9 +33,9 @@ const EditSchedueModal = props => {
 
     const formData = Form.useWatch([], form);
 
-    const handleTimeChange = (value) => {
-        console.log(dayjs(value).format('HH:mm'));
-    }
+    // const handleTimeChange = (value) => {
+    //     console.log(dayjs(value).format('HH:mm'));
+    // }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -43,6 +44,14 @@ const EditSchedueModal = props => {
 
     const handleSave = async () => {
         console.log(formData);
+        let payLoad
+        if (!taskConfig) {
+            payLoad = { ...formData, execution_time: dayjs(formData.execution_time).format('HH:mm'), task_config: {} }
+
+        } else {
+            payLoad = { ...formData, execution_time: dayjs(formData.execution_time).format('HH:mm') }
+        }
+        console.log(payLoad);
         MySwal.fire({
             title: "ต้องการบันทึกข้อมูล?",
             text: "กดตกลงเพื่อบันทึก",
@@ -56,7 +65,7 @@ const EditSchedueModal = props => {
             if (result.isConfirmed) {
                 try {
                     setShowLoading(true);
-                    await RPASchedueAPI.fbUpdateSchedule(token, modalData.task_id, formData).then(() => {
+                    await RPASchedueAPI.fbUpdateSchedule(token, modalData.task_id, payLoad).then(() => {
                         MySwal.fire({
                             title: "เรียบร้อย!",
                             text: "บันทึกข้อมูลแล้ว!",
@@ -117,6 +126,59 @@ const EditSchedueModal = props => {
         setIsModalOpen(modalToggle);
     }, [modalToggle]);
 
+    useEffect(() => {
+        if (taskConfig) {
+            setDefaultData({
+                ...defaultData,
+                task_config: {
+                    post_configures: {
+                        "limit_comment": 300,
+                        "need_reaction": true,
+                        "need_comment": true,
+                        "need_comment_posttime": false,
+                        "need_comment_reaction": false,
+                        "need_subcomment": false,
+                        "need_subcomment_posttime": false,
+                        "need_subcomment_reaction": false,
+                        "need_reply_subcomment": false,
+                        "need_reply_subcomment_posttime": false,
+                        "need_reply_subcomment_reaction": false,
+                        "comment_type": "ความคิดเห็นทั้งหมด"
+                    }
+                }
+            })
+
+            form.setFieldsValue({
+                ...defaultData,
+                task_config: {
+                    post_configures: {
+                        "limit_comment": 300,
+                        "need_reaction": true,
+                        "need_comment": true,
+                        "need_comment_posttime": false,
+                        "need_comment_reaction": false,
+                        "need_subcomment": false,
+                        "need_subcomment_posttime": false,
+                        "need_subcomment_reaction": false,
+                        "need_reply_subcomment": false,
+                        "need_reply_subcomment_posttime": false,
+                        "need_reply_subcomment_reaction": false,
+                        "comment_type": "ความคิดเห็นทั้งหมด"
+                    }
+                }
+            })
+
+        }
+        else if (!taskConfig) {
+            setDefaultData({
+                ...defaultData,
+                task_config: {}
+            })
+            form.setFieldsValue({ task_config: {} })
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [taskConfig]);
+
     return (
         <Modal
             className='tw-max-h-full tw-max-w-full'
@@ -148,29 +210,7 @@ const EditSchedueModal = props => {
                 id="editForm"
                 onFinish={() => handleSave(formData)}
                 // initialValues={modalData}
-                initialValues={taskConfig ?
-                    {
-                        modalData,
-                        task_config: {
-                            post_configures: {
-                                limit_comment: 300,
-                                need_reaction: true,
-                                need_comment: true,
-                                need_comment_posttime: false,
-                                need_comment_reaction: false,
-                                need_subcomment: false,
-                                need_subcomment_posttime: false,
-                                need_subcomment_reaction: false,
-                                need_reply_subcomment: false,
-                                need_reply_subcomment_posttime: false,
-                                need_reply_subcomment_reaction: false,
-                                comment_type: "ความคิดเห็นทั้งหมด"
-                            }
-                        }
-                    }
-                    :
-                    modalData
-                }
+                initialValues={defaultData}
             >
                 <div className='tw-overflow-y-auto tw-h-full tw-w-full tw-border-black tw-border-2 tw-rounded-md'>
                     <div className='tw-flex tw-flex-col tw-w-full tw-h-full tw-p-4 tw-gap-4'>
@@ -179,7 +219,7 @@ const EditSchedueModal = props => {
                         })}>
                             <p>เลขบัญชี/ชื่อบัญชี:</p>
                             <Form.Item name="botname">
-                                <Input className='tw-h-full tw-w-full' placeholder="ชื่อบัญชี" autoComplete="off" />
+                                <Input className='tw-h-full tw-w-full' placeholder="ชื่อบัญชี" required={true} autoComplete="off" />
                             </Form.Item>
                         </div>
                         <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
@@ -187,7 +227,7 @@ const EditSchedueModal = props => {
                         })}>
                             <p>เป้าหมาย:</p>
                             <Form.Item name="task">
-                                <Input className='tw-h-full tw-w-full' placeholder="เป้าหมาย" autoComplete="off" />
+                                <Input className='tw-h-full tw-w-full' placeholder="เป้าหมาย" required={true} autoComplete="off" />
                             </Form.Item>
                         </div>
                         <div className={classNames('tw-flex tw-flex-row tw-w-96 tw-h-16 tw-gap-4 tw-justify-between', {
@@ -195,7 +235,15 @@ const EditSchedueModal = props => {
                         })}>
                             <div className='tw-flex tw-flex-col tw-w-full'>
                                 <p>ความถี่:</p>
-                                <Form.Item name="frequency">
+                                <Form.Item
+                                    name="frequency"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please select an frequency!',
+                                        },
+                                    ]}
+                                >
                                     <Select
                                         allowClear
                                         className='tw-w-full'
@@ -206,43 +254,64 @@ const EditSchedueModal = props => {
                             </div>
                             <div className='tw-flex tw-flex-col tw-w-full'>
                                 <p>เวลา:</p>
-                                <Form.Item name="execution_time">
-                                    <ConfigProvider
-                                        theme={{
-                                            token: {
-                                                colorTextLightSolid: '#000'
+                                <ConfigProvider
+                                    theme={{
+                                        token: {
+                                            colorTextLightSolid: '#000'
+                                        },
+                                    }}
+                                >
+                                    <Form.Item
+                                        name="execution_time"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: 'Please select an execution time!',
                                             },
-                                        }}
+                                        ]}
                                     >
                                         <TimePicker
                                             className='tw-w-full'
                                             placeholder="Please select"
                                             format={'HH:mm'}
-                                            onChange={handleTimeChange}
+                                        // onChange={handleTimeChange}
                                         />
-                                    </ConfigProvider>
-                                </Form.Item>
+                                    </Form.Item>
+                                </ConfigProvider>
                             </div>
-                            <div className='tw-flex tw-flex-col tw-w-full'>
+                        </div>
+                        <div className='tw-flex tw-flex-col tw-w-full'>
+                            <div className='tw-flex tw-flex-row tw-w-full tw-gap-2'>
                                 <p>task_config:</p>
                                 <Switch
+                                    defaultChecked={taskConfig}
                                     onChange={(checked) => setTaskConfig(checked)}
                                     className='tw-w-fit'
                                 />
-                                {taskConfig && (
-                                    <div className='tw-flex tw-flex-col tw-w-full'>
-                                        <div className='tw-flex tw-flex-col tw-w-full tw-gap-4'>
-                                            <p>post_configures</p>
-                                            <div className='tw-flex tw-flex-row tw-w-full'>
+                            </div>
+                            {taskConfig && (
+                                <div className='tw-flex tw-flex-col tw-w-full tw-my-2 tw-border-2 tw-p-4'>
+                                    <div className='tw-w-full tw-h-full'>
+                                        <p className='tw-text-lg'>post_configures</p>
+                                        <div className='tw-flex tw-flex-col tw-w-full tw-gap-2 tw-border-y-2 tw-py-2'>
+                                            <div className='tw-flex tw-flex-row tw-w-full tw-gap-2 tw-items-baseline tw-justify-center'>
                                                 <p>limit_comment:</p>
-                                                <Form.Item name={["task_config", "post_configures", "limit_comment"]}>
+                                                <Form.Item
+                                                    name={["task_config", "post_configures", "limit_comment"]}
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            message: 'Please input limit comment!',
+                                                        },
+                                                    ]}
+                                                >
                                                     <InputNumber
                                                         type="number"
-                                                        className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md hover:tw-border-sky-700 tw-w-full'
+                                                        className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md tw-w-fit hover:tw-border-sky-700'
                                                     />
                                                 </Form.Item>
                                             </div>
-                                            <div className='tw-flex tw-flex-row tw-w-full'>
+                                            <div className='tw-flex tw-flex-row tw-w-full tw-gap-2 tw-items-baseline tw-justify-center'>
                                                 <p>need_reaction:</p>
                                                 <Form.Item name={["task_config", "post_configures", "need_reaction"]}>
                                                     <Switch
@@ -250,7 +319,7 @@ const EditSchedueModal = props => {
                                                     />
                                                 </Form.Item>
                                             </div>
-                                            <div className='tw-flex tw-flex-row tw-w-full'>
+                                            <div className='tw-flex tw-flex-row tw-w-full tw-gap-2 tw-items-baseline tw-justify-center'>
                                                 <p>need_comment:</p>
                                                 <Form.Item name={["task_config", "post_configures", "need_comment"]}>
                                                     <Switch
@@ -258,7 +327,7 @@ const EditSchedueModal = props => {
                                                     />
                                                 </Form.Item>
                                             </div>
-                                            <div className='tw-flex tw-flex-row tw-w-full'>
+                                            <div className='tw-flex tw-flex-row tw-w-full tw-gap-2 tw-items-baseline tw-justify-center'>
                                                 <p>need_comment_posttime:</p>
                                                 <Form.Item name={["task_config", "post_configures", "need_comment_posttime"]}>
                                                     <Switch
@@ -266,7 +335,7 @@ const EditSchedueModal = props => {
                                                     />
                                                 </Form.Item>
                                             </div>
-                                            <div className='tw-flex tw-flex-row tw-w-full'>
+                                            <div className='tw-flex tw-flex-row tw-w-full tw-gap-2 tw-items-baseline tw-justify-center'>
                                                 <p>need_comment_reaction:</p>
                                                 <Form.Item name={["task_config", "post_configures", "need_comment_reaction"]}>
                                                     <Switch
@@ -274,7 +343,7 @@ const EditSchedueModal = props => {
                                                     />
                                                 </Form.Item>
                                             </div>
-                                            <div className='tw-flex tw-flex-row tw-w-full'>
+                                            <div className='tw-flex tw-flex-row tw-w-full tw-gap-2 tw-items-baseline tw-justify-center'>
                                                 <p>need_subcomment:</p>
                                                 <Form.Item name={["task_config", "post_configures", "need_subcomment"]}>
                                                     <Switch
@@ -282,7 +351,7 @@ const EditSchedueModal = props => {
                                                     />
                                                 </Form.Item>
                                             </div>
-                                            <div className='tw-flex tw-flex-row tw-w-full'>
+                                            <div className='tw-flex tw-flex-row tw-w-full tw-gap-2 tw-items-baseline tw-justify-center'>
                                                 <p>need_subcomment_posttime:</p>
                                                 <Form.Item name={["task_config", "post_configures", "need_subcomment_posttime"]}>
                                                     <Switch
@@ -290,7 +359,7 @@ const EditSchedueModal = props => {
                                                     />
                                                 </Form.Item>
                                             </div>
-                                            <div className='tw-flex tw-flex-row tw-w-full'>
+                                            <div className='tw-flex tw-flex-row tw-w-full tw-gap-2 tw-items-baseline tw-justify-center'>
                                                 <p>need_subcomment_reaction:</p>
                                                 <Form.Item name={["task_config", "post_configures", "need_subcomment_reaction"]}>
                                                     <Switch
@@ -298,7 +367,7 @@ const EditSchedueModal = props => {
                                                     />
                                                 </Form.Item>
                                             </div>
-                                            <div className='tw-flex tw-flex-row tw-w-full'>
+                                            <div className='tw-flex tw-flex-row tw-w-full tw-gap-2 tw-items-baseline tw-justify-center'>
                                                 <p>need_reply_subcomment:</p>
                                                 <Form.Item name={["task_config", "post_configures", "need_reply_subcomment"]}>
                                                     <Switch
@@ -306,7 +375,7 @@ const EditSchedueModal = props => {
                                                     />
                                                 </Form.Item>
                                             </div>
-                                            <div className='tw-flex tw-flex-row tw-w-full'>
+                                            <div className='tw-flex tw-flex-row tw-w-full tw-gap-2 tw-items-baseline tw-justify-center'>
                                                 <p>need_reply_subcomment_posttime:</p>
                                                 <Form.Item name={["task_config", "post_configures", "need_reply_subcomment_posttime"]}>
                                                     <Switch
@@ -314,7 +383,7 @@ const EditSchedueModal = props => {
                                                     />
                                                 </Form.Item>
                                             </div>
-                                            <div className='tw-flex tw-flex-row tw-w-full'>
+                                            <div className='tw-flex tw-flex-row tw-w-full tw-gap-2 tw-items-baseline tw-justify-center'>
                                                 <p>need_reply_subcomment_reaction:</p>
                                                 <Form.Item name={["task_config", "post_configures", "need_reply_subcomment_reaction"]}>
                                                     <Switch
@@ -322,9 +391,17 @@ const EditSchedueModal = props => {
                                                     />
                                                 </Form.Item>
                                             </div>
-                                            <div className='tw-flex tw-flex-row tw-w-full'>
+                                            <div className='tw-flex tw-flex-row tw-w-full tw-gap-2 tw-items-baseline tw-justify-center'>
                                                 <p>comment_type:</p>
-                                                <Form.Item name={["task_config", "post_configures", "comment_type"]}>
+                                                <Form.Item
+                                                    name={["task_config", "post_configures", "comment_type"]}
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            message: 'Please select an comment type!',
+                                                        },
+                                                    ]}
+                                                >
                                                     <Select
                                                         allowClear
                                                         className='tw-w-full'
@@ -335,8 +412,8 @@ const EditSchedueModal = props => {
                                             </div>
                                         </div>
                                     </div>
-                                )}
-                            </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
