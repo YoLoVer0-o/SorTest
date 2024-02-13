@@ -154,7 +154,7 @@ const SentimentReport = () => {
             key: 'key',
             align: "center",
             width: 100,
-            className: 'tw-text-white tw-bg-[#303c6c]',
+            className: '',
         },
         {
             title: 'วันที่',
@@ -162,7 +162,7 @@ const SentimentReport = () => {
             key: 'timestamp',
             align: "center",
             width: 100,
-            className: 'tw-text-white tw-bg-[#303c6c]',
+            className: '',
         },
         {
             title: 'เนื้อหา',
@@ -170,7 +170,7 @@ const SentimentReport = () => {
             key: 'message',
             align: "center",
             width: 250,
-            className: 'tw-text-white tw-text-sky-700 tw-bg-[#303c6c]',
+            className: '',
         },
         {
             title: 'ผู้โพสต์',
@@ -178,7 +178,7 @@ const SentimentReport = () => {
             key: 'userName',
             align: "center",
             width: 100,
-            className: 'tw-text-white tw-bg-[#303c6c]',
+            className: '',
         },
     ];
     //////////////////////////////////////////////////////////////////////////////////////////////////////////

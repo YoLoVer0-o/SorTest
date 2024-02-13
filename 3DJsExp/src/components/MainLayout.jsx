@@ -54,10 +54,11 @@ const MainLayout = (props) => {
     '/main/overall': 'ภาพรวม',
     '/postlog': 'โพสต์และความเคลื่อนไหว',
     '/postlog/report': 'รายงานโพสต์',
-    '/postCreation': 'สร้างโพสต์และสถานะ',
+    '/postCreation': 'เผยแพร่ข้อมูล',
     '/postCreation/createPost': 'สร้างโพสต์ใหม่',
-    '/postCreation/postStatus': 'สถานะการโพส',
-    '/sentiment': 'ความคิดเห็น',
+    '/postCreation/postStatus': 'สร้างการมีส่วนร่วม',
+    "/postCreation/createGroupPost": "สร้างโพสต์ไปที่กลุ่ม",
+    '/sentiment': 'ประเมิณผลตอบรับ',
     '/sentiment/report': 'รายงานความคิดเห็น',
     '/RPA': 'RPA',
     '/RPA/account': 'บัญชีและสถานะ',
@@ -266,22 +267,22 @@ const MainLayout = (props) => {
                     },
                     {
                       key: "/main/religion",
-                      label: "-สถาบัน",
+                      label: "สถาบัน",
                       className: "",
                     },
                     {
                       key: "/main/army",
-                      label: "-กองทัพ",
+                      label: "กองทัพ",
                       className: "",
                     },
                     {
                       key: "/main/government",
-                      label: "-รัฐบาล",
+                      label: "รัฐบาล",
                       className: "",
                     },
                     {
                       key: "/main/rally",
-                      label: "-ชุมนุม",
+                      label: "ชุมนุม",
                       className: "",
                     },
                   ]
@@ -289,7 +290,7 @@ const MainLayout = (props) => {
                 {
                   key: "/sentiment",
                   icon: <CommentOutlined />,
-                  label: "ความคิดเห็น",
+                  label: "ประเมิณผลตอบรับ",
                   className: "",
                 },
                 {
@@ -301,19 +302,22 @@ const MainLayout = (props) => {
                 {
                   key: "/postCreation",
                   icon: <UploadOutlined />,
-                  label: "สร้างโพสต์และสถานะ",
+                  label: "เผยแพร่ข้อมูล",
                   className: "",
                   children: [
                     {
                       key: "/postCreation/createPost",
-                      icon: <UploadOutlined />,
                       label: "สร้างโพสต์ใหม่",
                       className: "",
                     },
                     {
+                      key: "/postCreation/createGroupPost",
+                      label: "สร้างโพสต์ไปที่กลุ่ม",
+                      className: "",
+                    },
+                    {
                       key: "/postCreation/postStatus",
-                      icon: <UploadOutlined />,
-                      label: "สถานะการโพส",
+                      label: "สร้างการมีส่วนร่วม",
                       className: "",
                     },
                   ]
