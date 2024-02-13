@@ -266,22 +266,22 @@ const MainLayout = (props) => {
                       className: "",
                     },
                     {
-                      key: "/main/religion",
+                      key: "/main/Royal",
                       label: "สถาบัน",
                       className: "",
                     },
                     {
-                      key: "/main/army",
+                      key: "/main/Army",
                       label: "กองทัพ",
                       className: "",
                     },
                     {
-                      key: "/main/government",
+                      key: "/main/Government",
                       label: "รัฐบาล",
                       className: "",
                     },
                     {
-                      key: "/main/rally",
+                      key: "/main/Rally",
                       label: "ชุมนุม",
                       className: "",
                     },

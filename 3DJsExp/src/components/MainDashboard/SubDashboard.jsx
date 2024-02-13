@@ -15,13 +15,72 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 dayjs.extend(isSameOrBefore)
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 dayjs.extend(isSameOrAfter)
+import dashBoardAPI from "../../service/dashBoardAPI";
+import { useSelector } from 'react-redux'
+import { getLogin } from '../../libs/loginSlice'
 
 const SubDashboard = () => {
 
     // const [searchTag, setSearchTag] = useState([]);
-    const [searchDate, setSearchDate] = useState([]);
+    const [searchDate, setSearchDate] = useState([dayjs().format('YYYY-MM-DD'), dayjs().format('YYYY-MM-DD')]);
 
     const { isTabletOrMobile, isTablet, isMobile, isPortrait, isLandscape } = useResponsive();
+
+    const [dailyPosts, setDailyPosts] = useState([]);
+
+    const [dailySentiment, setDailySentiment] = useState([]);
+
+    const [dailyWordCloud, setDailyWordCloud] = useState("");
+
+    const token = useSelector((state) => getLogin(state).token);
+
+    const fetchPost = async (start, end) => {
+        try {
+            // setShowLoading(true);
+            const data = await dashBoardAPI.getTopicDailyPost(start, end, param.topic);
+            setDailyPosts(data);
+        } catch (error) {
+            console.error('Error fetching bot config:', error);
+        } finally {
+            // setShowLoading(false);
+        }
+    }
+
+    const fetchSentiment = async (start, end) => {
+        try {
+            // setShowLoading(true);
+            const data = await dashBoardAPI.getTopicSentiment(start, end, param.topic);
+            setDailySentiment(data);
+        } catch (error) {
+            console.error('Error fetching bot config:', error);
+        } finally {
+            // setShowLoading(false);
+        }
+    }
+
+    const fetchWordCloud = async (start, end) => {
+        try {
+            // setShowLoading(true);
+            const data = await dashBoardAPI.getWordCloud(start, end, "overall");
+            // const blob = new Blob([data], { type: 'image/png' });
+            // const imageObjectURL = URL.createObjectURL(blob);
+            // setDailyWordCloud(imageObjectURL);
+            setDailyWordCloud(data);
+            // console.log(data);
+        } catch (error) {
+            console.error('Error fetching bot config:', error);
+        } finally {
+            // setShowLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        if (searchDate.length > 0) {
+            fetchPost(searchDate[0], searchDate[1])
+            fetchSentiment(searchDate[0], searchDate[1])
+            fetchWordCloud(searchDate[0], searchDate[1])
+        }
+    }, [searchDate])
 
     ///////////////////////////////////WordClouds logic///////////////////////////////////////////////////////////////////////
     const { กองทัพ, รัฐบาล, ชุมนุม, สถาบัน } = WordClouds;
@@ -30,16 +89,16 @@ const SubDashboard = () => {
 
     const displayTopic = () => {
 
-        if (param.topic == "army") {
+        if (param.topic == "Army") {
             return "กองทัพ"
         }
-        else if (param.topic == "government") {
+        else if (param.topic == "Government") {
             return "รัฐบาล"
         }
-        else if (param.topic == "rally") {
+        else if (param.topic == "Rally") {
             return "ชุมนุม"
         }
-        else if (param.topic == "religion") {
+        else if (param.topic == "Royal") {
             return "สถาบัน"
         }
     };
@@ -58,16 +117,16 @@ const SubDashboard = () => {
 
     const sentWordClouds = () => {
 
-        if (param.topic == "army") {
+        if (param.topic == "Army") {
             return กองทัพ
         }
-        else if (param.topic == "government") {
+        else if (param.topic == "Government") {
             return รัฐบาล
         }
-        else if (param.topic == "rally") {
+        else if (param.topic == "Rally") {
             return ชุมนุม
         }
-        else if (param.topic == "religion") {
+        else if (param.topic == "Royal") {
             return สถาบัน
         }
     };
@@ -93,12 +152,12 @@ const SubDashboard = () => {
 
     //////////////////////////////////////////postBar////////////////////////////////////////////////////////////////
     const postBarData = {
-        labels: sentimentPos.map(item => item.name),
+        labels: dailyPosts.map(item => item.name),
         datasets: [
             {
                 label: 'จำนวนโพสต์',
-                data: sentimentPos.map(item => item.value),
-                backgroundColor: sentimentPos.map(item => colorSet(item.commentType)),
+                data: dailyPosts.map(item => item.value),
+                backgroundColor: dailyPosts.map(item => colorSet(item.commentType)),
                 barThickness: isMobile ? 20 : 50,
             },
         ],
@@ -122,13 +181,13 @@ const SubDashboard = () => {
 
     ///////////////////////////////////////////sentimentBar///////////////////////////////////////////////////////////////
     const sentimentData = {
-        labels: sentimentAll.map(item => item.name),
+        labels: dailySentiment.map(item => item.commentType),
         datasets: [
             {
                 label: 'จำนวนความคิดเห็น',
-                data: sentimentAll.map(item => item.value),
-                backgroundColor: sentimentAll.map(item => colorSet(item.commentType)),
-                borderColor: sentimentAll.map(item => colorSet(item.commentType)),
+                data: dailySentiment.map(item => item.value),
+                backgroundColor: dailySentiment.map(item => colorSet(item.commentType)),
+                borderColor: dailySentiment.map(item => colorSet(item.commentType)),
             },
         ],
     };

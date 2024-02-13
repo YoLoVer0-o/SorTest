@@ -17,17 +17,78 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 dayjs.extend(isSameOrBefore)
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 dayjs.extend(isSameOrAfter)
+import dashBoardAPI from "../../service/dashBoardAPI";
+import { useSelector } from 'react-redux'
+import { getLogin } from '../../libs/loginSlice'
 
 const Dashboard = () => {
 
     // const [searchTag, setSearchTag] = useState([]);
-    const [searchDate, setSearchDate] = useState([]);
+    const [searchDate, setSearchDate] = useState([dayjs().format('YYYY-MM-DD'), dayjs().format('YYYY-MM-DD')]);
+
+    const [dailyPosts, setDailyPosts] = useState([]);
+
+    const [dailySentiment, setDailySentiment] = useState([]);
+
+    const [dailyWordCloud, setDailyWordCloud] = useState("");
+
+    const token = useSelector((state) => getLogin(state).token);
+
+    const fetchPost = async (start, end) => {
+        try {
+            // setShowLoading(true);
+            const data = await dashBoardAPI.getAllDailyPost(start, end);
+            setDailyPosts(data);
+        } catch (error) {
+            console.error('Error fetching bot config:', error);
+        } finally {
+            // setShowLoading(false);
+        }
+    }
+
+    const fetchSentiment = async (start, end) => {
+        try {
+            // setShowLoading(true);
+            const data = await dashBoardAPI.getAllSentiment(start, end);
+            setDailySentiment(data);
+        } catch (error) {
+            console.error('Error fetching bot config:', error);
+        } finally {
+            // setShowLoading(false);
+        }
+    }
+
+    const fetchWordCloud = async (start, end) => {
+        try {
+            // setShowLoading(true);
+            const data = await dashBoardAPI.getWordCloud(start, end, "overall");
+            // const blob = new Blob([data], { type: 'image/png' });
+            // const imageObjectURL = URL.createObjectURL(blob);
+            // setDailyWordCloud(imageObjectURL);
+            setDailyWordCloud(data);
+            // console.log(data);
+        } catch (error) {
+            console.error('Error fetching bot config:', error);
+        } finally {
+            // setShowLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        if (searchDate.length > 0) {
+            fetchPost(searchDate[0], searchDate[1])
+            fetchSentiment(searchDate[0], searchDate[1])
+            fetchWordCloud(searchDate[0], searchDate[1])
+        }
+    }, [searchDate])
 
     const { isTabletOrMobile, isTablet, isMobile, isPortrait, isLandscape } = useResponsive();
 
     const { ภาพรวม } = WordClouds;
 
     const { overall } = PostPics;
+
+
 
     ///////////////////////////////////icons render logic///////////////////////////////////////////////////////////////////////
     const { facebook, instagram, twitter, tiktok, youtube, social_media } = SocialIcons;
@@ -135,12 +196,12 @@ const Dashboard = () => {
 
     //////////////////////////////////////////postBar////////////////////////////////////////////////////////////////
     const postBarData = {
-        labels: sentimentPos.map(item => item.name),
+        labels: dailyPosts.map(item => item.name),
         datasets: [
             {
                 label: 'จำนวนโพสต์',
-                data: sentimentPos.map(item => item.value),
-                backgroundColor: sentimentPos.map(item => colorSet(item.commentType)),
+                data: dailyPosts.map(item => item.value),
+                backgroundColor: dailyPosts.map(item => colorSet(item.commentType)),
                 barThickness: isMobile ? 20 : 50,
             },
         ],
@@ -164,13 +225,13 @@ const Dashboard = () => {
 
     ///////////////////////////////////////////sentimentBar///////////////////////////////////////////////////////////////
     const sentimentData = {
-        labels: sentimentAll.map(item => item.name),
+        labels: dailySentiment.map(item => item.commentType),
         datasets: [
             {
                 label: 'จำนวนความคิดเห็น',
-                data: sentimentAll.map(item => item.value),
-                backgroundColor: sentimentAll.map(item => colorSet(item.commentType)),
-                borderColor: sentimentAll.map(item => colorSet(item.commentType)),
+                data: dailySentiment.map(item => item.value),
+                backgroundColor: dailySentiment.map(item => colorSet(item.commentType)),
+                borderColor: dailySentiment.map(item => colorSet(item.commentType)),
             },
         ],
     };
@@ -422,7 +483,9 @@ const Dashboard = () => {
                             "tw-h-[16rem]": isMobile && isPortrait,
                             "tw-h-full": !isMobile || (isMobile && isLandscape),
                         })}>
-                            <img className="tw-object-fill tw-h-full tw-w-full" src={ภาพรวม} />
+                            <img className="tw-object-fill tw-h-full tw-w-full"
+                                src={ภาพรวม}
+                            />
                         </div>
                     </div>
                     <div className={classNames("tw-flex tw-flex-col tw-h-fit tw-object-contain tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {

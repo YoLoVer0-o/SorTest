@@ -1,6 +1,6 @@
 const dashboardMock = [
   {
-    topic: "religion",
+    topic: "Royal",
     username: "Suphanat Aphinyan",
     profile: "../src/assets/PostPic/religionP.jpg",
     date: "8 มกราคม เวลา 09:16 น.",
@@ -10,7 +10,7 @@ const dashboardMock = [
     link:"https://www.facebook.com/suphanat.aphinyan/posts/pfbid02DRxkRsz2HEC4Toz8bZUbzA15e2U56cg2Z4kuGjFxkNSczQfznedvgxYTM7h7PQ69l",
   },
   {
-    topic: "army",
+    topic: "Army",
     username: "สรยุทธ สุทัศนะจินดา กรรมกรข่าว",
     profile: "../src/assets/PostPic/armyP.jpg",
     date: "8 มกราคม เวลา 13:06 น.",
@@ -20,7 +20,7 @@ const dashboardMock = [
     link:"https://www.facebook.com/sorrayuth9115/posts/pfbid02LTrumcH9uJtBZzcqYiDz9CmfWydXv9VyadMGNr9gcxXDE2QUdvkJZKWMkioLF7eGl",
   },
   {
-    topic: "government",
+    topic: "Government",
     username: "Khaosod - ข่าวสด",
     profile: "../src/assets/PostPic/governmentP.jpg",
     date: "8 มกราคม เวลา 12:29 น.",
@@ -30,7 +30,7 @@ const dashboardMock = [
     link:"https://www.facebook.com/khaosod/posts/pfbid02Xx9nG5v9tQARCtyiHBTWzbZv8sMTNvTzKECADtJNM9xWphZqnUxq5EQo1vmjHY4tl",
   },
   {
-    topic: "rally",
+    topic: "Rally",
     username: "Amarin News",
     profile: "../src/assets/PostPic/rallyP.jpg",
     date: "3 มกราคม เวลา 12:46 น.",

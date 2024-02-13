@@ -74,7 +74,9 @@ const dashBoardAPI = {
       const response = await axios.get(
         `http://192.168.10.122/getWordCloud?start_date=${start_date}&end_date=${end_date}&topic=${topic}`
       );
-      return response.data; // Return the response data
+      // console.log(response);
+      return response.data;
+      // Return the response data
     } catch (error) {
       // console.log(error);
       if (error.response) {

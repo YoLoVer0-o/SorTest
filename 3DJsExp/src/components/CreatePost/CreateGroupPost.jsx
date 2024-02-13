@@ -4,7 +4,7 @@ import FacebookPost from "./FacebookPost";
 import TwitterPost from "./TwitterPost";
 import { useResponsive } from "../../hooks";
 import classNames from "classnames";
-import { Button, Input, Select, Tooltip } from "antd";
+import { Input, Select } from "antd";
 
 const CreateGroupPost = () => {
   const {

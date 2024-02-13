@@ -1,4 +1,5 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { HorizontalBarChart, DoughnutChart, ToTopButton, DataTable } from "../../utilities";
 import { sentimentAll, sentimentNega, sentimentPos } from "../../mock";
 import { Button, FloatButton, Tooltip } from "antd";
@@ -7,6 +8,9 @@ import { FeedbackModal } from "..";
 import { MoreOutlined, FilePdfOutlined, ColumnHeightOutlined, VerticalAlignMiddleOutlined } from "@ant-design/icons";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import classNames from "classnames";
+import botPostReportAPI from "../../service/botPostReportAPI";
+import { useSelector } from 'react-redux'
+import { getLogin } from '../../libs/loginSlice'
 
 const SentimentReport = () => {
 
@@ -15,6 +19,31 @@ const SentimentReport = () => {
     const [modalToggle, setModalToggle] = useState(false);
     const [message, setMessage] = useState({});
     const [displayComments, setDisplayComments] = useState("");
+    const [displayData, setDisplayData] = useState({});
+
+    const token = useSelector((state) => getLogin(state).token);
+
+    const location = useLocation();
+    let id = location.state;
+    console.log(id);
+
+    const fetchBotPost = async () => {
+        try {
+            // setShowLoading(true);
+            const data = await botPostReportAPI.getBotPostById(id);
+            setDisplayData(data);
+        } catch (error) {
+            console.error('Error fetching bot config:', error);
+        } finally {
+            // setShowLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        fetchBotPost()
+    }, [])
+
+
 
     const topRef = useRef(null);
 
@@ -205,7 +234,7 @@ const SentimentReport = () => {
                                 "tw-w-34": isTablet && isPortrait,
                                 "tw-w-44": isDesktopOrLaptop || isBigScreen,
                             })}>
-                                {" "}
+                                {displayData?.tag}
                                 TestTag
                             </div>
                         </div>
@@ -216,7 +245,7 @@ const SentimentReport = () => {
                                 "tw-w-34": isTablet && isPortrait,
                                 "tw-w-44": isDesktopOrLaptop || isBigScreen,
                             })}>
-                                {" "}
+                                {displayData?.nickname}
                                 Test
                             </div>
                         </div>
@@ -227,7 +256,7 @@ const SentimentReport = () => {
                                 "tw-w-34": isTablet && isPortrait,
                                 "tw-w-44": isDesktopOrLaptop || isBigScreen,
                             })}>
-                                {" "}
+                                {displayData?.timestamp}
                                 YYYY/MM/DD
                             </div>
                         </div>
@@ -238,7 +267,7 @@ const SentimentReport = () => {
                                 "tw-w-34": isTablet && isPortrait,
                                 "tw-w-44": isDesktopOrLaptop || isBigScreen,
                             })}>
-                                {" "}
+                                {displayData?.group}
                                 group A
                             </div>
                         </div>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DataTable, SearchBar } from "../../utilities";
 import { newSentiment } from "../../mock";
 import { useResponsive } from "../../hooks";
@@ -11,6 +11,9 @@ dayjs.extend(isSameOrBefore)
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 dayjs.extend(isSameOrAfter)
 import classNames from "classnames";
+import botPostReportAPI from "../../service/botPostReportAPI";
+import { useSelector } from 'react-redux'
+import { getLogin } from '../../libs/loginSlice'
 
 const SentimentTable = () => {
 
@@ -18,8 +21,28 @@ const SentimentTable = () => {
     const [searchBot, setSearchBot] = useState([]);
     const [searchDate, setSearchDate] = useState([]);
     const [pageSize, setPageSize] = useState(5);
+    const [displayData, setDisplayData] = useState([]);
+
+    const token = useSelector((state) => getLogin(state).token);
 
     const navigate = useNavigate();
+
+    const fetchBotPost = async () => {
+        try {
+            // setShowLoading(true);
+            const data = await botPostReportAPI.getBotPost();
+            setDisplayData(data);
+        } catch (error) {
+            console.error('Error fetching bot config:', error);
+        } finally {
+            // setShowLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        fetchBotPost()
+    }, [])
+
 
     const { isTabletOrMobile, isPortrait } = useResponsive();
 
@@ -143,13 +166,14 @@ const SentimentTable = () => {
 
     ///////////////////////////////////////////to report///////////////////////////////////////////////////////////////
     const toReport = async (data) => {
-        navigate(`/sentiment/report/${data.id}`, { state: data })
+        navigate(`/sentiment/report/${data.id}`, { state: data.id })
     }
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     return (
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto', {})}>
             <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">BotTable</p>
+            {/* {displayData.length > 0 && ( */}
             <div className={classNames("tw-flex tw-flex-row tw-max-w-full tw-justify-center tw-gap-2", {
                 "tw-flex-col": isTabletOrMobile && isPortrait,
             })}>
@@ -159,6 +183,7 @@ const SentimentTable = () => {
                     <SearchBar
                         useTagSearch={true}
                         data={newSentiment}
+                        // data={displayData}
                         onChangeFilter={setSearchTag}
                         keyName={"tag"}
                     />
@@ -180,22 +205,28 @@ const SentimentTable = () => {
                     <SearchBar
                         useTagSearch={true}
                         data={newSentiment}
+                        // data={displayData}
                         onChangeFilter={setSearchBot}
                         keyName={"group"}
                     />
                 </div>
 
             </div>
+            {/* )} */}
+
+            {/* {displayData.length > 0 && ( */}
             <div className={classNames("tw-border-2 tw-rounded-md", {})}>
                 <DataTable
                     columns={columns}
                     data={newSentiment}
+                    // data={displayData}
                     setPageSize={pageSize}
                     useRowClick={true}
                     onRowClick={(selectedRows) => toReport(selectedRows)}
                     keyName={"id"}
                 />
             </div>
+            {/* )} */}
             <div className="tw-flex tw-flex-row tw-my-6 tw-gap-4">
                 {pageSize < 20 && (
                     <Tooltip title="แสดงเพิ่มเติม">
