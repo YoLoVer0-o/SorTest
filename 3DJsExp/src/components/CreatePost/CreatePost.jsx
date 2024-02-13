@@ -25,7 +25,7 @@ const CreatePost = () => {
 
   if (selectedPlatform === "Twitter") {
     selectedComponent = <TwitterPost />;
-  } else if(selectedPlatform === "Facebook") {
+  } else if (selectedPlatform === "Facebook") {
     selectedComponent = <FacebookPost />;
   } else {
     selectedComponent = <FacebookPost />;
@@ -42,7 +42,7 @@ const CreatePost = () => {
           {
             "tw-w-full ": isMobile,
             "tw-w-[80%] tw-h-[80%]": isTablet && isPortrait || isLandscape && !isDesktopOrLaptop && !isMobile,
-            
+
             "tw-w-[40%] ": isDesktopOrLaptop,
           }
         )}

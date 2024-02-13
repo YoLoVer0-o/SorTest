@@ -6,6 +6,7 @@ import Feedback from "./Feedback";
 import FeedbackModal from "./SentimentLog/FeedbackModal";
 import PostReport from "./PostLog/PostReport";
 import CreatePost from "./CreatePost/CreatePost";
+import CreateGroupPost from "./CreatePost/CreateGroupPost";
 import StatusTable from "./CreatePost/StatusTable";
 import SentimentTable from "./SentimentLog/SentimentTable";
 import SentimentReport from "./SentimentLog/SentimentReport";
@@ -35,6 +36,7 @@ export {
   FeedbackModal,
   PostReport,
   CreatePost,
+  CreateGroupPost,
   StatusTable,
   SentimentTable,
   SentimentReport,
