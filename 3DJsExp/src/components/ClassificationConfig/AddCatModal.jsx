@@ -27,7 +27,7 @@ const AddCatModal = (props) => {
     const MySwal = withReactContent(Swal);
 
     const handleSave = async () => {
-        console.log(formData);
+        // console.log(formData);
         if (formData.category !== "" && !(formData.keywords.some(keyword => keyword.keyword === ""))) {
             MySwal.fire({
                 title: "ต้องการบันทึกคำคัดกรอง?",

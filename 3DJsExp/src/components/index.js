@@ -6,12 +6,15 @@ import Feedback from "./Feedback";
 import FeedbackModal from "./SentimentLog/FeedbackModal";
 import PostReport from "./PostLog/PostReport";
 import CreatePost from "./CreatePost/CreatePost";
+import StatusTable from "./CreatePost/StatusTable";
 import SentimentTable from "./SentimentLog/SentimentTable";
 import SentimentReport from "./SentimentLog/SentimentReport";
 import AccountTable from "./RPAManagement/AccountTable";
 import SchedueTable from "./RPAManagement/SchedueTable";
 import WorkTable from "./RPAManagement/WorkTable";
 import EditUserModal from "./RPAManagement/EditUserModal";
+import AddUserModal from "./RPAManagement/AddUserModal";
+import AddSchedueModal from "./RPAManagement/AddSchedueModal";
 import EditSchedueModal from "./RPAManagement/EditSchedueModal";
 import EditWorkModal from "./RPAManagement/EditWorkModal";
 import DataLog from "./RPAManagement/DataLog";
@@ -32,12 +35,15 @@ export {
   FeedbackModal,
   PostReport,
   CreatePost,
+  StatusTable,
   SentimentTable,
   SentimentReport,
   AccountTable,
   SchedueTable,
   WorkTable,
+  AddUserModal,
   EditUserModal,
+  AddSchedueModal,
   EditSchedueModal,
   EditWorkModal,
   DataLog,

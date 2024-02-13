@@ -1,5 +1,6 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import loginReducer from "./libs/loginSlice";
+import userReducer from "./libs/userSlice";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 
@@ -8,10 +9,15 @@ const persistConfig = {
   storage,
 };
 
-const persistedReducer = persistReducer(persistConfig, loginReducer);
+const mergeReducer = combineReducers({
+  login: loginReducer,
+  user: userReducer,
+});
+
+const rootReducer = persistReducer(persistConfig, mergeReducer);
 
 export const store = configureStore({
-  reducer: persistedReducer,
+  reducer: rootReducer,
 });
 
 export const persistor = persistStore(store);

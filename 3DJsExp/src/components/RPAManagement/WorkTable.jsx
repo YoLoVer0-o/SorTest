@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { DataTable, SearchBar } from "../../utilities";
 import { workMock } from "../../mock";
 import { useResponsive } from "../../hooks";
@@ -11,6 +11,7 @@ dayjs.extend(isSameOrBefore);
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 dayjs.extend(isSameOrAfter);
 import classNames from "classnames";
+import RPAWorkAPI from "../../service/RPAWorkAPI";
 
 const WorkTable = () => {
 
@@ -32,6 +33,37 @@ const WorkTable = () => {
         setModalToggle(false);
     };
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    const downloadFile = async () => {
+        try {
+            await RPAWorkAPI.fbDownloadWork().then((response) => {
+                const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = blobUrl;
+                link.setAttribute('download', "work_format.xlsx");
+                document.body.appendChild(link);
+                link.click();
+                window.URL.revokeObjectURL(blobUrl);
+            })
+
+        } catch (error) {
+            console.error('Error downloading file:', error);
+        }
+    };
+
+    const hiddenFileInput = useRef(null);
+
+    const handleClick = () => {
+        hiddenFileInput.current.click();
+    };
+
+    const handleChange = async (event) => {
+        const fileUploaded = event.target.files[0];
+        // console.log(fileUploaded);
+        await RPAWorkAPI.fbUploadWork(fileUploaded).then((response) => { console.log(response); })
+    };
+
 
     ////////////////////////////////////////////table//////////////////////////////////////////////////////////////
     const columns = [
@@ -185,13 +217,23 @@ const WorkTable = () => {
                         <Button
                             className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
                                 "tw-w-full": isMobile && isPortrait,
-                            })}>
+                            })}
+                            onClick={() => downloadFile()}
+                        >
                             ดาวน์โหลด Format
                         </Button>
+                        <input
+                            type="file"
+                            onChange={handleChange}
+                            ref={hiddenFileInput}
+                            style={{ display: 'none' }}
+                        />
                         <Button
                             className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
                                 "tw-w-full": isMobile && isPortrait,
-                            })}>
+                            })}
+                            onClick={() => handleClick()}
+                        >
                             เพิ่มงานจาก Excel
                         </Button>
                         <Button

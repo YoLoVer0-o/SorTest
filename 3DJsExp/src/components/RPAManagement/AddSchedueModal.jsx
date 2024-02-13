@@ -1,29 +1,33 @@
 import { useState, useEffect } from 'react';
 import { useResponsive } from "../../hooks";
-import { Form, Modal, Button, Input, Select, ConfigProvider, TimePicker, Switch, InputNumber } from 'antd';
+import { Form, Modal, Button, Input, Select, Switch, TimePicker, ConfigProvider, InputNumber } from 'antd';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import dayjs from 'dayjs';
 import RPASchedueAPI from "../../service/RPASchedueAPI";
+import dayjs from 'dayjs';
 import { Loading } from "../../utilities";
 
-const EditSchedueModal = props => {
+const AddSchedueModal = props => {
     ///////////////////////////////////////////props declaration///////////////////////////////////////////////////////////////
     const modalToggle = props.modalToggle;
     const handleCancel = props.handleCancel;
-    const modalData = props.modalData;
     const token = props.token;
     const fetch = props.fetch;
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     const [isModalOpen, setIsModalOpen] = useState(modalToggle);
-    const [taskConfig, setTaskConfig] = useState();
-    // const [formData, setFormData] = useState({});
+    const [taskConfig, setTaskConfig] = useState(false);
     const [showLoading, setShowLoading] = useState(false);
-    const [defaultData, setDefaultData] = useState({ ...modalData, execution_time: "" });
+    const [defaultData, setDefaultData] = useState({
+        botname: "",
+        task: "",
+        frequency: "",
+        execution_time: "",
+        task_config: {}
+    });
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     const { isMobile } = useResponsive();
@@ -33,17 +37,13 @@ const EditSchedueModal = props => {
 
     const formData = Form.useWatch([], form);
 
-    // const handleTimeChange = (value) => {
-    //     console.log(dayjs(value).format('HH:mm'));
-    // }
-
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////sweetalert and save and delete logic///////////////////////////////////////////////////////////////
     const MySwal = withReactContent(Swal)
 
     const handleSave = async () => {
-        console.log(formData);
+        // console.log(formData);
         let payLoad
         if (!taskConfig) {
             payLoad = { ...formData, execution_time: dayjs(formData.execution_time).format('HH:mm'), task_config: {} }
@@ -65,43 +65,10 @@ const EditSchedueModal = props => {
             if (result.isConfirmed) {
                 try {
                     setShowLoading(true);
-                    await RPASchedueAPI.fbUpdateSchedule(token, modalData.task_id, payLoad).then(() => {
+                    await RPASchedueAPI.fbAddSchedule(token, payLoad).then(() => {
                         MySwal.fire({
                             title: "เรียบร้อย!",
                             text: "บันทึกข้อมูลแล้ว!",
-                            icon: "success"
-                        });
-                    })
-                } catch (error) {
-                    console.error('Error fetching bot config:', error);
-                } finally {
-                    fetch()
-                    setShowLoading(false);
-                    handleCancel();
-                }
-            }
-        });
-    }
-
-    const handleDelete = () => {
-
-        MySwal.fire({
-            title: "ต้องการลบงานประจำ?",
-            text: "คุณจะไม่สามารถกู้คืนได้ เมื่อกดตกลง",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "ตกลง",
-            cancelButtonText: "ยกเลิก",
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                try {
-                    setShowLoading(true);
-                    await RPASchedueAPI.fbDeleteSchedule(token, modalData.botname).then(() => {
-                        MySwal.fire({
-                            title: "เรียบร้อย!",
-                            text: "งานประจำถูกลบแล้ว",
                             icon: "success"
                         });
                     })
@@ -129,7 +96,10 @@ const EditSchedueModal = props => {
     useEffect(() => {
         if (taskConfig) {
             setDefaultData({
-                ...defaultData,
+                botname: "",
+                task: "",
+                frequency: "",
+                execution_time: "",
                 task_config: {
                     post_configures: {
                         "limit_comment": 300,
@@ -149,7 +119,6 @@ const EditSchedueModal = props => {
             })
 
             form.setFieldsValue({
-                ...defaultData,
                 task_config: {
                     post_configures: {
                         "limit_comment": 300,
@@ -171,45 +140,44 @@ const EditSchedueModal = props => {
         }
         else if (!taskConfig) {
             setDefaultData({
-                ...defaultData,
+                botname: "",
+                task: "",
+                frequency: "",
+                execution_time: "",
                 task_config: {}
             })
+
             form.setFieldsValue({ task_config: {} })
+
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [taskConfig]);
 
+
     return (
         <Modal
             className='tw-max-h-full tw-max-w-full'
-            title={'แก้ไขข้อมูลงานประจำ'}
+            title={'เพิ่มข้อมูลงานประจำ'}
             open={isModalOpen}
             onCancel={handleCancel}
             footer={
-                [<Button
-                    key="delete"
-                    className='tw-bg-red-500 tw-text-white tw-border-white hover:tw-bg-white hover:tw-text-red-500 hover:tw-border-red-500'
-                    onClick={() => handleDelete(formData)}
-                >
-                    ลบ
-                </Button>,
-                <Button
-                    key="submit"
-                    htmlType="submit"
-                    form="editForm"
-                    className='tw-bg-blue-500 tw-text-white tw-border-white hover:tw-bg-white hover:tw-text-blue-500 hover:tw-border-blue-500'
-                // onClick={() => handleSave(formData)}
-                >
-                    บันทึก
-                </Button>
+                [
+                    <Button
+                        key="submit"
+                        htmlType="submit"
+                        form="editForm"
+                        className='tw-bg-blue-500 tw-text-white tw-border-white hover:tw-bg-white hover:tw-text-blue-500 hover:tw-border-blue-500'
+                    // onClick={() => handleSave()}
+                    >
+                        บันทึก
+                    </Button>
                     ,]}
         >
             <Form
                 form={form}
                 name="editForm"
                 id="editForm"
-                onFinish={() => handleSave(formData)}
-                // initialValues={modalData}
+                onFinish={() => handleSave()}
                 initialValues={defaultData}
             >
                 <div className='tw-overflow-y-auto tw-h-full tw-w-full tw-border-black tw-border-2 tw-rounded-md'>
@@ -424,12 +392,11 @@ const EditSchedueModal = props => {
     );
 };
 
-EditSchedueModal.propTypes = {
+AddSchedueModal.propTypes = {
     modalToggle: PropTypes.bool.isRequired,
     handleCancel: PropTypes.func.isRequired,
-    modalData: PropTypes.any.isRequired,
     token: PropTypes.string,
     fetch: PropTypes.func,
 }
 
-export default EditSchedueModal;
+export default AddSchedueModal;

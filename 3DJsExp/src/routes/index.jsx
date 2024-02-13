@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Dashboard, SubDashboard, PostTable, PostReport, CreatePost, SentimentTable, SentimentReport, AccountTable, SchedueTable, WorkTable, DataLog, ClassTable, WordTable, SimilarPost, Trending } from "../components";
+import { Dashboard, SubDashboard, PostTable, PostReport, CreatePost, SentimentTable, SentimentReport, AccountTable, SchedueTable, WorkTable, DataLog, ClassTable, WordTable, SimilarPost, Trending, StatusTable } from "../components";
 import { LoginPage, MainPage, PostDataPage, CreatePostPage, SentimentPage, RPAManagementPage, ClassConfigPage, RecommendationPage } from "../pages";
 
 export const router = createBrowserRouter([
@@ -36,12 +36,16 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "/createPost",
+    path: "/postCreation",
     element: <CreatePostPage />,
     children: [
       {
-        path: "",
+        path: "/postCreation/createPost",
         element: <CreatePost />,
+      },
+      {
+        path: "/postCreation/postStatus",
+        element: <StatusTable />,
       },
     ],
   },

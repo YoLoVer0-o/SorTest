@@ -7,6 +7,7 @@ import ToTopButton from "./ToTopButton";
 import PicCarousel from "./PicCarousel";
 import PicModal from "./PicModal";
 import ListInput from "./ListInput";
+import Loading from "./Loading";
 
 export {
   VerticalBarChart,
@@ -18,4 +19,5 @@ export {
   PicCarousel,
   ListInput,
   PicModal,
+  Loading,
 };

@@ -3,13 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { DataTable, SearchBar } from "../../utilities";
 import { postMock } from "../../mock";
 import { useResponsive } from "../../hooks";
-import { Button, Input, Switch, Tooltip } from "antd";
+import { Button, Input, Switch, Tooltip, InputNumber, Select } from "antd";
 import {
     ColumnHeightOutlined,
     VerticalAlignMiddleOutlined,
     FileTextOutlined,
     SearchOutlined,
     MinusOutlined,
+    CloseCircleOutlined,
+    PlusOutlined
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
@@ -28,10 +30,44 @@ const PostTable = () => {
     const [selectedRows, setSelectedRows] = useState([]);
     const [pageSize, setPageSize] = useState(5);
     const [advancedSearch, setAdvancedSearch] = useState(false);
+    const [includeWord, setIncludeWord] = useState([]);
+    const [inputValue, setInputValue] = useState('');
+    const [excludeWord, setExcludeWord] = useState([]);
 
     const navigate = useNavigate();
 
     const { isTabletOrMobile, isPortrait } = useResponsive();
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    const addWord = async (word, setData) => {
+
+        // const payload = { group_name: group }
+        setData(prevItems => [...prevItems, {
+            label: word,
+            value: word,
+        }])
+        setInputValue(null)
+    };
+
+    const deleteWord = async (word, setData) => {
+
+
+        setData(prevItems => {
+            const indexToRemove = prevItems.findIndex(item => item.label === word);
+
+            // If the item is found
+            if (indexToRemove !== -1) {
+                // Create a copy of the current items array
+                const newItems = [...prevItems];
+                // Remove the item from the copied array
+                newItems.splice(indexToRemove, 1);
+                // Update the state with the new array
+                return newItems
+            }
+        })
+
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////table///////////////////////////////////////////////////////////////
     const columns = [
@@ -181,7 +217,7 @@ const PostTable = () => {
                         <SearchBar
                             useDateSearch={true}
                             onChangeDate={setSearchDate}
-                            keyName={"tag"}
+                        // keyName={"tag"}
                         />
                     </div>
                 </div>
@@ -189,32 +225,98 @@ const PostTable = () => {
                     <div className="tw-flex tw-flex-col tw-justify-center tw-w-full tw-gap-6">
                         <div className='tw-flex tw-flex-col tw-justify-center tw-w-full'>
                             <p className="tw-text-lg">มีคำเหล่านี้:</p>
-                            <Input
-                                addonBefore={<SearchOutlined />}
-                                // placeholder="พิมพ์สิ่งที่ต้องการค้นหา"
-                                // onChange={onTextChange}
-                                className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md hover:tw-border-sky-700 tw-w-full'
+                            <Select
+                                mode="multiple"
+                                allowClear
+                                className='tw-w-full'
+                                placeholder="Please select"
+                                onFocus={() => setInputValue(null)}
+                                onDeselect={(value) => deleteWord(value, setIncludeWord)}
+                                options={includeWord.length > 0 ? includeWord : false}
+                                optionRender={(option) => (
+                                    <div className='tw-flex tw-flex-row tw-justify-between'>
+                                        {/* <CloseCircleOutlined className='tw-text-2xl tw-text-red-500' onClick={() => deleteWord(option.value, setIncludeWord)} /> */}
+                                        <p className='tw-font-bold'>{option.label}</p>
+                                    </div>
+                                )}
+                                dropdownRender={(menu) => (
+                                    <div className='tw-flex tw-flex-col'>
+                                        {menu}
+                                        <div className='tw-flex tw-flex-row tw-border-2 tw-border-black tw-rounded-md tw-p-1'>
+                                            <Input
+                                                placeholder="เพิ่มคำใหม่"
+                                                onKeyDown={(e) => e.stopPropagation()}
+                                                addonAfter={<Tooltip title={"กดเพื่อเพิ่ม(จำเป็นต้องกรอก)"}>
+                                                    <Button
+                                                        icon={<PlusOutlined />}
+                                                        className='tw-bg-green-500 tw-text-white tw-border-white hover:tw-bg-white hover:tw-text-green-500 hover:tw-border-green-500'
+                                                        onClick={() => addWord(inputValue, setIncludeWord)}
+                                                    >
+                                                        เพิ่มกลุ่ม
+                                                    </Button>
+                                                </Tooltip>}
+                                                value={inputValue}
+                                                onChange={(e) => setInputValue(e.target.value)}
+                                            />
+                                        </div>
+                                    </div>
+                                )}
                             />
                         </div>
                         <div className='tw-flex tw-flex-col tw-justify-center tw-w-full'>
                             <p className="tw-text-lg">ไม่มีคำเหล่านี้:</p>
-                            <Input
-                                addonBefore={<SearchOutlined />}
-                                // placeholder="พิมพ์สิ่งที่ต้องการค้นหา"
-                                // onChange={onTextChange}
-                                className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md hover:tw-border-sky-700 tw-w-full'
+                            <Select
+                                mode="multiple"
+                                allowClear
+                                className='tw-w-full'
+                                placeholder="Please select"
+                                onFocus={() => setInputValue(null)}
+                                onDeselect={(value) => deleteWord(value, setExcludeWord)}
+                                options={excludeWord.length > 0 ? excludeWord : false}
+                                optionRender={(option) => (
+                                    <div className='tw-flex tw-flex-row tw-justify-between'>
+
+                                        {/* <CloseCircleOutlined className='tw-text-2xl tw-text-red-500' onClick={() => deleteWord(option.value, setExcludeWord)} /> */}
+
+                                        <p className='tw-font-bold'>{option.label}</p>
+                                    </div>
+                                )}
+                                dropdownRender={(menu) => (
+                                    <div className='tw-flex tw-flex-col'>
+                                        {menu}
+                                        <div className='tw-flex tw-flex-row tw-border-2 tw-border-black tw-rounded-md tw-p-1'>
+                                            <Input
+                                                placeholder="เพิ่มคำใหม่"
+                                                onKeyDown={(e) => e.stopPropagation()}
+                                                addonAfter={<Tooltip title={"กดเพื่อเพิ่ม(จำเป็นต้องกรอก)"}>
+                                                    <Button
+                                                        icon={<PlusOutlined />}
+                                                        className='tw-bg-green-500 tw-text-white tw-border-white hover:tw-bg-white hover:tw-text-green-500 hover:tw-border-green-500'
+                                                        onClick={() => addWord(inputValue, setExcludeWord)}
+                                                    >
+                                                        เพิ่มกลุ่ม
+                                                    </Button>
+                                                </Tooltip>}
+                                                value={inputValue}
+                                                onChange={(e) => setInputValue(e.target.value)}
+                                            />
+                                        </div>
+                                    </div>
+                                )}
                             />
                         </div>
                         <div className='tw-flex tw-flex-row tw-justify-center tw-w-full tw-gap-6'>
                             <div className='tw-flex tw-flex-col tw-justify-center tw-w-full'>
                                 <p className="tw-text-lg">จำนวนการมีส่วนร่วม:</p>
                                 <div className='tw-flex tw-flex-row tw-w-full tw-gap-4'>
-                                    <Input
+                                    <InputNumber
+                                        type="number"
                                         // onChange={onTextChange}
                                         className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md hover:tw-border-sky-700 tw-w-full'
                                     />
                                     <MinusOutlined className="tw-text-lg" />
-                                    <Input
+                                    <InputNumber
+                                        type="number"
                                         // onChange={onTextChange}
                                         className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md hover:tw-border-sky-700 tw-w-full'
                                     />

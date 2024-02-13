@@ -17,17 +17,18 @@ const WordTable = () => {
     const [modalToggle, setModalToggle] = useState(false);
     const [infoModalToggle, setInfoModalToggle] = useState(false);
     const [payload, setPayload] = useState();
+    const [pageIndex, setPageIndex] = useState({ current: 1, pageSize: 5 });
 
     const { isTabletOrMobile, isMobile, isPortrait } = useResponsive();
 
     const fetchWord = async () => {
-        console.log(category._id);
-        const data = await classificationAPI.getCatWord(category._id);
+        // console.log(category._id);
+        const data = await classificationAPI.getCatWord(category._id, pageIndex.current, pageIndex.pageSize);
         setPayload(data);
     }
 
     const updateWord = async (keyword, wordObj) => {
-        await classificationAPI.editKeyWord(category._id, keyword, wordObj);
+        await classificationAPI.editKeyWord(category._id, keyword, wordObj).then(() => fetchWord());
     }
 
 
@@ -53,7 +54,7 @@ const WordTable = () => {
     const MySwal = withReactContent(Swal)
 
     const handleDelete = (value) => {
-        console.log(value);
+        // console.log(value);
 
         MySwal.fire({
             title: "ต้องการลบหมวดหมู่?",
@@ -81,25 +82,25 @@ const WordTable = () => {
     ////////////////////////////////////////////update logic//////////////////////////////////////////////////////////////
     const updateChecked = (checked, keyword) => {
 
-        const newState = payload.map(payload => {
+        const newState = payload.keywords.map(payload => {
             if (payload.keyword === keyword) {
-                console.log("updateChecked");
+                // console.log("updateChecked");
                 return { ...payload, actual: checked };
             }
             return payload;
         });
-        setPayload(newState);
+        // setPayload(newState);
         const wordPayLoad = (({ score, actual }) => ({ score, actual }))(newState.find((newState) => newState.keyword == keyword));
-        console.log(wordPayLoad);
+        // console.log(wordPayLoad);
         updateWord(keyword, wordPayLoad)
         // fetchWord()
     };
 
     const handleWeight = (keyword, operator) => {
 
-        const newState = payload.map(payload => {
+        const newState = payload.keywords.map(payload => {
             if (payload.keyword === keyword) {
-                console.log("updateChecked");
+                // console.log("updateChecked");
                 if (operator === "+" && payload.score < 10)
                     return { ...payload, score: payload.score + 1 };
                 else if (operator === "-" && payload.score > 1)
@@ -107,9 +108,9 @@ const WordTable = () => {
             }
             return payload;
         });
-        setPayload(newState);
+        // setPayload(newState);
         const wordPayLoad = (({ score, actual }) => ({ score, actual }))(newState.find((newState) => newState.keyword == keyword));
-        console.log(wordPayLoad);
+        // console.log(wordPayLoad);
         updateWord(keyword, wordPayLoad)
         // fetchWord()
 
@@ -154,7 +155,7 @@ const WordTable = () => {
                                     <PlusOutlined />
                                 </Button>
                             </Tooltip>}
-                        value={payload.find((payload) => payload.keyword === record?.keyword).score}
+                        value={payload.keywords.find((payload) => payload.keyword === record?.keyword).score}
                         min={1}
                         max={10}
                         readOnly
@@ -174,9 +175,9 @@ const WordTable = () => {
                 <Tooltip title="กดเพื่อเปลี่ยนค่า">
                     <div className="tw-flex tw-flex-row tw-justify-center">
                         <Switch className={classNames("", {
-                            "tw-bg-black": payload.find((payload) => payload.keyword === record?.keyword).actual === false,
-                            "tw-bg-blue-400": payload.find((payload) => payload.keyword === record?.keyword).actual === true,
-                        })} defaultChecked={payload.find((payload) => payload.keyword === record?.keyword).actual}
+                            "tw-bg-black": payload.keywords.find((payload) => payload.keyword === record?.keyword).actual === false,
+                            "tw-bg-blue-400": payload.keywords.find((payload) => payload.keyword === record?.keyword).actual === true,
+                        })} defaultChecked={payload.keywords.find((payload) => payload.keyword === record?.keyword).actual}
                             onChange={(checked) => updateChecked(checked, record?.keyword)} />
                     </div>
                 </Tooltip>
@@ -203,8 +204,7 @@ const WordTable = () => {
     useEffect(() => {
         fetchWord()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [category])
-
+    }, [category, pageIndex])
 
     return (
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-y-auto', {})}>
@@ -235,10 +235,12 @@ const WordTable = () => {
                 })}>
                     {payload && (
                         <DataTable
-                            data={payload}
+                            data={payload.keywords}
                             columns={columns}
-                            setPageSize={payload.length}
+                            setPageSize={5}
                             keyName={"keyword"}
+                            totalPages={payload.total_keywords}
+                            sendPages={setPageIndex}
                         />
                     )}
                 </div>
