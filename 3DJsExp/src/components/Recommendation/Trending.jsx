@@ -1,19 +1,43 @@
+import { useState, useEffect } from "react";
 import { DataTable } from "../../utilities";
 import { useResponsive } from "../../hooks";
 import WordClouds from "../../assets/WordClouds";
 import classNames from "classnames";
 import { Tooltip } from 'antd';
 import { recmock } from "../../mock";
+import recommendAPI from "../../service/recommendAPI";
+import { useSelector } from 'react-redux'
+import { getLogin } from '../../libs/loginSlice'
 
 const Trending = () => {
+
+  const [displayData, setDisplayData] = useState([]);
 
   const {
     isTabletOrMobile,
     isMobile,
-    isTablet,
     isLandscape,
     isPortrait,
   } = useResponsive();
+
+  const token = useSelector((state) => getLogin(state).token);
+
+  const fetchEngagement = async () => {
+    try {
+      // setShowLoading(true);
+      const data = await recommendAPI.engagement(10);
+      setDisplayData(data);
+    } catch (error) {
+      console.error('Error fetching bot config:', error);
+    } finally {
+      // setShowLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchEngagement();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const { ภาพรวม } = WordClouds;
   ///////////////////////////////////////////table///////////////////////////////////////////////////////////////

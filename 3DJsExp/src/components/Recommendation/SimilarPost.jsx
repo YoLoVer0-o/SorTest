@@ -1,10 +1,17 @@
+import { useState, useEffect } from "react";
 import { DataTable } from "../../utilities";
 import { useResponsive } from "../../hooks";
 import classNames from "classnames";
 import { Button, Input, Tooltip } from 'antd';
 import { recmock } from "../../mock";
+import recommendAPI from "../../service/recommendAPI";
+import { useSelector } from 'react-redux'
+import { getLogin } from '../../libs/loginSlice'
 
 const SimilarPost = () => {
+
+  const [displayData, setDisplayData] = useState([]);
+  const [postText, setPostText] = useState("");
 
   const {
     isTabletOrMobile,
@@ -12,6 +19,28 @@ const SimilarPost = () => {
   } = useResponsive();
 
   const { TextArea } = Input;
+
+
+  const token = useSelector((state) => getLogin(state).token);
+
+
+
+  const fetchRecommend = async () => {
+    try {
+      // setShowLoading(true);
+      const data = await recommendAPI.recommend({ query: postText, top: 10 });
+      setDisplayData(data);
+    } catch (error) {
+      console.error('Error fetching bot config:', error);
+    } finally {
+      // setShowLoading(false);
+    }
+  }
+
+  // useEffect(() => {
+  //   fetchRecommend();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [])
 
   ////////////////////////////////////////////////table//////////////////////////////////////////////////////////
   ///////////////////////////////////////////table///////////////////////////////////////////////////////////////
@@ -118,10 +147,12 @@ const SimilarPost = () => {
           "tw-overflow-auto": isTabletOrMobile && isPortrait,
         })} >
         <p className="tw-text-lg">เนื้อหาที่จะโพสต์:</p>
-        <TextArea rows={4} />
+        <TextArea rows={4} onChange={(e) => setPostText(e.target.value)} />
         <div className="tw-flex tw-flex-row tw-w-full tw-justify-center tw-gap-6">
-          <Button className="tw-h-full tw-w-fit tw-border-2 tw-border-blue-400 tw-text-blue-400" >ล้าง</Button>
-          <Button className="tw-h-full tw-w-fit tw-border-2 tw-border-blue-400 tw-text-white tw-bg-blue-400 " >ตรวจสอบ</Button>
+          <Button className="tw-h-full tw-w-fit tw-border-2 tw-border-blue-400 tw-text-blue-400" onClick={() => setPostText("")} >ล้าง</Button>
+          <Button className="tw-h-full tw-w-fit tw-border-2 tw-border-blue-400 tw-text-white tw-bg-blue-400"
+            onClick={() => fetchRecommend()}
+          >ตรวจสอบ</Button>
         </div>
       </div>
 
