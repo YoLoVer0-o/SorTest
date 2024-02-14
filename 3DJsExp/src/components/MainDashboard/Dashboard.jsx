@@ -62,11 +62,9 @@ const Dashboard = () => {
         try {
             // setShowLoading(true);
             const data = await dashBoardAPI.getWordCloud(start, end, "overall");
-            // const blob = new Blob([data], { type: 'image/png' });
-            // const imageObjectURL = URL.createObjectURL(blob);
-            // setDailyWordCloud(imageObjectURL);
-            setDailyWordCloud(data);
-            // console.log(data);
+            const blob = new Blob([data], { type: 'image/png' });
+            const url = URL.createObjectURL(blob);
+            setDailyWordCloud(url);
         } catch (error) {
             console.error('Error fetching bot config:', error);
         } finally {
@@ -75,7 +73,7 @@ const Dashboard = () => {
     }
 
     useEffect(() => {
-        if (searchDate.length > 0) {
+        if (searchDate?.length > 0) {
             fetchPost(searchDate[0], searchDate[1])
             fetchSentiment(searchDate[0], searchDate[1])
             fetchWordCloud(searchDate[0], searchDate[1])
@@ -483,9 +481,12 @@ const Dashboard = () => {
                             "tw-h-[16rem]": isMobile && isPortrait,
                             "tw-h-full": !isMobile || (isMobile && isLandscape),
                         })}>
-                            <img className="tw-object-fill tw-h-full tw-w-full"
-                                src={ภาพรวม}
-                            />
+                            {dailyWordCloud && (
+                                <img className="tw-object-fill tw-h-full tw-w-full"
+                                    // src={ภาพรวม}
+                                    src={dailyWordCloud}
+                                />
+                            )}
                         </div>
                     </div>
                     <div className={classNames("tw-flex tw-flex-col tw-h-fit tw-object-contain tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
@@ -521,13 +522,6 @@ const Dashboard = () => {
                                     className=''
                                     innerElement='p'
                                 />
-                                {/* <ReadMoreReact
-                                    text={testText}
-                                    min={100}
-                                    ideal={180}
-                                    max={300}
-                                    readMoreText={readMore}
-                                /> */}
                                 <div className={classNames("tw-flex tw-justify-center tw-h-96", {
                                 })}>
                                     <img className="tw-object-scale-down" src={overall} />

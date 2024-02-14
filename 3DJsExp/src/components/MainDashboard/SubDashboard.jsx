@@ -21,73 +21,72 @@ import { getLogin } from '../../libs/loginSlice'
 
 const SubDashboard = () => {
 
-    // const [searchTag, setSearchTag] = useState([]);
-    const [searchDate, setSearchDate] = useState([dayjs().format('YYYY-MM-DD'), dayjs().format('YYYY-MM-DD')]);
+  // const [searchTag, setSearchTag] = useState([]);
+  const [searchDate, setSearchDate] = useState([dayjs().format('YYYY-MM-DD'), dayjs().format('YYYY-MM-DD')]);
 
-    const { isTabletOrMobile, isTablet, isMobile, isPortrait, isLandscape } = useResponsive();
+  const { isTabletOrMobile, isTablet, isMobile, isPortrait, isLandscape } = useResponsive();
 
-    const [dailyPosts, setDailyPosts] = useState([]);
+  const [dailyPosts, setDailyPosts] = useState([]);
 
-    const [dailySentiment, setDailySentiment] = useState([]);
+  const [dailySentiment, setDailySentiment] = useState([]);
 
-    const [dailyWordCloud, setDailyWordCloud] = useState("");
+  const [dailyWordCloud, setDailyWordCloud] = useState("");
 
-    const token = useSelector((state) => getLogin(state).token);
+  const token = useSelector((state) => getLogin(state).token);
 
-    const fetchPost = async (start, end) => {
-        try {
-            // setShowLoading(true);
-            const data = await dashBoardAPI.getTopicDailyPost(start, end, param.topic);
-            setDailyPosts(data);
-        } catch (error) {
-            console.error('Error fetching bot config:', error);
-        } finally {
-            // setShowLoading(false);
-        }
+  const fetchPost = async (start, end) => {
+    try {
+      // setShowLoading(true);
+      const data = await dashBoardAPI.getTopicDailyPost(start, end, param.topic.toLowerCase());
+      setDailyPosts(data);
+    } catch (error) {
+      console.error('Error fetching bot config:', error);
+    } finally {
+      // setShowLoading(false);
     }
+  }
 
-    const fetchSentiment = async (start, end) => {
-        try {
-            // setShowLoading(true);
-            const data = await dashBoardAPI.getTopicSentiment(start, end, param.topic);
-            setDailySentiment(data);
-        } catch (error) {
-            console.error('Error fetching bot config:', error);
-        } finally {
-            // setShowLoading(false);
-        }
+  const fetchSentiment = async (start, end) => {
+    try {
+      // setShowLoading(true);
+      const data = await dashBoardAPI.getTopicSentiment(start, end, param.topic.toLowerCase());
+      setDailySentiment(data);
+    } catch (error) {
+      console.error('Error fetching bot config:', error);
+    } finally {
+      // setShowLoading(false);
     }
+  }
 
-    const fetchWordCloud = async (start, end) => {
-        try {
-            // setShowLoading(true);
-            const data = await dashBoardAPI.getWordCloud(start, end, "overall");
-            // const blob = new Blob([data], { type: 'image/png' });
-            // const imageObjectURL = URL.createObjectURL(blob);
-            // setDailyWordCloud(imageObjectURL);
-            setDailyWordCloud(data);
-            // console.log(data);
-        } catch (error) {
-            console.error('Error fetching bot config:', error);
-        } finally {
-            // setShowLoading(false);
-        }
+  const fetchWordCloud = async (start, end) => {
+    try {
+      // setShowLoading(true);
+      const data = await dashBoardAPI.getWordCloud(start, end, param.topic.toLowerCase());
+      const blob = new Blob([data], { type: 'image/png' });
+      const url = URL.createObjectURL(blob);
+      setDailyWordCloud(url);
+    } catch (error) {
+      console.error('Error fetching bot config:', error);
+    } finally {
+      // setShowLoading(false);
     }
+  }
 
-    useEffect(() => {
-        if (searchDate.length > 0) {
-            fetchPost(searchDate[0], searchDate[1])
-            fetchSentiment(searchDate[0], searchDate[1])
-            fetchWordCloud(searchDate[0], searchDate[1])
-        }
-    }, [searchDate])
+  useEffect(() => {
+    if (searchDate?.length > 0) {
+      fetchPost(searchDate[0], searchDate[1])
+      fetchSentiment(searchDate[0], searchDate[1])
+      fetchWordCloud(searchDate[0], searchDate[1])
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchDate])
 
-    ///////////////////////////////////WordClouds logic///////////////////////////////////////////////////////////////////////
-    const { กองทัพ, รัฐบาล, ชุมนุม, สถาบัน } = WordClouds;
+  ///////////////////////////////////WordClouds logic///////////////////////////////////////////////////////////////////////
+  const { กองทัพ, รัฐบาล, ชุมนุม, สถาบัน } = WordClouds;
 
-    const param = useParams();
+  const param = useParams();
 
-    const displayTopic = () => {
+  const displayTopic = () => {
 
         if (param.topic == "Army") {
             return "กองทัพ"
@@ -150,11 +149,11 @@ const SubDashboard = () => {
     };
 
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    const dashboardData = dashboardMock.filter(data => data.topic == (param.topic))[0];
+  const dashboardData = dashboardMock.filter(data => data.topic == (param.topic))[0];
 
-    const [displayData, setDisplayedData] = useState(dashboardData)
+  const [displayData, setDisplayedData] = useState(dashboardData)
 
     useEffect(() => {
         setData()
@@ -163,115 +162,111 @@ const SubDashboard = () => {
 
 
 
-    const sentWordClouds = () => {
+  // const sentWordClouds = () => {
 
-        if (param.topic == "Army") {
-            return กองทัพ
-        }
-        else if (param.topic == "Government") {
-            return รัฐบาล
-        }
-        else if (param.topic == "Rally") {
-            return ชุมนุม
-        }
-        else if (param.topic == "Royal") {
-            return สถาบัน
-        }
-    };
+  //   if (param.topic == "Army") {
+  //     return กองทัพ
+  //   }
+  //   else if (param.topic == "Government") {
+  //     return รัฐบาล
+  //   }
+  //   else if (param.topic == "Rally") {
+  //     return ชุมนุม
+  //   }
+  //   else if (param.topic == "Royal") {
+  //     return สถาบัน
+  //   }
+  // };
 
 
-    //////////////////////////////////////////color render////////////////////////////////////////////////////////////////
-    const colorSet = (data) => {
-        if (data == "positive") {
-            return "#22c55e";
-        }
-        else if (data == "negative") {
-            return "#ef4444";
-        }
-        else {
-            return "#0284c7";
-        }
-    };
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////color render////////////////////////////////////////////////////////////////
+  const colorSet = (data) => {
+    if (data == "positive") {
+      return "#22c55e";
+    }
+    else if (data == "negative") {
+      return "#ef4444";
+    }
+    else {
+      return "#0284c7";
+    }
+  };
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    //////////////////////////////////////////////////read more////////////////////////////////////////////////////////
-    const readMore = <p className="tw-text-blue-500 tw-cursor-pointer">อ่านเพิ่มเติม</p>
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////postBar////////////////////////////////////////////////////////////////
+  const postBarData = {
+    labels: dailyPosts.map(item => item.commentType),
+    datasets: [
+      {
+        label: 'จำนวนโพสต์',
+        data: dailyPosts.map(item => item.value),
+        backgroundColor: dailyPosts.map(item => colorSet(item.commentType)),
+        barThickness: isMobile ? 20 : 50,
+      },
+    ],
+  };
 
-    //////////////////////////////////////////postBar////////////////////////////////////////////////////////////////
-    const postBarData = {
-        labels: dailyPosts.map(item => item.name),
-        datasets: [
-            {
-                label: 'จำนวนโพสต์',
-                data: dailyPosts.map(item => item.value),
-                backgroundColor: dailyPosts.map(item => colorSet(item.commentType)),
-                barThickness: isMobile ? 20 : 50,
-            },
-        ],
-    };
+  const postBarOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'top',
+        display: false,
+      },
+      title: {
+        display: false,
+        text: 'Chart.js Bar Chart',
+      },
+    },
+  };
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    const postBarOptions = {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                position: 'top',
-                display: false,
-            },
-            title: {
-                display: false,
-                text: 'Chart.js Bar Chart',
-            },
+  ///////////////////////////////////////////sentimentBar///////////////////////////////////////////////////////////////
+  const sentimentData = {
+    labels: dailySentiment.map(item => item.commentType),
+    datasets: [
+      {
+        label: 'จำนวนความคิดเห็น',
+        data: dailySentiment.map(item => item.value),
+        backgroundColor: dailySentiment.map(item => colorSet(item.commentType)),
+        borderColor: dailySentiment.map(item => colorSet(item.commentType)),
+      },
+    ],
+  };
+
+  const sentimentOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'top',
+        display: false,
+      },
+      title: {
+        display: false,
+        text: 'Chart.js Doughnut Chart',
+      },
+      datalabels: {
+        color: '#000000',
+        font: {
+          size: 24
         },
-    };
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    ///////////////////////////////////////////sentimentBar///////////////////////////////////////////////////////////////
-    const sentimentData = {
-        labels: dailySentiment.map(item => item.commentType),
-        datasets: [
-            {
-                label: 'จำนวนความคิดเห็น',
-                data: dailySentiment.map(item => item.value),
-                backgroundColor: dailySentiment.map(item => colorSet(item.commentType)),
-                borderColor: dailySentiment.map(item => colorSet(item.commentType)),
-            },
-        ],
-    };
-
-    const sentimentOptions = {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                position: 'top',
-                display: false,
-            },
-            title: {
-                display: false,
-                text: 'Chart.js Doughnut Chart',
-            },
-            datalabels: {
-                color: '#000000',
-                font: {
-                    size: 24
-                },
-            },
-        },
-    };
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+      },
+    },
+  };
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
-    return (
-        <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto', {})}>
-            <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">DashBoard หวดหมู่: {displayTopic()}</p>
-            <div className={classNames("tw-flex tw-flex-row tw-max-w-full tw-bg-white tw-justify-center tw-gap-2 tw-border-stone-300 tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
-                "tw-flex-col": isTabletOrMobile && isPortrait,
-                "tw-sticky tw-top-0 tw-z-60": !isTabletOrMobile,
-            })}>
-                {/* <div className={classNames("tw-w-full", {})}>
+  return (
+    <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto', {})}>
+      <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">DashBoard หวดหมู่: {displayTopic()}</p>
+      <div className={classNames("tw-flex tw-flex-row tw-max-w-full tw-bg-white tw-justify-center tw-gap-2 tw-border-stone-300 tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
+        "tw-flex-col": isTabletOrMobile && isPortrait,
+        "tw-sticky tw-top-0 tw-z-60": !isTabletOrMobile,
+      })}>
+        {/* <div className={classNames("tw-w-full", {})}>
                     <p className="tw-text-lg">ประเด็น:</p>
                     <SearchBar
                         useTagSearch={true}
@@ -280,20 +275,20 @@ const SubDashboard = () => {
                         keyName={"tag"}
                     />
                 </div> */}
-                <div className={classNames("tw-w-full", {})}>
-                    <p className="tw-text-lg">ห้วงเวลา:</p>
-                    <SearchBar
-                        useDateSearch={true}
-                        onChangeDate={setSearchDate}
-                    />
-                </div>
-                <Tooltip placement="top" title={"สร้างรายงานPDF"} color="blue">
-                    <Button className="tw-h-max tw-flex tw-flex-row tw-self-end tw-m-3 tw-bg-white tw-border-2 tw-border-blue-300">
-                        <FilePdfOutlined />
-                        <p>สร้างรายงานPDF</p>
-                    </Button>
-                </Tooltip>
-            </div>
+        <div className={classNames("tw-w-full", {})}>
+          <p className="tw-text-lg">ห้วงเวลา:</p>
+          <SearchBar
+            useDateSearch={true}
+            onChangeDate={setSearchDate}
+          />
+        </div>
+        <Tooltip placement="top" title={"สร้างรายงานPDF"} color="blue">
+          <Button className="tw-h-max tw-flex tw-flex-row tw-self-end tw-m-3 tw-bg-white tw-border-2 tw-border-blue-300">
+            <FilePdfOutlined />
+            <p>สร้างรายงานPDF</p>
+          </Button>
+        </Tooltip>
+      </div>
 
             <div className={classNames("tw-flex tw-flex-col tw-justify-center tw-my-4 ", {})}>
                 <div className={classNames("tw-flex tw-flex-row tw-gap-2 tw-my-2", {
@@ -459,26 +454,26 @@ const SubDashboard = () => {
                                         max={300}
                                         readMoreText={readMore}
                                     /> */}
-                                    {/* {displayData.text} */}
-                                    <div className={classNames("tw-flex tw-justify-center tw-h-96", {
-                                    })}>
-                                        <img className="tw-object-scale-down" src={displayData.image} />
-                                    </div>
-                                </div>
-                                <div className="tw-flex tw-flex-row tw-min-w-full tw-justify-between">
-                                    <p className="tw-flex tw-text-lg tw-self-start tw-w-max">150{ } likes</p>
-                                    <div className="tw-flex tw-flex-row tw-gap-2 tw-w-max tw-text-lg tw-self-end">
-                                        <p>2.1k { } comments</p>
-                                        <p>8.5k { } shares</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
+                  {/* {displayData.text} */}
+                  <div className={classNames("tw-flex tw-justify-center tw-h-96", {
+                  })}>
+                    <img className="tw-object-scale-down" src={displayData.image} />
+                  </div>
                 </div>
+                <div className="tw-flex tw-flex-row tw-min-w-full tw-justify-between">
+                  <p className="tw-flex tw-text-lg tw-self-start tw-w-max">150{ } likes</p>
+                  <div className="tw-flex tw-flex-row tw-gap-2 tw-w-max tw-text-lg tw-self-end">
+                    <p>2.1k { } comments</p>
+                    <p>8.5k { } shares</p>
+                  </div>
+                </div>
+              </div>
             </div>
+          )}
         </div>
-    );
+      </div>
+    </div>
+  );
 }
 
 export default SubDashboard;

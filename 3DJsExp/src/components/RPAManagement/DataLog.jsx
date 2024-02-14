@@ -47,7 +47,6 @@ const DataLog = props => {
             } catch (error) {
                 console.error('Error fetching bot config:', error);
             } finally {
-                fetch()
                 setShowLoading(false);
             }
         }
@@ -58,7 +57,6 @@ const DataLog = props => {
             } catch (error) {
                 console.error('Error fetching bot config:', error);
             } finally {
-                fetch()
                 setShowLoading(false);
             }
         }
@@ -91,7 +89,7 @@ const DataLog = props => {
                     "tw-h-full tw-w-1/2": !isMobile,
                     "tw-w-full": isMobile && isPortrait,
                 })}>
-                    <div className={classNames("tw-flex tw-flex-col tw-w-full tw-h-fit tw-p-4 tw-border-4 tw-border-blue-800 tw-shadow-xl tw-rounded-lg", {})}>
+                    <div className={classNames("tw-flex tw-flex-col tw-w-full tw-h-1/4 tw-p-4 tw-border-4 tw-border-blue-800 tw-shadow-xl tw-rounded-lg", {})}>
                         <p className="tw-text-xl tw-font-bold tw-text-center">Time Filter</p>
                         <div className={classNames("tw-flex tw-flex-row tw-w-full tw-h-full tw-gap-2", {})}>
                             <div className={classNames("tw-flex tw-flex-col tw-w-full tw-h-full", {})}>
@@ -104,7 +102,7 @@ const DataLog = props => {
                             </div>
                         </div>
                     </div>
-                    <div className={classNames("tw-flex tw-flex-col tw-w-full tw-h-full tw-p-4 tw-gap-2 tw-border-4 tw-border-blue-800 tw-shadow-xl tw-rounded-lg", {
+                    <div className={classNames("tw-flex tw-flex-col tw-w-full tw-h-3/4 tw-p-4 tw-gap-2 tw-border-4 tw-border-blue-800 tw-shadow-xl tw-rounded-lg", {
                     })}>
                         <p className="tw-text-xl tw-font-bold tw-text-center">{dataType === "error" ? "Error Log" : "Active Log"}</p>
                         <div className={classNames("tw-flex tw-flex-col tw-overflow-y-auto tw-w-full tw-h-full tw-p-1 tw-border-2 tw-border-[#d9d9d9] tw-shadow-xl tw-rounded-lg tw-bg-[#d9d9d9]", {})}>

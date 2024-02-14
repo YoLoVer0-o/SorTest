@@ -39,8 +39,21 @@ const SentimentReport = () => {
         }
     }
 
+    const fetchComment = async (type, topic) => {
+        try {
+            // setShowLoading(true);
+            const data = await botPostReportAPI.getComment(type, topic);
+            setDisplayComments(data);
+        } catch (error) {
+            console.error('Error fetching bot config:', error);
+        } finally {
+            // setShowLoading(false);
+        }
+    }
+
     useEffect(() => {
         fetchBotPost()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 
