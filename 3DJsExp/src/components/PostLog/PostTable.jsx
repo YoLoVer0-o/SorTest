@@ -141,7 +141,7 @@ const PostTable = () => {
                 <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
                     {record?.tag.map(tag => (
                         <Tooltip key={tag} title={tag}>
-                            <div className="tw-rounded-md tw-border-2 tw-border-black tw-w-6 tw-text-center tw-text-white tw-bg-violet-600" >
+                            <div className="tw-rounded-md tw-p-2 tw-border-2 tw-border-black tw-w-fit tw-text-center tw-text-white tw-bg-violet-600" >
                                 {tag}
                             </div>
                         </Tooltip>

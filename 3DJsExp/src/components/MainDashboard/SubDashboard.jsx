@@ -103,6 +103,53 @@ const SubDashboard = () => {
         }
     };
 
+    const setData = () => {
+        let data = {
+            post: 0,
+            user: 0,
+            react: 0,
+            avg: 0
+        }
+        if (param.topic == "army") {
+            data = {
+                post: 578,
+                user: 209,
+                react: 566000,
+                avg: 39000
+            }
+
+        }
+        else if (param.topic == "government") {
+            data = {
+                post: 288,
+                user: 157,
+                react: 416000,
+                avg: 32000
+            }
+
+        }
+        else if (param.topic == "rally") {
+            data = {
+                post: 147,
+                user: 105,
+                react: 112000,
+                avg: 12000
+            }
+
+        }
+        else if (param.topic == "religion") {
+            data = {
+                post: 976,
+                user: 289,
+                react: 976000,
+                avg: 89000
+            }
+
+        }
+        setPageData(data)
+    };
+
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     const dashboardData = dashboardMock.filter(data => data.topic == (param.topic))[0];
@@ -110,6 +157,7 @@ const SubDashboard = () => {
     const [displayData, setDisplayedData] = useState(dashboardData)
 
     useEffect(() => {
+        setData()
         setDisplayedData(dashboardData)
     }, [dashboardData, param.topic])
 
@@ -215,6 +263,7 @@ const SubDashboard = () => {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+
     return (
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto', {})}>
             <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">DashBoard หวดหมู่: {displayTopic()}</p>
@@ -256,11 +305,11 @@ const SubDashboard = () => {
                     })}>
                         <div className="tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">จำนวนโพสต์</p>
-                            <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
+                            <p className="tw-text-6xl tw-font-bold tw-text-blue-400">{pageData.post}</p>
                         </div>
                         <div className="tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">การมีส่วนร่วมทั้งหมด</p>
-                            <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
+                            <p className="tw-text-6xl tw-font-bold tw-text-blue-400">{pageData.react}</p>
                         </div>
                         <div className="tw-flex tw-flex-col tw-h-full tw-w-full tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-center tw-text-lg">จำนวนโพสต์รายวัน</p>
@@ -284,11 +333,11 @@ const SubDashboard = () => {
                     })}>
                         <div className="tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">จำนวนผู้ใช้งาน</p>
-                            <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
+                            <p className="tw-text-6xl tw-font-bold tw-text-blue-400">{pageData.user}</p>
                         </div>
                         <div className="tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">การมีส่วนร่วมเฉลี่ย/โพสต์</p>
-                            <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
+                            <p className="tw-text-6xl tw-font-bold tw-text-blue-400">{pageData.avg}</p>
                         </div>
                         <div className="tw-text-center tw-flex tw-flex-col tw-h-full tw-items-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-center tw-text-lg">ความรู้สึกเชิงบวก-ลบ</p>
