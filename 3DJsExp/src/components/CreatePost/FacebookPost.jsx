@@ -12,11 +12,14 @@ import { LiaWindowClose } from "react-icons/lia";
 import { useResponsive } from "../../hooks";
 import { facebookAcc, emotionEmoji } from "../../mock";
 import classNames from "classnames";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "../../assets/PostImage";
 import FileUpLoader from "../../utilities/FileUpLoader";
 import PostTag from "../../assets/PostTag";
 import "./Trainsition.css";
+import { useSelector } from "react-redux";
+import postCreateAPI from "../../service/postCreateAPI";
+import { getLogin } from "../../libs/loginSlice";
 import {
   // Transition,
   CSSTransition,
@@ -39,7 +42,19 @@ const FacebookPost = () => {
   const [tagExceptFriends, setTagExceptFriends] = useState("");
   const [tagSpecifictFriends, setTagSpecificFriends] = useState("");
   const [emotionAct, setEmotionAct] = useState([]);
+  const [postAction, setPostAction] = useState({
+    botname: "string",
+    url: "string",
+    group: "string",
+    text: message,
+    photo_video: "string",
+    tag_people: "string",
+    feeling: "emotionAct",
+    check_in: "string",
+    gif: "string",
+  });
 
+  console.log(tagFriends);
   const nodeRef = useRef(null);
   const { Search } = Input;
 
@@ -232,8 +247,8 @@ const FacebookPost = () => {
   const [selectedNotShare, setSelectedNotShare] = useState([]);
   const [selectedTheSame, setSelectedTheSame] = useState([]);
   const handleSelected = (value, button) => {
-      const option = facebookAcc.find((acc) => acc.id === value)
-     
+    const option = facebookAcc.find((acc) => acc.id === value);
+
     if (button === 1) {
       setSelectedShare(option.id);
       handleCompare();
@@ -249,41 +264,65 @@ const FacebookPost = () => {
     );
     setSelectedTheSame(sameData);
   };
-   const customTagRender = (props) => {
-     const { label, value, closable, onClose } = props;
-     const option = facebookAcc.find((acc) => acc.id === value);
+  const customTagRender = (props) => {
+    const { label, value, closable, onClose } = props;
+    const option = facebookAcc.find((acc) => acc.id === value);
 
-     return (
-       <Tag
-       color="blue"
-         closable={closable}
-         onClose={onClose}
-         style={{ display: "flex", alignItems: "center" }}
-       >
-         <img
-           src={option.profilePic}
-           className="tw-w-6 tw-h-6 tw-rounded-full"
-           alt={`${option.first_name} ${option.last_name}`}
-         />
-         <div style={{ marginLeft: 8 }}>
-           {option.first_name} {option.last_name}
-         </div>
-       </Tag>
-     );
-   };
- /////////////////////////////Emotion&Activity//////////////////////////////
- const handelEmotion = (emotion) =>{
-setEmotionAct(emotion);
-setCurrentId(1);
- }
- const cancelEmoAct = () =>{
-  setEmotionAct("");
-  setCurrentId(1);
- }
-   // console.log(selectedShare);
-   // console.log(selectedNotShare);
-   // console.log(tagFriends);
-   // console.log(tagExceptFriends);
+    return (
+      <Tag
+        color="blue"
+        closable={closable}
+        onClose={onClose}
+        style={{ display: "flex", alignItems: "center" }}
+      >
+        <img
+          src={option.profilePic}
+          className="tw-w-6 tw-h-6 tw-rounded-full"
+          alt={`${option.first_name} ${option.last_name}`}
+        />
+        <div style={{ marginLeft: 8 }}>
+          {option.first_name} {option.last_name}
+        </div>
+      </Tag>
+    );
+  };
+  /////////////////////////////Emotion&Activity//////////////////////////////
+  const handelEmotion = (emotion) => {
+    setEmotionAct(emotion);
+    setCurrentId(1);
+  };
+  const cancelEmoAct = () => {
+    setEmotionAct("");
+    setCurrentId(1);
+  };
+  //////////////////////////////////API Part/////////////////////////////////
+  const getToken = useSelector((state) => getLogin(state));
+
+  const handlePost = async () => {
+    try {
+      setPostAction({
+        botname: "string",
+        url: "string",
+        group: "string",
+        text: message,
+        photo_video: "string",
+        tag_people: JSON.stringify(tagFriends),
+        feeling: "emotionAct",
+        check_in: "string",
+        gif: "string",
+      });
+
+      console.log("Data being sent to API:", postAction);
+      await postCreateAPI.fbPostAction(postAction, getToken);
+    } catch (error) {
+      console.error("Error posting data:", error);
+    }
+  };
+  ////////////////////Note Gona use JSON.stringify to convert data and sent back /////////////////////////////
+  // console.log(selectedShare);
+  // console.log(selectedNotShare);
+  // console.log(tagFriends);
+  // console.log(tagExceptFriends);
   //  console.log(emotionAct);
   // console.log(selectedItemsForExceptFriend);
   const contentArray = [
@@ -517,6 +556,7 @@ setCurrentId(1);
             </button>
           </div>
           <button
+            onClick={handlePost}
             className={classNames(
               "tw-flex tw-h-10  tw-items-center tw-justify-center tw-p-4 tw-rounded-md tw-bg-green-500  hover:tw-bg-green-400",
               {
