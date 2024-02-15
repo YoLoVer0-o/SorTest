@@ -46,13 +46,15 @@ const FacebookPost = () => {
     botname: "string",
     url: "string",
     group: "string",
-    text: message,
+    text: "string",
     photo_video: "string",
     tag_people: "string",
     feeling: "emotionAct",
     check_in: "string",
     gif: "string",
   });
+  const [reciveFiles, setReciveFiles] = useState([]);
+  console.log(reciveFiles);
 
   console.log(tagFriends);
   const nodeRef = useRef(null);
@@ -297,22 +299,29 @@ const FacebookPost = () => {
   };
   //////////////////////////////////API Part/////////////////////////////////
   const getToken = useSelector((state) => getLogin(state));
-
+  // const [dataString, setDataString] = useState("");
+  useEffect(() => {
+    setPostAction({
+      botname: "string",
+      url: "string",
+      group: "string",
+      text: message,
+      photo_video: "string",
+      tag_people: JSON.stringify([...tagFriends]),
+      feeling: JSON.stringify(emotionAct),
+      check_in: "string",
+      gif: "string",
+    });
+  }, [message, tagFriends, emotionAct]);
+  console.log(postAction);
+  // useEffect(() => {
+  //   const stringVersion = JSON.stringify(postAction);
+  //   // Update the state with the string version
+  //   setDataString(stringVersion);
+  // }, [postAction]);
   const handlePost = async () => {
     try {
-      setPostAction({
-        botname: "string",
-        url: "string",
-        group: "string",
-        text: message,
-        photo_video: "string",
-        tag_people: JSON.stringify(tagFriends),
-        feeling: "emotionAct",
-        check_in: "string",
-        gif: "string",
-      });
-
-      console.log("Data being sent to API:", postAction);
+      // console.log("Data being sent to API:", dataString);
       await postCreateAPI.fbPostAction(postAction, getToken);
     } catch (error) {
       console.error("Error posting data:", error);
@@ -502,7 +511,11 @@ const FacebookPost = () => {
                 isDesktopOrLaptop && !isTablet,
             })}
           >
-            <FileUpLoader isOpen={openUpload} isClose={closePicUpload} />
+            <FileUpLoader
+              isOpen={openUpload}
+              isClose={closePicUpload}
+              postFiles={reciveFiles}
+            />
           </div>
 
           <div
