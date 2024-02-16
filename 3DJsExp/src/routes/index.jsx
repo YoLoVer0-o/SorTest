@@ -17,6 +17,7 @@ import {
   Trending,
   StatusTable,
   CreateGroupPost,
+
 } from "../components";
 import {
   LoginPage,
@@ -26,7 +27,8 @@ import {
   SentimentPage,
   RPAManagementPage,
   ClassConfigPage,
-  RecommendationPage
+  RecommendationPage,
+  UserManagementPage
 } from "../pages";
 
 export const router = createBrowserRouter([
@@ -145,6 +147,16 @@ export const router = createBrowserRouter([
       {
         path: "/recommendation/trending",
         element: <Trending />,
+      },
+    ],
+  },
+  {
+    path: "/usermanagement",
+    element: <UserManagementPage />,
+    children: [
+      {
+        path: "",
+        element: <PostTable />,
       },
     ],
   },

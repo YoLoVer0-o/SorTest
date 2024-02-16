@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { DataTable } from "../../utilities";
+import { DataTable, Loading } from "../../utilities";
 import { useResponsive } from "../../hooks";
 import WordClouds from "../../assets/WordClouds";
 import classNames from "classnames";
@@ -12,6 +12,7 @@ import { getLogin } from '../../libs/loginSlice'
 const Trending = () => {
 
   const [displayData, setDisplayData] = useState([]);
+  const [showLoading, setShowLoading] = useState(false);
 
   const {
     isTabletOrMobile,
@@ -24,13 +25,13 @@ const Trending = () => {
 
   const fetchEngagement = async () => {
     try {
-      // setShowLoading(true);
+      setShowLoading(true);
       const data = await recommendAPI.engagement(10);
       setDisplayData(data);
     } catch (error) {
       console.error('Error fetching bot config:', error);
     } finally {
-      // setShowLoading(false);
+      setShowLoading(false);
     }
   }
 
@@ -44,8 +45,8 @@ const Trending = () => {
   const columns = [
     {
       title: 'update',
-      dataIndex: 'update',
-      key: 'update',
+      dataIndex: 'post_time',
+      key: 'post_time',
       align: "center",
       width: 150,
       className: 'tw-text-lime-600',
@@ -67,43 +68,43 @@ const Trending = () => {
       className: 'tw-text-amber-600',
       render: (text, record) => (
         <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
-          {record?.group.map(group => (
-            <Tooltip key={group} title={group}>
-              <div className="tw-rounded-md tw-border-2 tw-p-2 tw-border-black tw-w-max tw-text-center tw-text-white tw-bg-yellow-600" >
-                {group}
-              </div>
-            </Tooltip>
-          ))}
+          {/* {record?.group.map(group => ( */}
+          <Tooltip key={record?.group} title={record?.group}>
+            <div className="tw-rounded-md tw-border-2 tw-p-2 tw-border-black tw-w-max tw-text-center tw-text-white tw-bg-yellow-600" >
+              {record?.group}
+            </div>
+          </Tooltip>
+          {/* ))} */}
         </div>
       ),
     },
     {
       title: 'creator',
-      dataIndex: 'creator',
-      key: 'creator',
+      dataIndex: 'post_author_name',
+      key: 'post_author_name',
       align: "center",
       width: 150,
       className: 'tw-text-amber-600',
     },
     {
       title: 'post',
-      dataIndex: 'post',
-      key: 'post',
+      dataIndex: 'post_content',
+      key: 'post_content',
       align: "center",
       width: 150,
       className: 'tw-truncate',
     },
     {
       title: 'link',
-      dataIndex: 'link',
-      key: 'link',
+      dataIndex: 'post_url',
+      key: 'post_url',
       align: "center",
       width: 150,
       className: 'tw-truncate tw-text-sky-700',
       render: (text, record) => (
         <div className="tw-flex tw-justify-center">
           <Tooltip title="กดเพื่อไปที่โพสต์">
-            <a href={record?.link} target="blank">
+            <a href={record?.post_url} target="blank">
               <div className="tw-rounded-md tw-w-full tw-border-2 tw-border-black tw-text-center tw-text-white tw-bg-sky-600" >
                 <p className="tw-m-2">Link</p>
               </div>
@@ -117,6 +118,7 @@ const Trending = () => {
 
   return (
     <div className="tw-w-screen tw-h-full tw-p-2 tw-overflow-auto">
+      <Loading isShown={showLoading} />
       <div
         className={classNames("tw-flex tw-flex-row tw-border-2 tw-gap-4 tw-p-6 tw-my-4 ", {
           "tw-overflow-auto": isTabletOrMobile && isPortrait,
@@ -166,9 +168,9 @@ const Trending = () => {
         "tw-overflow-auto": isTabletOrMobile && isPortrait,
       })}>
         <DataTable
-          data={recmock}
+          data={displayData}
           columns={columns}
-          keyName={"id"}
+          keyName={"post_id"}
         />
       </div>
     </div>

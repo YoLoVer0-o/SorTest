@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const postReportAPI = {
+  
   getTagetPost: async () => {
     try {
       const response = await axios.get("http://192.168.10.122/getTagetPost");

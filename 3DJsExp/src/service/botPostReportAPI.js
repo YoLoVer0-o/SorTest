@@ -33,10 +33,10 @@ const botPostReportAPI = {
     }
   },
 
-  getComment: async (type, topic) => {
+  getComment: async (type, topic, page) => {
     try {
       const response = await axios.get(
-        `http://192.168.10.122//getComment?type=${type}&topic=${topic}`
+        `http://192.168.10.122//getComment?type=${type}&topic=${topic}&current_page=2`
       );
       return response.data;
     } catch (error) {
@@ -49,7 +49,6 @@ const botPostReportAPI = {
       throw error;
     }
   },
-
 };
 
 export default botPostReportAPI;

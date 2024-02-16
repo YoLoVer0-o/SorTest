@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { DataTable, SearchBar } from "../../utilities";
+import { DataTable, SearchBar, Loading } from "../../utilities";
 import { postMock } from "../../mock";
 import { useResponsive } from "../../hooks";
 import { Button, Input, Switch, Tooltip, InputNumber, Select } from "antd";
@@ -36,6 +36,7 @@ const PostTable = () => {
     const [inputValue, setInputValue] = useState('');
     const [excludeWord, setExcludeWord] = useState([]);
     const [displayData, setDisplayData] = useState([]);
+    const [showLoading, setShowLoading] = useState(false);
 
     const navigate = useNavigate();
 
@@ -45,13 +46,13 @@ const PostTable = () => {
 
     const fetchPost = async () => {
         try {
-            // setShowLoading(true);
+            setShowLoading(true);
             const data = await postReportAPI.getTagetPost();
             setDisplayData(data);
         } catch (error) {
             console.error('Error fetching bot config:', error);
         } finally {
-            // setShowLoading(false);
+            setShowLoading(false);
         }
     }
 
@@ -207,6 +208,7 @@ const PostTable = () => {
 
     return (
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-y-auto', {})}>
+            <Loading isShown={showLoading} />
             <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">PostTable</p>
             <div className="tw-flex tw-flex-col tw-justify-center tw-w-full">
                 <div className={classNames("tw-w-full", {})}>

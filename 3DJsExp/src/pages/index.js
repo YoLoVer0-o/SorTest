@@ -6,6 +6,7 @@ import SentimentPage from "./SentimentPage";
 import RPAManagementPage from "./RPAManagementPage";
 import ClassConfigPage from "./ClassConfigPage";
 import RecommendationPage from "./RecommendationPage";
+import UserManagementPage from "./UserManagementPage";
 
 export {
   MainPage,
@@ -16,4 +17,5 @@ export {
   RPAManagementPage,
   ClassConfigPage,
   RecommendationPage,
+  UserManagementPage,
 };

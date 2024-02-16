@@ -56,7 +56,7 @@ const MainLayout = (props) => {
     '/postlog/report': 'รายงานโพสต์',
     '/postCreation': 'เผยแพร่ข้อมูล',
     '/postCreation/createPost': 'สร้างโพสต์ใหม่',
-    '/postCreation/postStatus': 'สร้างการมีส่วนร่วม',
+    '/postCreation/postStatus': 'สถานะการโพส',
     "/postCreation/createGroupPost": "สร้างโพสต์ไปที่กลุ่ม",
     '/sentiment': 'ประเมิณผลตอบรับ',
     '/sentiment/report': 'รายงานความคิดเห็น',
@@ -317,7 +317,7 @@ const MainLayout = (props) => {
                     },
                     {
                       key: "/postCreation/postStatus",
-                      label: "สร้างการมีส่วนร่วม",
+                      label: "สถานะการโพส",
                       className: "",
                     },
                   ]
@@ -510,10 +510,15 @@ const MainLayout = (props) => {
                     },
                     {
                       key: "/recommendation/trending",
-                      label: "นื้อหาที่กำลังได้รับความนิยม",
+                      label: "เนื้อหาที่กำลังได้รับความนิยม",
                       className: "",
                     },
                   ]
+                },
+                {
+                  key: "/usermanagement",
+                  icon: <SlidersOutlined />,
+                  label: "User Management",
                 },
               ]}
             />
