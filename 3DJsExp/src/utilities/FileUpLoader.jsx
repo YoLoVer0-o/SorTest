@@ -18,6 +18,7 @@ const FileUpLoader = (props) => {
   //   isPortrait,
   //   isLandscape,
   // } = useResponsive();
+  const sentFiles = props.sentFiles;
   const isOpen = props.isOpen;
   const isClose = props.isClose;
 
@@ -49,7 +50,8 @@ const FileUpLoader = (props) => {
   };
 
   const [files, setFiles] = useState([]);
-
+  // console.log(files)
+  sentFiles(files);
   const onDrop = (acceptedFiles) => {
     const newFiles = acceptedFiles.map((file) => ({
       file,
@@ -59,10 +61,9 @@ const FileUpLoader = (props) => {
   };
 
   const { getRootProps, getInputProps } = useDropzone({
-    accept: ["video/*", "image/*"],
+    accept: {"video/mp4":[] ,'image/jpeg': [] ,'image/png': []},
     onDrop,
   });
-
 
   const saveDescription = (description, type) => {
     const newDescription = files.map((file) =>
@@ -74,8 +75,7 @@ const FileUpLoader = (props) => {
     setFiles(updatedFiles && newDescription);
   };
 
- 
-  useEffect(() => { 
+  useEffect(() => {
     setIsOpenState(isOpen);
   }, [isOpen]);
 
@@ -90,7 +90,7 @@ const FileUpLoader = (props) => {
     //       (isMobile && isPortrait) || (isMobile && isLandscape),
     //   })}
     // >
-      <div className="tw-w-full tw-h-full">
+    <div className="tw-w-full tw-h-full">
       {isOpenState && (
         <div className="tw-relative tw-border-dashed tw-border-2 tw-w-full tw-h-full tw-overflow-y-auto tw-z-10">
           <section className=" tw-w-full tw-h-full tw-relative">
@@ -196,10 +196,9 @@ const FileUpLoader = (props) => {
           </section>
         </div>
       )}
-      </div>
+    </div>
     // </div>
   );
-
 };
 
 const formatFileSize = (bytes) => {
@@ -215,6 +214,7 @@ const formatFileSize = (bytes) => {
 FileUpLoader.propTypes = {
   isOpen: PropTypes.bool,
   isClose: PropTypes.func,
+  sentFiles: PropTypes.any,
 };
 
 export default FileUpLoader;

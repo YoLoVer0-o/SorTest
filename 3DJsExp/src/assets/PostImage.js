@@ -5,13 +5,15 @@ import Gif from "../assets/Gif.png";
 import live from "../assets/live.png";
 import selectPic from "../assets/selectPic.png";
 import tagOther from "../assets/tagOther.png";
-const PostImage  = {
+import link from "../assets/link.png";
+const PostImage = {
   checkIn,
   emoji,
   flag,
   Gif,
   live,
   selectPic,
-  tagOther
+  tagOther,
+  link,
 };
 export default PostImage;

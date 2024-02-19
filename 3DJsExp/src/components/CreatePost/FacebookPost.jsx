@@ -7,7 +7,7 @@ import {
 } from "@ant-design/icons";
 import { FaSortDown } from "react-icons/fa";
 import profile from "../../assets/profile.png";
-import { BsEmojiSmile } from "react-icons/bs";
+import { BsEmojiSmile, BsXLg } from "react-icons/bs";
 import { LiaWindowClose } from "react-icons/lia";
 import { useResponsive } from "../../hooks";
 import { facebookAcc, emotionEmoji } from "../../mock";
@@ -17,6 +17,7 @@ import Image from "../../assets/PostImage";
 import FileUpLoader from "../../utilities/FileUpLoader";
 import PostTag from "../../assets/PostTag";
 import "./Trainsition.css";
+import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import postCreateAPI from "../../service/postCreateAPI";
 import { getLogin } from "../../libs/loginSlice";
@@ -27,7 +28,7 @@ import {
   // TransitionGroup,
 } from "react-transition-group";
 
-const FacebookPost = () => {
+const FacebookPost = ({ handelBotData, selectUser }) => {
   const [message, setMessage] = useState("");
   const [showEmojiInput, setShowEmojiInput] = useState(false);
   const [openUpload, setOpenUpLoad] = useState(false);
@@ -53,10 +54,24 @@ const FacebookPost = () => {
     check_in: "string",
     gif: "string",
   });
-  const [reciveFiles, setReciveFiles] = useState([]);
-  console.log(reciveFiles);
+  const [url, setUrl] = useState("");
+  console.log(url);
+  const botData = handelBotData;
+  const selectedAcc = selectUser;
+  const [file, setFile] = useState([]);
+  const handelFile = (file) => {
+    setFile(file);
+  };
+  console.log(file);
+  const [inputValue, setInputValue] = useState("");
 
-  console.log(tagFriends);
+  // Function to handle input change
+  const handleChange = (event) => {
+    setInputValue(event.target.value);
+  };
+
+  console.log(emotionAct);
+  // console.log(tagFriends);
   const nodeRef = useRef(null);
   const { Search } = Input;
 
@@ -90,12 +105,15 @@ const FacebookPost = () => {
   const switchToCustom = () => {
     setCurrentId(7);
   };
+  const switchToLink = () => {
+    setCurrentId(8);
+  };
 
   const duration = 500;
 
   const {
     isDesktopOrLaptop,
-    isBigScreen,
+    // isBigScreen,
     isTabletOrMobile,
     isMobile,
     isTablet,
@@ -299,20 +317,22 @@ const FacebookPost = () => {
   };
   //////////////////////////////////API Part/////////////////////////////////
   const getToken = useSelector((state) => getLogin(state));
-  // const [dataString, setDataString] = useState("");
+
+  const binaryFunc = () => {};
+
   useEffect(() => {
     setPostAction({
-      botname: "string",
+      botname: selectedAcc,
       url: "string",
       group: "string",
       text: message,
-      photo_video: "string",
+      photo_video: JSON.stringify([...file]),
       tag_people: JSON.stringify([...tagFriends]),
       feeling: JSON.stringify(emotionAct),
-      check_in: "string",
-      gif: "string",
+      check_in: null,
+      gif: null,
     });
-  }, [message, tagFriends, emotionAct]);
+  }, [message, tagFriends, emotionAct, selectedAcc, file]);
   console.log(postAction);
   // useEffect(() => {
   //   const stringVersion = JSON.stringify(postAction);
@@ -372,7 +392,7 @@ const FacebookPost = () => {
             />
             <div className="tw-col-start-2 tw-col-span-2">
               <div className="tw-flex tw-flex-row">
-                <p className="tw-text-xl  ">Account Name</p>
+                <p className="tw-text-xl  ">{selectedAcc}</p>
               </div>
               <button
                 onClick={switchContentPostTaget}
@@ -514,7 +534,7 @@ const FacebookPost = () => {
             <FileUpLoader
               isOpen={openUpload}
               isClose={closePicUpload}
-              postFiles={reciveFiles}
+              sentFiles={handelFile}
             />
           </div>
 
@@ -553,6 +573,12 @@ const FacebookPost = () => {
               <img className="tw-w-6 tw-h-6" src={Image.emoji} />
             </button>
             <button
+              onClick={switchToLink}
+              className=" tw-rounded-full tw-w-max tw-h-max tw-justify-self-center hover:tw-bg-gray-300"
+            >
+              <img className="tw-w-6 tw-h-6" src={Image.link} />
+            </button>
+            <button
               // onClick={switchLocationPicker}
               className="tw-hidden tw-rounded-full tw-w-max tw-h-max tw-justify-self-center hover:tw-bg-gray-300"
             >
@@ -561,10 +587,7 @@ const FacebookPost = () => {
             <button className="tw-hidden tw-rounded-full tw-w-max tw-h-max tw-justify-self-center hover:tw-bg-gray-300">
               <img className="tw-w-6 tw-h-6" src={Image.Gif} />
             </button>
-            <button
-              className="tw-rounded-full  tw-justify-self-center
-    hover:tw-bg-gray-200 tw-w-6 tw-h-6 "
-            >
+            <button className="tw-rounded-full  tw-justify-self-center hover:tw-bg-gray-200 tw-w-6 tw-h-6 ">
               ...
             </button>
           </div>
@@ -1242,6 +1265,43 @@ const FacebookPost = () => {
         </div>
       ),
     },
+    {
+      id: 8,
+      content: (
+        <div className="tw-w-full tw-h-full tw-flex-col tw-flex ">
+          <div className="">
+            <button
+              onClick={reset}
+              className="tw-bg-gray-200 hover:tw-bg-gray-300 tw-w-10 tw-h-6 tw-rounded-md"
+            >
+              Back
+            </button>
+            <div className="tw-text-center">เพิ่มลิงค์</div>
+            <div className="tw-w-full tw-flex tw-flex-row tw-gap-x-5  ">
+              <input
+                type="text"
+                value={inputValue}
+                onChange={handleChange}
+                placeholder="Enter URL"
+                className="tw-w-full tw-flex"
+              />
+
+              {/* Hyperlink */}
+              {inputValue && (
+                <a
+                  href={inputValue}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="tw-w-full tw-flex"
+                >
+                  {inputValue}
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      ),
+    },
   ];
 
   return (
@@ -1304,4 +1364,8 @@ const FacebookPost = () => {
   );
 };
 
+FacebookPost.propTypes = {
+  handelBotData: PropTypes.any,
+  selectUser: PropTypes.string,
+};
 export default FacebookPost;

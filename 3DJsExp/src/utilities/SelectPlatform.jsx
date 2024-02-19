@@ -8,7 +8,7 @@ import postCreateAPI from "../service/postCreateAPI";
 import { getLogin } from "../libs/loginSlice";
 
 const SelectPlatform = (props) => {
-  const { selected } = props;
+  const { selected , sentBotData } = props;
   const [platform, setPlatform] = useState(selected);
   const [selectedGroupType, setSelectedGroupType] = useState("Single User");
   const [botData, setBotData] = useState("");
@@ -33,6 +33,7 @@ const SelectPlatform = (props) => {
       try {
         const data = await postCreateAPI.fbGetBotConfig(getToken);
         setBotData(data);
+        sentBotData(data);
         setSelectedBot(data[0].botname);
         setSelectedGroup(data[0].groups);
       } catch (error) {
@@ -92,7 +93,7 @@ const SelectPlatform = (props) => {
         <p>แพลต์ฟอร์ม :</p>
         <Select
           defaultValue="Facebook"
-          onChange={handleChange} // Change to onChange for handling selection change
+          onChange={handleChange}
           className=" tw-w-full"
           value={platform}
           options={[
@@ -170,6 +171,7 @@ const SelectPlatform = (props) => {
 
 SelectPlatform.propTypes = {
   selected: PropTypes.any,
+  sentBotData: PropTypes.any,
   onPlatformSelect: PropTypes.func,
 };
 
