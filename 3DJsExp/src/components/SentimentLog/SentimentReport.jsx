@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { HorizontalBarChart, DoughnutChart, ToTopButton, DataTable } from "../../utilities";
+import { HorizontalBarChart, DoughnutChart, ToTopButton, DataTable, Loading } from "../../utilities";
 import { sentimentAll, sentimentNega, sentimentPos } from "../../mock";
 import { Button, FloatButton, Tooltip } from "antd";
 import { useResponsive } from "../../hooks";
@@ -20,6 +20,7 @@ const SentimentReport = () => {
     const [message, setMessage] = useState({});
     const [displayComments, setDisplayComments] = useState("");
     const [displayData, setDisplayData] = useState({});
+    const [showLoading, setShowLoading] = useState(false);
 
     const token = useSelector((state) => getLogin(state).token);
 
@@ -39,8 +40,21 @@ const SentimentReport = () => {
         }
     }
 
+    const fetchComment = async (type, topic) => {
+        try {
+            setShowLoading(true);
+            const data = await botPostReportAPI.getComment(type, topic);
+            setDisplayComments(data);
+        } catch (error) {
+            console.error('Error fetching bot config:', error);
+        } finally {
+            setShowLoading(false);
+        }
+    }
+
     useEffect(() => {
         fetchBotPost()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 
@@ -214,7 +228,7 @@ const SentimentReport = () => {
 
     return (
         <div className="tw-w-screen tw-h-full tw-p-2 tw-overflow-auto">
-
+ <Loading isShown={showLoading} />
             <div
                 ref={topRef}
                 tabIndex={0}

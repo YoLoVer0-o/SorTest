@@ -92,7 +92,7 @@ const StatusTable = () => {
             dataIndex: "status",
             key: "status",
             align: "center",
-            width: 150,
+            width: 100,
             className: "tw-text-amber-600",
             filteredValue: [searchStatus],
             onFilter: (value, record) =>
@@ -124,7 +124,7 @@ const StatusTable = () => {
             dataIndex: "timestamp",
             key: "timestamp",
             align: "center",
-            width: 150,
+            width: 100,
             className: "tw-text-lime-600 tw-truncate",
             filteredValue: [searchDate],
             onFilter: (value, record) => {
@@ -145,10 +145,17 @@ const StatusTable = () => {
             dataIndex: "accName",
             key: "accName",
             align: "center",
-            width: 50,
+            width: 150,
             className: "tw-text-blue-500 tw-text-2xl",
             render: (text, record) => (
-                <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
+                <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-between">
+                    <Tooltip title="กดเพื่อไปที่โพสต์">
+                        {/* <a href={record?.post_url} target="blank"> */}
+                        <div className="tw-rounded-md tw-w-fit tw-h-fit tw-border-2 tw-border-black tw-text-center tw-text-white tw-bg-sky-600" >
+                            <p className="tw-m-2">Link</p>
+                        </div>
+                        {/* </a> */}
+                    </Tooltip>
                     <Tooltip title="ลบหมวดหมู่">
                         <div className="tw-text-3xl tw-text-red-600"><DeleteOutlined /></div>
                     </Tooltip>

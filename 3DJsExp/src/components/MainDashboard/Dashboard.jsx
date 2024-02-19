@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { SearchBar, VerticalBarChart, HorizontalBarChart, DoughnutChart } from "../../utilities";
+import { SearchBar, VerticalBarChart, HorizontalBarChart, DoughnutChart, Loading } from "../../utilities";
 import { sentimentAll, sentimentPos, socialPlatform } from "../../mock";
 import { useResponsive } from "../../hooks";
 import { Button, Tooltip } from "antd";
@@ -32,50 +32,50 @@ const Dashboard = () => {
 
     const [dailyWordCloud, setDailyWordCloud] = useState("");
 
+    const [showLoading, setShowLoading] = useState(false);
+
     const token = useSelector((state) => getLogin(state).token);
 
     const fetchPost = async (start, end) => {
         try {
-            // setShowLoading(true);
+            setShowLoading(true);
             const data = await dashBoardAPI.getAllDailyPost(start, end);
             setDailyPosts(data);
         } catch (error) {
             console.error('Error fetching bot config:', error);
         } finally {
-            // setShowLoading(false);
+            setShowLoading(false);
         }
     }
 
     const fetchSentiment = async (start, end) => {
         try {
-            // setShowLoading(true);
+            setShowLoading(true);
             const data = await dashBoardAPI.getAllSentiment(start, end);
             setDailySentiment(data);
         } catch (error) {
             console.error('Error fetching bot config:', error);
         } finally {
-            // setShowLoading(false);
+            setShowLoading(false);
         }
     }
 
     const fetchWordCloud = async (start, end) => {
         try {
-            // setShowLoading(true);
+            setShowLoading(true);
             const data = await dashBoardAPI.getWordCloud(start, end, "overall");
-            // const blob = new Blob([data], { type: 'image/png' });
-            // const imageObjectURL = URL.createObjectURL(blob);
-            // setDailyWordCloud(imageObjectURL);
-            setDailyWordCloud(data);
-            // console.log(data);
+            const blob = new Blob([data], { type: 'image/png' });
+            const url = URL.createObjectURL(blob);
+            setDailyWordCloud(url);
         } catch (error) {
             console.error('Error fetching bot config:', error);
         } finally {
-            // setShowLoading(false);
+            setShowLoading(false);
         }
     }
 
     useEffect(() => {
-        if (searchDate.length > 0) {
+        if (searchDate?.length > 0) {
             fetchPost(searchDate[0], searchDate[1])
             fetchSentiment(searchDate[0], searchDate[1])
             fetchWordCloud(searchDate[0], searchDate[1])
@@ -313,7 +313,8 @@ const Dashboard = () => {
 
 
     return (
-        <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto', {})}>
+        <div className={classNames('tw-flex tw-flex-col tw-w-full tw-max-w-full tw-max-h-full tw-overflow-auto', {})}>
+            <Loading isShown={showLoading} />
             <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">DashBoard</p>
             <div className={classNames("tw-flex tw-flex-row tw-max-w-full tw-bg-white tw-justify-center tw-gap-2 tw-border-stone-300 tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
                 "tw-flex-col": isTabletOrMobile && isPortrait,
@@ -361,18 +362,24 @@ const Dashboard = () => {
                         </div>
                         <div className="tw-flex tw-flex-col tw-h-full tw-w-full tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-center tw-text-lg">จำนวนโพสต์รายวัน</p>
-                            <div className="tw-flex tw-w-full tw-h-full tw-overflow-auto tw-items-center">
-                                <div className={classNames("tw-w-full tw-overflow-auto", {
-                                    "tw-h-96": isTabletOrMobile || isTablet,
-                                    "tw-h-full ": !isTabletOrMobile && !isTablet,
-                                })}>
-                                    <VerticalBarChart
-                                        chartOptions={postBarOptions}
-                                        chartData={postBarData}
-                                        redraw={true}
-                                    />
+                            {dailyPosts.length > 0 && dailyPosts.some((post) => post.value > 0) &&
+                                <div className="tw-flex tw-w-full tw-h-full tw-overflow-auto tw-items-center">
+                                    <div className={classNames("tw-w-full tw-overflow-auto", {
+                                        "tw-h-96": isTabletOrMobile || isTablet,
+                                        "tw-h-full ": !isTabletOrMobile && !isTablet,
+                                    })}>
+                                        <VerticalBarChart
+                                            chartOptions={postBarOptions}
+                                            chartData={postBarData}
+                                            redraw={true}
+                                        />
+                                    </div>
                                 </div>
+                            }
+                            {dailyPosts.length == 0 || dailyPosts.every((post) => post.value == 0) && <div className="tw-w-full tw-h-full">
+                                <p className="tw-text-xl tw-font-bold">ไม่พบข้อมูล</p>
                             </div>
+                            }
                         </div>
                     </div>
                     <div className={classNames("tw-flex tw-flex-col tw-gap-4", {
@@ -406,20 +413,26 @@ const Dashboard = () => {
                                     <p>เชิงลบ</p>
                                 </div>
                             </div>
-                            <div className={classNames("tw-flex tw-justify-center tw-h-full tw-w-full", {
-                            })}>
-                                <div className={classNames("tw-w-full tw-overflow-auto", {
-                                    "tw-h-96": isTabletOrMobile || isTablet,
-                                    "tw-h-full ": !isTabletOrMobile && !isTablet,
+                            {dailySentiment.length > 0 && dailySentiment.some((post) => post.value > 0) &&
+                                <div className={classNames("tw-flex tw-justify-center tw-h-full tw-w-full", {
                                 })}>
-                                    <DoughnutChart
-                                        chartData={sentimentData}
-                                        chartOptions={sentimentOptions}
-                                        redraw={true}
-                                        plugins={[ChartDataLabels]}
-                                    />
+                                    <div className={classNames("tw-w-full tw-overflow-auto", {
+                                        "tw-h-96": isTabletOrMobile || isTablet,
+                                        "tw-h-full ": !isTabletOrMobile && !isTablet,
+                                    })}>
+                                        <DoughnutChart
+                                            chartData={sentimentData}
+                                            chartOptions={sentimentOptions}
+                                            redraw={true}
+                                            plugins={[ChartDataLabels]}
+                                        />
+                                    </div>
                                 </div>
+                            }
+                            {dailySentiment.length == 0 || dailySentiment.every((Sentiment) => Sentiment.value == 0) && <div className="tw-w-full tw-h-full">
+                                <p className="tw-text-xl tw-font-bold">ไม่พบข้อมูล</p>
                             </div>
+                            }
                         </div>
                     </div>
                     <div className={classNames("tw-flex tw-flex-col tw-gap-4", {
@@ -483,9 +496,16 @@ const Dashboard = () => {
                             "tw-h-[16rem]": isMobile && isPortrait,
                             "tw-h-full": !isMobile || (isMobile && isLandscape),
                         })}>
-                            <img className="tw-object-fill tw-h-full tw-w-full"
-                                src={ภาพรวม}
-                            />
+                            {dailyWordCloud && (
+                                <img className="tw-object-fill tw-h-full tw-w-full"
+                                    // src={ภาพรวม}
+                                    src={dailyWordCloud}
+                                />
+                            )}
+                            {!dailyWordCloud && <div className="tw-w-full tw-h-full">
+                                <p className="tw-text-xl tw-font-bold">ไม่พบข้อมูล</p>
+                            </div>
+                            }
                         </div>
                     </div>
                     <div className={classNames("tw-flex tw-flex-col tw-h-fit tw-object-contain tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
@@ -521,13 +541,6 @@ const Dashboard = () => {
                                     className=''
                                     innerElement='p'
                                 />
-                                {/* <ReadMoreReact
-                                    text={testText}
-                                    min={100}
-                                    ideal={180}
-                                    max={300}
-                                    readMoreText={readMore}
-                                /> */}
                                 <div className={classNames("tw-flex tw-justify-center tw-h-96", {
                                 })}>
                                     <img className="tw-object-scale-down" src={overall} />

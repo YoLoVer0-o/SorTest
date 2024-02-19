@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { DataTable, SearchBar } from "../../utilities";
+import { DataTable, SearchBar, Loading } from "../../utilities";
 import { postMock } from "../../mock";
 import { useResponsive } from "../../hooks";
 import { Button, Input, Switch, Tooltip, InputNumber, Select } from "antd";
@@ -19,7 +19,9 @@ dayjs.extend(isSameOrBefore)
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 dayjs.extend(isSameOrAfter)
 import classNames from "classnames";
-// import postReportAPI from "../../service/postReportAPI";
+import postReportAPI from "../../service/postReportAPI";
+import { useSelector } from 'react-redux'
+import { getLogin } from '../../libs/loginSlice'
 
 const PostTable = () => {
 
@@ -33,10 +35,33 @@ const PostTable = () => {
     const [includeWord, setIncludeWord] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [excludeWord, setExcludeWord] = useState([]);
+    const [displayData, setDisplayData] = useState([]);
+    const [showLoading, setShowLoading] = useState(false);
 
     const navigate = useNavigate();
 
+    const token = useSelector((state) => getLogin(state).token);
+
     const { isTabletOrMobile, isPortrait } = useResponsive();
+
+    const fetchPost = async () => {
+        try {
+            setShowLoading(true);
+            const data = await postReportAPI.getTagetPost();
+            setDisplayData(data);
+        } catch (error) {
+            console.error('Error fetching bot config:', error);
+        } finally {
+            setShowLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        fetchPost()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     const addWord = async (word, setData) => {
@@ -141,7 +166,7 @@ const PostTable = () => {
                 <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
                     {record?.tag.map(tag => (
                         <Tooltip key={tag} title={tag}>
-                            <div className="tw-rounded-md tw-border-2 tw-border-black tw-w-6 tw-text-center tw-text-white tw-bg-violet-600" >
+                            <div className="tw-rounded-md tw-p-2 tw-border-2 tw-border-black tw-w-fit tw-text-center tw-text-white tw-bg-violet-600" >
                                 {tag}
                             </div>
                         </Tooltip>
@@ -183,6 +208,7 @@ const PostTable = () => {
 
     return (
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-y-auto', {})}>
+            <Loading isShown={showLoading} />
             <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">PostTable</p>
             <div className="tw-flex tw-flex-col tw-justify-center tw-w-full">
                 <div className={classNames("tw-w-full", {})}>

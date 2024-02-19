@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { SearchBar, VerticalBarChart, DoughnutChart } from "../../utilities";
+import { SearchBar, VerticalBarChart, DoughnutChart, Loading } from "../../utilities";
 import { sentimentAll, sentimentPos, dashboardMock } from "../../mock";
 import { useResponsive } from "../../hooks";
 import { Button, Tooltip } from "antd";
@@ -21,208 +21,257 @@ import { getLogin } from '../../libs/loginSlice'
 
 const SubDashboard = () => {
 
-    // const [searchTag, setSearchTag] = useState([]);
-    const [searchDate, setSearchDate] = useState([dayjs().format('YYYY-MM-DD'), dayjs().format('YYYY-MM-DD')]);
+  // const [searchTag, setSearchTag] = useState([]);
+  const [searchDate, setSearchDate] = useState([dayjs().format('YYYY-MM-DD'), dayjs().format('YYYY-MM-DD')]);
 
-    const { isTabletOrMobile, isTablet, isMobile, isPortrait, isLandscape } = useResponsive();
+  const { isTabletOrMobile, isTablet, isMobile, isPortrait, isLandscape } = useResponsive();
 
-    const [dailyPosts, setDailyPosts] = useState([]);
+  const [dailyPosts, setDailyPosts] = useState([]);
 
-    const [dailySentiment, setDailySentiment] = useState([]);
+  const [dailySentiment, setDailySentiment] = useState([]);
 
-    const [dailyWordCloud, setDailyWordCloud] = useState("");
+  const [dailyWordCloud, setDailyWordCloud] = useState("");
 
-    const token = useSelector((state) => getLogin(state).token);
+  const [pageData, setPageData] = useState({});
 
-    const fetchPost = async (start, end) => {
-        try {
-            // setShowLoading(true);
-            const data = await dashBoardAPI.getTopicDailyPost(start, end, param.topic);
-            setDailyPosts(data);
-        } catch (error) {
-            console.error('Error fetching bot config:', error);
-        } finally {
-            // setShowLoading(false);
-        }
+  const [showLoading, setShowLoading] = useState(false);
+
+  const token = useSelector((state) => getLogin(state).token);
+
+  const fetchPost = async (start, end) => {
+    try {
+      setShowLoading(true);
+      const data = await dashBoardAPI.getTopicDailyPost(start, end, param.topic.toLowerCase());
+      setDailyPosts(data);
+    } catch (error) {
+      console.error('Error fetching bot config:', error);
+    } finally {
+      setShowLoading(false);
     }
+  }
 
-    const fetchSentiment = async (start, end) => {
-        try {
-            // setShowLoading(true);
-            const data = await dashBoardAPI.getTopicSentiment(start, end, param.topic);
-            setDailySentiment(data);
-        } catch (error) {
-            console.error('Error fetching bot config:', error);
-        } finally {
-            // setShowLoading(false);
-        }
+  const fetchSentiment = async (start, end) => {
+    try {
+      setShowLoading(true);
+      const data = await dashBoardAPI.getTopicSentiment(start, end, param.topic.toLowerCase());
+      setDailySentiment(data);
+    } catch (error) {
+      console.error('Error fetching bot config:', error);
+    } finally {
+      setShowLoading(false);
     }
+  }
 
-    const fetchWordCloud = async (start, end) => {
-        try {
-            // setShowLoading(true);
-            const data = await dashBoardAPI.getWordCloud(start, end, "overall");
-            // const blob = new Blob([data], { type: 'image/png' });
-            // const imageObjectURL = URL.createObjectURL(blob);
-            // setDailyWordCloud(imageObjectURL);
-            setDailyWordCloud(data);
-            // console.log(data);
-        } catch (error) {
-            console.error('Error fetching bot config:', error);
-        } finally {
-            // setShowLoading(false);
-        }
+  const fetchWordCloud = async (start, end) => {
+    try {
+      setShowLoading(true);
+      const data = await dashBoardAPI.getWordCloud(start, end, param.topic.toLowerCase());
+      const blob = new Blob([data], { type: 'image/png' });
+      const url = URL.createObjectURL(blob);
+      setDailyWordCloud(url);
+    } catch (error) {
+      console.error('Error fetching bot config:', error);
+    } finally {
+      setShowLoading(false);
     }
+  }
 
-    useEffect(() => {
-        if (searchDate.length > 0) {
-            fetchPost(searchDate[0], searchDate[1])
-            fetchSentiment(searchDate[0], searchDate[1])
-            fetchWordCloud(searchDate[0], searchDate[1])
-        }
-    }, [searchDate])
+  useEffect(() => {
+    if (searchDate?.length > 0) {
+      fetchPost(searchDate[0], searchDate[1])
+      fetchSentiment(searchDate[0], searchDate[1])
+      fetchWordCloud(searchDate[0], searchDate[1])
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchDate])
 
-    ///////////////////////////////////WordClouds logic///////////////////////////////////////////////////////////////////////
-    const { กองทัพ, รัฐบาล, ชุมนุม, สถาบัน } = WordClouds;
+  ///////////////////////////////////WordClouds logic///////////////////////////////////////////////////////////////////////
+  const { กองทัพ, รัฐบาล, ชุมนุม, สถาบัน } = WordClouds;
 
-    const param = useParams();
+  const param = useParams();
 
-    const displayTopic = () => {
+  const displayTopic = () => {
 
-        if (param.topic == "Army") {
-            return "กองทัพ"
-        }
-        else if (param.topic == "Government") {
-            return "รัฐบาล"
-        }
-        else if (param.topic == "Rally") {
-            return "ชุมนุม"
-        }
-        else if (param.topic == "Royal") {
-            return "สถาบัน"
-        }
-    };
+    if (param.topic == "Army") {
+      return "กองทัพ"
+    }
+    else if (param.topic == "Government") {
+      return "รัฐบาล"
+    }
+    else if (param.topic == "Rally") {
+      return "ชุมนุม"
+    }
+    else if (param.topic == "Royal") {
+      return "สถาบัน"
+    }
+  };
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  const setData = () => {
+    let data = {
+      post: 0,
+      user: 0,
+      react: 0,
+      avg: 0
+    }
+    if (param.topic == "Army") {
+      data = {
+        post: 578,
+        user: 209,
+        react: 566000,
+        avg: 39000
+      }
 
-    const dashboardData = dashboardMock.filter(data => data.topic == (param.topic))[0];
+    }
+    else if (param.topic == "Government") {
+      data = {
+        post: 288,
+        user: 157,
+        react: 416000,
+        avg: 32000
+      }
 
-    const [displayData, setDisplayedData] = useState(dashboardData)
+    }
+    else if (param.topic == "Rally") {
+      data = {
+        post: 147,
+        user: 105,
+        react: 112000,
+        avg: 12000
+      }
 
-    useEffect(() => {
-        setDisplayedData(dashboardData)
-    }, [dashboardData, param.topic])
+    }
+    else if (param.topic == "Royal") {
+      data = {
+        post: 976,
+        user: 289,
+        react: 976000,
+        avg: 89000
+      }
 
-
-
-    const sentWordClouds = () => {
-
-        if (param.topic == "Army") {
-            return กองทัพ
-        }
-        else if (param.topic == "Government") {
-            return รัฐบาล
-        }
-        else if (param.topic == "Rally") {
-            return ชุมนุม
-        }
-        else if (param.topic == "Royal") {
-            return สถาบัน
-        }
-    };
+    }
+    setPageData(data)
+  };
 
 
-    //////////////////////////////////////////color render////////////////////////////////////////////////////////////////
-    const colorSet = (data) => {
-        if (data == "positive") {
-            return "#22c55e";
-        }
-        else if (data == "negative") {
-            return "#ef4444";
-        }
-        else {
-            return "#0284c7";
-        }
-    };
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    //////////////////////////////////////////////////read more////////////////////////////////////////////////////////
-    const readMore = <p className="tw-text-blue-500 tw-cursor-pointer">อ่านเพิ่มเติม</p>
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  const dashboardData = dashboardMock.filter(data => data.topic == (param.topic))[0];
 
-    //////////////////////////////////////////postBar////////////////////////////////////////////////////////////////
-    const postBarData = {
-        labels: dailyPosts.map(item => item.name),
-        datasets: [
-            {
-                label: 'จำนวนโพสต์',
-                data: dailyPosts.map(item => item.value),
-                backgroundColor: dailyPosts.map(item => colorSet(item.commentType)),
-                barThickness: isMobile ? 20 : 50,
-            },
-        ],
-    };
+  const [displayData, setDisplayedData] = useState(dashboardData)
 
-    const postBarOptions = {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                position: 'top',
-                display: false,
-            },
-            title: {
-                display: false,
-                text: 'Chart.js Bar Chart',
-            },
+  useEffect(() => {
+    setData()
+    setDisplayedData(dashboardData)
+  }, [dashboardData, param.topic])
+
+
+
+  // const sentWordClouds = () => {
+
+  //   if (param.topic == "Army") {
+  //     return กองทัพ
+  //   }
+  //   else if (param.topic == "Government") {
+  //     return รัฐบาล
+  //   }
+  //   else if (param.topic == "Rally") {
+  //     return ชุมนุม
+  //   }
+  //   else if (param.topic == "Royal") {
+  //     return สถาบัน
+  //   }
+  // };
+
+
+  //////////////////////////////////////////color render////////////////////////////////////////////////////////////////
+  const colorSet = (data) => {
+    if (data == "positive") {
+      return "#22c55e";
+    }
+    else if (data == "negative") {
+      return "#ef4444";
+    }
+    else {
+      return "#0284c7";
+    }
+  };
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  //////////////////////////////////////////postBar////////////////////////////////////////////////////////////////
+  const postBarData = {
+    labels: dailyPosts.map(item => item.commentType),
+    datasets: [
+      {
+        label: 'จำนวนโพสต์',
+        data: dailyPosts.map(item => item.value),
+        backgroundColor: dailyPosts.map(item => colorSet(item.commentType)),
+        barThickness: isMobile ? 20 : 50,
+      },
+    ],
+  };
+
+  const postBarOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'top',
+        display: false,
+      },
+      title: {
+        display: false,
+        text: 'Chart.js Bar Chart',
+      },
+    },
+  };
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  ///////////////////////////////////////////sentimentBar///////////////////////////////////////////////////////////////
+  const sentimentData = {
+    labels: dailySentiment.map(item => item.commentType),
+    datasets: [
+      {
+        label: 'จำนวนความคิดเห็น',
+        data: dailySentiment.map(item => item.value),
+        backgroundColor: dailySentiment.map(item => colorSet(item.commentType)),
+        borderColor: dailySentiment.map(item => colorSet(item.commentType)),
+      },
+    ],
+  };
+
+  const sentimentOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'top',
+        display: false,
+      },
+      title: {
+        display: false,
+        text: 'Chart.js Doughnut Chart',
+      },
+      datalabels: {
+        color: '#000000',
+        font: {
+          size: 24
         },
-    };
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    ///////////////////////////////////////////sentimentBar///////////////////////////////////////////////////////////////
-    const sentimentData = {
-        labels: dailySentiment.map(item => item.commentType),
-        datasets: [
-            {
-                label: 'จำนวนความคิดเห็น',
-                data: dailySentiment.map(item => item.value),
-                backgroundColor: dailySentiment.map(item => colorSet(item.commentType)),
-                borderColor: dailySentiment.map(item => colorSet(item.commentType)),
-            },
-        ],
-    };
-
-    const sentimentOptions = {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                position: 'top',
-                display: false,
-            },
-            title: {
-                display: false,
-                text: 'Chart.js Doughnut Chart',
-            },
-            datalabels: {
-                color: '#000000',
-                font: {
-                    size: 24
-                },
-            },
-        },
-    };
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+      },
+    },
+  };
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    return (
-        <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto', {})}>
-            <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">DashBoard หวดหมู่: {displayTopic()}</p>
-            <div className={classNames("tw-flex tw-flex-row tw-max-w-full tw-bg-white tw-justify-center tw-gap-2 tw-border-stone-300 tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
-                "tw-flex-col": isTabletOrMobile && isPortrait,
-                "tw-sticky tw-top-0 tw-z-60": !isTabletOrMobile,
-            })}>
-                {/* <div className={classNames("tw-w-full", {})}>
+
+  return (
+    <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto', {})}>
+      <Loading isShown={showLoading} />
+      <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">DashBoard หวดหมู่: {displayTopic()}</p>
+      <div className={classNames("tw-flex tw-flex-row tw-max-w-full tw-bg-white tw-justify-center tw-gap-2 tw-border-stone-300 tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
+        "tw-flex-col": isTabletOrMobile && isPortrait,
+        "tw-sticky tw-top-0 tw-z-60": !isTabletOrMobile,
+      })}>
+        {/* <div className={classNames("tw-w-full", {})}>
                     <p className="tw-text-lg">ประเด็น:</p>
                     <SearchBar
                         useTagSearch={true}
@@ -231,205 +280,217 @@ const SubDashboard = () => {
                         keyName={"tag"}
                     />
                 </div> */}
-                <div className={classNames("tw-w-full", {})}>
-                    <p className="tw-text-lg">ห้วงเวลา:</p>
-                    <SearchBar
-                        useDateSearch={true}
-                        onChangeDate={setSearchDate}
-                    />
-                </div>
-                <Tooltip placement="top" title={"สร้างรายงานPDF"} color="blue">
-                    <Button className="tw-h-max tw-flex tw-flex-row tw-self-end tw-m-3 tw-bg-white tw-border-2 tw-border-blue-300">
-                        <FilePdfOutlined />
-                        <p>สร้างรายงานPDF</p>
-                    </Button>
-                </Tooltip>
-            </div>
-
-            <div className={classNames("tw-flex tw-flex-col tw-justify-center tw-my-4 ", {})}>
-                <div className={classNames("tw-flex tw-flex-row tw-gap-2 tw-my-2", {
-                    "tw-flex-col": isTabletOrMobile || isTablet,
-                })}>
-                    <div className={classNames("tw-flex tw-flex-col tw-gap-4", {
-                        "tw-w-full": isTabletOrMobile || isTablet,
-                        "tw-w-1/3": !isTabletOrMobile && !isTablet,
-                    })}>
-                        <div className="tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
-                            <p className="tw-text-lg">จำนวนโพสต์</p>
-                            <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
-                        </div>
-                        <div className="tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
-                            <p className="tw-text-lg">การมีส่วนร่วมทั้งหมด</p>
-                            <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
-                        </div>
-                        <div className="tw-flex tw-flex-col tw-h-full tw-w-full tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
-                            <p className="tw-text-center tw-text-lg">จำนวนโพสต์รายวัน</p>
-                            <div className="tw-flex tw-w-full tw-h-full tw-overflow-auto tw-items-center">
-                                <div className={classNames("tw-w-full tw-overflow-auto", {
-                                    "tw-h-96": isTabletOrMobile || isTablet,
-                                    "tw-h-full ": !isTabletOrMobile && !isTablet,
-                                })}>
-                                    <VerticalBarChart
-                                        chartOptions={postBarOptions}
-                                        chartData={postBarData}
-                                        redraw={true}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className={classNames("tw-flex tw-flex-col tw-gap-4", {
-                        "tw-w-full": isTabletOrMobile || isTablet,
-                        "tw-w-1/3": !isTabletOrMobile && !isTablet,
-                    })}>
-                        <div className="tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
-                            <p className="tw-text-lg">จำนวนผู้ใช้งาน</p>
-                            <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
-                        </div>
-                        <div className="tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
-                            <p className="tw-text-lg">การมีส่วนร่วมเฉลี่ย/โพสต์</p>
-                            <p className="tw-text-6xl tw-font-bold tw-text-blue-400">xxxxxx{ }</p>
-                        </div>
-                        <div className="tw-text-center tw-flex tw-flex-col tw-h-full tw-items-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
-                            <p className="tw-text-center tw-text-lg">ความรู้สึกเชิงบวก-ลบ</p>
-                            <div className=" tw-flex tw-flex-row tw-justify-center tw-gap-3">
-                                <div className=" tw-flex tw-flex-row tw-gap-1 ">
-                                    <div className="tw-w-6 tw-h-6 tw-border-2 tw-border-black tw-rounded-full tw-bg-green-500">
-                                    </div>
-                                    <p>เชิงบวก</p>
-                                </div>
-                                <div className="tw-flex tw-flex-row tw-gap-1">
-                                    <div className="tw-w-6 tw-h-6 tw-border-2 tw-border-black tw-rounded-full tw-bg-sky-600">
-                                    </div>
-                                    <p>เป็นกลาง</p>
-                                </div>
-                                <div className="tw-flex tw-flex-row tw-gap-1">
-                                    <div className="tw-w-6 tw-h-6 tw-border-2 tw-border-black tw-rounded-full tw-bg-red-500">
-                                    </div>
-                                    <p>เชิงลบ</p>
-                                </div>
-                            </div>
-                            <div className={classNames("tw-flex tw-justify-center tw-h-full tw-w-full", {
-                            })}>
-                                <div className={classNames("tw-w-full tw-overflow-auto", {
-                                    "tw-h-96": isTabletOrMobile || isTablet,
-                                    "tw-h-full ": !isTabletOrMobile && !isTablet,
-                                })}>
-                                    <DoughnutChart
-                                        chartData={sentimentData}
-                                        chartOptions={sentimentOptions}
-                                        redraw={true}
-                                        plugins={[ChartDataLabels]}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className={classNames("tw-flex tw-flex-col tw-gap-4 tw-h-[46rem]", {
-                        "tw-w-full": isTabletOrMobile || isTablet,
-                        "tw-w-1/3": !isTabletOrMobile && !isTablet,
-                    })}>
-                        <div className="tw-flex tw-flex-col tw-h-full tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
-                            <p className="tw-text-lg">แฮชเเท็กที่ถูกใช้งานมากที่สุด</p>
-                            <div className="tw-grid tw-grid-cols-3 tw-w-full tw-h-full tw-justify-around tw-items-center tw-self-center tw-gap-4">
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#แอมมี่{ }</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#คบกันตอนไหน{ }</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#แบงค์ศุภณัฐ{ }</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#แม่แตงโม</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#สมุดหนังหมาHayDay{ }</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#dek67{ }</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#กรรมกรข่าวคุยนอกจอ{ }</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#BuildJakapan{ }</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#엔시티존{ }</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#ทาลอนเก่งอะ{ }</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#ตํานานวินเมธวิน</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#อิงฟ้ามหาชน</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#cnfact</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#ชาล็อตออสติน</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#นิทานพันดาว</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#30บาทรักษาทุกที่</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#เงินเฟ้อ</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#ขอแจมอีกที</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className={classNames("tw-flex tw-flex-row tw-justify-around tw-gap-4 tw-my-2", {
-                    "tw-flex-col": isTabletOrMobile,
-                })}>
-                    <div className={classNames("tw-flex tw-flex-col tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
-                        "tw-w-full": isTabletOrMobile,
-                        "tw-w-1/2": !isTabletOrMobile,
-                    })}>
-                        <p className="tw-text-lg">กลุ่มคำ</p>
-                        <div className={classNames("", {
-                            "tw-h-[16rem]": isMobile && isPortrait,
-                            "tw-h-full": !isMobile || (isMobile && isLandscape),
-                        })}>
-                            <img className="tw-object-fill tw-h-full tw-w-full" src={sentWordClouds()} />
-                        </div>
-                    </div>
-                    {displayData && (
-                        <div className={classNames("tw-flex tw-flex-col tw-h-full tw-object-contain tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
-                            "tw-w-full": isTabletOrMobile,
-                            "tw-w-1/2": !isTabletOrMobile,
-                        })}>
-                            <p className="tw-text-lg tw-text-center">โพสต์ที่มีส่วนร่วมสูงสด</p>
-                            <div>
-                                <div className="tw-flex tw-flex-row tw-justify-between">
-                                    <div className="tw-flex tw-flex-row tw-gap-2">
-                                        <div className="tw-w-max tw-h-max tw-border-2 tw-border-black tw-rounded-full">
-                                            <img className="tw-rounded-full tw-h-12 tw-w-12" src={displayData.profile} />
-                                        </div>
-                                        <div className="tw-flex tw-flex-col">
-                                            <p className="tw-text-2xl">{displayData.username}</p>
-                                            <p className="tw-text-lg tw-font-thin">{displayData.date}</p>
-                                        </div>
-                                    </div>
-                                    <a className="tw-w-fit tw-mx-4 tw-text-lg" target="blank"
-                                        href={displayData.link} >
-                                        <SendOutlined />ไปที่โพสต์
-                                    </a>
-                                </div>
-                                <div className="tw-text-lg">
-                                    <ClampLines
-                                        text={displayData.text}
-                                        id='really-unique-id'
-                                        type='html'
-                                        lines={3}
-                                        ellipsis='...'
-                                        moreText={<p className="tw-text-blue-500">เพิ่มเติม</p>}
-                                        lessText={<p className="tw-text-blue-500">น้อยลง</p>}
-                                        className=''
-                                        innerElement='p'
-                                    />
-                                    {/* <ReadMoreReact
-                                        text={displayData.text}
-                                        min={100}
-                                        ideal={180}
-                                        max={300}
-                                        readMoreText={readMore}
-                                    /> */}
-                                    {/* {displayData.text} */}
-                                    <div className={classNames("tw-flex tw-justify-center tw-h-96", {
-                                    })}>
-                                        <img className="tw-object-scale-down" src={displayData.image} />
-                                    </div>
-                                </div>
-                                <div className="tw-flex tw-flex-row tw-min-w-full tw-justify-between">
-                                    <p className="tw-flex tw-text-lg tw-self-start tw-w-max">150{ } likes</p>
-                                    <div className="tw-flex tw-flex-row tw-gap-2 tw-w-max tw-text-lg tw-self-end">
-                                        <p>2.1k { } comments</p>
-                                        <p>8.5k { } shares</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                </div>
-            </div>
+        <div className={classNames("tw-w-full", {})}>
+          <p className="tw-text-lg">ห้วงเวลา:</p>
+          <SearchBar
+            useDateSearch={true}
+            onChangeDate={setSearchDate}
+          />
         </div>
-    );
+        <Tooltip placement="top" title={"สร้างรายงานPDF"} color="blue">
+          <Button className="tw-h-max tw-flex tw-flex-row tw-self-end tw-m-3 tw-bg-white tw-border-2 tw-border-blue-300">
+            <FilePdfOutlined />
+            <p>สร้างรายงานPDF</p>
+          </Button>
+        </Tooltip>
+      </div>
+
+      <div className={classNames("tw-flex tw-flex-col tw-justify-center tw-my-4 ", {})}>
+        <div className={classNames("tw-flex tw-flex-row tw-gap-2 tw-my-2", {
+          "tw-flex-col": isTabletOrMobile || isTablet,
+        })}>
+          <div className={classNames("tw-flex tw-flex-col tw-gap-4", {
+            "tw-w-full": isTabletOrMobile || isTablet,
+            "tw-w-1/3": !isTabletOrMobile && !isTablet,
+          })}>
+            <div className="tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
+              <p className="tw-text-lg">จำนวนโพสต์</p>
+              <p className="tw-text-6xl tw-font-bold tw-text-blue-400">{pageData.post}</p>
+            </div>
+            <div className="tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
+              <p className="tw-text-lg">การมีส่วนร่วมทั้งหมด</p>
+              <p className="tw-text-6xl tw-font-bold tw-text-blue-400">{pageData.react}</p>
+            </div>
+            <div className="tw-flex tw-flex-col tw-h-full tw-w-full tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
+              <p className="tw-text-center tw-text-lg">จำนวนโพสต์รายวัน</p>
+              {dailyPosts.length > 0 && dailyPosts.some((post) => post.value > 0) &&
+                <div className="tw-flex tw-w-full tw-h-full tw-overflow-auto tw-items-center">
+                  <div className={classNames("tw-w-full tw-overflow-auto", {
+                    "tw-h-96": isTabletOrMobile || isTablet,
+                    "tw-h-full ": !isTabletOrMobile && !isTablet,
+                  })}>
+                    <VerticalBarChart
+                      chartOptions={postBarOptions}
+                      chartData={postBarData}
+                      redraw={true}
+                    />
+                  </div>
+                </div>
+              }
+              {dailyPosts.length == 0 || dailyPosts.every((post) => post.value == 0) && <div className="tw-w-full tw-h-full">
+                <p className="tw-text-xl tw-font-bold">ไม่พบข้อมูล</p>
+              </div>
+              }
+            </div>
+          </div>
+          <div className={classNames("tw-flex tw-flex-col tw-gap-4", {
+            "tw-w-full": isTabletOrMobile || isTablet,
+            "tw-w-1/3": !isTabletOrMobile && !isTablet,
+          })}>
+            <div className="tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
+              <p className="tw-text-lg">จำนวนผู้ใช้งาน</p>
+              <p className="tw-text-6xl tw-font-bold tw-text-blue-400">{pageData.user}</p>
+            </div>
+            <div className="tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
+              <p className="tw-text-lg">การมีส่วนร่วมเฉลี่ย/โพสต์</p>
+              <p className="tw-text-6xl tw-font-bold tw-text-blue-400">{pageData.avg}</p>
+            </div>
+            <div className="tw-text-center tw-flex tw-flex-col tw-h-full tw-items-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
+              <p className="tw-text-center tw-text-lg">ความรู้สึกเชิงบวก-ลบ</p>
+              <div className=" tw-flex tw-flex-row tw-justify-center tw-gap-3">
+                <div className=" tw-flex tw-flex-row tw-gap-1 ">
+                  <div className="tw-w-6 tw-h-6 tw-border-2 tw-border-black tw-rounded-full tw-bg-green-500">
+                  </div>
+                  <p>เชิงบวก</p>
+                </div>
+                <div className="tw-flex tw-flex-row tw-gap-1">
+                  <div className="tw-w-6 tw-h-6 tw-border-2 tw-border-black tw-rounded-full tw-bg-sky-600">
+                  </div>
+                  <p>เป็นกลาง</p>
+                </div>
+                <div className="tw-flex tw-flex-row tw-gap-1">
+                  <div className="tw-w-6 tw-h-6 tw-border-2 tw-border-black tw-rounded-full tw-bg-red-500">
+                  </div>
+                  <p>เชิงลบ</p>
+                </div>
+              </div>
+              <div className={classNames("tw-flex tw-justify-center tw-h-full tw-w-full", {
+              })}>
+                {dailySentiment.length > 0 && dailySentiment.some((Sentiment) => Sentiment.value > 0) &&
+                  <div className={classNames("tw-w-full tw-overflow-auto", {
+                    "tw-h-96": isTabletOrMobile || isTablet,
+                    "tw-h-full ": !isTabletOrMobile && !isTablet,
+                  })}>
+                    <DoughnutChart
+                      chartData={sentimentData}
+                      chartOptions={sentimentOptions}
+                      redraw={true}
+                      plugins={[ChartDataLabels]}
+                    />
+                  </div>
+                }
+                {dailySentiment.length == 0 || dailySentiment.every((Sentiment) => Sentiment.value == 0) && <div className="tw-w-full tw-h-full">
+                  <p className="tw-text-xl tw-font-bold">ไม่พบข้อมูล</p>
+                </div>
+                }
+              </div>
+            </div>
+          </div>
+          <div className={classNames("tw-flex tw-flex-col tw-gap-4 tw-h-[46rem]", {
+            "tw-w-full": isTabletOrMobile || isTablet,
+            "tw-w-1/3": !isTabletOrMobile && !isTablet,
+          })}>
+            <div className="tw-flex tw-flex-col tw-h-full tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
+              <p className="tw-text-lg">แฮชเเท็กที่ถูกใช้งานมากที่สุด</p>
+              <div className="tw-grid tw-grid-cols-3 tw-w-full tw-h-full tw-justify-around tw-items-center tw-self-center tw-gap-4">
+                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#แอมมี่{ }</p>
+                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#คบกันตอนไหน{ }</p>
+                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#แบงค์ศุภณัฐ{ }</p>
+                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#แม่แตงโม</p>
+                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#สมุดหนังหมาHayDay{ }</p>
+                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#dek67{ }</p>
+                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#กรรมกรข่าวคุยนอกจอ{ }</p>
+                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#BuildJakapan{ }</p>
+                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#엔시티존{ }</p>
+                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#ทาลอนเก่งอะ{ }</p>
+                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#ตํานานวินเมธวิน</p>
+                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#อิงฟ้ามหาชน</p>
+                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#cnfact</p>
+                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#ชาล็อตออสติน</p>
+                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#นิทานพันดาว</p>
+                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#30บาทรักษาทุกที่</p>
+                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#เงินเฟ้อ</p>
+                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#ขอแจมอีกที</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className={classNames("tw-flex tw-flex-row tw-justify-around tw-gap-4 tw-my-2", {
+          "tw-flex-col": isTabletOrMobile,
+        })}>
+          <div className={classNames("tw-flex tw-flex-col tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
+            "tw-w-full": isTabletOrMobile,
+            "tw-w-1/2": !isTabletOrMobile,
+          })}>
+            <p className="tw-text-lg">กลุ่มคำ</p>
+            <div className={classNames("", {
+              "tw-h-[16rem]": isMobile && isPortrait,
+              "tw-h-full": !isMobile || (isMobile && isLandscape),
+            })}>
+              {dailyWordCloud && (
+                <img className="tw-object-fill tw-h-full tw-w-full"
+                  src={dailyWordCloud}
+                />
+              )}
+              {!dailyWordCloud && <div className="tw-w-full tw-h-full">
+                <p className="tw-text-xl tw-font-bold">ไม่พบข้อมูล</p>
+              </div>
+              }
+            </div>
+          </div>
+          {displayData && (
+            <div className={classNames("tw-flex tw-flex-col tw-h-full tw-object-contain tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
+              "tw-w-full": isTabletOrMobile,
+              "tw-w-1/2": !isTabletOrMobile,
+            })}>
+              <p className="tw-text-lg tw-text-center">โพสต์ที่มีส่วนร่วมสูงสด</p>
+              <div>
+                <div className="tw-flex tw-flex-row tw-justify-between">
+                  <div className="tw-flex tw-flex-row tw-gap-2">
+                    <div className="tw-w-max tw-h-max tw-border-2 tw-border-black tw-rounded-full">
+                      <img className="tw-rounded-full tw-h-12 tw-w-12" src={displayData.profile} />
+                    </div>
+                    <div className="tw-flex tw-flex-col">
+                      <p className="tw-text-2xl">{displayData.username}</p>
+                      <p className="tw-text-lg tw-font-thin">{displayData.date}</p>
+                    </div>
+                  </div>
+                  <a className="tw-w-fit tw-mx-4 tw-text-lg" target="blank"
+                    href={displayData.link} >
+                    <SendOutlined />ไปที่โพสต์
+                  </a>
+                </div>
+                <div className="tw-text-lg">
+                  <ClampLines
+                    text={displayData.text}
+                    id='really-unique-id'
+                    type='html'
+                    lines={3}
+                    ellipsis='...'
+                    moreText={<p className="tw-text-blue-500">เพิ่มเติม</p>}
+                    lessText={<p className="tw-text-blue-500">น้อยลง</p>}
+                    className=''
+                    innerElement='p'
+                  />
+                  <div className={classNames("tw-flex tw-justify-center tw-h-96", {
+                  })}>
+                    <img className="tw-object-scale-down" src={displayData.image} />
+                  </div>
+                </div>
+                <div className="tw-flex tw-flex-row tw-min-w-full tw-justify-between">
+                  <p className="tw-flex tw-text-lg tw-self-start tw-w-max">150{ } likes</p>
+                  <div className="tw-flex tw-flex-row tw-gap-2 tw-w-max tw-text-lg tw-self-end">
+                    <p>2.1k { } comments</p>
+                    <p>8.5k { } shares</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default SubDashboard;

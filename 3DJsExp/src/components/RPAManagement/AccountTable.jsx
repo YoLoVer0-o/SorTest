@@ -185,8 +185,9 @@ const AccountTable = () => {
                                 "tw-rounded-md tw-border-2 tw-border-black tw-w-max tw-text-center tw-text-white tw-p-2",
                                 {
                                     "tw-bg-green-600": record?.status == "Running",
-                                    "tw-bg-red-600": record?.status == "Not start",
-                                    "tw-bg-yellow-600": record?.status == "standby",
+                                    "tw-bg-yellow-600": record?.status == "Not start",
+                                    "tw-bg-blue-600": record?.status == "standby",
+                                    "tw-bg-red-600": record?.status == "Stop",
                                 }
                             )}
                         >

@@ -22,8 +22,7 @@ const recommendAPI = {
   engagement: async (rowperpage) => {
     try {
       const response = await axios.post(
-        `http://192.168.10.123/engagement`,
-        rowperpage
+        `http://192.168.10.123/engagement?top=${rowperpage}`
       );
       return response.data;
     } catch (error) {

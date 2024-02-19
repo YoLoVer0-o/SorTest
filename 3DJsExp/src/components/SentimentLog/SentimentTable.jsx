@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { DataTable, SearchBar } from "../../utilities";
+import { DataTable, SearchBar, Loading } from "../../utilities";
 import { newSentiment } from "../../mock";
 import { useResponsive } from "../../hooks";
 import { useNavigate } from "react-router-dom";
@@ -22,6 +22,7 @@ const SentimentTable = () => {
     const [searchDate, setSearchDate] = useState([]);
     const [pageSize, setPageSize] = useState(5);
     const [displayData, setDisplayData] = useState([]);
+    const [showLoading, setShowLoading] = useState(false);
 
     const token = useSelector((state) => getLogin(state).token);
 
@@ -29,13 +30,13 @@ const SentimentTable = () => {
 
     const fetchBotPost = async () => {
         try {
-            // setShowLoading(true);
+            setShowLoading(true);
             const data = await botPostReportAPI.getBotPost();
             setDisplayData(data);
         } catch (error) {
             console.error('Error fetching bot config:', error);
         } finally {
-            // setShowLoading(false);
+            setShowLoading(false);
         }
     }
 
@@ -172,6 +173,7 @@ const SentimentTable = () => {
 
     return (
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto', {})}>
+            <Loading isShown={showLoading} />
             <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">BotTable</p>
             {/* {displayData.length > 0 && ( */}
             <div className={classNames("tw-flex tw-flex-row tw-max-w-full tw-justify-center tw-gap-2", {
