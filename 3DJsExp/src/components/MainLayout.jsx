@@ -520,13 +520,6 @@ const MainLayout = (props) => {
                   label: "User Management",
                 },
                 {
-                  key: "/sentiment",
-                  icon: <CommentOutlined />,
-                  label: "ประเมิณผลตอบรับ",
-                  className: "",
-                },
-
-                {
                   key: "/SEOWebSite",
                   icon: <TbSeo />                  ,
                   label: "SEO WebSite",
