@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
-import { useSelector, useDispatch } from 'react-redux'
-import { getLogin, logOut } from '../libs/loginSlice'
+import { useSelector, useDispatch } from "react-redux";
+import { getLogin, logOut } from "../libs/loginSlice";
 import { setUserData } from "../libs/userSlice";
 import mainUserAPI from "../service/mainUserAPI";
 import { useResponsive } from "../hooks";
 import SocialIcons from "../assets/SocialIcons";
 import profile from "../assets/profile.png";
+import { TbSeo } from "react-icons/tb";
 import { Layout, Menu, Button, Breadcrumb, Tooltip } from "antd";
 import {
   BarChartOutlined,
@@ -24,7 +25,6 @@ import PropTypes from "prop-types";
 const { Header, Sider, Content } = Layout;
 
 const MainLayout = (props) => {
-
   const isLogin = useSelector((state) => getLogin(state));
 
   // const isLogin = useSelector((state) => state.login?.items[0]);
@@ -33,12 +33,8 @@ const MainLayout = (props) => {
 
   const [openKeys, setOpenKeys] = useState([]);
 
-  const {
-    isTabletOrMobile,
-    isMobile,
-    isPortrait,
-    isLandscape,
-  } = useResponsive();
+  const { isTabletOrMobile, isMobile, isPortrait, isLandscape } =
+    useResponsive();
 
   const navigate = useNavigate();
 
@@ -46,31 +42,32 @@ const MainLayout = (props) => {
 
   const param = useParams();
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   ///////////////////////////////////////breadcrumb name///////////////////////////////////////////////////////////////////
   const breadcrumbNameMap = {
-    '/main': 'รายงานสรุป',
-    '/main/overall': 'ภาพรวม',
-    '/postlog': 'โพสต์และความเคลื่อนไหว',
-    '/postlog/report': 'รายงานโพสต์',
-    '/postCreation': 'เผยแพร่ข้อมูล',
-    '/postCreation/createPost': 'สร้างโพสต์ใหม่',
-    '/postCreation/postStatus': 'สถานะการโพส',
+    "/main": "รายงานสรุป",
+    "/main/overall": "ภาพรวม",
+    "/postlog": "โพสต์และความเคลื่อนไหว",
+    "/postlog/report": "รายงานโพสต์",
+    "/postCreation": "เผยแพร่ข้อมูล",
+    "/postCreation/createPost": "สร้างโพสต์ใหม่",
+    "/postCreation/postStatus": "สถานะการโพส",
     "/postCreation/createGroupPost": "สร้างโพสต์ไปที่กลุ่ม",
-    '/sentiment': 'ประเมิณผลตอบรับ',
-    '/sentiment/report': 'รายงานความคิดเห็น',
-    '/RPA': 'RPA',
-    '/RPA/account': 'บัญชีและสถานะ',
-    '/RPA/fulltime': 'งานประจำ',
-    '/RPA/job': 'งาน',
-    '/RPA/errlog': 'Error Log',
-    '/RPA/activlog': 'Activity Log',
-    '/classconfig': 'Classification Config',
-    '/classconfig/edit': 'แก้ไข',
-    '/recommendation': 'Recommendation',
-    '/recommendation/similarpost': 'ผลลัพธ์ของโพสต์ใกล้เคียง',
-    '/recommendation/trending': 'เนื้อหาที่กำลังได้รับความนิยม',
+    "/sentiment": "ประเมิณผลตอบรับ",
+    "/sentiment/report": "รายงานความคิดเห็น",
+    "/RPA": "RPA",
+    "/RPA/account": "บัญชีและสถานะ",
+    "/RPA/fulltime": "งานประจำ",
+    "/RPA/job": "งาน",
+    "/RPA/errlog": "Error Log",
+    "/RPA/activlog": "Activity Log",
+    "/classconfig": "Classification Config",
+    "/classconfig/edit": "แก้ไข",
+    "/recommendation": "Recommendation",
+    "/recommendation/similarpost": "ผลลัพธ์ของโพสต์ใกล้เคียง",
+    "/recommendation/trending": "เนื้อหาที่กำลังได้รับความนิยม",
+    "/SEOWebSite": "SEO WebSite",
   };
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -79,11 +76,10 @@ const MainLayout = (props) => {
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   ///////////////////////////////////////breadcrumb render logic///////////////////////////////////////////////////////////////////
-  const pathSnippets = location.pathname.split('/').filter((i) => i);
+  const pathSnippets = location.pathname.split("/").filter((i) => i);
 
   const breadcrumbItems = pathSnippets.map((_, index) => {
-
-    const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
+    const url = `/${pathSnippets.slice(0, index + 1).join("/")}`;
 
     const [paramValue] = Object.values(param);
 
@@ -92,7 +88,7 @@ const MainLayout = (props) => {
     return {
       key: url,
       title: <p>{isDynamic ? paramValue : breadcrumbNameMap[url]}</p>,
-    }
+    };
   });
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -110,23 +106,21 @@ const MainLayout = (props) => {
 
     if (latestOpenKey) {
       const topLevelKeys = [];
-      if (latestOpenKey.startsWith('/RPA')) {
+      if (latestOpenKey.startsWith("/RPA")) {
         // console.log("hit1");
-        topLevelKeys.push('/RPA');
+        topLevelKeys.push("/RPA");
         topLevelKeys.push(latestOpenKey);
-      } else if (latestOpenKey.startsWith('/main')) {
+      } else if (latestOpenKey.startsWith("/main")) {
         // console.log("hit2");
-        topLevelKeys.push('/main');
+        topLevelKeys.push("/main");
         topLevelKeys.push(latestOpenKey);
-      }
-      else if (latestOpenKey.startsWith('/recommendation')) {
+      } else if (latestOpenKey.startsWith("/recommendation")) {
         // console.log("hit3");
-        topLevelKeys.push('/recommendation');
+        topLevelKeys.push("/recommendation");
         topLevelKeys.push(latestOpenKey);
-      }
-      else if (latestOpenKey.startsWith('/postCreation')) {
+      } else if (latestOpenKey.startsWith("/postCreation")) {
         // console.log("hit4");
-        topLevelKeys.push('/postCreation');
+        topLevelKeys.push("/postCreation");
         topLevelKeys.push(latestOpenKey);
       }
       console.log(topLevelKeys);
@@ -139,22 +133,23 @@ const MainLayout = (props) => {
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   //////////////////////////////////////////////back button logic////////////////////////////////////////////////////////////
-  const showBackButton = breadcrumbItems.length > 1 &&
+  const showBackButton =
+    breadcrumbItems.length > 1 &&
     !(
-      breadcrumbItems.some(item => item.key.includes('/RPA'))
-      || breadcrumbItems.some(item => item.key.includes('/main'))
-      || breadcrumbItems.some(item => item.key.includes('/recommendation'))
-      || breadcrumbItems.some(item => item.key.includes('/postCreation'))
-    )
+      breadcrumbItems.some((item) => item.key.includes("/RPA")) ||
+      breadcrumbItems.some((item) => item.key.includes("/main")) ||
+      breadcrumbItems.some((item) => item.key.includes("/recommendation")) ||
+      breadcrumbItems.some((item) => item.key.includes("/postCreation"))
+    );
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
   const getUserGroup = async () => {
-    await mainUserAPI.getAllRole(isLogin.token)
-      .then((response) => { dispatch(setUserData({ owner: response })) });
-  }
+    await mainUserAPI.getAllRole(isLogin.token).then((response) => {
+      dispatch(setUserData({ owner: response }));
+    });
+  };
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
   useEffect(() => {
     if (location.pathname == "/" || location.pathname == "/main") {
@@ -172,10 +167,9 @@ const MainLayout = (props) => {
   }, [isLogin]);
 
   useEffect(() => {
-    getUserGroup()
+    getUserGroup();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
+  }, []);
 
   return (
     <Layout
@@ -206,7 +200,8 @@ const MainLayout = (props) => {
             <p className="tw-text-xl">นายวินัย ใจรัก</p>
             <Button
               className="tw-h-min tw-w-fit tw-text-white tw-bg-red-600 tw-border-2 tw-border-white hover:tw-border-red-600 hover:tw-bg-white hover:tw-text-red-600"
-              onClick={() => dispatch(logOut())}>
+              onClick={() => dispatch(logOut())}
+            >
               Log Out
             </Button>
           </div>
@@ -214,7 +209,6 @@ const MainLayout = (props) => {
       </Header>
 
       <Layout className={"tw-relative"}>
-
         <div
           className={classNames(
             "tw-flex tw-h-full tw-flex-row tw-absolute tw-z-40",
@@ -229,9 +223,12 @@ const MainLayout = (props) => {
             collapsible
             collapsed={collapsed}
             collapsedWidth={0}
-            className={classNames("tw-min-h-full tw-overflow-y-auto tw-z-40 tw-bg-[#0874c4]", {
-              "tw-absolute tw-top-0": isMobile && isPortrait,
-            })}
+            className={classNames(
+              "tw-min-h-full tw-overflow-y-auto tw-z-40 tw-bg-[#0874c4]",
+              {
+                "tw-absolute tw-top-0": isMobile && isPortrait,
+              }
+            )}
           >
             {isMobile && (
               <div className={classNames("tw-w-full tw-grid tw-p-2", {})}>
@@ -285,7 +282,7 @@ const MainLayout = (props) => {
                       label: "ชุมนุม",
                       className: "",
                     },
-                  ]
+                  ],
                 },
                 {
                   key: "/sentiment",
@@ -320,7 +317,7 @@ const MainLayout = (props) => {
                       label: "สถานะการโพส",
                       className: "",
                     },
-                  ]
+                  ],
                 },
                 {
                   key: "/RPA",
@@ -359,8 +356,9 @@ const MainLayout = (props) => {
                           label: "Activity Log",
                           className: "",
                         },
-                      ]
-                    }, {
+                      ],
+                    },
+                    {
                       key: "/RPA/X",
                       icon: <img src={twitter} className="tw-h-8 tw-w-8" />,
                       label: "X(Twitter)",
@@ -391,8 +389,9 @@ const MainLayout = (props) => {
                           label: "Activity Log",
                           className: "",
                         },
-                      ]
-                    }, {
+                      ],
+                    },
+                    {
                       key: "/RPA/instagram",
                       icon: <img src={instagram} className="tw-h-8 tw-w-8" />,
                       label: "Instagram",
@@ -513,12 +512,25 @@ const MainLayout = (props) => {
                       label: "เนื้อหาที่กำลังได้รับความนิยม",
                       className: "",
                     },
-                  ]
+                  ],
                 },
                 {
                   key: "/usermanagement",
                   icon: <SlidersOutlined />,
                   label: "User Management",
+                },
+                {
+                  key: "/sentiment",
+                  icon: <CommentOutlined />,
+                  label: "ประเมิณผลตอบรับ",
+                  className: "",
+                },
+
+                {
+                  key: "/SEOWebSite",
+                  icon: <TbSeo />                  ,
+                  label: "SEO WebSite",
+                  className: "",
                 },
               ]}
             />
@@ -538,7 +550,10 @@ const MainLayout = (props) => {
 
         <Layout>
           <div className="tw-flex tw-flex-row tw-px-6 tw-my-4 tw-justify-between">
-            <Breadcrumb className="tw-text-lg tw-font-bold" items={breadcrumbItems} />
+            <Breadcrumb
+              className="tw-text-lg tw-font-bold"
+              items={breadcrumbItems}
+            />
             {showBackButton && (
               <Tooltip title="ย้อนกลับ">
                 <Button

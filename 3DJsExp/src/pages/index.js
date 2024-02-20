@@ -7,6 +7,7 @@ import RPAManagementPage from "./RPAManagementPage";
 import ClassConfigPage from "./ClassConfigPage";
 import RecommendationPage from "./RecommendationPage";
 import UserManagementPage from "./UserManagementPage";
+import SeoWebSitePage from "./SeoWepSitePage";
 
 export {
   MainPage,
@@ -18,4 +19,5 @@ export {
   ClassConfigPage,
   RecommendationPage,
   UserManagementPage,
+  SeoWebSitePage,
 };

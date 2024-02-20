@@ -44,19 +44,10 @@ const CreatePost = () => {
     );
   }
 
-  const selectGroup = (selected) => {
-    console.log(`selected ${selected}`);
-    setSelectedGroupType(selected);
-  };
-
   const selectUser = (selectedOption) => {
     setSelectedBot(selectedOption);
   };
 
-  const selectGrouptaget = (selectedOption) => {
-    console.log(selectedOption);
-    setSelectedGroup(selectedOption.value);
-  };
 
   const getToken = useSelector((state) => getLogin(state));
 
@@ -82,12 +73,7 @@ const CreatePost = () => {
         label: bot.botname,
       }))
     : [];
-  const groupOptions = botData
-    ? botData.map((bot) => ({
-        value: bot.groups,
-        label: bot.groups,
-      }))
-    : [];
+
 
   return (
     <div className="tw-w-screen tw-h-full tw-max-h-full tw-gap-y-5 tw-p-4 tw-overflow-auto tw-flex tw-flex-col tw-items-center">
@@ -132,16 +118,25 @@ const CreatePost = () => {
           >
             <p>บัญชีที่ใช้โพสต์ :</p>
             <Select
+              showSearch
               defaultValue={selectedBot}
               onChange={selectUser}
               className="tw-w-full"
               value={selectedBot}
               options={userOptions}
+              filterOption={(input, option) =>
+                (option?.label ?? "").includes(input)
+              }
+              filterSort={(optionA, optionB) =>
+                (optionA?.label ?? "")
+                  .toLowerCase()
+                  .localeCompare((optionB?.label ?? "").toLowerCase())
+              }
             />
           </div>
         )}
 
-        {selectedGroupType === "Group" && (
+        {/* {selectedGroupType === "Group" && (
           <div
             className={classNames("tw-w-[30%]", {
               "tw-w-full": isMobile && isPortrait,
@@ -156,9 +151,9 @@ const CreatePost = () => {
               options={groupOptions}
             />
           </div>
-        )}
+        )} */}
 
-        <div
+        {/* <div
           className={classNames("tw-w-[20%]", {
             "tw-w-full": isMobile && isPortrait,
           })}
@@ -180,7 +175,7 @@ const CreatePost = () => {
               },
             ]}
           />
-        </div>
+        </div> */}
       </div>
 
       <div
