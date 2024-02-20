@@ -562,7 +562,7 @@ const MainLayout = (props) => {
           >
             <Outlet
               className={classNames(
-                "tw-flex tw-max-h-fit tw-h-fit tw-max-w-full tw-justify-center tw-object-contain",
+                "tw-flex tw-min-h-fit tw-max-w-full tw-justify-center tw-object-contain",
                 {}
               )}
             />

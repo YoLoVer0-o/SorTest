@@ -10,7 +10,6 @@ import {
     FileTextOutlined,
     SearchOutlined,
     MinusOutlined,
-    CloseCircleOutlined,
     PlusOutlined
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
@@ -26,6 +25,7 @@ import { getLogin } from '../../libs/loginSlice'
 const PostTable = () => {
 
     const [searchVal, setSearchVal] = useState('');
+    const [displayTag, setDisplayTag] = useState([]);
     const [searchTag, setSearchTag] = useState([]);
     const [searchDate, setSearchDate] = useState([]);
     const [searchPlatform, setSearchPlatform] = useState([]);
@@ -35,8 +35,12 @@ const PostTable = () => {
     const [includeWord, setIncludeWord] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [excludeWord, setExcludeWord] = useState([]);
+    const [engagement, setEngagement] = useState();
+    const [displayFBid, setDisplayFBid] = useState([]);
+    const [searchFBid, setSearchFBid] = useState([]);
     const [displayData, setDisplayData] = useState([]);
     const [showLoading, setShowLoading] = useState(false);
+    const [pageIndex, setPageIndex] = useState({ current: 1, pageSize: 10 });
 
     const navigate = useNavigate();
 
@@ -44,10 +48,47 @@ const PostTable = () => {
 
     const { isTabletOrMobile, isPortrait } = useResponsive();
 
-    const fetchPost = async () => {
+    const fetchTags = async () => {
+
         try {
             setShowLoading(true);
-            const data = await postReportAPI.getTagetPost();
+            const data = await postReportAPI.getTags();
+            setDisplayTag(data);
+        } catch (error) {
+            console.error('Error fetching bot config:', error);
+        } finally {
+            setShowLoading(false);
+        }
+    }
+
+    const fetchFBid = async () => {
+
+        try {
+            setShowLoading(true);
+            const data = await postReportAPI.getTags();
+            setSearchFBid(data);
+        } catch (error) {
+            console.error('Error fetching bot config:', error);
+        } finally {
+            setShowLoading(false);
+        }
+    }
+
+    const fetchPost = async () => {
+        let searchPayLoad = {
+            search: searchVal,
+            platform: searchPlatform,
+            tag: searchTag,
+            date: searchDate.length > 0 ? [dayjs(searchDate[0]).format('YYYY-MM-DD'), dayjs(searchDate[1]).format('YYYY-MM-DD')] : [],
+            include: includeWord.map((word) => word.value),
+            exclude: excludeWord.map((word) => word.value),
+            engagement: engagement ? [engagement?.min, engagement?.max] : [],
+            id: [],
+            limit: [pageIndex.pageSize, pageIndex.current]
+        }
+        try {
+            setShowLoading(true);
+            const data = await postReportAPI.getTagetPost(searchPayLoad);
             setDisplayData(data);
         } catch (error) {
             console.error('Error fetching bot config:', error);
@@ -59,9 +100,12 @@ const PostTable = () => {
     useEffect(() => {
         fetchPost()
         // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [pageIndex])
+
+    useEffect(() => {
+        fetchTags()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-
-
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     const addWord = async (word, setData) => {
@@ -97,25 +141,25 @@ const PostTable = () => {
     ///////////////////////////////////////////table///////////////////////////////////////////////////////////////
     const columns = [
         {
-            title: 'update',
-            dataIndex: 'update',
-            key: 'update',
+            title: 'postime',
+            dataIndex: 'postime',
+            key: 'postime',
             align: "center",
             width: 150,
             className: 'tw-text-lime-600',
-            filteredValue: [searchDate],
-            onFilter: (value, record) => {
-                if (value != undefined && value != null && value != "" && value != 'undefined') {
-                    let startDate = String(value?.split(",")[0])
-                    let endDate = String(value?.split(",")[1])
-                    let recordDate = dayjs(record?.update).format('YYYY-MM-DD')
-                    if (dayjs(recordDate).isSameOrBefore(endDate) && dayjs(recordDate).isSameOrAfter(startDate)) {
-                        return record?.update
-                    }
-                } else {
-                    return record?.update
-                }
-            },
+            // filteredValue: [searchDate],
+            // onFilter: (value, record) => {
+            //     if (value != undefined && value != null && value != "" && value != 'undefined') {
+            //         let startDate = String(value?.split(",")[0])
+            //         let endDate = String(value?.split(",")[1])
+            //         let recordDate = dayjs(record?.update).format('YYYY-MM-DD')
+            //         if (dayjs(recordDate).isSameOrBefore(endDate) && dayjs(recordDate).isSameOrAfter(startDate)) {
+            //             return record?.update
+            //         }
+            //     } else {
+            //         return record?.update
+            //     }
+            // },
         },
         {
             title: 'platform',
@@ -124,10 +168,10 @@ const PostTable = () => {
             align: "center",
             width: 150,
             className: 'tw-truncate',
-            filteredValue: [searchPlatform],
-            onFilter: (value, record) => (
-                (value.split(",")).every(platform => String(record?.platform).includes(platform))
-            ),
+            // filteredValue: [searchPlatform],
+            // onFilter: (value, record) => (
+            //     (value.split(",")).every(platform => String(record?.platform).includes(platform))
+            // ),
         },
         {
             title: 'post',
@@ -136,38 +180,38 @@ const PostTable = () => {
             align: "center",
             width: 150,
             className: 'tw-truncate',
-            filteredValue: [searchTag],
-            onFilter: (value, record) => (
-                (value.split(",")).every(tag => String(record?.tag).includes(tag))
-            ),
+            // filteredValue: [searchTag],
+            // onFilter: (value, record) => (
+            //     (value.split(",")).every(tag => String(record?.tag).includes(tag))
+            // ),
         },
         {
-            title: 'creator',
-            dataIndex: 'creator',
-            key: 'creator',
+            title: 'poster_name',
+            dataIndex: 'poster_name',
+            key: 'poster_name',
             align: "center",
             width: 150,
             className: 'tw-text-amber-600',
-            filteredValue: [searchVal],
-            onFilter: (value, record) => (
-                String(record?.post).toLowerCase().includes(value.toLowerCase())
-                || String(record?.creator).toLowerCase().includes(value.toLowerCase())
-                || String(record?.update).toLowerCase().includes(value.toLowerCase())
-            ),
+            // filteredValue: [searchVal],
+            // onFilter: (value, record) => (
+            //     String(record?.post).toLowerCase().includes(value.toLowerCase())
+            //     || String(record?.creator).toLowerCase().includes(value.toLowerCase())
+            //     || String(record?.update).toLowerCase().includes(value.toLowerCase())
+            // ),
         },
         {
-            title: 'tag',
-            dataIndex: 'tag',
-            key: 'tag',
+            title: 'hashtags',
+            dataIndex: 'hashtags',
+            key: 'hashtags',
             align: "center",
-            width: 150,
+            width: 200,
             className: 'tw-text-violet-600',
             render: (text, record) => (
-                <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
-                    {record?.tag.map(tag => (
-                        <Tooltip key={tag} title={tag}>
+                <div className="tw-grid tw-grid-cols-2 tw-gap-1 tw-w-full tw-h-full tw-content-start">
+                    {record?.hashtags.map(hashtags => (
+                        <Tooltip key={hashtags} title={hashtags}>
                             <div className="tw-rounded-md tw-p-2 tw-border-2 tw-border-black tw-w-fit tw-text-center tw-text-white tw-bg-violet-600" >
-                                {tag}
+                                {hashtags}
                             </div>
                         </Tooltip>
                     ))}
@@ -176,15 +220,15 @@ const PostTable = () => {
         },
         {
             title: 'link',
-            dataIndex: 'link',
-            key: 'link',
+            dataIndex: 'post_url',
+            key: 'post_url',
             align: "center",
-            width: 150,
+            width: 50,
             className: 'tw-truncate tw-text-sky-700',
             render: (text, record) => (
                 <div className="tw-flex tw-justify-center">
                     <Tooltip title="กดเพื่อไปที่โพสต์">
-                        <a href={record?.link} target="blank">
+                        <a href={record?.post_url} target="blank">
                             <div className="tw-rounded-md tw-w-full tw-border-2 tw-border-black tw-text-center tw-text-white tw-bg-sky-600" >
                                 <p className="tw-m-2">Link</p>
                             </div>
@@ -229,15 +273,21 @@ const PostTable = () => {
                             keyName={"platform"}
                         />
                     </div>
-                    <div className={classNames("tw-w-full", {})}>
-                        <p className="tw-text-lg">Tag:</p>
-                        <SearchBar
-                            useTagSearch={true}
-                            data={postMock}
-                            onChangeFilter={setSearchTag}
-                            keyName={"tag"}
-                        />
-                    </div>
+
+                    {displayTag.length > 0 &&
+                        <div className={classNames("tw-w-full", {})}>
+                            <p className="tw-text-lg">Tag:</p>
+                            <SearchBar
+                                useTagSearch={true}
+                                data={displayTag}
+                                onChangeFilter={setSearchTag}
+                                useOwnData={true}
+                                ownKeyNameLabel={"name"}
+                                ownKeyNameValue={"id"}
+                            />
+                        </div>
+                    }
+
                     <div className={classNames("tw-w-full", {})}>
                         <p className="tw-text-lg">เวลา:</p>
                         <SearchBar
@@ -301,9 +351,6 @@ const PostTable = () => {
                                 options={excludeWord.length > 0 ? excludeWord : false}
                                 optionRender={(option) => (
                                     <div className='tw-flex tw-flex-row tw-justify-between'>
-
-                                        {/* <CloseCircleOutlined className='tw-text-2xl tw-text-red-500' onClick={() => deleteWord(option.value, setExcludeWord)} /> */}
-
                                         <p className='tw-font-bold'>{option.label}</p>
                                     </div>
                                 )}
@@ -337,13 +384,19 @@ const PostTable = () => {
                                 <div className='tw-flex tw-flex-row tw-w-full tw-gap-4'>
                                     <InputNumber
                                         type="number"
-                                        // onChange={onTextChange}
+                                        onChange={(value) => setEngagement(prevState => ({
+                                            ...prevState,
+                                            min: value,
+                                        }))}
                                         className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md hover:tw-border-sky-700 tw-w-full'
                                     />
                                     <MinusOutlined className="tw-text-lg" />
                                     <InputNumber
                                         type="number"
-                                        // onChange={onTextChange}
+                                        onChange={(value) => setEngagement(prevState => ({
+                                            ...prevState,
+                                            max: value,
+                                        }))}
                                         className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md hover:tw-border-sky-700 tw-w-full'
                                     />
                                 </div>
@@ -373,17 +426,27 @@ const PostTable = () => {
                     />
                     <p className="tw-text-lg">เปิดใช้การค้นหาขั้นสูง</p>
                 </div>
+                <div className="tw-w-full tw-h-fit tw-my-2">
+                    <Button
+                        className="tw-w-full tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white"
+                        onClick={() => fetchPost()}
+                    >
+                        <p className="tw-text-lg">ค้นหา</p>
+                    </Button>
+                </div>
             </div>
-            <div className={classNames("tw-rounded-md", {
+            <div className={classNames("tw-rounded-md tw-h-fit", {
                 "tw-overflow-auto": isTabletOrMobile && isPortrait,
             })}>
                 <DataTable
-                    data={postMock}
+                    data={displayData.data}
                     columns={columns}
                     setPageSize={pageSize}
                     onRowsSelected={setSelectedRows}
                     useRowSelection={true}
-                    keyName={"id"}
+                    keyName={"_id"}
+                    totalPages={displayData.total}
+                    sendPages={setPageIndex}
                 />
             </div>
             <div className=" tw-flex tw-flex-row tw-my-6 tw-gap-4">
@@ -394,7 +457,6 @@ const PostTable = () => {
                             icon={<ColumnHeightOutlined />}
                         >
                             show more
-
                         </Button>
                     </Tooltip>
                 )}

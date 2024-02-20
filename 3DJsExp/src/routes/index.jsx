@@ -17,6 +17,7 @@ import {
   Trending,
   StatusTable,
   CreateGroupPost,
+  UserManageTable,
 
 } from "../components";
 import {
@@ -156,7 +157,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <PostTable />,
+        element: <UserManageTable />,
       },
     ],
   },

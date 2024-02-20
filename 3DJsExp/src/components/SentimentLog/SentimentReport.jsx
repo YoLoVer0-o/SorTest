@@ -228,7 +228,7 @@ const SentimentReport = () => {
 
     return (
         <div className="tw-w-screen tw-h-full tw-p-2 tw-overflow-auto">
- <Loading isShown={showLoading} />
+            <Loading isShown={showLoading} />
             <div
                 ref={topRef}
                 tabIndex={0}

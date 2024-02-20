@@ -60,6 +60,18 @@ const Dashboard = () => {
         }
     }
 
+    const fetchSocial = async (start, end) => {
+        try {
+            setShowLoading(true);
+            const data = await dashBoardAPI.getAllDailyPost(start, end);
+            setDailyPosts(data);
+        } catch (error) {
+            console.error('Error fetching bot config:', error);
+        } finally {
+            setShowLoading(false);
+        }
+    }
+
     const fetchWordCloud = async (start, end) => {
         try {
             setShowLoading(true);

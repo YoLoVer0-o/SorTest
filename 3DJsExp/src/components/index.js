@@ -26,6 +26,8 @@ import AddWordModal from "./ClassificationConfig/AddWordModal";
 import InfoModal from "./ClassificationConfig/InfoModal";
 import SimilarPost from "./Recommendation/SimilarPost";
 import Trending from "./Recommendation/trending";
+import UserManageTable from "./UserManagement/UserManageTable";
+import AddRoleModal from "./UserManagement/AddRoleModal";
 
 export {
   MainLayout,
@@ -56,4 +58,6 @@ export {
   InfoModal,
   SimilarPost,
   Trending,
+  UserManageTable,
+  AddRoleModal,
 };

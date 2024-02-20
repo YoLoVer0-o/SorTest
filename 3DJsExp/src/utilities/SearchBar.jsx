@@ -14,6 +14,9 @@ const SearchBar = props => {
     const onChangeFilter = props.onChangeFilter;
     const onChangeDate = props.onChangeDate;
     const keyName = props.keyName;
+    const useOwnData = props.useOwnData;
+    const ownKeyNameLabel = props.ownKeyNameLabel;
+    const ownKeyNameValue = props.ownKeyNameValue;
 
     const { isTabletOrMobile, isPortrait } = useResponsive();
 
@@ -22,7 +25,7 @@ const SearchBar = props => {
     const uniqueTagsSet = new Set();
 
     {
-        useTagSearch && typeof receviedData[0][`${keyName}`] === "object" && (receviedData.forEach((receviedData) => {
+        useTagSearch && !useOwnData && typeof receviedData[0][`${keyName}`] === "object" && (receviedData.forEach((receviedData) => {
             receviedData[`${keyName}`]?.forEach((tag) => {
                 uniqueTagsSet.add(tag);
             });
@@ -30,16 +33,22 @@ const SearchBar = props => {
     }
 
     {
-        useTagSearch && typeof receviedData[0][`${keyName}`] === "string" && (receviedData.forEach((receviedData) => {
+        useTagSearch && !useOwnData && typeof receviedData[0][`${keyName}`] === "string" && (receviedData.forEach((receviedData) => {
             uniqueTagsSet.add(receviedData[`${keyName}`]);
         }))
     }
 
     const uniqueTagsArray = () => {
-        if (useTagSearch) {
+        if (useTagSearch && !useOwnData) {
             return [...uniqueTagsSet].map((tag) => ({
                 label: tag,
                 value: tag,
+            }))
+        }
+        else if (useTagSearch && useOwnData) {
+            return receviedData.map((tag) => ({
+                label: tag[`${ownKeyNameLabel}`],
+                value: tag[`${ownKeyNameValue}`],
             }))
         }
     }
@@ -50,8 +59,9 @@ const SearchBar = props => {
     };
 
     const onTagChange = (value) => {
+        console.log(value);
         const searchTag = value.map((e) => {
-            return e;
+            return e[0].toLowerCase();
         })
         onChangeFilter(searchTag);
     };
@@ -116,6 +126,10 @@ SearchBar.propTypes = {
     onChangeSearch: PropTypes.func,
     onChangeDate: PropTypes.func,
     keyName: PropTypes.string,
+    useOwnData: PropTypes.bool,
+    ownKeyNameLabel: PropTypes.string,
+    ownKeyNameValue: PropTypes.string,
+
 }
 
 export default SearchBar;

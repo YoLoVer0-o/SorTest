@@ -36,7 +36,7 @@ const botPostReportAPI = {
   getComment: async (type, topic, page) => {
     try {
       const response = await axios.get(
-        `http://192.168.10.122//getComment?type=${type}&topic=${topic}&current_page=2`
+        `http://192.168.10.122//getComment?type=${type}&topic=${topic}&current_page=${page}`
       );
       return response.data;
     } catch (error) {

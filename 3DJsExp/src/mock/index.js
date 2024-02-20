@@ -13,6 +13,7 @@ import facebookAcc from "./FacebookAcc";
 import emotionEmoji from "./emotionEmoji";
 import dashboardMock from "./dashboardMock";
 import recmock from "./recmock";
+import userManageMock from "./userManageMock";
 
 export {
   sentimentAll,
@@ -30,4 +31,5 @@ export {
   emotionEmoji,
   dashboardMock,
   recmock,
+  userManageMock,
 };
