@@ -32,6 +32,13 @@ const SubDashboard = () => {
 
   const [dailyWordCloud, setDailyWordCloud] = useState("");
 
+  const [postImage, setPostImage] = useState("");
+
+  const [dailyStat, setDailyStat] = useState({});
+
+  const [dailyMaxEngagement, setDailyMaxEngagement] = useState({});
+
+
   const [pageData, setPageData] = useState({});
 
   const [showLoading, setShowLoading] = useState(false);
@@ -76,14 +83,83 @@ const SubDashboard = () => {
     }
   }
 
+  const fetchStat = async (start, end) => {
+    try {
+      setShowLoading(true);
+      const payload = {
+        date: [
+          start,
+          end
+        ],
+        topic: param.topic.toLowerCase()
+      }
+      const data = await dashBoardAPI.getStat(payload);
+      setDailyStat(data);
+    } catch (error) {
+      console.error('Error fetching bot config:', error);
+    } finally {
+      setShowLoading(false);
+    }
+  }
+
+  const fetchPostImage = async (id) => {
+    try {
+      setShowLoading(true);
+      const data = await dashBoardAPI.getPostImage(id);
+      setPostImage(data);
+    } catch (error) {
+      console.error('Error fetching bot config:', error);
+    } finally {
+      setShowLoading(false);
+    }
+  }
+
+  const fetchMaxEngagement = async (start, end) => {
+    try {
+      setShowLoading(true);
+      const payload = {
+        search: "",
+        platform: "facebook",
+        tag: [param.topic.toLowerCase()],
+        date: [
+          start,
+          end
+        ],
+        include: [],
+        exclude: [],
+        engagement: [],
+        id: [],
+        limit: [
+          10,
+          1
+        ]
+      }
+      const data = await dashBoardAPI.getMaxEngagement(payload);
+      setDailyMaxEngagement(data[0]);
+    } catch (error) {
+      console.error('Error fetching bot config:', error);
+    } finally {
+      setShowLoading(false);
+    }
+  }
+
   useEffect(() => {
     if (searchDate?.length > 0) {
       fetchPost(searchDate[0], searchDate[1])
       fetchSentiment(searchDate[0], searchDate[1])
       fetchWordCloud(searchDate[0], searchDate[1])
+      fetchStat(searchDate[0], searchDate[1])
+      fetchMaxEngagement(searchDate[0], searchDate[1])
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchDate])
+
+  useEffect(() => {
+    console.log(dailyMaxEngagement);
+    if (dailyMaxEngagement?.pictures) {
+      fetchPostImage(dailyMaxEngagement.pictures)
+    }
+  }, [dailyMaxEngagement])
 
   ///////////////////////////////////WordClouds logic///////////////////////////////////////////////////////////////////////
   const { กองทัพ, รัฐบาล, ชุมนุม, สถาบัน } = WordClouds;
@@ -106,63 +182,63 @@ const SubDashboard = () => {
     }
   };
 
-  const setData = () => {
-    let data = {
-      post: 0,
-      user: 0,
-      react: 0,
-      avg: 0
-    }
-    if (param.topic == "Army") {
-      data = {
-        post: 578,
-        user: 209,
-        react: 566000,
-        avg: 39000
-      }
+  // const setData = () => {
+  //   let data = {
+  //     post: 0,
+  //     user: 0,
+  //     react: 0,
+  //     avg: 0
+  //   }
+  //   if (param.topic == "Army") {
+  //     data = {
+  //       post: 578,
+  //       user: 209,
+  //       react: 566000,
+  //       avg: 39000
+  //     }
 
-    }
-    else if (param.topic == "Government") {
-      data = {
-        post: 288,
-        user: 157,
-        react: 416000,
-        avg: 32000
-      }
+  //   }
+  //   else if (param.topic == "Government") {
+  //     data = {
+  //       post: 288,
+  //       user: 157,
+  //       react: 416000,
+  //       avg: 32000
+  //     }
 
-    }
-    else if (param.topic == "Rally") {
-      data = {
-        post: 147,
-        user: 105,
-        react: 112000,
-        avg: 12000
-      }
+  //   }
+  //   else if (param.topic == "Rally") {
+  //     data = {
+  //       post: 147,
+  //       user: 105,
+  //       react: 112000,
+  //       avg: 12000
+  //     }
 
-    }
-    else if (param.topic == "Royal") {
-      data = {
-        post: 976,
-        user: 289,
-        react: 976000,
-        avg: 89000
-      }
+  //   }
+  //   else if (param.topic == "Royal") {
+  //     data = {
+  //       post: 976,
+  //       user: 289,
+  //       react: 976000,
+  //       avg: 89000
+  //     }
 
-    }
-    setPageData(data)
-  };
+  //   }
+  //   setPageData(data)
+  // };
 
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   const dashboardData = dashboardMock.filter(data => data.topic == (param.topic))[0];
 
-  const [displayData, setDisplayedData] = useState(dashboardData)
+  // const [displayData, setDisplayedData] = useState(dashboardData)
 
-  useEffect(() => {
-    setData()
-    setDisplayedData(dashboardData)
-  }, [dashboardData, param.topic])
+  // useEffect(() => {
+  //   setData()
+  //   setDisplayedData(dashboardData)
+  // }, [dashboardData, param.topic])
 
 
 
@@ -305,11 +381,11 @@ const SubDashboard = () => {
           })}>
             <div className="tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
               <p className="tw-text-lg">จำนวนโพสต์</p>
-              <p className="tw-text-6xl tw-font-bold tw-text-blue-400">{pageData.post}</p>
+              <p className="tw-text-6xl tw-font-bold tw-text-blue-400">{dailyStat?.post}</p>
             </div>
             <div className="tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
               <p className="tw-text-lg">การมีส่วนร่วมทั้งหมด</p>
-              <p className="tw-text-6xl tw-font-bold tw-text-blue-400">{pageData.react}</p>
+              <p className="tw-text-6xl tw-font-bold tw-text-blue-400">{dailyStat?.engagement}</p>
             </div>
             <div className="tw-flex tw-flex-col tw-h-full tw-w-full tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
               <p className="tw-text-center tw-text-lg">จำนวนโพสต์รายวัน</p>
@@ -339,11 +415,11 @@ const SubDashboard = () => {
           })}>
             <div className="tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
               <p className="tw-text-lg">จำนวนผู้ใช้งาน</p>
-              <p className="tw-text-6xl tw-font-bold tw-text-blue-400">{pageData.user}</p>
+              <p className="tw-text-6xl tw-font-bold tw-text-blue-400">{dailyStat?.user}</p>
             </div>
             <div className="tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
               <p className="tw-text-lg">การมีส่วนร่วมเฉลี่ย/โพสต์</p>
-              <p className="tw-text-6xl tw-font-bold tw-text-blue-400">{pageData.avg}</p>
+              <p className="tw-text-6xl tw-font-bold tw-text-blue-400">{dailyStat?.engagementperpost}</p>
             </div>
             <div className="tw-text-center tw-flex tw-flex-col tw-h-full tw-items-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
               <p className="tw-text-center tw-text-lg">ความรู้สึกเชิงบวก-ลบ</p>
@@ -438,31 +514,31 @@ const SubDashboard = () => {
               }
             </div>
           </div>
-          {displayData && (
-            <div className={classNames("tw-flex tw-flex-col tw-h-full tw-object-contain tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
-              "tw-w-full": isTabletOrMobile,
-              "tw-w-1/2": !isTabletOrMobile,
-            })}>
-              <p className="tw-text-lg tw-text-center">โพสต์ที่มีส่วนร่วมสูงสด</p>
+          <div className={classNames("tw-flex tw-flex-col tw-h-full tw-object-contain tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
+            "tw-w-full": isTabletOrMobile,
+            "tw-w-1/2": !isTabletOrMobile,
+          })}>
+            <p className="tw-text-lg tw-text-center">โพสต์ที่มีส่วนร่วมสูงสด</p>
+            {dailyMaxEngagement &&
               <div>
                 <div className="tw-flex tw-flex-row tw-justify-between">
                   <div className="tw-flex tw-flex-row tw-gap-2">
                     <div className="tw-w-max tw-h-max tw-border-2 tw-border-black tw-rounded-full">
-                      <img className="tw-rounded-full tw-h-12 tw-w-12" src={displayData.profile} />
+                      <img className="tw-rounded-full tw-h-10 tw-w-10" src={dashboardData.profile} />
                     </div>
                     <div className="tw-flex tw-flex-col">
-                      <p className="tw-text-2xl">{displayData.username}</p>
-                      <p className="tw-text-lg tw-font-thin">{displayData.date}</p>
+                      <p className="tw-text-xl">{dailyMaxEngagement?.poster_name}</p>
+                      <p className="tw-text-lg tw-font-thin">{dailyMaxEngagement?.postime} </p>
                     </div>
                   </div>
                   <a className="tw-w-fit tw-mx-4 tw-text-lg" target="blank"
-                    href={displayData.link} >
+                    href={dailyMaxEngagement?.post_url} >
                     <SendOutlined />ไปที่โพสต์
                   </a>
                 </div>
                 <div className="tw-text-lg">
                   <ClampLines
-                    text={displayData.text}
+                    text={dashboardData.text}
                     id='really-unique-id'
                     type='html'
                     lines={3}
@@ -474,19 +550,27 @@ const SubDashboard = () => {
                   />
                   <div className={classNames("tw-flex tw-justify-center tw-h-96", {
                   })}>
-                    <img className="tw-object-scale-down" src={displayData.image} />
+                    {postImage &&
+                      <img className="tw-object-scale-down" src={postImage} />
+                    }
                   </div>
                 </div>
-                <div className="tw-flex tw-flex-row tw-min-w-full tw-justify-between">
-                  <p className="tw-flex tw-text-lg tw-self-start tw-w-max">150{ } likes</p>
-                  <div className="tw-flex tw-flex-row tw-gap-2 tw-w-max tw-text-lg tw-self-end">
-                    <p>2.1k { } comments</p>
-                    <p>8.5k { } shares</p>
+                {dailyMaxEngagement?.reactions && dailyMaxEngagement?.reactions?.length > 0 &&
+                  <div className="tw-flex tw-flex-row tw-min-w-full tw-justify-between">
+                    <p className="tw-flex tw-text-lg tw-self-start tw-w-max">{dailyMaxEngagement?.reactions[0].reaction_stat.ถูกใจ} likes</p>
+                    <div className="tw-flex tw-flex-row tw-gap-2 tw-w-max tw-text-lg tw-self-end">
+                      <p> {dailyMaxEngagement?.reactions[0].comment_stat} comments</p>
+                      <p> {dailyMaxEngagement?.reactions[0].share_stat} shares</p>
+                    </div>
                   </div>
-                </div>
+                }
               </div>
+            }
+            {!dailyMaxEngagement && <div className="tw-w-full tw-h-full tw-text-center">
+              <p className="tw-text-xl tw-font-bold">ไม่พบข้อมูล</p>
             </div>
-          )}
+            }
+          </div>
         </div>
       </div>
     </div>

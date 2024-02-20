@@ -553,7 +553,7 @@ const MainLayout = (props) => {
 
           <Content
             className={classNames(
-              "tw-flex tw-max-w-full tw-max-h-fit tw-justify-center tw-bg-[#f8f4f4] tw-m-4 tw-object-contain tw-p-4",
+              "tw-flex tw-max-w-full tw-max-h-full tw-justify-center tw-bg-[#f8f4f4] tw-m-4 tw-object-contain tw-p-4",
               {
                 "tw-overflow-auto": isTabletOrMobile && isLandscape,
                 " tw-bg-white  ": location.pathname != "/createPost",

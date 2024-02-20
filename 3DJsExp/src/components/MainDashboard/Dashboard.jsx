@@ -30,7 +30,15 @@ const Dashboard = () => {
 
     const [dailySentiment, setDailySentiment] = useState([]);
 
+    const [postImage, setPostImage] = useState("");
+
+    const [dailyStat, setDailyStat] = useState({});
+
+    const [dailyMaxEngagement, setDailyMaxEngagement] = useState({});
+
     const [dailyWordCloud, setDailyWordCloud] = useState("");
+
+    const [dailySocial, setDailySocial] = useState([]);
 
     const [showLoading, setShowLoading] = useState(false);
 
@@ -60,11 +68,36 @@ const Dashboard = () => {
         }
     }
 
+    const fetchStat = async (start, end) => {
+        try {
+            setShowLoading(true);
+            const payload = {
+                date: [
+                    start,
+                    end
+                ],
+                topic: ""
+            }
+            const data = await dashBoardAPI.getStat(payload);
+            setDailyStat(data);
+        } catch (error) {
+            console.error('Error fetching bot config:', error);
+        } finally {
+            setShowLoading(false);
+        }
+    }
+
     const fetchSocial = async (start, end) => {
         try {
             setShowLoading(true);
-            const data = await dashBoardAPI.getAllDailyPost(start, end);
-            setDailyPosts(data);
+            const payload = {
+                date: [
+                    start,
+                    end
+                ]
+            }
+            const data = await dashBoardAPI.getSocial(payload);
+            setDailySocial(Object.entries(data).map(([key, value]) => ({ key, value })).sort((a, b) => b.value - a.value));
         } catch (error) {
             console.error('Error fetching bot config:', error);
         } finally {
@@ -86,20 +119,76 @@ const Dashboard = () => {
         }
     }
 
+    const fetchPostImage = async (id) => {
+        try {
+            setShowLoading(true);
+            const data = await dashBoardAPI.getPostImage(id);
+            setPostImage(data);
+        } catch (error) {
+            console.error('Error fetching bot config:', error);
+        } finally {
+            setShowLoading(false);
+        }
+    }
+
+    const fetchMaxEngagement = async (start, end) => {
+        try {
+            setShowLoading(true);
+            const payload = {
+                search: "",
+                platform: "facebook",
+                tag: [],
+                date: [
+                    start,
+                    end
+                ],
+                include: [],
+                exclude: [],
+                engagement: [],
+                id: [],
+                limit: [
+                    10,
+                    1
+                ]
+            }
+            const data = await dashBoardAPI.getMaxEngagement(payload);
+            setDailyMaxEngagement(data[0]);
+        } catch (error) {
+            console.error('Error fetching bot config:', error);
+        } finally {
+            setShowLoading(false);
+        }
+    }
+
     useEffect(() => {
         if (searchDate?.length > 0) {
             fetchPost(searchDate[0], searchDate[1])
             fetchSentiment(searchDate[0], searchDate[1])
             fetchWordCloud(searchDate[0], searchDate[1])
+            fetchStat(searchDate[0], searchDate[1])
+            fetchSocial(searchDate[0], searchDate[1])
+            fetchMaxEngagement(searchDate[0], searchDate[1])
         }
     }, [searchDate])
+
+    useEffect(() => {
+        console.log(dailyMaxEngagement);
+        if (dailyMaxEngagement?.pictures) {
+            fetchPostImage(dailyMaxEngagement.pictures)
+        }
+    }, [dailyMaxEngagement])
+
+    useEffect(() => {
+        console.log(postImage);
+    }, [postImage]);
+
+
 
     const { isTabletOrMobile, isTablet, isMobile, isPortrait, isLandscape } = useResponsive();
 
     const { ภาพรวม } = WordClouds;
 
     const { overall } = PostPics;
-
 
 
     ///////////////////////////////////icons render logic///////////////////////////////////////////////////////////////////////
@@ -111,7 +200,7 @@ const Dashboard = () => {
         else if (value == "instagram") {
             return instagram
         }
-        else if (value == "twitter") {
+        else if (value == "X") {
             return twitter
         }
         else if (value == "tiktok") {
@@ -132,7 +221,7 @@ const Dashboard = () => {
         else if (value == "instagram") {
             return "#833AB4"
         }
-        else if (value == "twitter") {
+        else if (value == "X") {
             return "#1DA1F2"
         }
         else if (value == "tiktok") {
@@ -272,13 +361,13 @@ const Dashboard = () => {
 
     /////////////////////////////////////////////socialBar/////////////////////////////////////////////////////////////
     const socialBarData = {
-        labels: socialPlatform.map(item => item.platform),
+        labels: dailySocial?.map(item => item.key),
         datasets: [
             {
                 label: 'จำนวนความเคลื่อนไหว',
-                data: socialPlatform.map(item => item.usage),
-                borderColor: socialPlatform.map(item => socialBarColor(item.platform)),
-                backgroundColor: socialPlatform.map(item => socialBarColor(item.platform)),
+                data: dailySocial?.map(item => item.value),
+                borderColor: dailySocial?.map(item => socialBarColor(item.key)),
+                backgroundColor: dailySocial?.map(item => socialBarColor(item.key)),
                 barThickness: isTabletOrMobile ? 30 : 50,
             },
         ],
@@ -366,11 +455,11 @@ const Dashboard = () => {
                     })}>
                         <div className="tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">จำนวนโพสต์</p>
-                            <p className="tw-text-6xl tw-font-bold tw-text-blue-400">2,570{ }</p>
+                            <p className="tw-text-6xl tw-font-bold tw-text-blue-400">{dailyStat?.post}</p>
                         </div>
                         <div className="tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">การมีส่วนร่วมทั้งหมด</p>
-                            <p className="tw-text-6xl tw-font-bold tw-text-blue-400">2,600,000{ }</p>
+                            <p className="tw-text-6xl tw-font-bold tw-text-blue-400">{dailyStat?.engagement}</p>
                         </div>
                         <div className="tw-flex tw-flex-col tw-h-full tw-w-full tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-center tw-text-lg">จำนวนโพสต์รายวัน</p>
@@ -400,11 +489,11 @@ const Dashboard = () => {
                     })}>
                         <div className="tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">จำนวนผู้ใช้งาน</p>
-                            <p className="tw-text-6xl tw-font-bold tw-text-blue-400">620{ }</p>
+                            <p className="tw-text-6xl tw-font-bold tw-text-blue-400">{dailyStat?.user}</p>
                         </div>
                         <div className="tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">การมีส่วนร่วมเฉลี่ย/โพสต์</p>
-                            <p className="tw-text-6xl tw-font-bold tw-text-blue-400">370,000{ }</p>
+                            <p className="tw-text-6xl tw-font-bold tw-text-blue-400">{dailyStat?.engagementperpost}</p>
                         </div>
                         <div className="tw-text-center tw-flex tw-flex-col tw-h-full tw-items-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-center tw-text-lg">ความรู้สึกเชิงบวก-ลบ</p>
@@ -520,53 +609,65 @@ const Dashboard = () => {
                             }
                         </div>
                     </div>
+
                     <div className={classNames("tw-flex tw-flex-col tw-h-fit tw-object-contain tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
                         "tw-w-full": isTabletOrMobile,
                         "tw-w-1/2": !isTabletOrMobile,
                     })}>
                         <p className="tw-text-lg tw-text-center">โพสต์ที่มีส่วนร่วมสูงสด</p>
-                        <div>
-                            <div className="tw-flex tw-flex-row tw-justify-between">
-                                <div className="tw-flex tw-flex-row tw-gap-2">
-                                    <div className="tw-w-max tw-h-max tw-border-2 tw-border-black tw-rounded-full">
-                                        <img className="tw-rounded-full tw-h-10 tw-w-10" src={overallP} />
+                        {dailyMaxEngagement &&
+                            <div>
+                                <div className="tw-flex tw-flex-row tw-justify-between">
+                                    <div className="tw-flex tw-flex-row tw-gap-2">
+                                        <div className="tw-w-max tw-h-max tw-border-2 tw-border-black tw-rounded-full">
+                                            <img className="tw-rounded-full tw-h-10 tw-w-10" src={overallP} />
+                                        </div>
+                                        <div className="tw-flex tw-flex-col">
+                                            <p className="tw-text-xl">{dailyMaxEngagement?.poster_name}</p>
+                                            <p className="tw-text-lg tw-font-thin">{dailyMaxEngagement?.postime} </p>
+                                        </div>
                                     </div>
-                                    <div className="tw-flex tw-flex-col">
-                                        <p className="tw-text-xl">อนุวัต จัดให้</p>
-                                        <p className="tw-text-lg tw-font-thin">2 มกราคม เวลา 09:26 น. </p>
+                                    <a className="tw-w-fit tw-mx-4 tw-text-lg" target="blank"
+                                        href={dailyMaxEngagement?.post_url} >
+                                        <SendOutlined />ไปที่โพสต์
+                                    </a>
+                                </div>
+                                <div className="tw-text-lg">
+                                    <ClampLines
+                                        text={testText}
+                                        id='really-unique-id'
+                                        type='html'
+                                        lines={3}
+                                        ellipsis='...'
+                                        moreText={<p className="tw-text-blue-500">เพิ่มเติม</p>}
+                                        lessText={<p className="tw-text-blue-500">น้อยลง</p>}
+                                        className=''
+                                        innerElement='p'
+                                    />
+                                    <div className={classNames("tw-flex tw-justify-center tw-h-96", {
+                                    })}>
+                                        {postImage &&
+                                            <img className="tw-object-scale-down" src={postImage} />
+                                        }
                                     </div>
                                 </div>
-                                <a className="tw-w-fit tw-mx-4 tw-text-lg" target="blank"
-                                    href="https://www.facebook.com/anuwatf.ch7/posts/pfbid0f1ui1iaiZX9ibN44euDsa5N6yJ5hEWm7tY4XLsjAd8AcUfGsY8DjosJi8qmLhPYol" >
-                                    <SendOutlined />ไปที่โพสต์
-                                </a>
+                                {dailyMaxEngagement?.reactions && dailyMaxEngagement?.reactions?.length > 0 &&
+                                    <div className="tw-flex tw-flex-row tw-min-w-full tw-justify-between">
+                                        <p className="tw-flex tw-text-lg tw-self-start tw-w-max">{dailyMaxEngagement?.reactions[0].reaction_stat.ถูกใจ} likes</p>
+                                        <div className="tw-flex tw-flex-row tw-gap-2 tw-w-max tw-text-lg tw-self-end">
+                                            <p> {dailyMaxEngagement?.reactions[0].comment_stat} comments</p>
+                                            <p> {dailyMaxEngagement?.reactions[0].share_stat} shares</p>
+                                        </div>
+                                    </div>
+                                }
                             </div>
-                            <div className="tw-text-lg">
-                                <ClampLines
-                                    text={testText}
-                                    id='really-unique-id'
-                                    type='html'
-                                    lines={3}
-                                    ellipsis='...'
-                                    moreText={<p className="tw-text-blue-500">เพิ่มเติม</p>}
-                                    lessText={<p className="tw-text-blue-500">น้อยลง</p>}
-                                    className=''
-                                    innerElement='p'
-                                />
-                                <div className={classNames("tw-flex tw-justify-center tw-h-96", {
-                                })}>
-                                    <img className="tw-object-scale-down" src={overall} />
-                                </div>
-                            </div>
-                            <div className="tw-flex tw-flex-row tw-min-w-full tw-justify-between">
-                                <p className="tw-flex tw-text-lg tw-self-start tw-w-max">2.2หมื่น{ } likes</p>
-                                <div className="tw-flex tw-flex-row tw-gap-2 tw-w-max tw-text-lg tw-self-end">
-                                    <p>765 { } comments</p>
-                                    <p>219 { } shares</p>
-                                </div>
-                            </div>
-                        </div>
+                        }
+                        {!dailyMaxEngagement && <div className="tw-w-full tw-h-full tw-text-center">
+                        <p className="tw-text-xl tw-font-bold">ไม่พบข้อมูล</p>
                     </div>
+                    }
+                    </div>
+
                 </div>
             </div>
         </div >

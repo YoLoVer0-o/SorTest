@@ -30,7 +30,7 @@ const PostTable = () => {
     const [searchDate, setSearchDate] = useState([]);
     const [searchPlatform, setSearchPlatform] = useState([]);
     const [selectedRows, setSelectedRows] = useState([]);
-    const [pageSize, setPageSize] = useState(5);
+    const [pageSize, setPageSize] = useState(10);
     const [advancedSearch, setAdvancedSearch] = useState(false);
     const [includeWord, setIncludeWord] = useState([]);
     const [inputValue, setInputValue] = useState('');
@@ -463,7 +463,7 @@ const PostTable = () => {
                 {pageSize >= 20 && (
                     <Tooltip title="แสดงน้อยลง">
                         <Button className="tw-border-black tw-border-2 tw-bg-yellow-400 tw-drop-shadow-md hover:tw-bg-white hover:tw-border-yellow-600 hover:tw-text-yellow-600"
-                            onClick={() => setPageSize(5)}
+                            onClick={() => setPageSize(10)}
                             icon={<VerticalAlignMiddleOutlined />}
                         >
                             show less

@@ -20,9 +20,10 @@ const SentimentTable = () => {
     const [searchTag, setSearchTag] = useState([]);
     const [searchBot, setSearchBot] = useState([]);
     const [searchDate, setSearchDate] = useState([]);
-    const [pageSize, setPageSize] = useState(5);
+    const [pageSize, setPageSize] = useState(10);
     const [displayData, setDisplayData] = useState([]);
     const [showLoading, setShowLoading] = useState(false);
+    const [pageIndex, setPageIndex] = useState({ current: 1, pageSize: 10 });
 
     const token = useSelector((state) => getLogin(state).token);
 
@@ -31,7 +32,7 @@ const SentimentTable = () => {
     const fetchBotPost = async () => {
         try {
             setShowLoading(true);
-            const data = await botPostReportAPI.getBotPost();
+            const data = await botPostReportAPI.getBotPost(pageIndex.current);
             setDisplayData(data);
         } catch (error) {
             console.error('Error fetching bot config:', error);
@@ -41,8 +42,10 @@ const SentimentTable = () => {
     }
 
     useEffect(() => {
+        console.log(pageIndex);
         fetchBotPost()
-    }, [])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [pageIndex])
 
 
     const { isTabletOrMobile, isPortrait } = useResponsive();
@@ -62,14 +65,14 @@ const SentimentTable = () => {
             dataIndex: 'tag',
             key: 'tag',
             align: "center",
-            width: 150,
+            width: 250,
             className: 'tw-text-violet-600',
             filteredValue: [searchTag],
             onFilter: (value, record) => (
                 (value.split(",")).every(tag => String(record?.tag).includes(tag))
             ),
             render: (text, record) => (
-                <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
+                <div className="tw-grid tw-grid-cols-2 tw-gap-1 tw-w-full tw-h-full tw-content-start">
                     {record?.tag.map(tag => (
                         <Tooltip key={tag} title={tag}>
                             <div className=" tw-w-max tw-rounded-md tw-p-2 tw-border-2 tw-border-black tw-text-center tw-text-white tw-bg-violet-600" >
@@ -126,7 +129,7 @@ const SentimentTable = () => {
             className: 'tw-text-amber-600',
             filteredValue: [searchBot],
             onFilter: (value, record) => (
-                (value.split(",")).some(group => String(record?.group).includes(group))
+                (value.split(",")).some(group => String(record?.group).toLowerCase().includes(group.toLowerCase()))
             ),
             render: (text, record) => (
                 <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
@@ -175,60 +178,61 @@ const SentimentTable = () => {
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto', {})}>
             <Loading isShown={showLoading} />
             <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">BotTable</p>
-            {/* {displayData.length > 0 && ( */}
-            <div className={classNames("tw-flex tw-flex-row tw-max-w-full tw-justify-center tw-gap-2", {
-                "tw-flex-col": isTabletOrMobile && isPortrait,
-            })}>
-                <div className={classNames("tw-w-full", {
+            {displayData.posts?.length > 0 && (
+                <div className={classNames("tw-flex tw-flex-row tw-max-w-full tw-justify-center tw-gap-2", {
+                    "tw-flex-col": isTabletOrMobile && isPortrait,
                 })}>
-                    <p className="tw-text-lg">หัวข้อ:</p>
-                    <SearchBar
-                        useTagSearch={true}
-                        data={newSentiment}
-                        // data={displayData}
-                        onChangeFilter={setSearchTag}
-                        keyName={"tag"}
+                    <div className={classNames("tw-w-full", {
+                    })}>
+                        <p className="tw-text-lg">หัวข้อ:</p>
+                        <SearchBar
+                            useTagSearch={true}
+                            // data={newSentiment}
+                            data={displayData.posts}
+                            onChangeFilter={setSearchTag}
+                            keyName={"tag"}
+                        />
+                    </div>
+                    <div className={classNames("tw-w-full", {
+
+                    })}>
+                        <p className="tw-text-lg">เวลา:</p>
+                        <SearchBar
+                            useDateSearch={true}
+                            onChangeDate={setSearchDate}
+                        />
+                    </div>
+                    <div className={classNames("tw-w-full", {
+
+                    })}>
+                        <p className="tw-text-lg">Bot:</p>
+                        <SearchBar
+                            useTagSearch={true}
+                            // data={newSentiment}
+                            data={displayData.posts}
+                            onChangeFilter={setSearchBot}
+                            keyName={"group"}
+                        />
+                    </div>
+
+                </div>
+            )}
+
+            {displayData.posts?.length > 0 && (
+                <div className={classNames("tw-border-2 tw-rounded-md", {})}>
+                    <DataTable
+                        columns={columns}
+                        // data={newSentiment}
+                        data={displayData.posts}
+                        setPageSize={pageSize}
+                        useRowClick={true}
+                        onRowClick={(selectedRows) => toReport(selectedRows)}
+                        keyName={"id"}
+                        totalPages={displayData.total_data}
+                        sendPages={setPageIndex}
                     />
                 </div>
-                <div className={classNames("tw-w-full", {
-
-                })}>
-                    <p className="tw-text-lg">เวลา:</p>
-                    <SearchBar
-                        useDateSearch={true}
-                        onChangeDate={setSearchDate}
-                        keyName={"tag"}
-                    />
-                </div>
-                <div className={classNames("tw-w-full", {
-
-                })}>
-                    <p className="tw-text-lg">Bot:</p>
-                    <SearchBar
-                        useTagSearch={true}
-                        data={newSentiment}
-                        // data={displayData}
-                        onChangeFilter={setSearchBot}
-                        keyName={"group"}
-                    />
-                </div>
-
-            </div>
-            {/* )} */}
-
-            {/* {displayData.length > 0 && ( */}
-            <div className={classNames("tw-border-2 tw-rounded-md", {})}>
-                <DataTable
-                    columns={columns}
-                    data={newSentiment}
-                    // data={displayData}
-                    setPageSize={pageSize}
-                    useRowClick={true}
-                    onRowClick={(selectedRows) => toReport(selectedRows)}
-                    keyName={"id"}
-                />
-            </div>
-            {/* )} */}
+            )}
             <div className="tw-flex tw-flex-row tw-my-6 tw-gap-4">
                 {pageSize < 20 && (
                     <Tooltip title="แสดงเพิ่มเติม">
@@ -243,7 +247,7 @@ const SentimentTable = () => {
                 {pageSize >= 20 && (
                     <Tooltip title="แสดงน้อยลง">
                         <Button className="tw-border-black tw-border-2 tw-bg-yellow-400 tw-drop-shadow-md hover:tw-bg-white hover:tw-border-yellow-600 hover:tw-text-yellow-600"
-                            onClick={() => setPageSize(5)}
+                            onClick={() => setPageSize(10)}
                             icon={<VerticalAlignMiddleOutlined />}
                         >
                             show less

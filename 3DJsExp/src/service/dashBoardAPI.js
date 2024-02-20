@@ -92,6 +92,77 @@ const dashBoardAPI = {
       throw error;
     }
   },
+
+  getStat: async (search) => {
+    try {
+      const response = await axios.post(
+        `http://192.168.10.121:8000/stat/data`,
+        search
+      );
+      return response.data; // Return the response data
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
+    }
+  },
+
+  getSocial: async (search) => {
+    try {
+      const response = await axios.post(
+        `http://192.168.10.121:8000/stat/social`,
+        search
+      );
+      return response.data; // Return the response data
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
+    }
+  },
+
+  getMaxEngagement: async (search) => {
+    try {
+      const response = await axios.post(
+        `http://192.168.10.121:8000/report/maxengagement`,
+        search
+      );
+      return response.data; // Return the response data
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
+    }
+  },
+
+  getPostImage: async (id) => {
+    try {
+      const response = await axios.get(
+        `http://192.168.10.121:8000/report/image/${id}?mode=image&size=400`
+      );
+      return response.data; // Return the response data
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
+    }
+  },
 };
 
 export default dashBoardAPI;

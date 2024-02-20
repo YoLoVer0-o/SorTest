@@ -14,19 +14,21 @@ import { getLogin } from '../../libs/loginSlice'
 
 const SentimentReport = () => {
 
-    const [details, setDetails] = useState([]);
+    const [commentType, setCommentType] = useState("");
+    const [displayComments, setDisplayComments] = useState("");
     const [pageSize, setPageSize] = useState(5);
     const [modalToggle, setModalToggle] = useState(false);
     const [message, setMessage] = useState({});
-    const [displayComments, setDisplayComments] = useState("");
+    const [tableComment, setTableComment] = useState({});
     const [displayData, setDisplayData] = useState({});
     const [showLoading, setShowLoading] = useState(false);
+    const [pageIndex, setPageIndex] = useState({ current: 1, pageSize: 10 });
 
     const token = useSelector((state) => getLogin(state).token);
 
     const location = useLocation();
+
     let id = location.state;
-    console.log(id);
 
     const fetchBotPost = async () => {
         try {
@@ -40,11 +42,11 @@ const SentimentReport = () => {
         }
     }
 
-    const fetchComment = async (type, topic) => {
+    const fetchComment = async () => {
         try {
             setShowLoading(true);
-            const data = await botPostReportAPI.getComment(type, topic);
-            setDisplayComments(data);
+            const data = await botPostReportAPI.getComment(commentType, displayComments, id, pageIndex.current);
+            setTableComment(data);
         } catch (error) {
             console.error('Error fetching bot config:', error);
         } finally {
@@ -56,6 +58,15 @@ const SentimentReport = () => {
         fetchBotPost()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    useEffect(() => {
+        fetchComment()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [pageIndex, commentType, displayComments])
+
+    useEffect(() => {
+        console.log(displayData);
+    }, [displayData])
 
 
 
@@ -88,8 +99,10 @@ const SentimentReport = () => {
 
         const { index } = element[0];
 
-        setDisplayComments(data[index]);
-        setDetails(data[index].Comment);
+        console.log(data);
+
+        setDisplayComments(data.topComments[index]?.label);
+        setCommentType(data.commentType);
     };
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -109,13 +122,13 @@ const SentimentReport = () => {
 
     /////////////////////////////////////////////sentiment pie/////////////////////////////////////////////////////////////
     const sentimentData = {
-        labels: sentimentAll.map(item => item.name),
+        labels: displayData.comment?.map(item => item.commentType),
         datasets: [
             {
                 label: 'จำนวนความคิดเห็น',
-                data: sentimentAll.map(item => item.value),
-                backgroundColor: sentimentAll.map(item => colorSet(item.commentType)),
-                borderColor: sentimentAll.map(item => colorSet(item.commentType)),
+                data: displayData.comment?.map(item => item.value),
+                backgroundColor: displayData.comment?.map(item => colorSet(item.commentType)),
+                borderColor: displayData.comment?.map(item => colorSet(item.commentType)),
             },
         ],
     };
@@ -143,29 +156,32 @@ const SentimentReport = () => {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     ////////////////////////////////////////// social Bar////////////////////////////////////////////////////////////////
-    const posBarData = {
-        labels: sentimentPos.map(item => item.name),
-        datasets: [
-            {
-                label: 'จำนวนโพสต์',
-                data: sentimentPos.map(item => item.value),
-                backgroundColor: sentimentPos.map(item => colorSet(item.commentType)),
-                barThickness: isMobile ? 20 : 50,
-            },
-        ],
-    };
 
-    const negaBarData = {
-        labels: sentimentNega.map(item => item.name),
+
+
+    const posBarData = displayData.comment && displayData.comment.length > 0 ? {
+        labels: displayData?.comment[0]?.topComments?.map(item => item.label),
         datasets: [
             {
                 label: 'จำนวนโพสต์',
-                data: sentimentNega.map(item => item.value),
-                backgroundColor: sentimentNega.map(item => colorSet(item.commentType)),
+                data: displayData?.comment[0]?.topComments?.map(item => item.value),
+                backgroundColor: colorSet(displayData?.comment[0].commentType),
                 barThickness: isMobile ? 20 : 50,
             },
         ],
-    };
+    } : {};
+
+    const negaBarData = displayData.comment && displayData.comment.length > 0 ? {
+        labels: displayData?.comment[2]?.topComments?.map(item => item.label),
+        datasets: [
+            {
+                label: 'จำนวนโพสต์',
+                data: displayData?.comment[2]?.topComments?.map(item => item.value),
+                backgroundColor: colorSet(displayData?.comment[2].commentType),
+                barThickness: isMobile ? 20 : 50,
+            },
+        ],
+    } : {};
 
     const socialBarOptions = {
         indexAxis: 'y',
@@ -198,6 +214,11 @@ const SentimentReport = () => {
             align: "center",
             width: 100,
             className: '',
+            render: (text, record, index) => (
+                <p>
+                    {index + 1}
+                </p>
+            ),
         },
         {
             title: 'วันที่',
@@ -239,17 +260,26 @@ const SentimentReport = () => {
                     "tw-flex-col": isTabletOrMobile && isPortrait,
                 })}>
                     <div className={classNames("tw-flex tw-flex-row tw-justify-around tw-w-full tw-border-white tw-shadow-xl tw-py-4 tw-border-4 tw-rounded-lg tw-text-md tw-font-bold", {
-                        "tw-grid tw-grid-cols-2 tw-gap-1": isTabletOrMobile && isPortrait,
+                        "tw-flex tw-flex-col tw-gap-1": isTabletOrMobile && isPortrait,
                     })}>
                         <div>
                             Tag :
-                            <div className={classNames("tw-flex	tw-items-center tw-border-2 tw-rounded-md tw-h-8 tw-border-solid tw-border-black", {
+                            <div className={classNames("tw-grid tw-grid-cols-5 tw-gap-1 tw-p-2 tw-w-fit tw-h-fit tw-content-center tw-items-center tw-border-2 tw-rounded-md tw-border-solid tw-border-black", {
                                 "tw-w-28": isMobile && isPortrait,
                                 "tw-w-34": isTablet && isPortrait,
                                 "tw-w-44": isDesktopOrLaptop || isBigScreen,
                             })}>
-                                {displayData?.tag}
-                                TestTag
+                                {/* <div className="tw-grid tw-grid-cols-4 tw-gap-1 tw-w-full tw-h-full tw-content-start"> */}
+                                {displayData.tag && displayData.tag.length > 0 && displayData?.tag.map(tag => (
+                                    <Tooltip key={tag} title={tag}>
+                                        <div className=" tw-w-full tw-rounded-md tw-p-2 tw-border-2 tw-border-black tw-text-center tw-text-white tw-bg-violet-600" >
+                                            {tag}
+                                        </div>
+                                    </Tooltip>
+                                ))}
+                                {/* </div> */}
+                                {/* {displayData?.tag}
+                                TestTag */}
                             </div>
                         </div>
                         <div>
@@ -259,8 +289,8 @@ const SentimentReport = () => {
                                 "tw-w-34": isTablet && isPortrait,
                                 "tw-w-44": isDesktopOrLaptop || isBigScreen,
                             })}>
-                                {displayData?.nickname}
-                                Test
+                                {displayData?.nickName}
+                                {/* Test */}
                             </div>
                         </div>
                         <div>
@@ -271,7 +301,7 @@ const SentimentReport = () => {
                                 "tw-w-44": isDesktopOrLaptop || isBigScreen,
                             })}>
                                 {displayData?.timestamp}
-                                YYYY/MM/DD
+                                {/* YYYY/MM/DD */}
                             </div>
                         </div>
                         <div>
@@ -282,7 +312,7 @@ const SentimentReport = () => {
                                 "tw-w-44": isDesktopOrLaptop || isBigScreen,
                             })}>
                                 {displayData?.group}
-                                group A
+                                {/* group A */}
                             </div>
                         </div>
                     </div>
@@ -324,31 +354,35 @@ const SentimentReport = () => {
                     </div>
                     <div className="tw-flex tw-w-full tw-flex-col tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                         <p className="tw-text-center tw-text-lg">ข้อความเชิงบวกสูงสุด</p>
-                        <div className={classNames("tw-w-full tw-h-[38rem]", {
-                            "tw-h-96 tw-w-96": isTabletOrMobile,
-                        })}>
-                            <HorizontalBarChart
-                                chartOptions={socialBarOptions}
-                                chartData={posBarData}
-                                redraw={true}
-                                handleClick={redirect}
-                                useDataProps={sentimentPos}
-                            />
-                        </div>
+                        {displayData.comment && displayData.comment.length > 0 &&
+                            <div className={classNames("tw-w-full tw-h-[38rem]", {
+                                "tw-h-96 tw-w-96": isTabletOrMobile,
+                            })}>
+                                <HorizontalBarChart
+                                    chartOptions={socialBarOptions}
+                                    chartData={posBarData}
+                                    redraw={true}
+                                    handleClick={redirect}
+                                    useDataProps={displayData.comment[0]}
+                                />
+                            </div>
+                        }
                     </div>
                     <div className="tw-flex tw-w-full tw-flex-col tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                         <p className="tw-text-center tw-text-lg">ข้อความเชิงลบสูงสุด</p>
-                        <div className={classNames("tw-w-full tw-h-[38rem]", {
-                            "tw-h-96 tw-w-96": isTabletOrMobile,
-                        })}>
-                            <HorizontalBarChart
-                                chartOptions={socialBarOptions}
-                                chartData={negaBarData}
-                                redraw={true}
-                                handleClick={redirect}
-                                useDataProps={sentimentNega}
-                            />
-                        </div>
+                        {displayData.comment && displayData.comment.length > 0 &&
+                            <div className={classNames("tw-w-full tw-h-[38rem]", {
+                                "tw-h-96 tw-w-96": isTabletOrMobile,
+                            })}>
+                                <HorizontalBarChart
+                                    chartOptions={socialBarOptions}
+                                    chartData={negaBarData}
+                                    redraw={true}
+                                    handleClick={redirect}
+                                    useDataProps={displayData.comment[2]}
+                                />
+                            </div>
+                        }
                     </div>
                 </div>
 
@@ -357,27 +391,31 @@ const SentimentReport = () => {
             <div className={classNames("tw-my-12 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
                 "tw-overflow-auto": isTabletOrMobile && isPortrait,
             })}>
-                {displayComments !== "" && (
-                    <p className="tw-text-2xl tw-text-center tw-my-4">แสดงความคิดเห็น {displayComments.commentType == "positive" ? "แง่บวก" : "แง่ลบ"} ของ {displayComments.name} </p>
+                {tableComment && tableComment.Comment?.length > 0 && (
+                    <p className="tw-text-2xl tw-text-center tw-my-4">แสดงความคิดเห็นของ {displayComments} </p>
                 )}
-                <div className={classNames("", {
-                    "tw-overflow-auto": isTabletOrMobile,
-                })}>
-                    <DataTable
-                        columns={columns}
-                        data={details}
-                        setPageSize={pageSize}
-                        useRowClick={true}
-                        onRowClick={(selectedRows) => showModal(selectedRows)}
-                        keyName={"id"}
-                    />
-                </div>
+                {tableComment && tableComment.Comment?.length > 0 &&
+                    <div className={classNames("", {
+                        "tw-overflow-auto": isTabletOrMobile,
+                    })}>
+                        <DataTable
+                            columns={columns}
+                            data={tableComment?.Comment}
+                            setPageSize={pageSize}
+                            useRowClick={true}
+                            onRowClick={(selectedRows) => showModal(selectedRows)}
+                            keyName={"id"}
+                            totalPages={tableComment?.total_data}
+                            sendPages={setPageIndex}
+                        />
+                    </div>
+                }
                 <FeedbackModal
                     modalToggle={modalToggle}
                     handleCancel={handleCancel}
                     modalData={message}
                 />
-                {displayComments !== "" && details.length > 5 && (<div className="tw-flex tw-flex-row tw-my-6 tw-gap-4">
+                {/* {displayComments !== "" && details.length > 5 && (<div className="tw-flex tw-flex-row tw-my-6 tw-gap-4">
                     {pageSize < 20 && (
                         <Tooltip title="แสดงเพิ่มเติม">
                             <Button
@@ -393,14 +431,14 @@ const SentimentReport = () => {
                         <Tooltip title="แสดงน้อยลง">
                             <Button
                                 className="tw-border-black tw-border-2 tw-bg-yellow-400 tw-drop-shadow-md hover:tw-bg-white hover:tw-border-yellow-600 hover:tw-text-yellow-600"
-                                onClick={() => setPageSize(5)}
+                                onClick={() => setPageSize(10)}
                                 icon={<VerticalAlignMiddleOutlined />}
                             >
                                 show less
                             </Button>
                         </Tooltip>
                     )}
-                </div>)}
+                </div>)} */}
 
             </div>
 

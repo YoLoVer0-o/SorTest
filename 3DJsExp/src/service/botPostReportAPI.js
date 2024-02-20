@@ -1,9 +1,11 @@
 import axios from "axios";
 
 const botPostReportAPI = {
-  getBotPost: async () => {
+  getBotPost: async (page) => {
     try {
-      const response = await axios.get("http://192.168.10.122/getBotPost");
+      const response = await axios.get(
+        `http://192.168.10.122/getBotPost?current_page=${page}`
+      );
       return response.data; // Return the response data
     } catch (error) {
       // console.log(error);
@@ -33,10 +35,10 @@ const botPostReportAPI = {
     }
   },
 
-  getComment: async (type, topic, page) => {
+  getComment: async (type, topic, id, page) => {
     try {
       const response = await axios.get(
-        `http://192.168.10.122//getComment?type=${type}&topic=${topic}&current_page=${page}`
+        `http://192.168.10.122/getComment?type=${type}&topic=${topic}&post_id=${id}&current_page=${page}`
       );
       return response.data;
     } catch (error) {
