@@ -1,29 +1,71 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Select } from "antd";
 import { useResponsive } from "../hooks";
 import classNames from "classnames";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
+import postCreateAPI from "../service/postCreateAPI";
+import { getLogin } from "../libs/loginSlice";
 
 const SelectPlatform = (props) => {
-  const { selected } = props;
+  const { selected , sentBotData } = props;
   const [platform, setPlatform] = useState(selected);
   const [selectedGroupType, setSelectedGroupType] = useState("Single User");
+  const [botData, setBotData] = useState("");
+  const [selectedBot, setSelectedBot] = useState("");
+  const [selectedGroup, setSelectedGroup] = useState("");
 
+  // console.log(selectedGroup);
   const handleChange = (selected) => {
     console.log(`selected ${selected}`);
     setPlatform(selected);
     props.onPlatformSelect(selected);
   };
 
-  const selectUser = (selected) => {
-    console.log(`selected ${selected}`);
-  };
-
   const selectGroup = (selected) => {
     console.log(`selected ${selected}`);
     setSelectedGroupType(selected);
   };
+  const getToken = useSelector((state) => getLogin(state));
 
+  useEffect(() => {
+    const fetchBotConfig = async () => {
+      try {
+        const data = await postCreateAPI.fbGetBotConfig(getToken);
+        setBotData(data);
+        sentBotData(data);
+        setSelectedBot(data[0].botname);
+        setSelectedGroup(data[0].groups);
+      } catch (error) {
+        console.error("Error fetching bot config:", error);
+      }
+    };
+
+    fetchBotConfig();
+  }, [getToken]);
+
+  const selectUser = (selectedOption) => {
+    setSelectedBot(selectedOption);
+  };
+  const selectGrouptaget = (selectedOption) => {
+    console.log(selectedOption);
+    setSelectedGroup(selectedOption.value);
+  };
+
+  // Format Data into an array of objects with value and label properties
+  const userOptions = botData
+    ? botData.map((bot) => ({
+        value: bot.botname,
+        label: bot.botname,
+      }))
+    : [];
+  const groupOptions = botData
+    ? botData.map((bot) => ({
+        value: bot.groups,
+        label: bot.groups,
+      }))
+    : [];
+  console.log(groupOptions);
   const {
     // isDesktopOrLaptop,
     // isBigScreen,
@@ -38,7 +80,8 @@ const SelectPlatform = (props) => {
       className={classNames(
         "tw-flex tw-flex-row tw-w-full tw-h-40 tw-justify-center tw-items-center tw-gap-x-8 tw-bg-white tw-shadow-[0_3px_10px_rgb(0,0,0,0.2)]",
         {
-          "tw-flex tw-flex-col tw-w-full tw-p-4 tw-h-36 ": isMobile && isPortrait,
+          "tw-flex tw-flex-col tw-w-full tw-p-4 tw-h-36 ":
+            isMobile && isPortrait,
         }
       )}
     >
@@ -50,7 +93,7 @@ const SelectPlatform = (props) => {
         <p>แพลต์ฟอร์ม :</p>
         <Select
           defaultValue="Facebook"
-          onChange={handleChange} // Change to onChange for handling selection change
+          onChange={handleChange}
           className=" tw-w-full"
           value={platform}
           options={[
@@ -62,69 +105,44 @@ const SelectPlatform = (props) => {
               value: "Twitter",
               label: "Twitter",
             },
-          
           ]}
         />
       </div>
       {selectedGroupType === "Single User" && (
         <div
-        className={classNames("tw-w-[30%]", {
-          "tw-w-full": isMobile && isPortrait,
-        })}
-      >
+          className={classNames("tw-w-[30%]", {
+            "tw-w-full": isMobile && isPortrait,
+          })}
+        >
           <p>บัญชีที่ใช้โพสต์ :</p>
           <Select
-            defaultValue="John Doe"
+            defaultValue={selectedBot}
             onChange={selectUser}
             className="tw-w-full"
-            options={[
-              {
-                value: "John Doe",
-                label: "John Doe",
-              },
-              {
-                value: "Jane Doe",
-                label: "Jane Doe",
-              },
-              {
-                value: "Som Sak",
-                label: "Som Sak",
-              },
-            ]}
+            value={selectedBot}
+            options={userOptions}
           />
         </div>
       )}
 
       {selectedGroupType === "Group" && (
         <div
-        className={classNames("tw-w-[30%]", {
-          "tw-w-full": isMobile && isPortrait,
-        })}
-      >
+          className={classNames("tw-w-[30%]", {
+            "tw-w-full": isMobile && isPortrait,
+          })}
+        >
           <p>กลุ่มที่ใช้โพสต์ :</p>
           <Select
-            defaultValue="กลุ่มทางการเมือง"
-            onChange={selectUser}
+            value={selectedGroup}
+            onChange={selectGrouptaget}
             className="tw-w-full"
-            options={[
-              {
-                value: "กลุ่มทางการเมือง",
-                label: "กลุ่มทางการเมือง",
-              },
-              {
-                value: "กลุ่มทางสถาบันพระมหากษัตริย์",
-                label: "กลุ่มทางสถาบันพระมหากษัตริย์",
-              },
-              {
-                value: "กลุ่มทางศาสนา",
-                label: "กลุ่มทางศาสนา",
-              },
-            ]}
+            // value={}
+            options={groupOptions}
           />
         </div>
       )}
 
-<div
+      <div
         className={classNames("tw-w-[20%]", {
           "tw-w-full": isMobile && isPortrait,
         })}
@@ -153,6 +171,7 @@ const SelectPlatform = (props) => {
 
 SelectPlatform.propTypes = {
   selected: PropTypes.any,
+  sentBotData: PropTypes.any,
   onPlatformSelect: PropTypes.func,
 };
 

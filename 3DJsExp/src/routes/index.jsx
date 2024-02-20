@@ -29,7 +29,8 @@ import {
   RPAManagementPage,
   ClassConfigPage,
   RecommendationPage,
-  UserManagementPage
+  UserManagementPage,
+  SeoWebSitePage,
 } from "../pages";
 
 export const router = createBrowserRouter([
@@ -161,5 +162,9 @@ export const router = createBrowserRouter([
       },
     ],
   },
-
+  {
+    path: "/seowebsite",
+    element: <SeoWebSitePage />,
+   
+  },
 ]);

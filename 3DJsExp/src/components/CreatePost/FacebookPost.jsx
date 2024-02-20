@@ -1,22 +1,38 @@
 import EmojiPicker, { EmojiStyle } from "emoji-picker-react";
-import { Radio, Space, Input, Tag, Checkbox, Select } from "antd";
+import {
+  Radio,
+  Space,
+  Input,
+  Tag,
+  Checkbox,
+  Select,
+  Tooltip,
+  Button,
+} from "antd";
 import {
   CloseCircleOutlined,
   MinusCircleOutlined,
   CheckCircleOutlined,
+  PlusOutlined,
 } from "@ant-design/icons";
 import { FaSortDown } from "react-icons/fa";
 import profile from "../../assets/profile.png";
 import { BsEmojiSmile } from "react-icons/bs";
 import { LiaWindowClose } from "react-icons/lia";
+import { ImBin } from "react-icons/im";
 import { useResponsive } from "../../hooks";
 import { facebookAcc, emotionEmoji } from "../../mock";
 import classNames from "classnames";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "../../assets/PostImage";
 import FileUpLoader from "../../utilities/FileUpLoader";
 import PostTag from "../../assets/PostTag";
 import "./Trainsition.css";
+import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
+import postCreateAPI from "../../service/postCreateAPI";
+import { getLogin } from "../../libs/loginSlice";
+
 import {
   // Transition,
   CSSTransition,
@@ -24,13 +40,13 @@ import {
   // TransitionGroup,
 } from "react-transition-group";
 
-const FacebookPost = () => {
+const FacebookPost = ({ handelBotData, selectUser }) => {
   const [message, setMessage] = useState("");
   const [showEmojiInput, setShowEmojiInput] = useState(false);
   const [openUpload, setOpenUpLoad] = useState(false);
   const [currentId, setCurrentId] = useState(1);
   const [changeLable, setChangeLable] = useState([
-    { name: "เพื่อน", icon: PostTag.tagFriend },
+    { name: "สาธารณะ", icon: PostTag.publicPost },
   ]);
   const [value, setValue] = useState("เพื่อน");
   const [searchTerm, setSearchTerm] = useState("");
@@ -39,7 +55,36 @@ const FacebookPost = () => {
   const [tagExceptFriends, setTagExceptFriends] = useState("");
   const [tagSpecifictFriends, setTagSpecificFriends] = useState("");
   const [emotionAct, setEmotionAct] = useState([]);
+  const [postAction, setPostAction] = useState({
+    botname: "string",
+    url: "string",
+    group: "string",
+    text: "string",
+    photo_video: "string",
+    tag_people: "string",
+    feeling: "emotionAct",
+    check_in: "string",
+    gif: "string",
+  });
+  const [url, setUrl] = useState([]);
+  const botData = handelBotData;
+  const selectedAcc = selectUser;
+  const [receiveFile, setReceiveFile] = useState([]);
+  const handelFile = (file) => {
+    setReceiveFile(file);
+  };
+  console.log(receiveFile);
 
+  const handleUrl = (event) => {
+    setUrl(event.target.value);
+  };
+
+  const deleteUrl = () => {
+    setUrl([]);
+  };
+
+  console.log(url);
+  // console.log(tagFriends);
   const nodeRef = useRef(null);
   const { Search } = Input;
 
@@ -73,12 +118,15 @@ const FacebookPost = () => {
   const switchToCustom = () => {
     setCurrentId(7);
   };
+  const switchToLink = () => {
+    setCurrentId(8);
+  };
 
   const duration = 500;
 
   const {
     isDesktopOrLaptop,
-    isBigScreen,
+    // isBigScreen,
     isTabletOrMobile,
     isMobile,
     isTablet,
@@ -170,10 +218,11 @@ const FacebookPost = () => {
   };
 
   const handleId = (item, button) => {
+    const combineName = `${item.first_name} ${item.last_name}`;
     if (button == 1) {
       if (!selectedItems.some((selectedItem) => selectedItem.id === item.id)) {
         setSelectedItems((prevSelectedItems) => [...prevSelectedItems, item]);
-        setTagFriends((prevTag) => [...prevTag, item]);
+        setTagFriends((prevTag) => [...prevTag, combineName]);
       }
     } else if (button == 2) {
       if (
@@ -201,7 +250,7 @@ const FacebookPost = () => {
       setTagSpecificFriends((prevTag) => [...prevTag, item]);
     }
   };
-
+  console.log(tagFriends);
   const handleClose = (removedTag, button) => {
     if (button == 1) {
       const newTags = tagFriends.filter((tag) => tag !== removedTag);
@@ -232,8 +281,8 @@ const FacebookPost = () => {
   const [selectedNotShare, setSelectedNotShare] = useState([]);
   const [selectedTheSame, setSelectedTheSame] = useState([]);
   const handleSelected = (value, button) => {
-      const option = facebookAcc.find((acc) => acc.id === value)
-     
+    const option = facebookAcc.find((acc) => acc.id === value);
+
     if (button === 1) {
       setSelectedShare(option.id);
       handleCompare();
@@ -249,41 +298,70 @@ const FacebookPost = () => {
     );
     setSelectedTheSame(sameData);
   };
-   const customTagRender = (props) => {
-     const { label, value, closable, onClose } = props;
-     const option = facebookAcc.find((acc) => acc.id === value);
+  const customTagRender = (props) => {
+    const { label, value, closable, onClose } = props;
+    const option = facebookAcc.find((acc) => acc.id === value);
 
-     return (
-       <Tag
-       color="blue"
-         closable={closable}
-         onClose={onClose}
-         style={{ display: "flex", alignItems: "center" }}
-       >
-         <img
-           src={option.profilePic}
-           className="tw-w-6 tw-h-6 tw-rounded-full"
-           alt={`${option.first_name} ${option.last_name}`}
-         />
-         <div style={{ marginLeft: 8 }}>
-           {option.first_name} {option.last_name}
-         </div>
-       </Tag>
-     );
-   };
- /////////////////////////////Emotion&Activity//////////////////////////////
- const handelEmotion = (emotion) =>{
-setEmotionAct(emotion);
-setCurrentId(1);
- }
- const cancelEmoAct = () =>{
-  setEmotionAct("");
-  setCurrentId(1);
- }
-   // console.log(selectedShare);
-   // console.log(selectedNotShare);
-   // console.log(tagFriends);
-   // console.log(tagExceptFriends);
+    return (
+      <Tag
+        color="blue"
+        closable={closable}
+        onClose={onClose}
+        style={{ display: "flex", alignItems: "center" }}
+      >
+        <img
+          src={option.profilePic}
+          className="tw-w-6 tw-h-6 tw-rounded-full"
+          alt={`${option.first_name} ${option.last_name}`}
+        />
+        <div style={{ marginLeft: 8 }}>
+          {option.first_name} {option.last_name}
+        </div>
+      </Tag>
+    );
+  };
+  /////////////////////////////Emotion&Activity//////////////////////////////
+  const handelEmotion = (emotion) => {
+    setEmotionAct(emotion);
+    setCurrentId(1);
+  };
+  const cancelEmoAct = () => {
+    setEmotionAct("");
+    setCurrentId(1);
+  };
+  //////////////////////////////////API Part/////////////////////////////////
+  const getToken = useSelector((state) => getLogin(state));
+
+  // console.log(tagFriends.first_name, tagFriends.last_name);
+
+  useEffect(() => {
+    setPostAction({
+      botname: selectedAcc,
+      url: url,
+      group: null, /////////////////////รอ API group bot///////////////////
+      text: message,
+      photo_video: null, /////////////////////รอ API อัพโหลดไฟล์ แปลงเป็นBinary///////////////////////////////////////////
+      tag_people: JSON.stringify(tagFriends), /////////////////เอาเเค่ชื่อfacebook/////////////////////////
+      feeling: null,
+      check_in: null,
+      gif: null,
+    });
+  }, [message, tagFriends, emotionAct, selectedAcc, receiveFile, url]);
+  console.log(postAction);
+
+  const handlePost = async () => {
+    try {
+      // console.log("Data being sent to API:", dataString);
+      await postCreateAPI.fbPostAction(postAction, getToken);
+    } catch (error) {
+      console.error("Error posting data:", error);
+    }
+  };
+  ////////////////////Note Gona use JSON.stringify to convert data and sent back /////////////////////////////
+  // console.log(selectedShare);
+  // console.log(selectedNotShare);
+  // console.log(tagFriends);
+  // console.log(tagExceptFriends);
   //  console.log(emotionAct);
   // console.log(selectedItemsForExceptFriend);
   const contentArray = [
@@ -324,17 +402,17 @@ setCurrentId(1);
             />
             <div className="tw-col-start-2 tw-col-span-2">
               <div className="tw-flex tw-flex-row">
-                <p className="tw-text-xl  ">Account Name</p>
+                <p className="tw-text-xl  ">{selectedAcc}</p>
               </div>
               <button
-                onClick={switchContentPostTaget}
+                // onClick={switchContentPostTaget}
                 className="tw-h-max tw-w-28 tw-bg-gray-200 tw-rounded-md tw-justify-center tw-flex tw-flex-row "
               >
                 <img
                   className="tw-bg-gray-200 tw-flex tw tw-justify-self-start tw-self-center tw-w-4 tw-h-4 tw-rounded-full "
-                  src={changeLable.icon || PostTag.tagFriend}
+                  src={changeLable.icon || PostTag.publicPost}
                 />
-                {changeLable.name || "เพื่อน"}
+                {changeLable.name || "สาธารณะ"}
                 <FaSortDown />
               </button>
             </div>
@@ -380,7 +458,7 @@ setCurrentId(1);
                     className="tw-flex tw-flex-row tw-cursor-pointer hover:tw-underline tw-underline-offset-2"
                     onClick={switchContentTag}
                   >
-                    {`${allTag.first_name} ${allTag.last_name}`}
+                    {`${allTag}`}
                   </p>
                 ))}
 
@@ -463,7 +541,11 @@ setCurrentId(1);
                 isDesktopOrLaptop && !isTablet,
             })}
           >
-            <FileUpLoader isOpen={openUpload} isClose={closePicUpload} />
+            <FileUpLoader
+              isOpen={openUpload}
+              isClose={closePicUpload}
+              sentFiles={handelFile}
+            />
           </div>
 
           <div
@@ -496,9 +578,15 @@ setCurrentId(1);
             </button>
             <button
               onClick={switchEmotion}
-              className=" tw-rounded-full tw-w-max tw-h-max tw-justify-self-center hover:tw-bg-gray-300"
+              className="tw-hidden tw-rounded-full tw-w-max tw-h-max tw-justify-self-center hover:tw-bg-gray-300"
             >
               <img className="tw-w-6 tw-h-6" src={Image.emoji} />
+            </button>
+            <button
+              onClick={switchToLink}
+              className=" tw-rounded-full tw-w-max tw-h-max tw-justify-self-center hover:tw-bg-gray-300"
+            >
+              <img className="tw-w-6 tw-h-6" src={Image.link} />
             </button>
             <button
               // onClick={switchLocationPicker}
@@ -509,14 +597,12 @@ setCurrentId(1);
             <button className="tw-hidden tw-rounded-full tw-w-max tw-h-max tw-justify-self-center hover:tw-bg-gray-300">
               <img className="tw-w-6 tw-h-6" src={Image.Gif} />
             </button>
-            <button
-              className="tw-rounded-full  tw-justify-self-center
-    hover:tw-bg-gray-200 tw-w-6 tw-h-6 "
-            >
+            <button className="tw-rounded-full  tw-justify-self-center hover:tw-bg-gray-200 tw-w-6 tw-h-6 ">
               ...
             </button>
           </div>
           <button
+            onClick={handlePost}
             className={classNames(
               "tw-flex tw-h-10  tw-items-center tw-justify-center tw-p-4 tw-rounded-md tw-bg-green-500  hover:tw-bg-green-400",
               {
@@ -1189,6 +1275,79 @@ setCurrentId(1);
         </div>
       ),
     },
+    {
+      id: 8,
+      content: (
+        <div className="tw-w-full tw-h-full tw-flex-col tw-flex ">
+          <div className="tw-h-full">
+            <button
+              onClick={reset}
+              className="tw-bg-gray-200 hover:tw-bg-gray-300 tw-w-10 tw-h-6 tw-rounded-md"
+            >
+              Back
+            </button>
+            <div className="tw-text-center">เพิ่มลิงค์</div>
+            <div className="tw-w-full tw-flex tw-flex-col tw-gap-5 tw-justify-center ">
+              <div className="tw-flex tw-justify-center  tw-flex-row tw-w-full tw-h-full tw-gap-4">
+                <div className="tw-flex tw-w-[80%] tw-flex-row">
+                  {" "}
+                  <Input
+                    value={url}
+                    onChange={handleUrl}
+                    defaultValue="Combine input and button"
+                    placeholder="ใส่ Url"
+                    type="text"
+                    className="tw-w-full tw-rounded-r-none"
+                  />
+                  <button className=" hover:tw-bg-green-600 tw-bg-green-500 tw-p-3 tw-rounded-r-lg tw-text-white">
+                    Submit
+                  </button>
+                </div>
+
+                <Tooltip title="ลบออกทั้งหมด">
+                  <button
+                    onClick={deleteUrl}
+                    className="tw-rounded-md hover:tw-bg-gray-100 tw-h-10 tw-w-10 tw-flex tw-justify-center tw-items-center"
+                  >
+                    <ImBin className="tw-w-6 tw-h-6 tw-text-gray-400" />
+                  </button>
+                </Tooltip>
+              </div>
+
+              <div>
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="tw-w-full tw-flex"
+                >
+                  {url}
+                </a>
+              </div>
+
+              {/* <textarea
+                type="text"
+                value={url}
+                onChange={handleUrl}
+                placeholder="Enter URL"
+                className="tw-w-full tw-flex"
+              />
+           
+              <div>{url && (
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="tw-w-full tw-flex"
+                >
+                  {url}
+                </a>
+              )}</div> */}
+            </div>
+          </div>
+        </div>
+      ),
+    },
   ];
 
   return (
@@ -1251,4 +1410,8 @@ setCurrentId(1);
   );
 };
 
+FacebookPost.propTypes = {
+  handelBotData: PropTypes.any,
+  selectUser: PropTypes.string,
+};
 export default FacebookPost;

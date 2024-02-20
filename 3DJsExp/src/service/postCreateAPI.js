@@ -8,7 +8,7 @@ const postCreateAPI = {
         "http://192.168.10.111:8000/facebook/get_bot_config_with_status/",
         {
           headers: {
-            Authorization: "Bearer " + token,
+            Authorization: "Bearer " + token.token,
           },
         }
       );
@@ -24,11 +24,16 @@ const postCreateAPI = {
     }
   },
 
-  fbPostAction: async (post) => {
+  fbPostAction: async (post, token) => {
     try {
       const response = await axios.post(
         `http://192.168.10.111:8000/facebook/action_to_post/`,
-        post
+        post,
+        {
+          headers: {
+            Authorization: "Bearer " + token.token,
+          },
+        },
       );
       return response.data;
     } catch (error) {
