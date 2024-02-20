@@ -28,7 +28,7 @@ const PostTable = () => {
     const [displayTag, setDisplayTag] = useState([]);
     const [searchTag, setSearchTag] = useState([]);
     const [searchDate, setSearchDate] = useState([]);
-    const [searchPlatform, setSearchPlatform] = useState([]);
+    const [searchPlatform, setSearchPlatform] = useState("");
     const [selectedRows, setSelectedRows] = useState([]);
     const [pageSize, setPageSize] = useState(10);
     const [advancedSearch, setAdvancedSearch] = useState(false);
