@@ -34,6 +34,21 @@ const postReportAPI = {
     }
   },
 
+  getFB: async () => {
+    try {
+      const response = await axios.get("http://192.168.10.121:8000/report/fb");
+      return response.data; // Return the response data
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
+    }
+  },
+
   //   getPostById: async ($oid) => {
   //     try {
   //       const response = await axios.get(`http://localhost:3000/posts/${$oid}`);

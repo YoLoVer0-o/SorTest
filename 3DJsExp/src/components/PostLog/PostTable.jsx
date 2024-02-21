@@ -65,8 +65,8 @@ const PostTable = () => {
 
         try {
             setShowLoading(true);
-            const data = await postReportAPI.getTags();
-            setSearchFBid(data);
+            const data = await postReportAPI.getFB();
+            setDisplayFBid(data);
         } catch (error) {
             console.error('Error fetching bot config:', error);
         } finally {
@@ -83,7 +83,7 @@ const PostTable = () => {
             include: includeWord.map((word) => word.value),
             exclude: excludeWord.map((word) => word.value),
             engagement: engagement ? [engagement?.min, engagement?.max] : [],
-            id: [],
+            id: searchFBid,
             limit: [pageIndex.pageSize, pageIndex.current]
         }
         try {
@@ -104,8 +104,14 @@ const PostTable = () => {
 
     useEffect(() => {
         fetchTags()
+        fetchFBid()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    // useEffect(() => {
+    //     console.log(searchFBid);
+    // }, [searchFBid])
+
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     const addWord = async (word, setData) => {
@@ -403,11 +409,13 @@ const PostTable = () => {
                             </div>
                             <div className='tw-flex tw-flex-col tw-justify-center tw-w-full'>
                                 <p className="tw-text-lg">Facebook ID:</p>
-                                <Input
-                                    addonBefore={<SearchOutlined />}
-                                    // placeholder="พิมพ์สิ่งที่ต้องการค้นหา"
-                                    // onChange={onTextChange}
-                                    className='tw-border-2 tw-rounded-lg tw-border-sky-400 tw-drop-shadow-md hover:tw-border-sky-700 tw-w-full'
+                                <SearchBar
+                                    useTagSearch={true}
+                                    data={displayFBid}
+                                    onChangeFilter={setSearchFBid}
+                                    useOwnData={true}
+                                    ownKeyNameLabel={"profile_title"}
+                                    ownKeyNameValue={"profile_url"}
                                 />
                             </div>
                         </div>
