@@ -232,12 +232,13 @@ const AddCatModal = (props) => {
                             >
                                 <p>น้ำหนัก(1-10):</p>
                                 <InputNumber
+                                    disabled={keyword?.actual}
                                     addonBefore={
                                         <Tooltip title="ลดจำนวน">
                                             <Button
                                                 className="tw-w-full tw-h-full tw-flex tw-border-2 tw-rounded-full tw-bg-red-500 hover:tw-border-red-500 hover:tw-text-red-500 hover:tw-bg-white"
                                                 onClick={() => handleWeight("-", i)}
-                                                disabled={keyword.score > 1 ? false : true}
+                                                disabled={keyword.score > 1 && !keyword?.actual ? false : true}
                                             >
                                                 <MinusOutlined />
                                             </Button>
@@ -248,7 +249,7 @@ const AddCatModal = (props) => {
                                             <Button
                                                 className="tw-w-full tw-h-full tw-flex tw-border-2 tw-rounded-full tw-bg-green-500 hover:tw-border-green-500 hover:tw-text-green-500 hover:tw-bg-white"
                                                 onClick={() => handleWeight("+", i)}
-                                                disabled={keyword.score < 10 ? false : true}
+                                                disabled={keyword.score < 10 && !keyword?.actual ? false : true}
                                             >
                                                 <PlusOutlined />
                                             </Button>
@@ -286,7 +287,7 @@ const AddCatModal = (props) => {
                         </div>
                         <Button className="tw-w-fit tw-h-fit tw-flex tw-border-2 tw-rounded-full tw-bg-red-500 hover:tw-border-red-500 hover:tw-text-red-500 hover:tw-bg-white"
                             onClick={() => deleteKeyword(i)}
-                        >ลบคำคัดกรอง {i}</Button>
+                        >ลบคำคัดกรอง</Button>
                     </div>
                 ))
                 }

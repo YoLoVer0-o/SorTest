@@ -135,20 +135,10 @@ const Dashboard = () => {
         try {
             setShowLoading(true);
             const payload = {
-                search: "",
                 platform: "facebook",
-                tag: [],
                 date: [
                     start,
                     end
-                ],
-                include: [],
-                exclude: [],
-                engagement: [],
-                id: [],
-                limit: [
-                    10,
-                    1
                 ]
             }
             const data = await dashBoardAPI.getMaxEngagement(payload);
@@ -663,9 +653,9 @@ const Dashboard = () => {
                             </div>
                         }
                         {!dailyMaxEngagement && <div className="tw-w-full tw-h-full tw-text-center">
-                        <p className="tw-text-xl tw-font-bold">ไม่พบข้อมูล</p>
-                    </div>
-                    }
+                            <p className="tw-text-xl tw-font-bold">ไม่พบข้อมูล</p>
+                        </div>
+                        }
                     </div>
 
                 </div>

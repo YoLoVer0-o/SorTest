@@ -118,21 +118,12 @@ const SubDashboard = () => {
     try {
       setShowLoading(true);
       const payload = {
-        search: "",
         platform: "facebook",
         tag: [param.topic.toLowerCase()],
         date: [
           start,
           end
-        ],
-        include: [],
-        exclude: [],
-        engagement: [],
-        id: [],
-        limit: [
-          10,
-          1
-        ]
+        ]      
       }
       const data = await dashBoardAPI.getMaxEngagement(payload);
       setDailyMaxEngagement(data[0]);
