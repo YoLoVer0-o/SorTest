@@ -8,6 +8,7 @@ import {
   Select,
   Tooltip,
   Button,
+  Form,
 } from "antd";
 import {
   CloseCircleOutlined,
@@ -32,6 +33,7 @@ import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import postCreateAPI from "../../service/postCreateAPI";
 import { getLogin } from "../../libs/loginSlice";
+import Swal from "sweetalert2";
 
 import {
   // Transition,
@@ -353,9 +355,22 @@ const FacebookPost = ({ handelBotData, selectUser }) => {
     try {
       // console.log("Data being sent to API:", dataString);
       await postCreateAPI.fbPostAction(postAction, getToken);
+      Swal.fire({
+        title: "โพสต์สําเร็จ ",
+        icon: "success",
+      });
     } catch (error) {
+      Swal.fire({
+        title: "เกิดข้อผิดพลาด",
+        text: error.message,
+        icon: "error",
+      });
       console.error("Error posting data:", error);
     }
+  };
+
+  const onFinish = (values) => {
+    console.log("Received values of form:", values);
   };
   ////////////////////Note Gona use JSON.stringify to convert data and sent back /////////////////////////////
   // console.log(selectedShare);
@@ -1325,24 +1340,72 @@ const FacebookPost = ({ handelBotData, selectUser }) => {
                 </a>
               </div>
 
-              {/* <textarea
-                type="text"
-                value={url}
-                onChange={handleUrl}
-                placeholder="Enter URL"
-                className="tw-w-full tw-flex"
-              />
-           
-              <div>{url && (
-                <a
-                  href={url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="tw-w-full tw-flex"
-                >
-                  {url}
-                </a>
-              )}</div> */}
+              <Form
+                name="dynamic_form_nest_item"
+                onFinish={onFinish}
+                style={{
+                  maxWidth: 600,
+                }}
+                autoComplete="off"
+              >
+                <Form.List name="users">
+                  {(fields, { add, remove }) => (
+                    <>
+                      {fields.map(({ key, name, ...restField }) => (
+                        <Space
+                          key={key}
+                          style={{
+                            display: "flex",
+                            marginBottom: 8,
+                          }}
+                          align="baseline"
+                        >
+                          <Form.Item
+                            {...restField}
+                            name={[name, "first"]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Missing first name",
+                              },
+                            ]}
+                          >
+                            <Input placeholder="First Name" />
+                          </Form.Item>
+                          <Form.Item
+                            {...restField}
+                            name={[name, "last"]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Missing last name",
+                              },
+                            ]}
+                          >
+                            <Input placeholder="Last Name" />
+                          </Form.Item>
+                          <MinusCircleOutlined onClick={() => remove(name)} />
+                        </Space>
+                      ))}
+                      <Form.Item>
+                        <Button
+                          type="dashed"
+                          onClick={() => add()}
+                          block
+                          icon={<PlusOutlined />}
+                        >
+                          Add field
+                        </Button>
+                      </Form.Item>
+                    </>
+                  )}
+                </Form.List>
+                <Form.Item>
+                  <Button type="primary" htmlType="submit">
+                    Submit
+                  </Button>
+                </Form.Item>
+              </Form>
             </div>
           </div>
         </div>

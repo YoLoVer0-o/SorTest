@@ -50,7 +50,6 @@ const FileUpLoader = (props) => {
   };
 
   const [files, setFiles] = useState([]);
-  // console.log(files)
   sentFiles(files);
   const onDrop = (acceptedFiles) => {
     const newFiles = acceptedFiles.map((file) => ({
