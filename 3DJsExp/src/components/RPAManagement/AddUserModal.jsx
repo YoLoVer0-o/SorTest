@@ -162,10 +162,6 @@ const AddUserModal = props => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    useEffect(() => {
-        console.log(availableGroup);
-    }, [availableGroup]);
-
     return (
         <Modal
             className='tw-max-h-full tw-max-w-fit'

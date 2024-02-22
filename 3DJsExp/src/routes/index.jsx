@@ -17,6 +17,8 @@ import {
   Trending,
   StatusTable,
   CreateGroupPost,
+  UserManageTable,
+
 } from "../components";
 import {
   LoginPage,
@@ -156,7 +158,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <PostTable />,
+        element: <UserManageTable />,
       },
     ],
   },

@@ -136,12 +136,13 @@ const WordTable = () => {
             render: (text, record) => (
                 <div className="tw-flex tw-flex-row tw-w-full tw-justify-center">
                     <InputNumber
+                        disabled={payload.keywords.find((payload) => payload.keyword === record?.keyword).actual}
                         addonBefore={
                             <Tooltip title="ลดจำนวน">
                                 <Button
                                     className="tw-w-full tw-h-full tw-flex tw-border-2 tw-rounded-full tw-bg-red-500 hover:tw-border-red-500 hover:tw-text-red-500 hover:tw-bg-white"
                                     onClick={() => handleWeight(record?.keyword, "-")}
-                                    disabled={record?.score > 1 ? false : true}>
+                                    disabled={record?.score > 1 && !payload.keywords.find((payload) => payload.keyword === record?.keyword).actual ? false : true}>
                                     <MinusOutlined />
                                 </Button>
                             </Tooltip>}
@@ -150,7 +151,7 @@ const WordTable = () => {
                                 <Button
                                     className="tw-w-full tw-h-full tw-flex tw-border-2 tw-rounded-full tw-bg-green-500 hover:tw-border-green-500 hover:tw-text-green-500 hover:tw-bg-white"
                                     onClick={() => handleWeight(record?.keyword, "+")}
-                                    disabled={record?.score < 10 ? false : true}
+                                    disabled={record?.score < 10  && !payload.keywords.find((payload) => payload.keyword === record?.keyword).actual ? false : true}
                                 >
                                     <PlusOutlined />
                                 </Button>

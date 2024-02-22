@@ -23,7 +23,7 @@ const AddWordModal = (props) => {
         actual: false,
     });
 
-    const { isMobile,isPortrait } = useResponsive();
+    const { isMobile, isPortrait } = useResponsive();
 
     ///////////////////////////////////sweetalert and save logic///////////////////////////////////////////////////////////////////////
     const MySwal = withReactContent(Swal);
@@ -115,7 +115,7 @@ const AddWordModal = (props) => {
                 <div className="tw-flex tw-flex-col tw-w-full tw-h-full tw-p-4 tw-gap-4">
                     <div
                         className={classNames("tw-flex tw-flex-col tw-h-16", {
-                            "tw-w-56": isMobile&& isPortrait,
+                            "tw-w-56": isMobile && isPortrait,
                             "tw-w-96": !isMobile
                         })}
                     >
@@ -129,18 +129,19 @@ const AddWordModal = (props) => {
                     </div>
                     <div
                         className={classNames("tw-flex tw-flex-col tw-h-16", {
-                            "tw-w-56": isMobile&& isPortrait,
+                            "tw-w-56": isMobile && isPortrait,
                             "tw-w-96": !isMobile
                         })}
                     >
                         <p>น้ำหนัก(1-10):</p>
                         <InputNumber
+                            disabled={formData?.actual}
                             addonBefore={
                                 <Tooltip title="ลดจำนวน">
                                     <Button
                                         className="tw-w-full tw-h-full tw-flex tw-border-2 tw-rounded-full tw-bg-red-500 hover:tw-border-red-500 hover:tw-text-red-500 hover:tw-bg-white"
                                         onClick={() => handleWeight("-")}
-                                        disabled={formData.score > 1 ? false : true}
+                                        disabled={formData.score > 1 && !formData?.actual ? false : true}
                                     >
                                         <MinusOutlined />
                                     </Button>
@@ -151,7 +152,7 @@ const AddWordModal = (props) => {
                                     <Button
                                         className="tw-w-full tw-h-full tw-flex tw-border-2 tw-rounded-full tw-bg-green-500 hover:tw-border-green-500 hover:tw-text-green-500 hover:tw-bg-white"
                                         onClick={() => handleWeight("+")}
-                                        disabled={formData.score < 10 ? false : true}
+                                        disabled={formData.score < 10 && !formData?.actual ? false : true}
                                     >
                                         <PlusOutlined />
                                     </Button>
@@ -165,7 +166,7 @@ const AddWordModal = (props) => {
                     </div>
                     <div
                         className={classNames("tw-flex tw-flex-col tw-h-16", {
-                            "tw-w-56": isMobile&& isPortrait,
+                            "tw-w-56": isMobile && isPortrait,
 
                         })}
                     >

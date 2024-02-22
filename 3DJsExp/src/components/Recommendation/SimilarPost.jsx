@@ -127,6 +127,14 @@ const SimilarPost = () => {
       ),
     },
     {
+      title: 'engagement',
+      dataIndex: 'post_engagement',
+      key: 'post_engagement',
+      align: "center",
+      width: 150,
+      className: 'tw-truncate',
+    },
+    {
       title: 'link',
       dataIndex: 'post_url',
       key: 'post_url',

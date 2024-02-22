@@ -68,7 +68,7 @@ const FacebookPost = ({ handelBotData, selectUser }) => {
     check_in: "string",
     gif: "string",
   });
-  const [url, setUrl] = useState([]);
+  const [url, setUrl] = useState("");
   const botData = handelBotData;
   const selectedAcc = selectUser;
   const [receiveFile, setReceiveFile] = useState([]);
@@ -82,7 +82,7 @@ const FacebookPost = ({ handelBotData, selectUser }) => {
   };
 
   const deleteUrl = () => {
-    setUrl([]);
+    setUrl("");
   };
 
   console.log(url);

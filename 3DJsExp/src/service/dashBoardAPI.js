@@ -38,7 +38,7 @@ const dashBoardAPI = {
   getAllSentiment: async (start_date, end_date) => {
     try {
       const response = await axios.get(
-        `http://192.168.10.122/getAllSentiment?start_date=${start_date}&end_date=${end_date}`,
+        `http://192.168.10.122/getAllSentiment?start_date=${start_date}&end_date=${end_date}`
       );
       return response.data; // Return the response data
     } catch (error) {
@@ -55,7 +55,7 @@ const dashBoardAPI = {
   getTopicSentiment: async (start_date, end_date, topic) => {
     try {
       const response = await axios.get(
-        `http://192.168.10.122/getTopicSentiment?start_date=${start_date}&end_date=${end_date}&topic=${topic}`,
+        `http://192.168.10.122/getTopicSentiment?start_date=${start_date}&end_date=${end_date}&topic=${topic}`
       );
       return response.data; // Return the response data
     } catch (error) {
@@ -82,6 +82,77 @@ const dashBoardAPI = {
       // return blob;
       return response.data;
       // Return the response data
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
+    }
+  },
+
+  getStat: async (search) => {
+    try {
+      const response = await axios.post(
+        `http://192.168.10.121:8000/stat/data`,
+        search
+      );
+      return response.data; // Return the response data
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
+    }
+  },
+
+  getSocial: async (search) => {
+    try {
+      const response = await axios.post(
+        `http://192.168.10.121:8000/stat/social`,
+        search
+      );
+      return response.data; // Return the response data
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
+    }
+  },
+
+  getMaxEngagement: async (search) => {
+    try {
+      const response = await axios.post(
+        `http://192.168.10.121:8000/report/maxengagement`,
+        search
+      );
+      return response.data; // Return the response data
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
+    }
+  },
+
+  getPostImage: async (id) => {
+    try {
+      const response = await axios.get(
+        `http://192.168.10.121:8000/report/image/${id}?mode=image&size=400`
+      );
+      return response.data; // Return the response data
     } catch (error) {
       // console.log(error);
       if (error.response) {
