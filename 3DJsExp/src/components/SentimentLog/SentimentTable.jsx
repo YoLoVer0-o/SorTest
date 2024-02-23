@@ -53,15 +53,49 @@ const SentimentTable = () => {
     /////////////////////////////////////////////table/////////////////////////////////////////////////////////////
     const columns = [
         {
-            title: 'id',
+            title: 'ลำดับ',
             dataIndex: 'id',
             key: 'id',
+            align: "center",
+            width: 50,
+            className: 'tw-truncate',
+            render: (text, record, index) => (
+                <p>
+                    {index + 1}
+                </p>
+            ),
+        },
+        {
+            title: 'วันที่',
+            dataIndex: 'timestamp',
+            key: 'timestamp',
+            align: "center",
+            width: 100,
+            className: 'tw-text-lime-600',
+            filteredValue: [searchDate],
+            onFilter: (value, record) => {
+                if (value != undefined && value != null && value != "" && value != 'undefined') {
+                    let startDate = String(value?.split(",")[0])
+                    let endDate = String(value?.split(",")[1])
+                    let recordDate = dayjs(record?.timestamp).format('YYYY-MM-DD')
+                    if (dayjs(recordDate).isSameOrBefore(endDate) && dayjs(recordDate).isSameOrAfter(startDate)) {
+                        return record?.timestamp
+                    }
+                } else {
+                    return record?.timestamp
+                }
+            },
+        },
+        {
+            title: 'รายละเอียด',
+            dataIndex: 'message',
+            key: 'message',
             align: "center",
             width: 150,
             className: 'tw-truncate',
         },
         {
-            title: 'tag',
+            title: 'HashTag',
             dataIndex: 'tag',
             key: 'tag',
             align: "center",
@@ -84,48 +118,27 @@ const SentimentTable = () => {
             ),
         },
         {
-            title: 'nickName',
+            title: 'ผู้โพสต์',
             dataIndex: 'nickName',
             key: 'nickName',
             align: "center",
-            width: 150,
+            width: 100,
             className: 'tw-truncate',
         },
         {
-            title: 'URL',
-            dataIndex: 'url',
-            key: 'url',
+            title: 'บัญชี',
+            dataIndex: 'username',
+            key: 'username',
             align: "center",
-            width: 150,
-            className: 'tw-truncate tw-text-sky-700',
+            width: 100,
+            className: 'tw-truncate',
         },
         {
-            title: 'update',
-            dataIndex: 'timestamp',
-            key: 'timestamp',
-            align: "center",
-            width: 150,
-            className: 'tw-text-lime-600',
-            filteredValue: [searchDate],
-            onFilter: (value, record) => {
-                if (value != undefined && value != null && value != "" && value != 'undefined') {
-                    let startDate = String(value?.split(",")[0])
-                    let endDate = String(value?.split(",")[1])
-                    let recordDate = dayjs(record?.timestamp).format('YYYY-MM-DD')
-                    if (dayjs(recordDate).isSameOrBefore(endDate) && dayjs(recordDate).isSameOrAfter(startDate)) {
-                        return record?.timestamp
-                    }
-                } else {
-                    return record?.timestamp
-                }
-            },
-        },
-        {
-            title: 'group',
+            title: 'กลุ่ม',
             dataIndex: 'group',
             key: 'group',
             align: "center",
-            width: 150,
+            width: 100,
             className: 'tw-text-amber-600',
             filteredValue: [searchBot],
             onFilter: (value, record) => (
@@ -144,11 +157,11 @@ const SentimentTable = () => {
             ),
         },
         {
-            title: 'sentimentType',
+            title: 'ความรู้สึก',
             dataIndex: 'sentimentType',
             key: 'sentimentType',
             align: "center",
-            width: 150,
+            width: 100,
             className: 'tw-text-violet-600',
             render: (text, record) => (
                 <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
@@ -165,6 +178,30 @@ const SentimentTable = () => {
                 </div>
             ),
         },
+        {
+            title: 'link',
+            dataIndex: 'url',
+            key: 'url',
+            align: "center",
+            width: 100,
+            className: 'tw-truncate tw-text-sky-700',
+            render: (text, record) => (
+                <div className="tw-flex tw-justify-center">
+                    <Tooltip title="กดเพื่อไปที่โพสต์">
+                        <a href={record?.url}
+                            target="blank"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                            }}>
+                            <div className="tw-rounded-md tw-w-full tw-border-2 tw-border-black tw-text-center tw-text-white tw-bg-sky-600" >
+                                <p className="tw-m-2">Link</p>
+                            </div>
+                        </a>
+                    </Tooltip>
+                </div>
+            ),
+        },
+
     ];
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -177,7 +214,6 @@ const SentimentTable = () => {
     return (
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto', {})}>
             <Loading isShown={showLoading} />
-            <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">BotTable</p>
             {displayData.posts?.length > 0 && (
                 <div className={classNames("tw-flex tw-flex-row tw-max-w-full tw-justify-center tw-gap-2", {
                     "tw-flex-col": isTabletOrMobile && isPortrait,

@@ -112,7 +112,9 @@ const Trending = () => {
       render: (text, record) => (
         <div className="tw-flex tw-justify-center">
           <Tooltip title="กดเพื่อไปที่โพสต์">
-            <a href={record?.post_url} target="blank">
+            <a href={record?.post_url} target="blank" onClick={(e) => {
+              e.stopPropagation();
+            }}>
               <div className="tw-rounded-md tw-w-full tw-border-2 tw-border-black tw-text-center tw-text-white tw-bg-sky-600" >
                 <p className="tw-m-2">Link</p>
               </div>

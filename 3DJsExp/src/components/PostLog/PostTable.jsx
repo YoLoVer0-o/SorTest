@@ -147,7 +147,20 @@ const PostTable = () => {
     ///////////////////////////////////////////table///////////////////////////////////////////////////////////////
     const columns = [
         {
-            title: 'postime',
+            title: 'ลำดับ',
+            dataIndex: 'id',
+            key: 'id',
+            align: "center",
+            width: 50,
+            className: 'tw-truncate',
+            render: (text, record, index) => (
+                <p>
+                    {index + 1}
+                </p>
+            ),
+        },
+        {
+            title: 'วันที่',
             dataIndex: 'postime',
             key: 'postime',
             align: "center",
@@ -168,31 +181,15 @@ const PostTable = () => {
             // },
         },
         {
-            title: 'platform',
-            dataIndex: 'platform',
-            key: 'platform',
-            align: "center",
-            width: 150,
-            className: 'tw-truncate',
-            // filteredValue: [searchPlatform],
-            // onFilter: (value, record) => (
-            //     (value.split(",")).every(platform => String(record?.platform).includes(platform))
-            // ),
-        },
-        {
-            title: 'post',
+            title: 'รายละเอียด',
             dataIndex: 'post',
             key: 'post',
             align: "center",
             width: 150,
             className: 'tw-truncate',
-            // filteredValue: [searchTag],
-            // onFilter: (value, record) => (
-            //     (value.split(",")).every(tag => String(record?.tag).includes(tag))
-            // ),
         },
         {
-            title: 'poster_name',
+            title: ' ผู้โพสต์',
             dataIndex: 'poster_name',
             key: 'poster_name',
             align: "center",
@@ -206,7 +203,7 @@ const PostTable = () => {
             // ),
         },
         {
-            title: 'hashtags',
+            title: 'HashTags',
             dataIndex: 'hashtags',
             key: 'hashtags',
             align: "center",
@@ -225,7 +222,7 @@ const PostTable = () => {
             ),
         },
         {
-            title: 'link',
+            title: 'Link',
             dataIndex: 'post_url',
             key: 'post_url',
             align: "center",

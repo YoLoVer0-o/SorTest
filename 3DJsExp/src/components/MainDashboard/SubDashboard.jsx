@@ -38,9 +38,6 @@ const SubDashboard = () => {
 
   const [dailyMaxEngagement, setDailyMaxEngagement] = useState({});
 
-
-  const [pageData, setPageData] = useState({});
-
   const [showLoading, setShowLoading] = useState(false);
 
   const token = useSelector((state) => getLogin(state).token);
@@ -123,7 +120,7 @@ const SubDashboard = () => {
         date: [
           start,
           end
-        ]      
+        ]
       }
       const data = await dashBoardAPI.getMaxEngagement(payload);
       setDailyMaxEngagement(data[0]);
@@ -331,7 +328,7 @@ const SubDashboard = () => {
 
 
   return (
-    <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto', {})}>
+    <div className={classNames('tw-flex tw-flex-col tw-w-full tw-max-w-full tw-max-h-full tw-overflow-auto', {})}>
       <Loading isShown={showLoading} />
       <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">DashBoard หวดหมู่: {displayTopic()}</p>
       <div className={classNames("tw-flex tw-flex-row tw-max-w-full tw-bg-white tw-justify-center tw-gap-2 tw-border-stone-300 tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
@@ -528,17 +525,19 @@ const SubDashboard = () => {
                   </a>
                 </div>
                 <div className="tw-text-lg">
-                  <ClampLines
-                    text={dashboardData.text}
-                    id='really-unique-id'
-                    type='html'
-                    lines={3}
-                    ellipsis='...'
-                    moreText={<p className="tw-text-blue-500">เพิ่มเติม</p>}
-                    lessText={<p className="tw-text-blue-500">น้อยลง</p>}
-                    className=''
-                    innerElement='p'
-                  />
+                  {dailyMaxEngagement?.post &&
+                    <ClampLines
+                      text={dailyMaxEngagement?.post ? dailyMaxEngagement?.post : ""}
+                      id='really-unique-id'
+                      type='html'
+                      lines={3}
+                      ellipsis='...'
+                      moreText={<p className="tw-text-blue-500">เพิ่มเติม</p>}
+                      lessText={<p className="tw-text-blue-500">น้อยลง</p>}
+                      className=''
+                      innerElement='p'
+                    />
+                  }
                   <div className={classNames("tw-flex tw-justify-center tw-h-96", {
                   })}>
                     {postImage &&
