@@ -68,7 +68,7 @@ const FacebookPost = ({ handelBotData, selectUser }) => {
     check_in: "string",
     gif: "string",
   });
-  const [url, setUrl] = useState("");
+  const [url, setUrl] = useState([]);
   const botData = handelBotData;
   const selectedAcc = selectUser;
   const [receiveFile, setReceiveFile] = useState([]);
@@ -367,11 +367,18 @@ const FacebookPost = ({ handelBotData, selectUser }) => {
       console.error("Error posting data:", error);
     }
   };
-  console.log(url);
-  const onFinish = (values) => {
-    // setUrl([values[0]]);
-    console.log(values);
-    console.log(values[0].testUrl);
+  
+  const onFinish = (val) => {
+
+   val.users.forEach((user, index) => {
+    let data = user.testUrl
+     console.log(`Test URL ${index + 1}:`, data);
+    
+     setUrl((prevUrls) => [...prevUrls, data]);
+   });
+   
+    console.log(url);
+    
   };
   ////////////////////Note Gona use JSON.stringify to convert data and sent back /////////////////////////////
   // console.log(selectedShare);
@@ -1400,14 +1407,31 @@ const FacebookPost = ({ handelBotData, selectUser }) => {
               </div>
 
               <div>
-                <a
-                  href={url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="tw-w-full tw-flex"
-                >
-                  {url}
-                </a>
+                
+                  {url.map((url, index) => (
+                     <a
+                    key={index}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="tw-w-full tw-flex"
+                  >
+                    {url}
+                  </a>
+                  ))}
+                
+
+                {/* {url.map((url) => (
+                  <a
+                    key={url}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="tw-w-full tw-flex"
+                  >
+                    {url}
+                  </a>
+                ))} */}
               </div>
             </div>
           </div>
