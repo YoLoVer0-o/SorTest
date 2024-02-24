@@ -75,7 +75,7 @@ const FacebookPost = ({ handelBotData, selectUser }) => {
   const handelFile = (file) => {
     setReceiveFile(file);
   };
-  console.log(receiveFile);
+  // console.log(receiveFile);
 
   const handleUrl = (event) => {
     setUrl(event.target.value);
@@ -353,7 +353,6 @@ const FacebookPost = ({ handelBotData, selectUser }) => {
 
   const handlePost = async () => {
     try {
-      // console.log("Data being sent to API:", dataString);
       await postCreateAPI.fbPostAction(postAction, getToken);
       Swal.fire({
         title: "โพสต์สําเร็จ ",
@@ -368,9 +367,11 @@ const FacebookPost = ({ handelBotData, selectUser }) => {
       console.error("Error posting data:", error);
     }
   };
-
+  console.log(url);
   const onFinish = (values) => {
-    console.log("Received values of form:", values);
+    // setUrl([values[0]]);
+    console.log(values);
+    console.log(values[0].testUrl);
   };
   ////////////////////Note Gona use JSON.stringify to convert data and sent back /////////////////////////////
   // console.log(selectedShare);
@@ -1303,10 +1304,10 @@ const FacebookPost = ({ handelBotData, selectUser }) => {
             </button>
             <div className="tw-text-center">เพิ่มลิงค์</div>
             <div className="tw-w-full tw-flex tw-flex-col tw-gap-5 tw-justify-center ">
-              <div className="tw-flex tw-justify-center  tw-flex-row tw-w-full tw-h-full tw-gap-4">
-                <div className="tw-flex tw-w-[80%] tw-flex-row">
+              <div className="tw-flex tw-justify-center  tw-flex-row tw-w-full tw-h-full tw-gap-4 ">
+                <div className=" tw-w-[80%] ">
                   {" "}
-                  <Input
+                  {/* <Input
                     value={url}
                     onChange={handleUrl}
                     defaultValue="Combine input and button"
@@ -1316,17 +1317,86 @@ const FacebookPost = ({ handelBotData, selectUser }) => {
                   />
                   <button className=" hover:tw-bg-green-600 tw-bg-green-500 tw-p-3 tw-rounded-r-lg tw-text-white">
                     Submit
-                  </button>
+                  </button> */}
+                  <Form
+                    className="tw-overflow-y-auto"
+                    name="dynamic_form_nest_item"
+                    onFinish={onFinish}
+                    style={{
+                      maxWidth: 600,
+                      maxHeight: 400,
+                    }}
+                    autoComplete="off"
+                  >
+                    <Form.List name="users" className="tw-w-full ">
+                      {(fields, { add, remove }) => (
+                        <>
+                          {fields.map(({ key, name, ...restField }) => (
+                            <Space
+                              className="tw-w-full"
+                              key={key}
+                              // style={{
+                              //   width: "100%",
+                              //   display: "flex",
+                              //   marginBottom: 8,
+                              // }}
+                              align="baseline"
+                            >
+                              <Form.Item
+                                className="tw-w-full"
+                                {...restField}
+                                name={[name, "testUrl"]}
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: "กรุณากรอกลิงค์",
+                                  },
+                                ]}
+                              >
+                                <Input
+                                  className="tw-w-full tw-border-blue-500"
+                                  placeholder="กรอกลิงค์"
+                                />
+                              </Form.Item>
+                              <MinusCircleOutlined
+                                className="tw-text-red-500 tw-text-xl tw-align-center"
+                                onClick={() => remove(name)}
+                              />
+                            </Space>
+                          ))}
+                          <Form.Item className="tw-sticky tw-bottom-0 ">
+                            <Button
+                              className="tw-sticky tw-bottom-0"
+                              type="dashed"
+                              onClick={() => add()}
+                              block
+                              icon={<PlusOutlined />}
+                            >
+                              เพิ่ม
+                            </Button>
+                          </Form.Item>
+                        </>
+                      )}
+                    </Form.List>
+                    <Form.Item className="tw-sticky tw-bottom-0">
+                      <Button
+                        htmlType="submit"
+                        className="hover:tw-bg-green-600 tw-bg-green-500 tw-text-white tw-outline-none tw-sticky tw-bottom-0"
+                      >
+                        Submit
+                      </Button>
+                    </Form.Item>
+                  </Form>
                 </div>
 
-                <Tooltip title="ลบออกทั้งหมด">
+                {/* <Tooltip title="ลบออกทั้งหมด">
                   <button
                     onClick={deleteUrl}
                     className="tw-rounded-md hover:tw-bg-gray-100 tw-h-10 tw-w-10 tw-flex tw-justify-center tw-items-center"
                   >
                     <ImBin className="tw-w-6 tw-h-6 tw-text-gray-400" />
                   </button>
-                </Tooltip>
+                </Tooltip> */}
               </div>
 
               <div>
@@ -1339,73 +1409,6 @@ const FacebookPost = ({ handelBotData, selectUser }) => {
                   {url}
                 </a>
               </div>
-
-              <Form
-                name="dynamic_form_nest_item"
-                onFinish={onFinish}
-                style={{
-                  maxWidth: 600,
-                }}
-                autoComplete="off"
-              >
-                <Form.List name="users">
-                  {(fields, { add, remove }) => (
-                    <>
-                      {fields.map(({ key, name, ...restField }) => (
-                        <Space
-                          key={key}
-                          style={{
-                            display: "flex",
-                            marginBottom: 8,
-                          }}
-                          align="baseline"
-                        >
-                          <Form.Item
-                            {...restField}
-                            name={[name, "first"]}
-                            rules={[
-                              {
-                                required: true,
-                                message: "Missing first name",
-                              },
-                            ]}
-                          >
-                            <Input placeholder="First Name" />
-                          </Form.Item>
-                          <Form.Item
-                            {...restField}
-                            name={[name, "last"]}
-                            rules={[
-                              {
-                                required: true,
-                                message: "Missing last name",
-                              },
-                            ]}
-                          >
-                            <Input placeholder="Last Name" />
-                          </Form.Item>
-                          <MinusCircleOutlined onClick={() => remove(name)} />
-                        </Space>
-                      ))}
-                      <Form.Item>
-                        <Button
-                          type="dashed"
-                          onClick={() => add()}
-                          block
-                          icon={<PlusOutlined />}
-                        >
-                          Add field
-                        </Button>
-                      </Form.Item>
-                    </>
-                  )}
-                </Form.List>
-                <Form.Item>
-                  <Button type="primary" htmlType="submit">
-                    Submit
-                  </Button>
-                </Form.Item>
-              </Form>
             </div>
           </div>
         </div>
@@ -1461,7 +1464,7 @@ const FacebookPost = ({ handelBotData, selectUser }) => {
               onEmojiClick={(emoji) => showEmo(emoji)}
             />
             <button
-              className="tw-absolute tw-top-0 tw-right-0"
+              className="tw-absolute   tw-top-0 tw-right-0"
               onClick={toggleEmoji}
             >
               <LiaWindowClose className="tw-text-2xl  tw-bg-red-500" />
