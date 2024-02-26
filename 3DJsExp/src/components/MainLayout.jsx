@@ -52,7 +52,7 @@ const MainLayout = (props) => {
     "/postCreation/createPost": "สร้างโพสต์ใหม่",
     "/postCreation/postStatus": "สถานะการโพส",
     "/postCreation/createGroupPost": "สร้างโพสต์ไปที่กลุ่ม",
-    "/sentiment": "ประเมิณผลตอบรับ",
+    "/sentiment": "ประเมินผลตอบรับ",
     "/sentiment/report": "รายงานความคิดเห็น",
     "/RPA": "RPA",
     "/RPA/account": "บัญชีและสถานะ",
@@ -278,7 +278,7 @@ const MainLayout = (props) => {
                 {
                   key: "/sentiment",
                   icon: <CommentOutlined />,
-                  label: "ประเมิณผลตอบรับ",
+                  label: "ประเมินผลตอบรับ",
                   className: "",
                 },
                 {

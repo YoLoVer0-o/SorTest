@@ -45,13 +45,14 @@ const WorkTable = () => {
     const downloadFile = async () => {
         try {
             await RPAWorkAPI.fbDownloadWork().then((response) => {
-                const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
+                const blobUrl = window.URL.createObjectURL(new Blob([response]));
                 const link = document.createElement('a');
                 link.href = blobUrl;
                 link.setAttribute('download', "work_format.xlsx");
                 document.body.appendChild(link);
                 link.click();
                 window.URL.revokeObjectURL(blobUrl);
+                // console.log(response);
             })
 
         } catch (error) {

@@ -95,7 +95,7 @@ const RPAUserAPI = {
   fbDownloadUser: async () => {
     try {
       const response = await axios.get(
-        `http://192.168.10.111:8000/facebook/download/user_format/`,
+        `http://192.168.10.111:8000/facebook/download/user_format_file/`,
         {
           responseType: "blob",
         }

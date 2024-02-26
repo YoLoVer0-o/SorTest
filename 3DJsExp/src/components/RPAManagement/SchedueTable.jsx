@@ -67,7 +67,7 @@ const SchedueTable = () => {
         try {
             setShowLoading(true);
             await RPASchedueAPI.fbDownloadSchedule().then((response) => {
-                const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
+                const blobUrl = window.URL.createObjectURL(new Blob([response]));
                 const link = document.createElement('a');
                 link.href = blobUrl;
                 link.setAttribute('download', "schedule_format.xlsx");
