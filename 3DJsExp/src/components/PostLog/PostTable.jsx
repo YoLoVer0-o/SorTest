@@ -189,20 +189,6 @@ const PostTable = () => {
             className: 'tw-truncate',
         },
         {
-            title: ' ผู้โพสต์',
-            dataIndex: 'poster_name',
-            key: 'poster_name',
-            align: "center",
-            width: 150,
-            className: 'tw-text-amber-600',
-            // filteredValue: [searchVal],
-            // onFilter: (value, record) => (
-            //     String(record?.post).toLowerCase().includes(value.toLowerCase())
-            //     || String(record?.creator).toLowerCase().includes(value.toLowerCase())
-            //     || String(record?.update).toLowerCase().includes(value.toLowerCase())
-            // ),
-        },
-        {
             title: 'HashTags',
             dataIndex: 'hashtags',
             key: 'hashtags',
@@ -220,6 +206,22 @@ const PostTable = () => {
                     ))}
                 </div>
             ),
+        },
+        {
+            title: ' ผู้โพสต์',
+            dataIndex: 'poster_name',
+            key: 'poster_name',
+            align: "center",
+            width: 150,
+            className: 'tw-text-amber-600',
+        },
+        {
+            title: 'หมวดหมู่',
+            dataIndex: '',
+            key: '',
+            align: "center",
+            width: 100,
+            className: 'tw-truncate',
         },
         {
             title: 'Link',
@@ -405,7 +407,7 @@ const PostTable = () => {
                                 </div>
                             </div>
                             <div className='tw-flex tw-flex-col tw-justify-center tw-w-full'>
-                                <p className="tw-text-lg">Facebook ID:</p>
+                                <p className="tw-text-lg">ชื่อบัญชี:</p>
                                 <SearchBar
                                     useTagSearch={true}
                                     data={displayFBid}

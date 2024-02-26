@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getLogin, logOut } from "../libs/loginSlice";
-import { setUserData } from "../libs/userSlice";
-import mainUserAPI from "../service/mainUserAPI";
 import { useResponsive } from "../hooks";
 import SocialIcons from "../assets/SocialIcons";
 import profile from "../assets/profile.png";
@@ -144,11 +142,7 @@ const MainLayout = (props) => {
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
-  const getUserGroup = async () => {
-    await mainUserAPI.getAllRole(isLogin.token).then((response) => {
-      dispatch(setUserData({ owner: response }));
-    });
-  };
+  
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
@@ -166,10 +160,7 @@ const MainLayout = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLogin]);
 
-  useEffect(() => {
-    getUserGroup();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  
 
   return (
     <Layout
@@ -397,31 +388,31 @@ const MainLayout = (props) => {
                       label: "Instagram",
                       className: "",
                       children: [
-                        {
-                          key: "/RPA/account/instagram",
-                          label: "บัญชีและสถานะ",
-                          className: "",
-                        },
-                        {
-                          key: "/RPA/fulltime/instagram",
-                          label: "งานประจำ",
-                          className: "",
-                        },
+                        // {
+                        //   key: "/RPA/account/instagram",
+                        //   label: "บัญชีและสถานะ",
+                        //   className: "",
+                        // },
+                        // {
+                        //   key: "/RPA/fulltime/instagram",
+                        //   label: "งานประจำ",
+                        //   className: "",
+                        // },
                         {
                           key: "/RPA/job/instagram",
                           label: "งาน",
                           className: "",
                         },
-                        {
-                          key: "/RPA/errlog/instagram",
-                          label: "Error Log",
-                          className: "",
-                        },
-                        {
-                          key: "/RPA/activlog/instagram",
-                          label: "Activity Log",
-                          className: "",
-                        },
+                        // {
+                        //   key: "/RPA/errlog/instagram",
+                        //   label: "Error Log",
+                        //   className: "",
+                        // },
+                        // {
+                        //   key: "/RPA/activlog/instagram",
+                        //   label: "Activity Log",
+                        //   className: "",
+                        // },
                       ],
                     },
                     {
@@ -430,31 +421,31 @@ const MainLayout = (props) => {
                       label: "Youtube",
                       className: "",
                       children: [
-                        {
-                          key: "/RPA/account/youtube",
-                          label: "บัญชีและสถานะ",
-                          className: "",
-                        },
-                        {
-                          key: "/RPA/fulltime/youtube",
-                          label: "งานประจำ",
-                          className: "",
-                        },
+                        // {
+                        //   key: "/RPA/account/youtube",
+                        //   label: "บัญชีและสถานะ",
+                        //   className: "",
+                        // },
+                        // {
+                        //   key: "/RPA/fulltime/youtube",
+                        //   label: "งานประจำ",
+                        //   className: "",
+                        // },
                         {
                           key: "/RPA/job/youtube",
                           label: "งาน",
                           className: "",
                         },
-                        {
-                          key: "/RPA/errlog/youtube",
-                          label: "Error Log",
-                          className: "",
-                        },
-                        {
-                          key: "/RPA/activlog/youtube",
-                          label: "Activity Log",
-                          className: "",
-                        },
+                        // {
+                        //   key: "/RPA/errlog/youtube",
+                        //   label: "Error Log",
+                        //   className: "",
+                        // },
+                        // {
+                        //   key: "/RPA/activlog/youtube",
+                        //   label: "Activity Log",
+                        //   className: "",
+                        // },
                       ],
                     },
                     {
@@ -463,31 +454,31 @@ const MainLayout = (props) => {
                       label: "tiktok",
                       className: "",
                       children: [
-                        {
-                          key: "/RPA/account/tiktok",
-                          label: "บัญชีและสถานะ",
-                          className: "",
-                        },
-                        {
-                          key: "/RPA/fulltime/tiktok",
-                          label: "งานประจำ",
-                          className: "",
-                        },
+                        // {
+                        //   key: "/RPA/account/tiktok",
+                        //   label: "บัญชีและสถานะ",
+                        //   className: "",
+                        // },
+                        // {
+                        //   key: "/RPA/fulltime/tiktok",
+                        //   label: "งานประจำ",
+                        //   className: "",
+                        // },
                         {
                           key: "/RPA/job/tiktok",
                           label: "งาน",
                           className: "",
                         },
-                        {
-                          key: "/RPA/errlog/tiktok",
-                          label: "Error Log",
-                          className: "",
-                        },
-                        {
-                          key: "/RPA/activlog/tiktok",
-                          label: "Activity Log",
-                          className: "",
-                        },
+                        // {
+                        //   key: "/RPA/errlog/tiktok",
+                        //   label: "Error Log",
+                        //   className: "",
+                        // },
+                        // {
+                        //   key: "/RPA/activlog/tiktok",
+                        //   label: "Activity Log",
+                        //   className: "",
+                        // },
                       ],
                     },
                   ],

@@ -209,7 +209,6 @@ const WordTable = () => {
 
     return (
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-y-auto', {})}>
-            <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">WordTable</p>
             <div className="tw-flex tw-flex-col tw-justify-center tw-w-full tw-px-4">
                 <p className="tw-text-lg">ชื่อหมวดหมู่:</p>
                 <Input value={category.category_name} />
