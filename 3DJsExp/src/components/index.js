@@ -28,6 +28,7 @@ import SimilarPost from "./Recommendation/SimilarPost";
 import Trending from "./Recommendation/trending";
 import UserManageTable from "./UserManagement/UserManageTable";
 import AddRoleModal from "./UserManagement/AddRoleModal";
+import SeoWebSite from "./SeoWebSite/SeoWebSite";
 
 export {
   MainLayout,
@@ -60,4 +61,5 @@ export {
   Trending,
   UserManageTable,
   AddRoleModal,
+  SeoWebSite, 
 };

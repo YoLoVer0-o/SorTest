@@ -42,7 +42,7 @@ import {
   // TransitionGroup,
 } from "react-transition-group";
 
-const FacebookPost = ({ handelBotData, selectUser }) => {
+const FacebookPost = ({ selectUser }) => {
   const [message, setMessage] = useState("");
   const [showEmojiInput, setShowEmojiInput] = useState(false);
   const [openUpload, setOpenUpLoad] = useState(false);
@@ -69,22 +69,15 @@ const FacebookPost = ({ handelBotData, selectUser }) => {
     gif: "string",
   });
   const [url, setUrl] = useState([]);
-  const botData = handelBotData;
+  // const botData = handelBotData;
   const selectedAcc = selectUser;
   const [receiveFile, setReceiveFile] = useState([]);
   const handelFile = (file) => {
     setReceiveFile(file);
   };
-  // console.log(receiveFile);
+  console.log(receiveFile);
 
-  const handleUrl = (event) => {
-    setUrl(event.target.value);
-  };
-
-  const deleteUrl = () => {
-    setUrl("");
-  };
-
+ 
   console.log(url);
   // console.log(tagFriends);
   const nodeRef = useRef(null);
@@ -342,7 +335,7 @@ const FacebookPost = ({ handelBotData, selectUser }) => {
       url: url,
       group: null, /////////////////////รอ API group bot///////////////////
       text: message,
-      photo_video: null, /////////////////////รอ API อัพโหลดไฟล์ แปลงเป็นBinary///////////////////////////////////////////
+      photo_video: [], /////////////////////รอ API อัพโหลดไฟล์ แปลงเป็นBinary///////////////////////////////////////////
       tag_people: JSON.stringify(tagFriends), /////////////////เอาเเค่ชื่อfacebook/////////////////////////
       feeling: null,
       check_in: null,

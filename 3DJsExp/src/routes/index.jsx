@@ -18,7 +18,7 @@ import {
   StatusTable,
   CreateGroupPost,
   UserManageTable,
-
+  SeoWebSite,
 } from "../components";
 import {
   LoginPage,
@@ -165,6 +165,11 @@ export const router = createBrowserRouter([
   {
     path: "/seowebsite",
     element: <SeoWebSitePage />,
-   
+    children: [
+      {
+        path:"",
+        element: <SeoWebSite/>,
+      }
+    ]
   },
 ]);

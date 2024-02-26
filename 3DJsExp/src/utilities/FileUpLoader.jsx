@@ -2,22 +2,12 @@ import { useDropzone } from "react-dropzone";
 import { useState, useEffect } from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
-// import { useResponsive } from "../hooks";
-import { CloseOutlined } from "@ant-design/icons";
+import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
 // import DescriptionPicModal from "./DescriptionPicModal";
-import { PlusOutlined } from "@ant-design/icons";
 import { Modal, Input } from "antd";
 
 const FileUpLoader = (props) => {
-  // const {
-  //   isDesktopOrLaptop,
-  //   isBigScreen,
-  //   isTabletOrMobile,
-  //   isMobile,
-  //   isTablet,
-  //   isPortrait,
-  //   isLandscape,
-  // } = useResponsive();
+
   const sentFiles = props.sentFiles;
   const isOpen = props.isOpen;
   const isClose = props.isClose;
@@ -27,6 +17,7 @@ const FileUpLoader = (props) => {
   const [isOpenState, setIsOpenState] = useState(isOpen);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [description, setDescription] = useState("");
+  const [files, setFiles] = useState([]);
 
   const handleSave = () => {
     saveDescription(description);
@@ -49,8 +40,8 @@ const FileUpLoader = (props) => {
     setIsModalOpen(false);
   };
 
-  const [files, setFiles] = useState([]);
-  sentFiles(files);
+
+
   const onDrop = (acceptedFiles) => {
     const newFiles = acceptedFiles.map((file) => ({
       file,
@@ -74,6 +65,10 @@ const FileUpLoader = (props) => {
     setFiles(updatedFiles && newDescription);
   };
 
+useEffect(() => {
+  sentFiles(files);
+}, [sentFiles, files]);
+  
   useEffect(() => {
     setIsOpenState(isOpen);
   }, [isOpen]);
@@ -200,15 +195,15 @@ const FileUpLoader = (props) => {
   );
 };
 
-const formatFileSize = (bytes) => {
-  const kbSize = bytes / 1024;
-  if (kbSize < 1024) {
-    return kbSize.toFixed(2) + " KB";
-  } else {
-    const mbSize = kbSize / 1024;
-    return mbSize.toFixed(2) + " MB";
-  }
-};
+// const formatFileSize = (bytes) => {
+//   const kbSize = bytes / 1024;
+//   if (kbSize < 1024) {
+//     return kbSize.toFixed(2) + " KB";
+//   } else {
+//     const mbSize = kbSize / 1024;
+//     return mbSize.toFixed(2) + " MB";
+//   }
+// };
 
 FileUpLoader.propTypes = {
   isOpen: PropTypes.bool,

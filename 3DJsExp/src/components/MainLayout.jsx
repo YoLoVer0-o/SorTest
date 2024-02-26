@@ -67,7 +67,7 @@ const MainLayout = (props) => {
     "/recommendation": "Recommendation",
     "/recommendation/similarpost": "ผลลัพธ์ของโพสต์ใกล้เคียง",
     "/recommendation/trending": "เนื้อหาที่กำลังได้รับความนิยม",
-    "/SEOWebSite": "SEO WebSite",
+    "/seoWebSite": "SEO WebSite",
   };
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -122,7 +122,11 @@ const MainLayout = (props) => {
         // console.log("hit4");
         topLevelKeys.push("/postCreation");
         topLevelKeys.push(latestOpenKey);
-      }
+      } else if (latestOpenKey.startsWith("/seoWebSite")) {
+        // console.log("hit4");
+        topLevelKeys.push("/seoWebSite");
+        topLevelKeys.push(latestOpenKey);
+      } 
       console.log(topLevelKeys);
       setOpenKeys(topLevelKeys);
     } else {
@@ -139,7 +143,8 @@ const MainLayout = (props) => {
       breadcrumbItems.some((item) => item.key.includes("/RPA")) ||
       breadcrumbItems.some((item) => item.key.includes("/main")) ||
       breadcrumbItems.some((item) => item.key.includes("/recommendation")) ||
-      breadcrumbItems.some((item) => item.key.includes("/postCreation"))
+      breadcrumbItems.some((item) => item.key.includes("/postCreation")) ||
+      breadcrumbItems.some((item) => item.key.includes("/seowebsite"))
     );
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -520,8 +525,8 @@ const MainLayout = (props) => {
                   label: "User Management",
                 },
                 {
-                  key: "/SEOWebSite",
-                  icon: <TbSeo />                  ,
+                  key: "/seoWebSite",
+                  icon: <TbSeo />,
                   label: "SEO WebSite",
                   className: "",
                 },
