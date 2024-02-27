@@ -28,6 +28,8 @@ import SimilarPost from "./Recommendation/SimilarPost";
 import Trending from "./Recommendation/trending";
 import UserManageTable from "./UserManagement/UserManageTable";
 import AddRoleModal from "./UserManagement/AddRoleModal";
+import AddUserRoleModal from "./UserManagement/AddUserRoleModal";
+import EditUserRoleModal from "./UserManagement/EditUserRoleModal";
 
 export {
   MainLayout,
@@ -60,4 +62,6 @@ export {
   Trending,
   UserManageTable,
   AddRoleModal,
+  AddUserRoleModal,
+  EditUserRoleModal,
 };

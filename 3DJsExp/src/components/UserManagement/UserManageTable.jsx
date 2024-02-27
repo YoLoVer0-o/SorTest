@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { DataTable, SearchBar } from "../../utilities";
 import { userManageMock } from "../../mock";
-import { AddRoleModal } from "..";
+import { AddRoleModal, AddUserRoleModal, EditUserRoleModal } from "..";
 import { useResponsive } from "../../hooks";
 import { Button, Tooltip, Switch } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
@@ -12,6 +12,8 @@ import withReactContent from 'sweetalert2-react-content';
 const UserManageTable = () => {
 
     const [modalToggle, setModalToggle] = useState(false);
+    const [userModalToggle, setUserModalToggle] = useState(false);
+    const [editUserModalToggle, setEditUserModalToggle] = useState(false);
     const [searchVal, setSearchVal] = useState('');
     // const [catData, setCatData] = useState([]);
     const [pageIndex, setPageIndex] = useState({ current: 1, pageSize: 5 });
@@ -58,6 +60,22 @@ const UserManageTable = () => {
         setModalToggle(false);
     };
 
+    const showUserModal = () => {
+        setUserModalToggle(true);
+    };
+
+    const handleUserCancel = () => {
+        setUserModalToggle(false);
+    };
+
+
+    const showEditUserModal = () => {
+        setEditUserModalToggle(true);
+    };
+
+    const handleEditUserCancel = () => {
+        setEditUserModalToggle(false);
+    };
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -192,7 +210,10 @@ const UserManageTable = () => {
                         <div className="tw-text-3xl tw-text-red-600"><DeleteOutlined onClick={() => handleDelete(record.id)} /></div>
                     </Tooltip>
                     <Tooltip title="แก้ไขหมวดหมู่">
-                        <div className="tw-text-3xl tw-text-blue-600"><EditOutlined /></div>
+                        <div className="tw-text-3xl tw-text-blue-600"
+                            onClick={() => showEditUserModal()}>
+                            <EditOutlined />
+                        </div>
                     </Tooltip>
                 </div>
             ),
@@ -234,7 +255,7 @@ const UserManageTable = () => {
                         className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
                             "tw-w-full": isMobile && isPortrait,
                         })}
-                    // onClick={() => showModal()}
+                        onClick={() => showUserModal()}
                     >
                         เพิ่มผู้ใช้ใหม่
                     </Button>
@@ -257,6 +278,20 @@ const UserManageTable = () => {
                     modalToggle={modalToggle}
                     // fetchData={fetchCat}
                     handleCancel={handleCancel}
+                />
+            )}
+            {userModalToggle && (
+                <AddUserRoleModal
+                    modalToggle={userModalToggle}
+                    // fetchData={fetchCat}
+                    handleCancel={handleUserCancel}
+                />
+            )}
+            {editUserModalToggle && (
+                <EditUserRoleModal
+                    modalToggle={editUserModalToggle}
+                    // fetchData={fetchCat}
+                    handleCancel={handleEditUserCancel}
                 />
             )}
         </div>

@@ -8,7 +8,7 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 import { ReactSortable } from "react-sortablejs";
 
-const AddRoleModal = (props) => {
+const EditUserRoleModal = (props) => {
     /////////////////////////////////////props declaration/////////////////////////////////////////////////////////////////////
     const modalToggle = props.modalToggle;
     const handleCancel = props.handleCancel;
@@ -67,8 +67,8 @@ const AddRoleModal = (props) => {
 
     return (
         <Modal
-            className="tw-max-h-fit tw-max-w-fit tw-w-full tw-h-full"
-            title={"เพิ่มบทบาท"}
+            className="tw-max-h-full tw-max-w-full tw-w-fit tw-h-fit"
+            title={"เเก้ไขผู้ใช้"}
             open={isModalOpen}
             onCancel={handleCancel}
             footer={[
@@ -96,20 +96,12 @@ const AddRoleModal = (props) => {
                             <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
                                 "tw-w-56": isMobile,
                             })}>
-                                <p>ชื่อบทบาทใหม่:</p>
-                                <Form.Item name="role_name">
-                                    <Input className='tw-h-full tw-w-full' placeholder="ชื่อบทบาทใหม่" required={true} autoComplete='off' />
+                                <p>ชื่อผู้ใช้งาน:</p>
+                                <Form.Item name="username">
+                                    <Input className='tw-h-full tw-w-full' placeholder="ชื่อบัญชี" required={true} autoComplete='off' />
                                 </Form.Item>
                             </div>
                             <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
-                                "tw-w-56": isMobile,
-                            })}>
-                                <p>รายละเอียด:</p>
-                                <Form.Item name="role_detail">
-                                    <Input className='tw-h-full tw-w-full' placeholder="รายละเอียด" required={true} autoComplete='off' />
-                                </Form.Item>
-                            </div>
-                            {/* <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
                                 "tw-w-56": isMobile,
                             })}>
                                 <p>รหัสผ่าน:</p>
@@ -138,10 +130,10 @@ const AddRoleModal = (props) => {
                                         options={[]}
                                     />
                                 </Form.Item>
-                            </div> */}
+                            </div>
                         </div>
 
-                        {/* <div className='tw-flex tw-flex-row tw-w-full tw-h-full tw-gap-4'>
+                        <div className='tw-flex tw-flex-row tw-w-full tw-h-full tw-gap-4'>
                             <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
                                 "tw-w-56": isMobile,
                             })}>
@@ -202,7 +194,7 @@ const AddRoleModal = (props) => {
                                     />
                                 </Form.Item>
                             </div>
-                        </div> */}
+                        </div>
 
                         <div className="tw-flex tw-flex-col tw-w-full tw-h-full tw-gap-2">
                             <p className="tw-text-lg">สิทธิการใช้งาน</p>
@@ -265,9 +257,9 @@ const AddRoleModal = (props) => {
     );
 };
 
-AddRoleModal.propTypes = {
+EditUserRoleModal.propTypes = {
     modalToggle: PropTypes.bool.isRequired,
     handleCancel: PropTypes.func.isRequired,
 };
 
-export default AddRoleModal;
+export default EditUserRoleModal;
