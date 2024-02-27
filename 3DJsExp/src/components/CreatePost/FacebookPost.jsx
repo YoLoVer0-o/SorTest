@@ -20,7 +20,6 @@ import { FaSortDown } from "react-icons/fa";
 import profile from "../../assets/profile.png";
 import { BsEmojiSmile } from "react-icons/bs";
 import { LiaWindowClose } from "react-icons/lia";
-import { ImBin } from "react-icons/im";
 import { useResponsive } from "../../hooks";
 import { facebookAcc, emotionEmoji } from "../../mock";
 import classNames from "classnames";
@@ -71,13 +70,21 @@ const FacebookPost = ({ selectUser }) => {
   const [url, setUrl] = useState([]);
   // const botData = handelBotData;
   const selectedAcc = selectUser;
-  const [receiveFile, setReceiveFile] = useState([]);
+  const [receiveFile, setReceiveFile] = useState([
+    {
+      file: {
+        path: "",
+      },
+      previewUrl: "",
+    },
+  ]);
+  const paths = receiveFile.map((image) => image.file.path);
+
   const handelFile = (file) => {
     setReceiveFile(file);
   };
   console.log(receiveFile);
 
- 
   console.log(url);
   // console.log(tagFriends);
   const nodeRef = useRef(null);
@@ -328,14 +335,19 @@ const FacebookPost = ({ selectUser }) => {
   const getToken = useSelector((state) => getLogin(state));
 
   // console.log(tagFriends.first_name, tagFriends.last_name);
+  const [imgPath, setImgPath] = useState([]);
+  useEffect(() => {
+    setImgPath(paths);
+  }, []);
 
+  console.log(imgPath);
   useEffect(() => {
     setPostAction({
       botname: selectedAcc,
       url: url,
       group: null, /////////////////////รอ API group bot///////////////////
       text: message,
-      photo_video: [], /////////////////////รอ API อัพโหลดไฟล์ แปลงเป็นBinary///////////////////////////////////////////
+      photo_video: receiveFile, /////////////////////รอ API อัพโหลดไฟล์ แปลงเป็นBinary///////////////////////////////////////////
       tag_people: JSON.stringify(tagFriends), /////////////////เอาเเค่ชื่อfacebook/////////////////////////
       feeling: null,
       check_in: null,
@@ -360,18 +372,16 @@ const FacebookPost = ({ selectUser }) => {
       console.error("Error posting data:", error);
     }
   };
-  
-  const onFinish = (val) => {
 
-   val.users.forEach((user, index) => {
-    let data = user.testUrl
-     console.log(`Test URL ${index + 1}:`, data);
-    
-     setUrl((prevUrls) => [...prevUrls, data]);
-   });
-   
+  const onFinish = (val) => {
+    val.users.forEach((user, index) => {
+      let data = user.testUrl;
+      console.log(`Test URL ${index + 1}:`, data);
+
+      setUrl((prevUrls) => [...prevUrls, data]);
+    });
+
     console.log(url);
-    
   };
   ////////////////////Note Gona use JSON.stringify to convert data and sent back /////////////////////////////
   // console.log(selectedShare);
@@ -1400,9 +1410,8 @@ const FacebookPost = ({ selectUser }) => {
               </div>
 
               <div>
-                
-                  {url.map((url, index) => (
-                     <a
+                {url.map((url, index) => (
+                  <a
                     key={index}
                     href={url}
                     target="_blank"
@@ -1411,8 +1420,7 @@ const FacebookPost = ({ selectUser }) => {
                   >
                     {url}
                   </a>
-                  ))}
-                
+                ))}
 
                 {/* {url.map((url) => (
                   <a

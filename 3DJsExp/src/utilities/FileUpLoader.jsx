@@ -1,13 +1,12 @@
 import { useDropzone } from "react-dropzone";
 import { useState, useEffect } from "react";
-import classNames from "classnames";
+// import classNames from "classnames";
 import PropTypes from "prop-types";
 import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
 // import DescriptionPicModal from "./DescriptionPicModal";
 import { Modal, Input } from "antd";
 
 const FileUpLoader = (props) => {
-
   const sentFiles = props.sentFiles;
   const isOpen = props.isOpen;
   const isClose = props.isClose;
@@ -40,8 +39,6 @@ const FileUpLoader = (props) => {
     setIsModalOpen(false);
   };
 
-
-
   const onDrop = (acceptedFiles) => {
     const newFiles = acceptedFiles.map((file) => ({
       file,
@@ -51,7 +48,7 @@ const FileUpLoader = (props) => {
   };
 
   const { getRootProps, getInputProps } = useDropzone({
-    accept: {"video/mp4":[] ,'image/jpeg': [] ,'image/png': []},
+    accept: { "video/mp4": [], "image/jpeg": [], "image/png": [] },
     onDrop,
   });
 
@@ -65,10 +62,10 @@ const FileUpLoader = (props) => {
     setFiles(updatedFiles && newDescription);
   };
 
-useEffect(() => {
-  sentFiles(files);
-}, [sentFiles, files]);
-  
+  useEffect(() => {
+    sentFiles(files);
+  }, [sentFiles, files]);
+
   useEffect(() => {
     setIsOpenState(isOpen);
   }, [isOpen]);

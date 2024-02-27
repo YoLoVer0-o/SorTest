@@ -17,10 +17,11 @@ const seoWebSiteAPI = {
       throw error;
     }
   },
-  imagePosition: async () => {
+  imagePosition: async (data) => {
     try {
-      const response = await axios.post(
-        `http://192.168.10.113:8000/SEO/website_position_image/`
+      const response = await axios.get(
+        `http://192.168.10.113:8000/SEO/website_position_image/`,
+        data,
       );
       return response.data;
     } catch (error) {
@@ -33,10 +34,11 @@ const seoWebSiteAPI = {
       throw error;
     }
   },
-  seoWebSiteContent: async () => {
+  seoWebSiteContent: async (data) => {
     try {
       const response = await axios.post(
-        `http://192.168.10.113:8000/SEO/website_content/`
+        `http://192.168.10.113:8000/SEO/website_content/`,
+        data,
       );
       return response.data;
     } catch (error) {
@@ -49,10 +51,11 @@ const seoWebSiteAPI = {
       throw error;
     }
   },
-  webSiteUploadFile: async () => {
+  webSiteUploadFile: async (data) => {
     try {
       const response = await axios.post(
-        `http://192.168.10.113:8000/SEO/website_uploadfile/`
+        `http://192.168.10.113:8000/SEO/website_uploadfile/`,
+        data, 
       );
       return response.data;
     } catch (error) {
