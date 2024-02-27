@@ -14,7 +14,7 @@ import classNames from "classnames";
 import RPAUserAPI from "../../service/RPAUserAPI";
 import { useSelector } from 'react-redux'
 import { getLogin } from '../../libs/loginSlice'
-import { getUser } from "../../libs/userSlice";
+import mainUserAPI from "../../service/mainUserAPI";
 
 const AccountTable = () => {
 
@@ -26,6 +26,7 @@ const AccountTable = () => {
     const [modalToggle, setModalToggle] = useState(false);
     const [addModalToggle, setAddModalToggle] = useState(false);
     const [modalData, setModalData] = useState([]);
+    const [ownerGroup, setOwnerGroup] = useState([]);
 
     const [showLoading, setShowLoading] = useState(false);
 
@@ -52,7 +53,11 @@ const AccountTable = () => {
 
     const token = useSelector((state) => getLogin(state).token);
 
-    const ownerGroup = useSelector((state) => getUser(state)[0].owner);
+    const getUserGroup = async () => {
+        await mainUserAPI.getAllRole(token).then((response) => {
+            setOwnerGroup(response);
+        });
+    };
 
     useEffect(() => {
         console.log('user', ownerGroup);
@@ -83,6 +88,7 @@ const AccountTable = () => {
     }
 
     useEffect(() => {
+        getUserGroup();
         fetchAcc();
         fetchGroup();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -120,7 +126,7 @@ const AccountTable = () => {
     ////////////////////////////////////////////table//////////////////////////////////////////////////////////////
     const columns = [
         {
-            title: "name",
+            title: "ชื่อ",
             dataIndex: "botname",
             key: "botname",
             align: "center",
@@ -131,7 +137,7 @@ const AccountTable = () => {
                 String(record?.botname).toLowerCase().includes(value.toLowerCase()),
         },
         {
-            title: "accName",
+            title: "ชื่อบัญชี",
             dataIndex: "username",
             key: "username",
             align: "center",
@@ -142,7 +148,7 @@ const AccountTable = () => {
                 String(record?.username).toLowerCase().includes(value.toLowerCase()),
         },
         {
-            title: "groups",
+            title: "กลุ่ม",
             dataIndex: "groups",
             key: "groups",
             align: "center",
@@ -166,7 +172,7 @@ const AccountTable = () => {
             ),
         },
         {
-            title: "status",
+            title: "สถานะ",
             dataIndex: "status",
             key: "status",
             align: "center",
@@ -198,7 +204,7 @@ const AccountTable = () => {
             ),
         },
         {
-            title: "details",
+            title: "รายละเอียด",
             dataIndex: "job",
             key: "job",
             align: "center",
@@ -233,9 +239,6 @@ const AccountTable = () => {
             }
         >
             <Loading isShown={showLoading} />
-            <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">
-                AccountTable
-            </p>
             {
                 botData.length > 0 && botGroup.length > 0 && (<div
                     className={classNames(

@@ -49,7 +49,7 @@ const StatusTable = () => {
     ////////////////////////////////////////////table//////////////////////////////////////////////////////////////
     const columns = [
         {
-            title: "accName",
+            title: "ผู้ใช้งาน",
             dataIndex: "accName",
             key: "accName",
             align: "center",
@@ -60,7 +60,7 @@ const StatusTable = () => {
                 String(record?.accName).toLowerCase().includes(value.toLowerCase()),
         },
         {
-            title: "details",
+            title: "รายละเอียด",
             dataIndex: "details",
             key: "details",
             align: "center",
@@ -68,7 +68,7 @@ const StatusTable = () => {
             className: "tw-truncate",
         },
         {
-            title: "group",
+            title: "บัญชี",
             dataIndex: "group",
             key: "group",
             align: "center",
@@ -88,7 +88,7 @@ const StatusTable = () => {
             ),
         },
         {
-            title: "status",
+            title: "สถานะ",
             dataIndex: "status",
             key: "status",
             align: "center",
@@ -120,7 +120,7 @@ const StatusTable = () => {
             ),
         },
         {
-            title: "timestamp",
+            title: "Timestamp",
             dataIndex: "timestamp",
             key: "timestamp",
             align: "center",
@@ -141,21 +141,31 @@ const StatusTable = () => {
             },
         },
         {
+            title: "Link",
+            dataIndex: "accName",
+            key: "accName",
+            align: "center",
+            width: 100,
+            className: "tw-text-blue-500 tw-text-2xl",
+            render: (text, record) => (
+                <Tooltip title="กดเพื่อไปที่โพสต์">
+                    {/* <a href={record?.post_url} target="blank"> */}
+                    <div className="tw-rounded-md tw-w-full tw-h-fit tw-border-2 tw-border-black tw-text-center tw-text-white tw-bg-sky-600" >
+                        <p className="tw-m-2">Link</p>
+                    </div>
+                    {/* </a> */}
+                </Tooltip>
+            ),
+        },
+        {
             title: "",
             dataIndex: "accName",
             key: "accName",
             align: "center",
-            width: 150,
+            width: 50,
             className: "tw-text-blue-500 tw-text-2xl",
             render: (text, record) => (
-                <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-between">
-                    <Tooltip title="กดเพื่อไปที่โพสต์">
-                        {/* <a href={record?.post_url} target="blank"> */}
-                        <div className="tw-rounded-md tw-w-fit tw-h-fit tw-border-2 tw-border-black tw-text-center tw-text-white tw-bg-sky-600" >
-                            <p className="tw-m-2">Link</p>
-                        </div>
-                        {/* </a> */}
-                    </Tooltip>
+                <div className="tw-flex tw-flex-row tw-gap-2">
                     <Tooltip title="ลบหมวดหมู่">
                         <div className="tw-text-3xl tw-text-red-600"><DeleteOutlined /></div>
                     </Tooltip>
@@ -179,9 +189,6 @@ const StatusTable = () => {
                 )
             }
         >
-            <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">
-                PostStatus
-            </p>
             {/* {botData.length > 0 && ( */}
             <div
                 className={classNames(

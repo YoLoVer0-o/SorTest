@@ -147,7 +147,20 @@ const PostTable = () => {
     ///////////////////////////////////////////table///////////////////////////////////////////////////////////////
     const columns = [
         {
-            title: 'postime',
+            title: 'ลำดับ',
+            dataIndex: 'id',
+            key: 'id',
+            align: "center",
+            width: 50,
+            className: 'tw-truncate',
+            render: (text, record, index) => (
+                <p>
+                    {index + 1}
+                </p>
+            ),
+        },
+        {
+            title: 'วันที่',
             dataIndex: 'postime',
             key: 'postime',
             align: "center",
@@ -168,45 +181,15 @@ const PostTable = () => {
             // },
         },
         {
-            title: 'platform',
-            dataIndex: 'platform',
-            key: 'platform',
-            align: "center",
-            width: 150,
-            className: 'tw-truncate',
-            // filteredValue: [searchPlatform],
-            // onFilter: (value, record) => (
-            //     (value.split(",")).every(platform => String(record?.platform).includes(platform))
-            // ),
-        },
-        {
-            title: 'post',
+            title: 'รายละเอียด',
             dataIndex: 'post',
             key: 'post',
             align: "center",
             width: 150,
             className: 'tw-truncate',
-            // filteredValue: [searchTag],
-            // onFilter: (value, record) => (
-            //     (value.split(",")).every(tag => String(record?.tag).includes(tag))
-            // ),
         },
         {
-            title: 'poster_name',
-            dataIndex: 'poster_name',
-            key: 'poster_name',
-            align: "center",
-            width: 150,
-            className: 'tw-text-amber-600',
-            // filteredValue: [searchVal],
-            // onFilter: (value, record) => (
-            //     String(record?.post).toLowerCase().includes(value.toLowerCase())
-            //     || String(record?.creator).toLowerCase().includes(value.toLowerCase())
-            //     || String(record?.update).toLowerCase().includes(value.toLowerCase())
-            // ),
-        },
-        {
-            title: 'hashtags',
+            title: 'HashTags',
             dataIndex: 'hashtags',
             key: 'hashtags',
             align: "center",
@@ -225,7 +208,23 @@ const PostTable = () => {
             ),
         },
         {
-            title: 'link',
+            title: ' ผู้โพสต์',
+            dataIndex: 'poster_name',
+            key: 'poster_name',
+            align: "center",
+            width: 150,
+            className: 'tw-text-amber-600',
+        },
+        {
+            title: 'หมวดหมู่',
+            dataIndex: '',
+            key: '',
+            align: "center",
+            width: 100,
+            className: 'tw-truncate',
+        },
+        {
+            title: 'Link',
             dataIndex: 'post_url',
             key: 'post_url',
             align: "center",
@@ -408,7 +407,7 @@ const PostTable = () => {
                                 </div>
                             </div>
                             <div className='tw-flex tw-flex-col tw-justify-center tw-w-full'>
-                                <p className="tw-text-lg">Facebook ID:</p>
+                                <p className="tw-text-lg">ชื่อบัญชี:</p>
                                 <SearchBar
                                     useTagSearch={true}
                                     data={displayFBid}

@@ -43,53 +43,42 @@ const SimilarPost = () => {
   ///////////////////////////////////////////table///////////////////////////////////////////////////////////////
   const columns = [
     {
-      title: 'update',
+      title: 'วันที่โพสต์',
       dataIndex: 'post_collect_time',
       key: 'post_collect_time',
       align: "center",
       width: 150,
       className: 'tw-text-lime-600',
     },
+    // {
+    //   title: 'platform',
+    //   dataIndex: 'platform',
+    //   key: 'platform',
+    //   align: "center",
+    //   width: 150,
+    //   className: 'tw-truncate',
+    // },
+    // {
+    //   title: 'group',
+    //   dataIndex: 'group',
+    //   key: 'group',
+    //   align: "center",
+    //   width: 150,
+    //   className: 'tw-text-amber-600',
+    //   render: (text, record) => (
+    //     <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
+    //       {/* {record?.group.map(group => ( */}
+    //       <Tooltip key={record?.group} title={record?.group}>
+    //         <div className="tw-rounded-md tw-border-2 tw-p-2 tw-border-black tw-w-max tw-text-center tw-text-white tw-bg-yellow-600" >
+    //           {record?.group}
+    //         </div>
+    //       </Tooltip>
+    //       {/* ))} */}
+    //     </div>
+    //   ),
+    // },
     {
-      title: 'platform',
-      dataIndex: 'platform',
-      key: 'platform',
-      align: "center",
-      width: 150,
-      className: 'tw-truncate',
-    },
-    {
-      title: 'group',
-      dataIndex: 'group',
-      key: 'group',
-      align: "center",
-      width: 150,
-      className: 'tw-text-amber-600',
-      render: (text, record) => (
-        <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
-          {/* {record?.group.map(group => ( */}
-          <Tooltip key={record?.group} title={record?.group}>
-            <div className="tw-rounded-md tw-border-2 tw-p-2 tw-border-black tw-w-max tw-text-center tw-text-white tw-bg-yellow-600" >
-              {record?.group}
-            </div>
-          </Tooltip>
-          {/* ))} */}
-        </div>
-
-        // <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
-        //   {record?.group.map(group => (
-        //     <Tooltip key={group} title={group}>
-        //       <div className="tw-rounded-md tw-border-2 tw-p-2 tw-border-black tw-w-max tw-text-center tw-text-white tw-bg-yellow-600" >
-        //         {group}
-        //       </div>
-        //     </Tooltip>
-        //   ))}
-        // </div>
-
-      ),
-    },
-    {
-      title: 'creator',
+      title: 'ผู้โพสต์',
       dataIndex: 'post_author_name',
       key: 'post_author_name',
       align: "center",
@@ -97,7 +86,7 @@ const SimilarPost = () => {
       className: 'tw-text-amber-600',
     },
     {
-      title: 'post',
+      title: 'รายละเอียด',
       dataIndex: 'post_content',
       key: 'post_content',
       align: "center",
@@ -105,7 +94,31 @@ const SimilarPost = () => {
       className: 'tw-truncate',
     },
     {
-      title: 'sentimentType',
+      title: 'Hashtags',
+      dataIndex: '',
+      key: '',
+      align: "center",
+      width: 150,
+      className: 'tw-text-amber-600',
+    },
+    {
+      title: 'การมีส่วนร่วม',
+      dataIndex: 'post_engagement',
+      key: 'post_engagement',
+      align: "center",
+      width: 150,
+      className: 'tw-truncate',
+    },
+    {
+      title: 'หมวดหมู่',
+      dataIndex: '',
+      key: '',
+      align: "center",
+      width: 100,
+      className: 'tw-text-amber-600',
+    },
+    {
+      title: 'ความรู้สึก',
       dataIndex: 'post_comment_sentiment',
       key: 'post_comment_sentiment',
       align: "center",
@@ -126,16 +139,9 @@ const SimilarPost = () => {
         </div>
       ),
     },
+
     {
-      title: 'engagement',
-      dataIndex: 'post_engagement',
-      key: 'post_engagement',
-      align: "center",
-      width: 150,
-      className: 'tw-truncate',
-    },
-    {
-      title: 'link',
+      title: 'Link',
       dataIndex: 'post_url',
       key: 'post_url',
       align: "center",

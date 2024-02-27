@@ -623,17 +623,19 @@ const Dashboard = () => {
                                     </a>
                                 </div>
                                 <div className="tw-text-lg">
-                                    <ClampLines
-                                        text={testText}
-                                        id='really-unique-id'
-                                        type='html'
-                                        lines={3}
-                                        ellipsis='...'
-                                        moreText={<p className="tw-text-blue-500">เพิ่มเติม</p>}
-                                        lessText={<p className="tw-text-blue-500">น้อยลง</p>}
-                                        className=''
-                                        innerElement='p'
-                                    />
+                                    {dailyMaxEngagement?.post &&
+                                        <ClampLines
+                                            text={dailyMaxEngagement?.post ? dailyMaxEngagement?.post : ""}
+                                            id='really-unique-id'
+                                            type='html'
+                                            lines={3}
+                                            ellipsis='...'
+                                            moreText={<p className="tw-text-blue-500">เพิ่มเติม</p>}
+                                            lessText={<p className="tw-text-blue-500">น้อยลง</p>}
+                                            className=''
+                                            innerElement='p'
+                                        />
+                                    }
                                     <div className={classNames("tw-flex tw-justify-center tw-h-96", {
                                     })}>
                                         {postImage &&

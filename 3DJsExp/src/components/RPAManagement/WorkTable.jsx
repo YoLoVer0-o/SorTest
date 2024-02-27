@@ -12,6 +12,7 @@ import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 dayjs.extend(isSameOrAfter);
 import classNames from "classnames";
 import RPAWorkAPI from "../../service/RPAWorkAPI";
+import { useParams } from "react-router-dom";
 
 const WorkTable = () => {
 
@@ -20,6 +21,8 @@ const WorkTable = () => {
     const [searchWork, setSearchWork] = useState([]);
     const [modalToggle, setModalToggle] = useState(false);
     const [modalData, setModalData] = useState([]);
+
+
 
     const { isTabletOrMobile, isMobile, isPortrait, isLandscape } = useResponsive();
 
@@ -34,17 +37,22 @@ const WorkTable = () => {
     };
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    const param = useParams();
+
+
+
 
     const downloadFile = async () => {
         try {
             await RPAWorkAPI.fbDownloadWork().then((response) => {
-                const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
+                const blobUrl = window.URL.createObjectURL(new Blob([response]));
                 const link = document.createElement('a');
                 link.href = blobUrl;
                 link.setAttribute('download', "work_format.xlsx");
                 document.body.appendChild(link);
                 link.click();
                 window.URL.revokeObjectURL(blobUrl);
+                // console.log(response);
             })
 
         } catch (error) {
@@ -162,9 +170,6 @@ const WorkTable = () => {
                 {}
             )}
         >
-            <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">
-                WorkTable
-            </p>
             <div
                 className={classNames(
                     "tw-flex tw-flex-row tw-max-w-full tw-justify-center tw-gap-2",
@@ -209,40 +214,42 @@ const WorkTable = () => {
                         })}>
                         ทำงานทั้งหมด
                     </Button>
-                    <div className={classNames("tw-flex tw-flex-row tw-h-fit tw-my-2", {
-                        "tw-flex-col tw-w-full tw-gap-2": isMobile && isPortrait,
-                        "tw-self-end tw-w-fit tw-gap-2": isMobile && isLandscape,
-                        "tw-gap-4 tw-self-end tw-w-fit": !isMobile,
-                    })}>
-                        <Button
-                            className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
-                                "tw-w-full": isMobile && isPortrait,
-                            })}
-                            onClick={() => downloadFile()}
-                        >
-                            ดาวน์โหลด Format
-                        </Button>
-                        <input
-                            type="file"
-                            onChange={handleChange}
-                            ref={hiddenFileInput}
-                            style={{ display: 'none' }}
-                        />
-                        <Button
-                            className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
-                                "tw-w-full": isMobile && isPortrait,
-                            })}
-                            onClick={() => handleClick()}
-                        >
-                            เพิ่มงานจาก Excel
-                        </Button>
-                        <Button
-                            className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
-                                "tw-w-full": isMobile && isPortrait,
-                            })}>
-                            เพิ่มงานใหม่
-                        </Button>
-                    </div>
+                    {param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" &&
+                        <div className={classNames("tw-flex tw-flex-row tw-h-fit tw-my-2", {
+                            "tw-flex-col tw-w-full tw-gap-2": isMobile && isPortrait,
+                            "tw-self-end tw-w-fit tw-gap-2": isMobile && isLandscape,
+                            "tw-gap-4 tw-self-end tw-w-fit": !isMobile,
+                        })}>
+                            <Button
+                                className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
+                                    "tw-w-full": isMobile && isPortrait,
+                                })}
+                                onClick={() => downloadFile()}
+                            >
+                                ดาวน์โหลด Format
+                            </Button>
+                            <input
+                                type="file"
+                                onChange={handleChange}
+                                ref={hiddenFileInput}
+                                style={{ display: 'none' }}
+                            />
+                            <Button
+                                className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
+                                    "tw-w-full": isMobile && isPortrait,
+                                })}
+                                onClick={() => handleClick()}
+                            >
+                                เพิ่มงานจาก Excel
+                            </Button>
+                            <Button
+                                className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
+                                    "tw-w-full": isMobile && isPortrait,
+                                })}>
+                                เพิ่มงานใหม่
+                            </Button>
+                        </div>
+                    }
                 </div>
                 <div
                     className={classNames("tw-border-2 tw-rounded-md", {
