@@ -17,7 +17,7 @@ const SeoWebSite = () => {
   const [videoFile, setVideoFile] = useState([]);
   const [handelWebPositionResult, setHandelWebPositionResult] = useState();
   const [handelWebNameResult, setHandelWebNameResult] = useState();
-  const [handelPresetResult,setHandelPresetResult] = useState();
+  const [handelPresetResult, setHandelPresetResult] = useState();
   const [presetImg, setPresetImg] = useState();
   const [picture, setPicture] = useState("");
   const [contentTextArray, setContentTextArray] = useState({
@@ -35,7 +35,6 @@ const SeoWebSite = () => {
     web_position: "หมายเหตุ 1",
     files: "",
   });
-  console.log(imagePost);
 
   const handleChangeWeb = (value, e) => {
     const indexOfWeb = e.index;
@@ -96,7 +95,7 @@ const SeoWebSite = () => {
     const picPreset = async () => {
       try {
         const response = await seoWebSiteAPI.imagePosition(imageContentArray);
-        console.log()
+        console.log();
         const blob = new Blob([response.data], { type: "image/*" }); // Assuming the response data is JPEG image data
         const imageUrl = URL.createObjectURL(blob);
         setPicture(imageUrl);
@@ -124,9 +123,15 @@ const SeoWebSite = () => {
     setImagePost({
       web_id: handelWebNameResult,
       web_position: handelWebPositionResult,
-      files: filePic,
     });
   }, [handelWebNameResult, handelWebPositionResult, textContent, filePic]);
+  console.log(handelWebPositionResult);
+  useEffect(() => {
+    // console.log(formData);
+    // formData.append("files", filePic);
+
+    console.log(filePic);
+  }, [filePic]);
 
   const webOptions = webPosition
     ? webPosition.map((web, index) => ({
@@ -158,10 +163,10 @@ const SeoWebSite = () => {
       setFilePic((prevFiles) => [...prevFiles, ...newFiles]);
       // setFilePic(newFiles);
     } else if (inputType === "video") {
-      setVideoFile([newFiles]);
+      setVideoFile((prevFiles) => [...prevFiles, ...newFiles]);
     }
   };
-
+  console.log(videoFile);
   const ImageUpload = () => {
     const { getRootProps, getInputProps } = useDropzone({
       accept: { "image/jpeg": [], "image/png": [] },
@@ -316,19 +321,34 @@ const SeoWebSite = () => {
 
   const submitData = async () => {
     // await seoWebSiteAPI.seoWebSiteContent(contentTextArray);
-    try {
-      await seoWebSiteAPI.webSiteUploadFile(imagePost);
-      Swal.fire({
-        title: "โพสต์สําเร็จ ",
-        icon: "success",
-      });
-    } catch (error) {
-      Swal.fire({
-        title: "เกิดข้อผิดพลาด",
-        text: error.message,
-        icon: "error",
-      });
-      console.error("Error posting data:", error);
+    if (contentTextArray.web_content.length !== 0) {
+      try {
+        await seoWebSiteAPI.seoWebSiteContent(contentTextArray);
+      } catch (error) {
+        console.error("Error posting data:", error);
+      }
+    } else if ( filePic.length || videoFile.length   ) {
+      try {
+        const formData = new FormData();
+        filePic.map((file) => {
+          formData.append("files", file.file);
+        });
+        videoFile.map((video) => {
+          formData.append("files", video.file);
+        });
+        await seoWebSiteAPI.webSiteUploadFile(formData, imagePost);
+        Swal.fire({
+          title: "โพสต์สําเร็จ ",
+          icon: "success",
+        });
+      } catch (error) {
+        Swal.fire({
+          title: "เกิดข้อผิดพลาด",
+          text: error.message,
+          icon: "error",
+        });
+        console.error("Error posting data:", error);
+      }
     }
   };
   ////////////////////////////////////////////////////////////////
@@ -339,6 +359,7 @@ const SeoWebSite = () => {
         <div className="tw-flex tw-flex-col tw-w-full tw-text-lg ">
           <p className="tw-flex">เลือกหน้าเว็บ:</p>
           <Select
+            defaultActiveFirstOption={true}
             className="tw-w-full tw-outline-blue-500 tw-outline tw-rounded-md"
             defaultValue={webPosition[0]}
             onChange={handleChangeWeb}
@@ -352,7 +373,7 @@ const SeoWebSite = () => {
               placeholder="กรุณาเลือกหน้าเว็บก่อน"
               className="tw-w-full tw-outline-blue-500 tw-outline tw-rounded-md"
               defaultValue={positionOptions}
-              onChange={handlePreset}
+              onChange={handleChangePosi}
               options={positionOptions}
             />
           </div>
@@ -363,7 +384,7 @@ const SeoWebSite = () => {
             placeholder="กรุณาเลือกหน้าเว็บก่อน"
             className="tw-w-full tw-outline-blue-500 tw-outline tw-rounded-md"
             defaultValue={presetImgOptions}
-            onChange={handleChangePosi}
+            onChange={handlePreset}
             options={presetImgOptions}
           />
         </div>

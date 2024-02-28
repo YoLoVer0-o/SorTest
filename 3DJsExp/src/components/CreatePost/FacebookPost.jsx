@@ -335,30 +335,35 @@ const FacebookPost = ({ selectUser }) => {
   const getToken = useSelector((state) => getLogin(state));
 
   // console.log(tagFriends.first_name, tagFriends.last_name);
-  const [imgPath, setImgPath] = useState([]);
-  useEffect(() => {
-    setImgPath(paths);
-  }, []);
 
-  console.log(imgPath);
+  const formData = new FormData();
+
   useEffect(() => {
     setPostAction({
       botname: selectedAcc,
       url: url,
       group: null, /////////////////////รอ API group bot///////////////////
       text: message,
-      photo_video: receiveFile, /////////////////////รอ API อัพโหลดไฟล์ แปลงเป็นBinary///////////////////////////////////////////
+      photo_video: receiveFile.map((file) => file.file.name), /////////////////////รอ API อัพโหลดไฟล์ แปลงเป็นBinary///////////////////////////////////////////
       tag_people: JSON.stringify(tagFriends), /////////////////เอาเเค่ชื่อfacebook/////////////////////////
       feeling: null,
       check_in: null,
       gif: null,
     });
+    // formData.append("botname", selectedAcc), formData.append("url", url);
+    // formData.append("group", null);
+    // formData.append("text", message);
+    // formData.append("photo_video", receiveFile);
+    // formData.append("tag_people", tagFriends);
+    // formData.append("feeling", selectedAcc);
+    // formData.append("check_in", null);
+    // formData.append("gif", null);
   }, [message, tagFriends, emotionAct, selectedAcc, receiveFile, url]);
-  console.log(postAction);
 
   const handlePost = async () => {
+    console.log(postAction);
     try {
-      await postCreateAPI.fbPostAction(postAction, getToken);
+      await postCreateAPI.fbPostAction(formData, getToken);
       Swal.fire({
         title: "โพสต์สําเร็จ ",
         icon: "success",

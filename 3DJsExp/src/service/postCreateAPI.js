@@ -46,6 +46,24 @@ const postCreateAPI = {
       throw error;
     }
   },
+  fbUploadFile: async (files, ) => {
+    try {
+      const response = await axios.post(
+        `http://192.168.10.111:8000/facebook/upload-image/`,
+        files,
+      );
+      return response.data;
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
+    }
+  },
+
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
 };
