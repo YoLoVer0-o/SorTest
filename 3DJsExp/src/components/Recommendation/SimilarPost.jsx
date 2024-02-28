@@ -95,11 +95,22 @@ const SimilarPost = () => {
     },
     {
       title: 'Hashtags',
-      dataIndex: '',
-      key: '',
+      dataIndex: 'post_hashtags',
+      key: 'post_hashtags',
       align: "center",
       width: 150,
       className: 'tw-text-amber-600',
+      render: (text, record) => (
+        <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
+          {record?.post_hashtags.map((hashtags, i) => (
+            <Tooltip key={i} title={hashtags}>
+              <div className="tw-rounded-md tw-border-2 tw-p-2 tw-border-black tw-w-max tw-text-center tw-text-white tw-bg-purple-600" >
+                {hashtags}
+              </div>
+            </Tooltip>
+          ))}
+        </div>
+      ),
     },
     {
       title: 'การมีส่วนร่วม',
@@ -111,11 +122,22 @@ const SimilarPost = () => {
     },
     {
       title: 'หมวดหมู่',
-      dataIndex: '',
-      key: '',
+      dataIndex: 'post_class',
+      key: 'post_class',
       align: "center",
       width: 100,
       className: 'tw-text-amber-600',
+      render: (text, record) => (
+        <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
+          {record?.post_class.map((post, i) => (
+            <Tooltip key={i} title={post}>
+              <div className="tw-rounded-md tw-border-2 tw-p-2 tw-border-black tw-w-max tw-text-center tw-text-white tw-bg-blue-600" >
+                {post}
+              </div>
+            </Tooltip>
+          ))}
+        </div>
+      ),
     },
     {
       title: 'ความรู้สึก',

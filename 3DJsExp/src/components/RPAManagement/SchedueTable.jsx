@@ -106,7 +106,7 @@ const SchedueTable = () => {
     //////////////////////////////////////////////////table////////////////////////////////////////////////////////
     const columns = [
         {
-            title: "id",
+            title: "ลำดับ",
             dataIndex: "task_id",
             key: "task_id",
             align: "center",
@@ -114,7 +114,7 @@ const SchedueTable = () => {
             className: "tw-truncate",
         },
         {
-            title: "accName",
+            title: "ชื่อบัญชี",
             dataIndex: "botname",
             key: "botname",
             align: "center",
@@ -125,7 +125,7 @@ const SchedueTable = () => {
                 String(record?.botname).toLowerCase().includes(value.toLowerCase()),
         },
         {
-            title: "task",
+            title: "งาน",
             dataIndex: "task",
             key: "task",
             align: "center",
@@ -138,7 +138,7 @@ const SchedueTable = () => {
                     .every((target) => String(record?.task).includes(target)),
         },
         {
-            title: "frequency",
+            title: "ความถี่",
             dataIndex: "frequency",
             key: "frequency",
             align: "center",
@@ -181,9 +181,6 @@ const SchedueTable = () => {
             )}
         >
             <Loading isShown={showLoading} />
-            <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">
-                SchedueTable
-            </p>
             {scheduleData.length > 0 && (
                 <div
                     className={classNames(

@@ -142,7 +142,7 @@ const MainLayout = (props) => {
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
+
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
@@ -160,7 +160,7 @@ const MainLayout = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLogin]);
 
-  
+
 
   return (
     <Layout
@@ -370,16 +370,16 @@ const MainLayout = (props) => {
                           label: "งาน",
                           className: "",
                         },
-                        {
-                          key: "/RPA/errlog/X",
-                          label: "Error Log",
-                          className: "",
-                        },
-                        {
-                          key: "/RPA/activlog/X",
-                          label: "Activity Log",
-                          className: "",
-                        },
+                        // {
+                        //   key: "/RPA/errlog/X",
+                        //   label: "Error Log",
+                        //   className: "",
+                        // },
+                        // {
+                        //   key: "/RPA/activlog/X",
+                        //   label: "Activity Log",
+                        //   className: "",
+                        // },
                       ],
                     },
                     {
@@ -512,7 +512,7 @@ const MainLayout = (props) => {
                 },
                 {
                   key: "/SEOWebSite",
-                  icon: <TbSeo />                  ,
+                  icon: <TbSeo />,
                   label: "SEO WebSite",
                   className: "",
                 },
