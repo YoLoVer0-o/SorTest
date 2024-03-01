@@ -6,7 +6,8 @@ import { useResponsive } from "../../hooks";
 import classNames from "classnames";
 import { Input, Select, Button, Space, Divider } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-
+import postCreateAPI from "../../service/postCreateAPI";
+import { getLogin } from "../../libs/loginSlice";
 
 const CreateGroupPost = () => {
   const { isDesktopOrLaptop, isMobile, isTablet, isPortrait, isLandscape } =

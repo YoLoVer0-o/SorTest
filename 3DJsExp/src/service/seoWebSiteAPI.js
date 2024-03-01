@@ -17,11 +17,12 @@ const seoWebSiteAPI = {
       throw error;
     }
   },
+
   imagePosition: async (data) => {
     try {
       const response = await axios.get(
-        `http://192.168.10.113:8000/SEO/website_position_image/`,
-        data
+        `http://192.168.10.113:8000/SEO/website_position_image/?web_id=${data.web_id}&web_position=${data.web_position}&web_image=${data.web_image}`,
+      
       );
       return response.data;
     } catch (error) {

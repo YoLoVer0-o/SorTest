@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Select } from "antd";
+import { Select, Carousel } from "antd";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import seoWebSiteAPI from "../../service/seoWebSiteAPI";
 import { useDropzone } from "react-dropzone";
@@ -91,26 +91,25 @@ const SeoWebSite = () => {
     indexMatch();
   }, [webIndex, positionOfWeb]);
 
-  useEffect(() => {
-    const picPreset = async () => {
-      try {
-        const response = await seoWebSiteAPI.imagePosition(imageContentArray);
-        console.log();
-        const blob = new Blob([response.data], { type: "image/*" }); // Assuming the response data is JPEG image data
-        const imageUrl = URL.createObjectURL(blob);
-        setPicture(imageUrl);
-      } catch (error) {
-        console.error("Error", error);
-        // Handle error state or show error message to the user
-      }
-    };
-    picPreset();
-    return () => {
-      if (picture) {
-        URL.revokeObjectURL(picture);
-      }
-    };
-  }, [imageContentArray]);
+  // useEffect(() => {
+  //   const picPreset = async () => {
+  //     try {
+  //       const response = await seoWebSiteAPI.imagePosition(imageContentArray);
+  //       console.log(response);
+  //       // const blob = new Blob([response.data], { type: "image/*" });
+  //       // const imageUrl = URL.createObjectURL(blob);
+  //       // setPicture(imageUrl);
+  //     } catch (error) {
+  //       console.error("Error", error);
+  //     }
+  //   };
+  //   picPreset();
+  //   return () => {
+  //     if (picture) {
+  //       URL.revokeObjectURL(picture);
+  //     }
+  //   };
+  // }, [imageContentArray]);
   //  console.log(collectBinary)
 
   useEffect(() => {
@@ -146,12 +145,12 @@ const SeoWebSite = () => {
         label: posi,
       }))
     : [];
-  const presetImgOptions = presetImg
-    ? presetImg.map((preset) => ({
-        value: preset,
-        label: preset,
-      }))
-    : [];
+  // const presetImgOptions = presetImg
+  //   ? presetImg.map((preset) => ({
+  //       value: preset,
+  //       label: preset,
+  //     }))
+  //   : [];
 
   const onDrop = (acceptedFiles, inputType) => {
     const newFiles = acceptedFiles.map((file) => ({
@@ -318,16 +317,18 @@ const SeoWebSite = () => {
       </div>
     );
   };
-
+  console.log(imageContentArray);
   const submitData = async () => {
-    // await seoWebSiteAPI.seoWebSiteContent(contentTextArray);
+    // const pic = await seoWebSiteAPI.imagePosition(imageContentArray);
+    // setPicture(pic);
+    // console.log(pic);
     if (contentTextArray.web_content.length !== 0) {
       try {
         await seoWebSiteAPI.seoWebSiteContent(contentTextArray);
       } catch (error) {
         console.error("Error posting data:", error);
       }
-    } else if ( filePic.length || videoFile.length   ) {
+    } else if (filePic.length || videoFile.length) {
       try {
         const formData = new FormData();
         filePic.map((file) => {
@@ -350,6 +351,13 @@ const SeoWebSite = () => {
         console.error("Error posting data:", error);
       }
     }
+  };
+  const contentStyle = {
+    // height: '160px',
+    color: "#fff",
+    // lineHeight: "160px",
+    textAlign: "center",
+    background: "#364d79",
   };
   ////////////////////////////////////////////////////////////////
 
@@ -378,7 +386,7 @@ const SeoWebSite = () => {
             />
           </div>
         </div>
-        <div className="tw-w-full tw-flex tw-flex-col tw-text-lg">
+        {/* <div className="tw-w-full tw-flex tw-flex-col tw-text-lg">
           <p className="tw-flex">Preset ภาพ:</p>
           <Select
             placeholder="กรุณาเลือกหน้าเว็บก่อน"
@@ -387,13 +395,17 @@ const SeoWebSite = () => {
             onChange={handlePreset}
             options={presetImgOptions}
           />
-        </div>
+        </div> */}
       </div>
 
       <div className="tw-relative tw-w-full tw-h-full tw-flex tw-flex-col tw-items-center">
         <IoIosInformationCircleOutline className="tw-w-8 tw-h-8 tw-absolute tw-right-0 tw-text-blue-500" />
         <div className="tw-h-[50%] tw-w-full tw-items-center tw-flex tw-flex-col tw-gap-4">
-          {picture && <img className="tw-h-full tw-w-72 " src={picture} />}
+          {/* <img
+            className="tw-h-full tw-w-72 "
+            src={`http://192.168.10.113:8000/SEO/website_position_image/?web_id=1&web_position=1&web_image=${handelPresetResult}`}
+          /> */}
+          
           <textarea
             onChange={handeltext}
             className=" tw-border-solid tw-border-2 tw-w-[80%] tw-h-[50%] tw-outline-blue-300 tw-outline tw-rounded-md"

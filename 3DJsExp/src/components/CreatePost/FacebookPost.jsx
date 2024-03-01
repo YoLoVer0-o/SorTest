@@ -68,7 +68,6 @@ const FacebookPost = ({ selectUser }) => {
     gif: "string",
   });
   const [url, setUrl] = useState([]);
-  // const botData = handelBotData;
   const selectedAcc = selectUser;
   const [receiveFile, setReceiveFile] = useState([
     {
@@ -78,7 +77,7 @@ const FacebookPost = ({ selectUser }) => {
       previewUrl: "",
     },
   ]);
-  const paths = receiveFile.map((image) => image.file.path);
+  const [filesName, setFilesName] = useState([]);
 
   const handelFile = (file) => {
     setReceiveFile(file);
@@ -335,8 +334,22 @@ const FacebookPost = ({ selectUser }) => {
   const getToken = useSelector((state) => getLogin(state));
 
   // console.log(tagFriends.first_name, tagFriends.last_name);
-
-  const formData = new FormData();
+  useEffect(() => {
+    const upLoadFile = async () => {
+      const formData = new FormData();
+      receiveFile.map((file) => {
+        formData.append("files", file.file);
+      });
+      try {
+        const filesNamehandle = await postCreateAPI.fbUploadFile(formData);
+        setFilesName(filesNamehandle.file_name);
+        // console.log(data);
+      } catch (error) {
+        console.error("Error", error);
+      }
+    };
+    upLoadFile();
+  }, [receiveFile]);
 
   useEffect(() => {
     setPostAction({
@@ -344,26 +357,18 @@ const FacebookPost = ({ selectUser }) => {
       url: url,
       group: null, /////////////////////รอ API group bot///////////////////
       text: message,
-      photo_video: receiveFile.map((file) => file.file.name), /////////////////////รอ API อัพโหลดไฟล์ แปลงเป็นBinary///////////////////////////////////////////
+      photo_video: filesName, /////////////////////รอ API อัพโหลดไฟล์ แปลงเป็นBinary///////////////////////////////////////////
       tag_people: JSON.stringify(tagFriends), /////////////////เอาเเค่ชื่อfacebook/////////////////////////
       feeling: null,
       check_in: null,
       gif: null,
     });
-    // formData.append("botname", selectedAcc), formData.append("url", url);
-    // formData.append("group", null);
-    // formData.append("text", message);
-    // formData.append("photo_video", receiveFile);
-    // formData.append("tag_people", tagFriends);
-    // formData.append("feeling", selectedAcc);
-    // formData.append("check_in", null);
-    // formData.append("gif", null);
-  }, [message, tagFriends, emotionAct, selectedAcc, receiveFile, url]);
-
+  }, [message, tagFriends, emotionAct, selectedAcc, filesName, url]);
+  console.log(postAction);
+  console.log(filesName);
   const handlePost = async () => {
-    console.log(postAction);
     try {
-      await postCreateAPI.fbPostAction(formData, getToken);
+      await postCreateAPI.fbPostAction(postAction, getToken);
       Swal.fire({
         title: "โพสต์สําเร็จ ",
         icon: "success",
