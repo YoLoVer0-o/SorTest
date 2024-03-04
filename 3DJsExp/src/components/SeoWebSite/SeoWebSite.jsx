@@ -27,7 +27,7 @@ const SeoWebSite = () => {
   const [handelWebPositionResult, setHandelWebPositionResult] = useState();
   const [handelWebNameResult, setHandelWebNameResult] = useState();
   const [handelPresetResult, setHandelPresetResult] = useState();
-  // const [picture, setPicture] = useState("");
+  const [countImg, setCountImg] = useState([]);
   const [contentTextArray, setContentTextArray] = useState({
     web_id: "",
     web_position: "",
@@ -77,6 +77,8 @@ const SeoWebSite = () => {
         const data = await seoWebSiteAPI.getWebPosition();
         setWebPosition(data.web_id);
         setPositionOfWeb(data.web_position);
+        setCountImg(data.count_image);
+
         // console.log(data);
       } catch (error) {
         console.error("Error", error);
@@ -84,7 +86,7 @@ const SeoWebSite = () => {
     };
     getWebSiteData();
   }, []);
-  // console.log(presetImg);
+
   useEffect(() => {
     const indexMatch = () => {
       positionOfWeb.map((data, index) => {
@@ -359,7 +361,7 @@ const SeoWebSite = () => {
       }
     }
   };
-
+  console.log(countImg);
   const arrowStyles = {
     position: "absolute",
     zIndex: 2,
@@ -442,24 +444,14 @@ const SeoWebSite = () => {
               )
             }
           >
-            <div className="    tw-flex tw-justify-center">
-              <img
-                src="http://192.168.10.113:8000/SEO/website_position_image/?web_id=1&web_position=1&web_image=1"
-                className=" tw-w-max tw-h-72 tw-object-contain tw-z-30 "
-              />
-            </div>
-            <div>
-              <img
-                src="http://192.168.10.113:8000/SEO/website_position_image/?web_id=1&web_position=1&web_image=2"
-                className="tw-w-max tw-h-72  tw-z-30 "
-              />
-            </div>
-            <div>
-              <img
-                src="http://192.168.10.113:8000/SEO/website_position_image/?web_id=1&web_position=1&web_image=3"
-                className="tw-w-max tw-h-72  tw-z-30 "
-              />
-            </div>
+            {countImg.map((e, i) => (
+              <div key={i} className="    tw-flex tw-justify-center">
+                <img
+                  src={`http://192.168.10.113:8000/SEO/website_position_image/?web_id=1&web_position=1&web_image=${e}`}
+                  className=" tw-w-max tw-h-72 tw-object-contain tw-z-30 "
+                />
+              </div>
+            ))}
           </Carousel>
         </div>
         <textarea

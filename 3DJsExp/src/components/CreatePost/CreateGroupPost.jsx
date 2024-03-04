@@ -66,7 +66,7 @@ const CreateGroupPost = () => {
   } else if (selectedPlatform === "Facebook") {
     selectedComponent = <FacebookPost />;
   } else {
-    selectedComponent = <FacebookPost />;
+    selectedComponent = <FacebookPost />; //////////////////////////ส่งprops /////////////////////////มา
   }
 
   return (
