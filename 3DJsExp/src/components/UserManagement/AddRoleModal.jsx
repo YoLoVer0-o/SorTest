@@ -1,17 +1,19 @@
 import { useState, useEffect } from "react";
 import { useResponsive } from "../../hooks";
-import { Modal, Button, Input, Tooltip, InputNumber, Switch, Form, Select } from "antd";
-import { PlusOutlined, MinusOutlined } from "@ant-design/icons";
+import { Loading } from "../../utilities";
+import { Modal, Button, Input, Form } from "antd";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import { ReactSortable } from "react-sortablejs";
+import UserManageAPI from "../../service/UserManageAPI";
 
 const AddRoleModal = (props) => {
     /////////////////////////////////////props declaration/////////////////////////////////////////////////////////////////////
     const modalToggle = props.modalToggle;
     const handleCancel = props.handleCancel;
+    const token = props.token;
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     const [isModalOpen, setIsModalOpen] = useState(modalToggle);
@@ -41,7 +43,9 @@ const AddRoleModal = (props) => {
         ]
     );
 
-    const { isMobile, isPortrait } = useResponsive();
+    const [showLoading, setShowLoading] = useState(false);
+
+    const { isMobile } = useResponsive();
 
     ////////////////////////////////////////form//////////////////////////////////////////////////////////////////
     const [form] = Form.useForm();
@@ -54,9 +58,54 @@ const AddRoleModal = (props) => {
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+
     ///////////////////////////////////sweetalert and save logic///////////////////////////////////////////////////////////////////////
     const MySwal = withReactContent(Swal);
 
+    const handleSave = async () => {
+
+        const payload = {
+            role_name: formData.role_name,
+            enabled: featureL,
+            viewonly: featureC,
+            disabled: featureR
+        }
+
+        console.log(payload);
+
+        MySwal.fire({
+            title: "ต้องการบันทึกบทบาท?",
+            text: "กดตกลงเพื่อบันทึก",
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "ตกลง",
+            cancelButtonText: "ยกเลิก",
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+
+                    setShowLoading(true);
+
+                    await UserManageAPI.addRole(token, payload).then(() => {
+                        MySwal.fire({
+                            title: "เรียบร้อย!",
+                            text: "บันทึกบทบาทแล้ว!",
+                            icon: "success"
+                        });
+                    })
+
+                } catch (error) {
+                    console.error('Error fetching bot config:', error);
+                } finally {
+                    setShowLoading(false);
+                    handleCancel();
+                }
+            }
+        });
+    }
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -74,8 +123,9 @@ const AddRoleModal = (props) => {
             footer={[
                 <Button
                     key="submit"
+                    htmlType="submit"
+                    form="editForm"
                     className="tw-bg-blue-500 tw-text-white tw-border-white hover:tw-bg-white hover:tw-text-blue-500 hover:tw-border-blue-500"
-                // onClick={() => handleSave(formData)}
                 >
                     บันทึก
                 </Button>,
@@ -88,7 +138,7 @@ const AddRoleModal = (props) => {
                         form={form}
                         name="editForm"
                         id="editForm"
-                        // onFinish={() => handleSave()}
+                        onFinish={() => handleSave()}
                         autoComplete='off'
                     >
 
@@ -101,108 +151,7 @@ const AddRoleModal = (props) => {
                                     <Input className='tw-h-full tw-w-full' placeholder="ชื่อบทบาทใหม่" required={true} autoComplete='off' />
                                 </Form.Item>
                             </div>
-                            <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
-                                "tw-w-56": isMobile,
-                            })}>
-                                <p>รายละเอียด:</p>
-                                <Form.Item name="role_detail">
-                                    <Input className='tw-h-full tw-w-full' placeholder="รายละเอียด" required={true} autoComplete='off' />
-                                </Form.Item>
-                            </div>
-                            {/* <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
-                                "tw-w-56": isMobile,
-                            })}>
-                                <p>รหัสผ่าน:</p>
-                                <Form.Item name="password">
-                                    <Input.Password className='tw-h-full tw-w-full' placeholder="รหัสผ่าน" required={true} autoComplete='off' />
-                                </Form.Item>
-                            </div>
-                            <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
-                                "tw-w-56": isMobile,
-                            })}>
-                                <p>Role:</p>
-                                <Form.Item
-                                    name="role"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please select an role!',
-                                        },
-                                    ]}
-                                >
-                                    <Select
-                                        mode="tags"
-                                        allowClear
-                                        className='tw-w-full'
-                                        placeholder="Please select"
-                                        options={[]}
-                                    />
-                                </Form.Item>
-                            </div> */}
                         </div>
-
-                        {/* <div className='tw-flex tw-flex-row tw-w-full tw-h-full tw-gap-4'>
-                            <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
-                                "tw-w-56": isMobile,
-                            })}>
-                                <p>ยศ:</p>
-                                <Form.Item
-                                    name="rank"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please select an rank!',
-                                        },
-                                    ]}
-                                >
-                                    <Select
-                                        mode="tags"
-                                        allowClear
-                                        className='tw-w-full'
-                                        placeholder="Please select"
-                                        options={[]}
-                                    />
-                                </Form.Item>
-                            </div>
-                            <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
-                                "tw-w-56": isMobile,
-                            })}>
-                                <p>ชื่อ-นามสกุล:</p>
-                                <Form.Item name="name">
-                                    <Input className='tw-h-full tw-w-full' placeholder="ชื่อ-นามสกุล" required={true} autoComplete='off' />
-                                </Form.Item>
-                            </div>
-                            <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
-                                "tw-w-56": isMobile,
-                            })}>
-                                <p>ตำแหน่ง:</p>
-                                <Form.Item name="class">
-                                    <Input className='tw-h-full tw-w-full' placeholder="ตำแหน่ง" required={true} autoComplete='off' />
-                                </Form.Item>
-                            </div>
-                            <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
-                                "tw-w-56": isMobile,
-                            })}>
-                                <p>กลุ่ม:</p>
-                                <Form.Item
-                                    name="group"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please select an group!',
-                                        },
-                                    ]}
-                                >
-                                    <Select
-                                        mode="tags"
-                                        allowClear
-                                        className='tw-w-full'
-                                        placeholder="Please select"
-                                        options={[]}
-                                    />
-                                </Form.Item>
-                            </div>
-                        </div> */}
 
                         <div className="tw-flex tw-flex-col tw-w-full tw-h-full tw-gap-2">
                             <p className="tw-text-lg">สิทธิการใช้งาน</p>
@@ -261,6 +210,7 @@ const AddRoleModal = (props) => {
                     </Form>
                 </div>
             </div>
+            <Loading isShown={showLoading} />
         </Modal>
     );
 };
@@ -268,6 +218,7 @@ const AddRoleModal = (props) => {
 AddRoleModal.propTypes = {
     modalToggle: PropTypes.bool.isRequired,
     handleCancel: PropTypes.func.isRequired,
+    token: PropTypes.string.isRequired
 };
 
 export default AddRoleModal;

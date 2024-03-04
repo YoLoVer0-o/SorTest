@@ -39,9 +39,6 @@ const WorkTable = () => {
 
     const param = useParams();
 
-
-
-
     const downloadFile = async () => {
         try {
             await RPAWorkAPI.fbDownloadWork().then((response) => {

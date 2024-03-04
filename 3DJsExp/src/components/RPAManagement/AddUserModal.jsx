@@ -8,6 +8,7 @@ import withReactContent from 'sweetalert2-react-content';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import RPAUserAPI from "../../service/RPAUserAPI";
+import { useParams } from 'react-router-dom';
 
 const AddUserModal = props => {
     ////////////////////////////////////////////props declaration//////////////////////////////////////////////////////////////
@@ -25,6 +26,8 @@ const AddUserModal = props => {
     const [availableGroup, setAvailableGroup] = useState([]);
     const [showLoading, setShowLoading] = useState(false);
     const { isMobile } = useResponsive();
+
+    const param = useParams();
 
     //////////////////////////////////////group////////////////////////////////////////////////////////////////////
 
@@ -52,6 +55,9 @@ const AddUserModal = props => {
 
         try {
             setShowLoading(true);
+
+
+
             await RPAUserAPI.fbAddBotGroup(token, payload).then(() => {
                 MySwal.fire({
                     title: "เรียบร้อย!",
@@ -129,13 +135,35 @@ const AddUserModal = props => {
             if (result.isConfirmed) {
                 try {
                     setShowLoading(true);
-                    await RPAUserAPI.fbAddUser(token, formData).then(() => {
-                        MySwal.fire({
-                            title: "เรียบร้อย!",
-                            text: "บันทึกข้อมูลแล้ว!",
-                            icon: "success"
-                        });
-                    })
+
+                    if (param.platform == "facebook") {
+                        await RPAUserAPI.fbAddUser(token, formData).then(() => {
+                            MySwal.fire({
+                                title: "เรียบร้อย!",
+                                text: "บันทึกข้อมูลแล้ว!",
+                                icon: "success"
+                            });
+                        })
+
+                    } else if (param.platform == "X") {
+                        let twFormdata = {
+                            username: formData.username,
+                            password: formData.password,
+                            groups: [
+                                "string"
+                            ],
+                            botname: formData.botname
+                        }
+                        await RPAUserAPI.twAddUser(token, twFormdata).then(() => {
+                            MySwal.fire({
+                                title: "เรียบร้อย!",
+                                text: "บันทึกข้อมูลแล้ว!",
+                                icon: "success"
+                            });
+                        })
+
+                    }
+
                 } catch (error) {
                     console.error('Error fetching bot config:', error);
                 } finally {

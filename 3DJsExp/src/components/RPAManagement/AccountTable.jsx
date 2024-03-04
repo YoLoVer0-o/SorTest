@@ -15,6 +15,7 @@ import RPAUserAPI from "../../service/RPAUserAPI";
 import { useSelector } from 'react-redux'
 import { getLogin } from '../../libs/loginSlice'
 import mainUserAPI from "../../service/mainUserAPI";
+import { useParams } from "react-router-dom";
 
 const AccountTable = () => {
 
@@ -53,6 +54,8 @@ const AccountTable = () => {
 
     const token = useSelector((state) => getLogin(state).token);
 
+    const param = useParams();
+
     const getUserGroup = async () => {
         await mainUserAPI.getAllRole(token).then((response) => {
             setOwnerGroup(response);
@@ -67,8 +70,18 @@ const AccountTable = () => {
     const fetchAcc = async () => {
         try {
             setShowLoading(true);
-            const data = await RPAUserAPI.fbGetBotConfig(token);
-            setBotData(data);
+
+            let data
+            if (param.platform == "facebook") {
+                data = await RPAUserAPI.fbGetBotConfig(token)
+                setBotData(data);
+            } else if (param.platform == "X") {
+                data = await RPAUserAPI.twGetBotConfig(token)
+                setBotData(data);
+            }
+
+            // setBotData(data);
+
         } catch (error) {
             console.error('Error fetching bot config:', error);
         } finally {
@@ -92,19 +105,42 @@ const AccountTable = () => {
         fetchAcc();
         fetchGroup();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [param.platform])
 
     const downloadFile = async () => {
         try {
-            await RPAUserAPI.fbDownloadUser().then((response) => {
-                const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
-                const link = document.createElement('a');
-                link.href = blobUrl;
-                link.setAttribute('download', "user_format.xlsx");
-                document.body.appendChild(link);
-                link.click();
-                window.URL.revokeObjectURL(blobUrl);
-            })
+
+            if (param.platform == "facebook") {
+                await RPAUserAPI.fbDownloadUser().then((response) => {
+                    const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
+                    const link = document.createElement('a');
+                    link.href = blobUrl;
+                    link.setAttribute('download', "user_format.xlsx");
+                    document.body.appendChild(link);
+                    link.click();
+                    window.URL.revokeObjectURL(blobUrl);
+                })
+            } else if (param.platform == "X") {
+                await RPAUserAPI.twDownloadUser().then((response) => {
+                    const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
+                    const link = document.createElement('a');
+                    link.href = blobUrl;
+                    link.setAttribute('download', "user_format.xlsx");
+                    document.body.appendChild(link);
+                    link.click();
+                    window.URL.revokeObjectURL(blobUrl);
+                })
+            }
+
+            // await RPAUserAPI.fbDownloadUser().then((response) => {
+            //     const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
+            //     const link = document.createElement('a');
+            //     link.href = blobUrl;
+            //     link.setAttribute('download', "user_format.xlsx");
+            //     document.body.appendChild(link);
+            //     link.click();
+            //     window.URL.revokeObjectURL(blobUrl);
+            // })
 
         } catch (error) {
             console.error('Error downloading file:', error);
@@ -120,7 +156,13 @@ const AccountTable = () => {
     const handleChange = async (event) => {
         const fileUploaded = event.target.files[0];
         // console.log(fileUploaded);
-        await RPAUserAPI.fbUploadUser(fileUploaded).then((response) => { console.log(response); })
+        // await RPAUserAPI.fbUploadUser(fileUploaded).then((response) => { console.log(response); })
+
+        if (param.platform == "facebook") {
+            await RPAUserAPI.fbUploadUser(fileUploaded).then((response) => { console.log(response); })
+        } else if (param.platform == "X") {
+            await RPAUserAPI.twUploadUser(fileUploaded).then((response) => { console.log(response); })
+        }
     };
 
     ////////////////////////////////////////////table//////////////////////////////////////////////////////////////

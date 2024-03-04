@@ -163,6 +163,23 @@ const dashBoardAPI = {
       throw error;
     }
   },
+
+  getHashTag: async (start, end) => {
+    try {
+      const response = await axios.get(
+        `http://192.168.10.122/getHashTag?start_date=${start}&end_date=${end}`
+      );
+      return response.data;
+      // Return the response data
+    } catch (error) {
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
+    }
+  },
 };
 
 export default dashBoardAPI;

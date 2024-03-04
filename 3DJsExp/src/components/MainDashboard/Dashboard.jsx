@@ -34,6 +34,8 @@ const Dashboard = () => {
 
     const [dailyStat, setDailyStat] = useState({});
 
+    const [dailyHashTag, setDailyHashTag] = useState({});
+
     const [dailyMaxEngagement, setDailyMaxEngagement] = useState({});
 
     const [dailyWordCloud, setDailyWordCloud] = useState("");
@@ -75,11 +77,22 @@ const Dashboard = () => {
                 date: [
                     start,
                     end
-                ],
-                topic: ""
+                ]
             }
             const data = await dashBoardAPI.getStat(payload);
             setDailyStat(data);
+        } catch (error) {
+            console.error('Error fetching bot config:', error);
+        } finally {
+            setShowLoading(false);
+        }
+    }
+
+    const fetchHashTag = async (start, end) => {
+        try {
+            setShowLoading(true);
+            const data = await dashBoardAPI.getHashTag(start, end);
+            setDailyHashTag(data);
         } catch (error) {
             console.error('Error fetching bot config:', error);
         } finally {
@@ -156,6 +169,7 @@ const Dashboard = () => {
             fetchSentiment(searchDate[0], searchDate[1])
             fetchWordCloud(searchDate[0], searchDate[1])
             fetchStat(searchDate[0], searchDate[1])
+            fetchHashTag(searchDate[0], searchDate[1])
             fetchSocial(searchDate[0], searchDate[1])
             fetchMaxEngagement(searchDate[0], searchDate[1])
         }
@@ -553,7 +567,8 @@ const Dashboard = () => {
                         <div className="tw-flex tw-flex-col tw-h-full tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">แฮชเเท็กที่ถูกใช้งานมากที่สุด</p>
                             <div className="tw-grid tw-grid-cols-3 tw-w-full tw-h-full tw-justify-around tw-items-center tw-self-center tw-gap-4">
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#แอมมี่{ }</p>
+                                {dailyHashTag.hashtag?.length > 0 && dailyHashTag.hashtag.map((hashtag, i) => <p key={i} className="tw-text-xl tw-font-bold tw-text-blue-400">{hashtag}</p>)}
+                                {/* <p className="tw-text-xl tw-font-bold tw-text-blue-400">#แอมมี่{ }</p>
                                 <p className="tw-text-xl tw-font-bold tw-text-blue-400">#คบกันตอนไหน{ }</p>
                                 <p className="tw-text-xl tw-font-bold tw-text-blue-400">#แบงค์ศุภณัฐ{ }</p>
                                 <p className="tw-text-xl tw-font-bold tw-text-blue-400">#แม่แตงโม</p>
@@ -570,7 +585,11 @@ const Dashboard = () => {
                                 <p className="tw-text-xl tw-font-bold tw-text-blue-400">#นิทานพันดาว</p>
                                 <p className="tw-text-xl tw-font-bold tw-text-blue-400">#30บาทรักษาทุกที่</p>
                                 <p className="tw-text-xl tw-font-bold tw-text-blue-400">#เงินเฟ้อ</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#ขอแจมอีกที</p>
+                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#ขอแจมอีกที</p> */}
+                                {dailyHashTag.hashtag?.length < 1 && <div className="tw-w-full tw-h-full tw-items-center">
+                                    <p className="tw-text-xl tw-font-bold">ไม่พบข้อมูล</p>
+                                </div>
+                                }
                             </div>
                         </div>
                     </div>
