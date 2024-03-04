@@ -8,6 +8,7 @@ import classNames from 'classnames';
 import dayjs from 'dayjs';
 import RPASchedueAPI from "../../service/RPASchedueAPI";
 import { Loading } from "../../utilities";
+import { useParams } from 'react-router-dom';
 
 const EditSchedueModal = props => {
     ///////////////////////////////////////////props declaration///////////////////////////////////////////////////////////////
@@ -27,6 +28,8 @@ const EditSchedueModal = props => {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     const { isMobile } = useResponsive();
+
+    const param = useParams();
 
     //////////////////////////////////////////form////////////////////////////////////////////////////////////////
     const [form] = Form.useForm();
@@ -65,13 +68,37 @@ const EditSchedueModal = props => {
             if (result.isConfirmed) {
                 try {
                     setShowLoading(true);
-                    await RPASchedueAPI.fbUpdateSchedule(token, modalData.task_id, payLoad).then(() => {
-                        MySwal.fire({
-                            title: "เรียบร้อย!",
-                            text: "บันทึกข้อมูลแล้ว!",
-                            icon: "success"
-                        });
-                    })
+
+                    if (param.platform == "facebook") {
+                        await RPASchedueAPI.fbUpdateSchedule(token, modalData.task_id, payLoad).then(() => {
+                            MySwal.fire({
+                                title: "เรียบร้อย!",
+                                text: "บันทึกข้อมูลแล้ว!",
+                                icon: "success"
+                            });
+                        })
+
+
+                    } else if (param.platform == "X") {
+                        await RPASchedueAPI.twUpdateSchedule(token, modalData.task_id, payLoad).then(() => {
+                            MySwal.fire({
+                                title: "เรียบร้อย!",
+                                text: "บันทึกข้อมูลแล้ว!",
+                                icon: "success"
+                            });
+                        })
+
+                    }
+
+                    // await RPASchedueAPI.fbUpdateSchedule(token, modalData.task_id, payLoad).then(() => {
+                    //     MySwal.fire({
+                    //         title: "เรียบร้อย!",
+                    //         text: "บันทึกข้อมูลแล้ว!",
+                    //         icon: "success"
+                    //     });
+                    // })
+
+
                 } catch (error) {
                     console.error('Error fetching bot config:', error);
                 } finally {
@@ -98,13 +125,35 @@ const EditSchedueModal = props => {
             if (result.isConfirmed) {
                 try {
                     setShowLoading(true);
-                    await RPASchedueAPI.fbDeleteSchedule(token, modalData.botname).then(() => {
-                        MySwal.fire({
-                            title: "เรียบร้อย!",
-                            text: "งานประจำถูกลบแล้ว",
-                            icon: "success"
-                        });
-                    })
+
+                    if (param.platform == "facebook") {
+                        await RPASchedueAPI.fbDeleteSchedule(token, modalData.task_id).then(() => {
+                            MySwal.fire({
+                                title: "เรียบร้อย!",
+                                text: "งานประจำถูกลบแล้ว",
+                                icon: "success"
+                            });
+                        })
+                    } else if (param.platform == "X") {
+                        await RPASchedueAPI.twDeleteSchedule(token, modalData.task_id).then(() => {
+                            MySwal.fire({
+                                title: "เรียบร้อย!",
+                                text: "งานประจำถูกลบแล้ว",
+                                icon: "success"
+                            });
+                        })
+
+                    }
+
+                    // await RPASchedueAPI.fbDeleteSchedule(token, modalData.botname).then(() => {
+                    //     MySwal.fire({
+                    //         title: "เรียบร้อย!",
+                    //         text: "งานประจำถูกลบแล้ว",
+                    //         icon: "success"
+                    //     });
+                    // })
+
+
                 } catch (error) {
                     console.error('Error fetching bot config:', error);
                 } finally {

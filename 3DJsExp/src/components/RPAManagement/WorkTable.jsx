@@ -39,9 +39,6 @@ const WorkTable = () => {
 
     const param = useParams();
 
-
-
-
     const downloadFile = async () => {
         try {
             await RPAWorkAPI.fbDownloadWork().then((response) => {
@@ -92,14 +89,14 @@ const WorkTable = () => {
                 </div>
             ),
         },
-        {
-            title: "id",
-            dataIndex: "id",
-            key: "id",
-            align: "center",
-            width: 50,
-            className: "tw-truncate",
-        },
+        // {
+        //     title: "id",
+        //     dataIndex: "id",
+        //     key: "id",
+        //     align: "center",
+        //     width: 50,
+        //     className: "tw-truncate",
+        // },
         {
             title: "accName",
             dataIndex: "acc_name",
@@ -154,9 +151,12 @@ const WorkTable = () => {
             className: "tw-text-blue-500 tw-text-2xl",
             render: (text, record) => (
                 <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
-                    <Tooltip key={record.id} title={"กดเพื่อแก้ไข"}>
-                        <EditOutlined onClick={() => showModal(record)} />
-                    </Tooltip>
+                    {
+                        param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" &&
+                        <Tooltip key={record.id} title={"กดเพื่อแก้ไข"}>
+                            <EditOutlined onClick={() => showModal(record)} />
+                        </Tooltip>
+                    }
                 </div>
             ),
         },

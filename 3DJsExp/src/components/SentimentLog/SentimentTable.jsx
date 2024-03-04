@@ -20,6 +20,7 @@ const SentimentTable = () => {
     const [searchTag, setSearchTag] = useState([]);
     const [searchBot, setSearchBot] = useState([]);
     const [searchDate, setSearchDate] = useState([]);
+    const [searchType, setSearchType] = useState([]);
     const [pageSize, setPageSize] = useState(10);
     const [displayData, setDisplayData] = useState([]);
     const [showLoading, setShowLoading] = useState(false);
@@ -52,19 +53,19 @@ const SentimentTable = () => {
 
     /////////////////////////////////////////////table/////////////////////////////////////////////////////////////
     const columns = [
-        {
-            title: 'ลำดับ',
-            dataIndex: 'id',
-            key: 'id',
-            align: "center",
-            width: 50,
-            className: 'tw-truncate',
-            render: (text, record, index) => (
-                <p>
-                    {index + 1}
-                </p>
-            ),
-        },
+        // {
+        //     title: 'ลำดับ',
+        //     dataIndex: 'id',
+        //     key: 'id',
+        //     align: "center",
+        //     width: 50,
+        //     className: 'tw-truncate',
+        //     render: (text, record, index) => (
+        //         <p>
+        //             {index + 1}
+        //         </p>
+        //     ),
+        // },
         {
             title: 'วันที่',
             dataIndex: 'timestamp',
@@ -125,16 +126,16 @@ const SentimentTable = () => {
             width: 100,
             className: 'tw-truncate',
         },
+        // {
+        //     title: 'บัญชี',
+        //     dataIndex: 'username',
+        //     key: 'username',
+        //     align: "center",
+        //     width: 100,
+        //     className: 'tw-truncate',
+        // },
         {
-            title: 'บัญชี',
-            dataIndex: 'username',
-            key: 'username',
-            align: "center",
-            width: 100,
-            className: 'tw-truncate',
-        },
-        {
-            title: 'กลุ่ม',
+            title: 'หมวดหมู่',
             dataIndex: 'group',
             key: 'group',
             align: "center",
@@ -239,7 +240,6 @@ const SentimentTable = () => {
                         />
                     </div>
                     <div className={classNames("tw-w-full", {
-
                     })}>
                         <p className="tw-text-lg">Bot:</p>
                         <SearchBar
@@ -248,6 +248,18 @@ const SentimentTable = () => {
                             data={displayData.posts}
                             onChangeFilter={setSearchBot}
                             keyName={"group"}
+                        />
+                    </div>
+
+                    <div className={classNames("tw-w-full", {
+                    })}>
+                        <p className="tw-text-lg">ประเภท:</p>
+                        <SearchBar
+                            useTagSearch={true}
+                            // data={newSentiment}
+                            data={[{ label: "โพสของฝ่ายเรา", type: "โพสของฝ่ายเรา" }, { label: "โพสทั่วไป", type: "โพสทั่วไป" }]}
+                            onChangeFilter={setSearchType}
+                            keyName={"type"}
                         />
                     </div>
 

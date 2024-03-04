@@ -8,6 +8,7 @@ import withReactContent from 'sweetalert2-react-content';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import RPAUserAPI from "../../service/RPAUserAPI";
+import { useParams } from 'react-router-dom';
 
 const EditUserModal = props => {
 
@@ -26,6 +27,9 @@ const EditUserModal = props => {
     const [showLoading, setShowLoading] = useState(false);
 
     const { isMobile } = useResponsive();
+
+    const param = useParams();
+
 
     //////////////////////////////////////group////////////////////////////////////////////////////////////////////
     const fetchGroup = async () => {
@@ -125,13 +129,33 @@ const EditUserModal = props => {
             if (result.isConfirmed) {
                 try {
                     setShowLoading(true);
-                    await RPAUserAPI.fbUpdateBotConfig(token, modalData.botname, formData).then(() => {
-                        MySwal.fire({
-                            title: "เรียบร้อย!",
-                            text: "บันทึกข้อมูลแล้ว!",
-                            icon: "success"
-                        });
-                    })
+
+                    if (param.platform == "facebook") {
+                        await RPAUserAPI.fbUpdateBotConfig(token, modalData.botname, formData).then(() => {
+                            MySwal.fire({
+                                title: "เรียบร้อย!",
+                                text: "บันทึกข้อมูลแล้ว!",
+                                icon: "success"
+                            });
+                        })
+                    } else if (param.platform == "X") {
+                        await RPAUserAPI.twUpdateBotConfig(token, modalData.botname, formData).then(() => {
+                            MySwal.fire({
+                                title: "เรียบร้อย!",
+                                text: "บันทึกข้อมูลแล้ว!",
+                                icon: "success"
+                            });
+                        })
+                    }
+
+                    // await RPAUserAPI.fbUpdateBotConfig(token, modalData.botname, formData).then(() => {
+                    //     MySwal.fire({
+                    //         title: "เรียบร้อย!",
+                    //         text: "บันทึกข้อมูลแล้ว!",
+                    //         icon: "success"
+                    //     });
+                    // })
+
                 } catch (error) {
                     console.error('Error fetching bot config:', error);
                 } finally {
@@ -159,13 +183,35 @@ const EditUserModal = props => {
             if (result.isConfirmed) {
                 try {
                     setShowLoading(true);
-                    await RPAUserAPI.fbDeleteBotConfig(token, modalData.botname).then(() => {
-                        MySwal.fire({
-                            title: "เรียบร้อย!",
-                            text: "ผู้ใช้ถูกลบแล้ว",
-                            icon: "success"
-                        });
-                    })
+
+                    if (param.platform == "facebook") {
+                        await RPAUserAPI.fbDeleteBotConfig(token, modalData.botname).then(() => {
+                            MySwal.fire({
+                                title: "เรียบร้อย!",
+                                text: "ผู้ใช้ถูกลบแล้ว",
+                                icon: "success"
+                            });
+                        })
+                    } else if (param.platform == "X") {
+                        await RPAUserAPI.twDeleteBotConfig(token, modalData.botname).then(() => {
+                            MySwal.fire({
+                                title: "เรียบร้อย!",
+                                text: "ผู้ใช้ถูกลบแล้ว",
+                                icon: "success"
+                            });
+                        })
+                    }
+
+
+                    // await RPAUserAPI.fbDeleteBotConfig(token, modalData.botname).then(() => {
+                    //     MySwal.fire({
+                    //         title: "เรียบร้อย!",
+                    //         text: "ผู้ใช้ถูกลบแล้ว",
+                    //         icon: "success"
+                    //     });
+                    // })
+
+
                 } catch (error) {
                     console.error('Error fetching bot config:', error);
                 } finally {

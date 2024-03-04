@@ -8,6 +8,7 @@ import classNames from 'classnames';
 import RPASchedueAPI from "../../service/RPASchedueAPI";
 import dayjs from 'dayjs';
 import { Loading } from "../../utilities";
+import { useParams } from 'react-router-dom';
 
 const AddSchedueModal = props => {
     ///////////////////////////////////////////props declaration///////////////////////////////////////////////////////////////
@@ -31,6 +32,8 @@ const AddSchedueModal = props => {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     const { isMobile } = useResponsive();
+
+    const param = useParams();
 
     //////////////////////////////////////////form////////////////////////////////////////////////////////////////
     const [form] = Form.useForm();
@@ -65,13 +68,35 @@ const AddSchedueModal = props => {
             if (result.isConfirmed) {
                 try {
                     setShowLoading(true);
-                    await RPASchedueAPI.fbAddSchedule(token, payLoad).then(() => {
-                        MySwal.fire({
-                            title: "เรียบร้อย!",
-                            text: "บันทึกข้อมูลแล้ว!",
-                            icon: "success"
-                        });
-                    })
+
+                    if (param.platform == "facebook") {
+                        await RPASchedueAPI.fbAddSchedule(token, payLoad).then(() => {
+                            MySwal.fire({
+                                title: "เรียบร้อย!",
+                                text: "บันทึกข้อมูลแล้ว!",
+                                icon: "success"
+                            });
+                        })
+
+                    } else if (param.platform == "X") {
+                        await RPASchedueAPI.twAddSchedule(token, payLoad).then(() => {
+                            MySwal.fire({
+                                title: "เรียบร้อย!",
+                                text: "บันทึกข้อมูลแล้ว!",
+                                icon: "success"
+                            });
+                        })
+
+                    }
+
+
+                    // await RPASchedueAPI.fbAddSchedule(token, payLoad).then(() => {
+                    //     MySwal.fire({
+                    //         title: "เรียบร้อย!",
+                    //         text: "บันทึกข้อมูลแล้ว!",
+                    //         icon: "success"
+                    //     });
+                    // })
                 } catch (error) {
                     console.error('Error fetching bot config:', error);
                 } finally {

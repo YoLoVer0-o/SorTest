@@ -14,6 +14,7 @@ import classNames from "classnames";
 import RPASchedueAPI from "../../service/RPASchedueAPI";
 import { useSelector } from 'react-redux'
 import { getLogin } from '../../libs/loginSlice'
+import { useParams } from "react-router-dom";
 
 
 const SchedueTable = () => {
@@ -30,6 +31,8 @@ const SchedueTable = () => {
     const { isTabletOrMobile, isMobile, isPortrait, isLandscape } = useResponsive();
 
     const token = useSelector((state) => getLogin(state).token);
+
+    const param = useParams();
 
     //////////////////////////////////////////modal toggle logic////////////////////////////////////////////////////////////////
     const showModal = (data) => {
@@ -54,8 +57,17 @@ const SchedueTable = () => {
     const fetchSch = async () => {
         try {
             setShowLoading(true);
-            const data = await RPASchedueAPI.fbGetSchedule(token);
-            setScheduleData(data);
+
+            let data
+
+            if (param.platform == "facebook") {
+                data = await RPASchedueAPI.fbGetSchedule(token);
+                setScheduleData(data);
+            } else if (param.platform == "X") {
+                data = await RPASchedueAPI.twGetSchedule(token);
+                setScheduleData(data);
+            }
+
         } catch (error) {
             console.error('Error fetching bot config:', error);
         } finally {
@@ -66,15 +78,41 @@ const SchedueTable = () => {
     const downloadFile = async () => {
         try {
             setShowLoading(true);
-            await RPASchedueAPI.fbDownloadSchedule().then((response) => {
-                const blobUrl = window.URL.createObjectURL(new Blob([response]));
-                const link = document.createElement('a');
-                link.href = blobUrl;
-                link.setAttribute('download', "schedule_format.xlsx");
-                document.body.appendChild(link);
-                link.click();
-                window.URL.revokeObjectURL(blobUrl);
-            })
+
+
+            if (param.platform == "facebook") {
+                await RPASchedueAPI.fbDownloadSchedule().then((response) => {
+                    const blobUrl = window.URL.createObjectURL(new Blob([response]));
+                    const link = document.createElement('a');
+                    link.href = blobUrl;
+                    link.setAttribute('download', "schedule_format.xlsx");
+                    document.body.appendChild(link);
+                    link.click();
+                    window.URL.revokeObjectURL(blobUrl);
+                })
+            } else if (param.platform == "X") {
+                await RPASchedueAPI.twDownloadSchedule().then((response) => {
+                    const blobUrl = window.URL.createObjectURL(new Blob([response]));
+                    const link = document.createElement('a');
+                    link.href = blobUrl;
+                    link.setAttribute('download', "schedule_format.xlsx");
+                    document.body.appendChild(link);
+                    link.click();
+                    window.URL.revokeObjectURL(blobUrl);
+                })
+            }
+
+            // await RPASchedueAPI.fbDownloadSchedule().then((response) => {
+            //     const blobUrl = window.URL.createObjectURL(new Blob([response]));
+            //     const link = document.createElement('a');
+            //     link.href = blobUrl;
+            //     link.setAttribute('download', "schedule_format.xlsx");
+            //     document.body.appendChild(link);
+            //     link.click();
+            //     window.URL.revokeObjectURL(blobUrl);
+            // })
+
+
 
         } catch (error) {
             console.error('Error downloading file:', error);
@@ -95,7 +133,14 @@ const SchedueTable = () => {
         // console.log(fileUploaded);
         try {
             setShowLoading(true);
-            await RPASchedueAPI.fbUploadSchedule(fileUploaded).then((response) => { console.log(response); })
+
+            if (param.platform == "facebook") {
+                await RPASchedueAPI.fbUploadSchedule(fileUploaded).then((response) => { console.log(response); })
+            } else if (param.platform == "X") {
+                await RPASchedueAPI.twUploadSchedule(fileUploaded).then((response) => { console.log(response); })
+            }
+
+            // await RPASchedueAPI.fbUploadSchedule(fileUploaded).then((response) => { console.log(response); })
         } catch (error) {
             console.error('Error fetching bot config:', error);
         } finally {
@@ -106,7 +151,7 @@ const SchedueTable = () => {
     //////////////////////////////////////////////////table////////////////////////////////////////////////////////
     const columns = [
         {
-            title: "id",
+            title: "ลำดับ",
             dataIndex: "task_id",
             key: "task_id",
             align: "center",
@@ -114,7 +159,7 @@ const SchedueTable = () => {
             className: "tw-truncate",
         },
         {
-            title: "accName",
+            title: "ชื่อบัญชี",
             dataIndex: "botname",
             key: "botname",
             align: "center",
@@ -125,7 +170,7 @@ const SchedueTable = () => {
                 String(record?.botname).toLowerCase().includes(value.toLowerCase()),
         },
         {
-            title: "task",
+            title: "งาน",
             dataIndex: "task",
             key: "task",
             align: "center",
@@ -138,7 +183,7 @@ const SchedueTable = () => {
                     .every((target) => String(record?.task).includes(target)),
         },
         {
-            title: "frequency",
+            title: "ความถี่",
             dataIndex: "frequency",
             key: "frequency",
             align: "center",
@@ -171,7 +216,7 @@ const SchedueTable = () => {
     useEffect(() => {
         fetchSch();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [param.platform])
 
     return (
         <div
@@ -181,9 +226,6 @@ const SchedueTable = () => {
             )}
         >
             <Loading isShown={showLoading} />
-            <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">
-                SchedueTable
-            </p>
             {scheduleData.length > 0 && (
                 <div
                     className={classNames(

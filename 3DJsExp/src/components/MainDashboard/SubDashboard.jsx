@@ -116,7 +116,7 @@ const SubDashboard = () => {
       setShowLoading(true);
       const payload = {
         platform: "facebook",
-        tag: [param.topic.toLowerCase()],
+        topic: [param.topic.toLowerCase()],
         date: [
           start,
           end

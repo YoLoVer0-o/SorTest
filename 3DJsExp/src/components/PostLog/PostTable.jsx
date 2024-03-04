@@ -28,7 +28,7 @@ const PostTable = () => {
     const [displayTag, setDisplayTag] = useState([]);
     const [searchTag, setSearchTag] = useState([]);
     const [searchDate, setSearchDate] = useState([]);
-    const [searchPlatform, setSearchPlatform] = useState("");
+    const [searchPlatform, setSearchPlatform] = useState([]);
     const [selectedRows, setSelectedRows] = useState([]);
     const [pageSize, setPageSize] = useState(10);
     const [advancedSearch, setAdvancedSearch] = useState(false);
@@ -76,14 +76,14 @@ const PostTable = () => {
 
     const fetchPost = async () => {
         let searchPayLoad = {
-            search: searchVal,
-            platform: searchPlatform,
-            tag: searchTag,
-            date: searchDate.length > 0 ? [dayjs(searchDate[0]).format('YYYY-MM-DD'), dayjs(searchDate[1]).format('YYYY-MM-DD')] : [],
-            include: includeWord.map((word) => word.value),
-            exclude: excludeWord.map((word) => word.value),
-            engagement: engagement ? [engagement?.min, engagement?.max] : [],
-            id: searchFBid,
+            search: searchVal ? searchVal : null,
+            platform: searchPlatform.length > 0 ? searchPlatform[0] : "facebook",
+            topic: searchTag.length > 0 ? searchTag : null,
+            date: searchDate.length > 0 ? [dayjs(searchDate[0]).format('YYYY-MM-DD'), dayjs(searchDate[1]).format('YYYY-MM-DD')] : null,
+            include: includeWord.length > 0 ? includeWord.map((word) => word.value) : null,
+            exclude: excludeWord.length > 0 ? excludeWord.map((word) => word.value) : null,
+            engagement: engagement ? [engagement?.min, engagement?.max] : null,
+            id: searchFBid.length > 0 ? searchFBid : null,
             limit: [pageIndex.pageSize, pageIndex.current]
         }
         try {
@@ -258,7 +258,6 @@ const PostTable = () => {
     return (
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-y-auto', {})}>
             <Loading isShown={showLoading} />
-            <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">PostTable</p>
             <div className="tw-flex tw-flex-col tw-justify-center tw-w-full">
                 <div className={classNames("tw-w-full", {})}>
                     <p className="tw-text-lg">ค้นหา:</p>

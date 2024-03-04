@@ -9,6 +9,9 @@ import { FloatButton, Tooltip } from "antd";
 import { FormOutlined, MoreOutlined, FilePdfOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 import iLaw from "../../assets/iLaw.png";
+import { pdfjs, Document, Page } from 'react-pdf';
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
+import 'react-pdf/dist/esm/Page/TextLayer.css';
 
 const PostReport = () => {
 
@@ -32,6 +35,10 @@ const PostReport = () => {
   };
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+    'pdfjs-dist/build/pdf.worker.min.js',
+    import.meta.url,
+  ).toString();
 
   ////////////////////////////////////////////////table//////////////////////////////////////////////////////////
   const columns = [
@@ -141,9 +148,26 @@ const PostReport = () => {
       <div className={classNames("", {
         "tw-overflow-auto": isTabletOrMobile && isPortrait,
       })}>
-        <DataTable
+        {/* <DataTable
           columns={columns}
-        />
+        /> */}
+        <div className="Example__container__document"
+        // ref={setContainerRef}
+        >
+          <Document
+          // file={file} 
+          // onLoadSuccess={onDocumentLoadSuccess} 
+          // options={options}
+          >
+            {/* {Array.from(new Array(numPages), (el, index) => (
+              <Page
+                key={`page_${index + 1}`}
+                pageNumber={index + 1}
+                width={containerWidth ? Math.min(containerWidth, maxWidth) : maxWidth}
+              />
+            ))} */}
+          </Document>
+        </div>
       </div>
 
       <div className="tw-p-4"
