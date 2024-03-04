@@ -1,11 +1,20 @@
 import { useState, useEffect } from "react";
-import { Select, Carousel } from "antd";
+import { Select } from "antd";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import seoWebSiteAPI from "../../service/seoWebSiteAPI";
 import { useDropzone } from "react-dropzone";
-import { PlusOutlined } from "@ant-design/icons";
+import {
+  PlusOutlined,
+  CaretLeftOutlined,
+  CaretRightOutlined,
+} from "@ant-design/icons";
 import { ImBin } from "react-icons/im";
 import Swal from "sweetalert2";
+// import Slider from "react-slick";
+// import "slick-carousel/slick/slick.css";
+// import "slick-carousel/slick/slick-theme.css";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from "react-responsive-carousel";
 
 const SeoWebSite = () => {
   const [webPosition, setWebPosition] = useState([]);
@@ -18,8 +27,7 @@ const SeoWebSite = () => {
   const [handelWebPositionResult, setHandelWebPositionResult] = useState();
   const [handelWebNameResult, setHandelWebNameResult] = useState();
   const [handelPresetResult, setHandelPresetResult] = useState();
-  const [presetImg, setPresetImg] = useState();
-  const [picture, setPicture] = useState("");
+  // const [picture, setPicture] = useState("");
   const [contentTextArray, setContentTextArray] = useState({
     web_id: "",
     web_position: "",
@@ -69,7 +77,6 @@ const SeoWebSite = () => {
         const data = await seoWebSiteAPI.getWebPosition();
         setWebPosition(data.web_id);
         setPositionOfWeb(data.web_position);
-        setPresetImg(data.count_image);
         // console.log(data);
       } catch (error) {
         console.error("Error", error);
@@ -352,12 +359,14 @@ const SeoWebSite = () => {
       }
     }
   };
-  const contentStyle = {
-    // height: '160px',
-    color: "#fff",
-    // lineHeight: "160px",
-    textAlign: "center",
-    background: "#364d79",
+
+  const arrowStyles = {
+    position: "absolute",
+    zIndex: 2,
+    top: "calc(50% - 15px)",
+    width: 40,
+    height: 40,
+    cursor: "pointer",
   };
   ////////////////////////////////////////////////////////////////
 
@@ -400,17 +409,63 @@ const SeoWebSite = () => {
 
       <div className="tw-relative tw-w-full tw-h-full tw-flex tw-flex-col tw-items-center">
         <IoIosInformationCircleOutline className="tw-w-8 tw-h-8 tw-absolute tw-right-0 tw-text-blue-500" />
-        <div className="tw-h-[50%] tw-w-full tw-items-center tw-flex tw-flex-col tw-gap-4">
-          {/* <img
-            className="tw-h-full tw-w-72 "
-            src={`http://192.168.10.113:8000/SEO/website_position_image/?web_id=1&web_position=1&web_image=${handelPresetResult}`}
-          /> */}
-          
-          <textarea
-            onChange={handeltext}
-            className=" tw-border-solid tw-border-2 tw-w-[80%] tw-h-[50%] tw-outline-blue-300 tw-outline tw-rounded-md"
-          ></textarea>
+
+        <div className="tw-h-[50%] tw-w-[50%] tw-items-center tw-flex tw-flex-col tw-gap-4">
+          <Carousel
+            // centerMode={true}
+            showThumbs={false}
+            className="tw-w-full "
+            renderArrowPrev={(onClickHandler, hasPrev, label) =>
+              hasPrev && (
+                <button
+                  className="tw-bg-blue-300 hover:tw-bg-blue-600 tw-rounded-full"
+                  type="button"
+                  onClick={onClickHandler}
+                  title={label}
+                  style={{ ...arrowStyles, left: 15 }}
+                >
+                  <CaretLeftOutlined />
+                </button>
+              )
+            }
+            renderArrowNext={(onClickHandler, hasNext, label) =>
+              hasNext && (
+                <button
+                  className="tw-bg-blue-300 hover:tw-bg-blue-600 tw-rounded-full"
+                  type="button"
+                  onClick={onClickHandler}
+                  title={label}
+                  style={{ ...arrowStyles, right: 15 }}
+                >
+                  <CaretRightOutlined />
+                </button>
+              )
+            }
+          >
+            <div className="    tw-flex tw-justify-center">
+              <img
+                src="http://192.168.10.113:8000/SEO/website_position_image/?web_id=1&web_position=1&web_image=1"
+                className=" tw-w-max tw-h-72 tw-object-contain tw-z-30 "
+              />
+            </div>
+            <div>
+              <img
+                src="http://192.168.10.113:8000/SEO/website_position_image/?web_id=1&web_position=1&web_image=2"
+                className="tw-w-max tw-h-72  tw-z-30 "
+              />
+            </div>
+            <div>
+              <img
+                src="http://192.168.10.113:8000/SEO/website_position_image/?web_id=1&web_position=1&web_image=3"
+                className="tw-w-max tw-h-72  tw-z-30 "
+              />
+            </div>
+          </Carousel>
         </div>
+        <textarea
+          onChange={handeltext}
+          className=" tw-border-solid tw-border-2 tw-w-[80%] tw-h-[50%] tw-outline-blue-300 tw-outline tw-rounded-md"
+        ></textarea>
 
         <div className="tw-w-full tw-h-[50%] tw-justify-center tw-flex tw-my-3 tw-flex-row tw-gap-4">
           <ImageUpload />
