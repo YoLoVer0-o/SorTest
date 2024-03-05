@@ -101,7 +101,7 @@ const CreateGroupPost = () => {
 
       <div
         className={classNames(
-          "tw-flex tw-flex-col tw-w-full tw-h-40 tw-justify-center tw-items-center tw-gap-x-8 tw-bg-white tw-shadow-[0_3px_10px_rgb(0,0,0,0.2)]",
+          "tw-flex tw-flex-col tw-w-full tw-h-40 tw-justify-center tw-items-center tw-p-6 tw-gap-x-8 tw-bg-white tw-shadow-[0_3px_10px_rgb(0,0,0,0.2)]",
           {
             "tw-flex tw-flex-col tw-w-full tw-p-4 tw-h-36 ":
               isMobile && isPortrait,
