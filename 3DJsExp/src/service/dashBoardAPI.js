@@ -150,7 +150,7 @@ const dashBoardAPI = {
   getPostImage: async (id) => {
     try {
       const response = await axios.get(
-        `http://192.168.10.121:8000/report/image/${id}?mode=image&size=400`
+        `http://192.168.10.121:8000/report/image/${id}?size=400`
       );
       return response.data; // Return the response data
     } catch (error) {
