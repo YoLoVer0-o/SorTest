@@ -8,7 +8,6 @@ import {
     ColumnHeightOutlined,
     VerticalAlignMiddleOutlined,
     FileTextOutlined,
-    SearchOutlined,
     MinusOutlined,
     PlusOutlined
 } from '@ant-design/icons';
@@ -108,15 +107,9 @@ const PostTable = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    // useEffect(() => {
-    //     console.log(searchFBid);
-    // }, [searchFBid])
-
-
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     const addWord = async (word, setData) => {
 
-        // const payload = { group_name: group }
         setData(prevItems => [...prevItems, {
             label: word,
             value: word,
@@ -197,8 +190,8 @@ const PostTable = () => {
             className: 'tw-text-violet-600',
             render: (text, record) => (
                 <div className="tw-grid tw-grid-cols-2 tw-gap-1 tw-w-full tw-h-full tw-content-start">
-                    {record?.hashtags.map(hashtags => (
-                        <Tooltip key={hashtags} title={hashtags}>
+                    {record?.hashtags.map((hashtags, i) => (
+                        <Tooltip key={i} title={hashtags}>
                             <div className="tw-rounded-md tw-p-2 tw-border-2 tw-border-black tw-w-fit tw-text-center tw-text-white tw-bg-violet-600" >
                                 {hashtags}
                             </div>
@@ -263,7 +256,7 @@ const PostTable = () => {
                     <p className="tw-text-lg">ค้นหา:</p>
                     <SearchBar
                         useTextSearch={true}
-                        data={postMock}
+                        data={displayData.data}
                         onChangeSearch={setSearchVal}
                     />
                 </div>
@@ -272,7 +265,7 @@ const PostTable = () => {
                         <p className="tw-text-lg">แพลตฟอร์ม:</p>
                         <SearchBar
                             useTagSearch={true}
-                            data={postMock}
+                            data={[{ platform: "facebook" }]}
                             onChangeFilter={setSearchPlatform}
                             keyName={"platform"}
                         />

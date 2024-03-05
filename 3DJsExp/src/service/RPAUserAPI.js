@@ -347,7 +347,7 @@ const RPAUserAPI = {
 
   twAddUser: async (token, user) => {
     try {
-      const response = await axios.put(
+      const response = await axios.post(
         "http://192.168.10.111:8000/twitter/insert_bot_config/",
         user,
         {

@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import { useParams } from 'react-router-dom';
 
 const EditWorkModal = props => {
 
@@ -12,12 +13,14 @@ const EditWorkModal = props => {
     const modalToggle = props.modalToggle;
     const handleCancel = props.handleCancel;
     const modalData = props.modalData;
+    const token = props.token;
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     const [isModalOpen, setIsModalOpen] = useState(modalToggle);
     const [formData, setFormData] = useState({});
 
     const { isMobile } = useResponsive();
+    const param = useParams();
 
     ////////////////////////////////////////////////////form//////////////////////////////////////////////////////
     const [form] = Form.useForm();
@@ -159,6 +162,7 @@ EditWorkModal.propTypes = {
     modalToggle: PropTypes.bool.isRequired,
     handleCancel: PropTypes.func.isRequired,
     modalData: PropTypes.any.isRequired,
+    token: PropTypes.string,
 }
 
 export default EditWorkModal;
