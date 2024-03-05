@@ -17,6 +17,7 @@ import EditUserModal from "./RPAManagement/EditUserModal";
 import AddUserModal from "./RPAManagement/AddUserModal";
 import AddSchedueModal from "./RPAManagement/AddSchedueModal";
 import EditSchedueModal from "./RPAManagement/EditSchedueModal";
+import AddWorkModal from "./RPAManagement/AddWorkModal";
 import EditWorkModal from "./RPAManagement/EditWorkModal";
 import DataLog from "./RPAManagement/DataLog";
 import ClassTable from "./ClassificationConfig/ClassTable";
@@ -52,6 +53,7 @@ export {
   EditUserModal,
   AddSchedueModal,
   EditSchedueModal,
+  AddWorkModal,
   EditWorkModal,
   DataLog,
   ClassTable,
@@ -65,5 +67,5 @@ export {
   AddRoleModal,
   AddUserRoleModal,
   EditUserRoleModal,
-  SeoWebSite, 
+  SeoWebSite,
 };

@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { DataTable, SearchBar } from "../../utilities";
 import { workMock } from "../../mock";
 import { useResponsive } from "../../hooks";
-import { EditWorkModal } from "..";
+import { AddWorkModal, EditWorkModal } from "..";
 import { Button, Tooltip } from "antd";
 import { EditOutlined, CheckCircleOutlined, PlayCircleOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
@@ -13,6 +13,8 @@ dayjs.extend(isSameOrAfter);
 import classNames from "classnames";
 import RPAWorkAPI from "../../service/RPAWorkAPI";
 import { useParams } from "react-router-dom";
+import { useSelector } from 'react-redux'
+import { getLogin } from '../../libs/loginSlice'
 
 const WorkTable = () => {
 
@@ -20,11 +22,12 @@ const WorkTable = () => {
     const [searchTarget, setSearchTarget] = useState([]);
     const [searchWork, setSearchWork] = useState([]);
     const [modalToggle, setModalToggle] = useState(false);
+    const [addModalToggle, setAddModalToggle] = useState(false);
     const [modalData, setModalData] = useState([]);
 
-
-
     const { isTabletOrMobile, isMobile, isPortrait, isLandscape } = useResponsive();
+
+    const token = useSelector((state) => getLogin(state).token);
 
     //////////////////////////////////////////modal toggle logic////////////////////////////////////////////////////////////////
     const showModal = (data) => {
@@ -34,6 +37,16 @@ const WorkTable = () => {
 
     const handleCancel = () => {
         setModalToggle(false);
+    };
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //////////////////////////////////////////modal toggle logic////////////////////////////////////////////////////////////////
+    const showAddModal = () => {
+        setAddModalToggle(true);
+    };
+
+    const handleAddCancel = () => {
+        setAddModalToggle(false);
     };
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -245,7 +258,9 @@ const WorkTable = () => {
                             <Button
                                 className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
                                     "tw-w-full": isMobile && isPortrait,
-                                })}>
+                                })}
+                                onClick={() => showAddModal()}
+                            >
                                 เพิ่มงานใหม่
                             </Button>
                         </div>
@@ -267,6 +282,14 @@ const WorkTable = () => {
                             modalToggle={modalToggle}
                             handleCancel={handleCancel}
                             modalData={modalData}
+                            token={token}
+                        />
+                    )}
+                    {addModalToggle && (
+                        <AddWorkModal
+                            modalToggle={addModalToggle}
+                            handleCancel={handleAddCancel}
+                            token={token}
                         />
                     )}
                 </div>

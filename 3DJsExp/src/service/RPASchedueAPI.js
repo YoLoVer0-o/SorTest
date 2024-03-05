@@ -116,10 +116,15 @@ const RPASchedueAPI = {
     }
   },
 
-  fbDeleteSchedule: async (task_id) => {
+  fbDeleteSchedule: async (token, task_id) => {
     try {
       const response = await axios.delete(
-        `http://192.168.10.111:8000/facebook/delete_schedule_task/${task_id}`
+        `http://192.168.10.111:8000/facebook/delete_schedule_task/${task_id}`,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
       );
       return response;
     } catch (error) {
@@ -250,10 +255,15 @@ const RPASchedueAPI = {
     }
   },
 
-  twDeleteSchedule: async (task_id) => {
+  twDeleteSchedule: async (token, task_id) => {
     try {
       const response = await axios.delete(
-        `http://192.168.10.111:8000/twitter/delete_schedule_task/${task_id}`
+        `http://192.168.10.111:8000/twitter/delete_schedule_task/${task_id}`,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
       );
       return response;
     } catch (error) {

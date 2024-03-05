@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { DataTable, SearchBar, Loading } from "../../utilities";
-import { newSentiment } from "../../mock";
 import { useResponsive } from "../../hooks";
 import { useNavigate } from "react-router-dom";
 import { Button, Tooltip } from "antd";
@@ -12,13 +11,13 @@ import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 dayjs.extend(isSameOrAfter)
 import classNames from "classnames";
 import botPostReportAPI from "../../service/botPostReportAPI";
-import { useSelector } from 'react-redux'
-import { getLogin } from '../../libs/loginSlice'
+// import { useSelector } from 'react-redux'
+// import { getLogin } from '../../libs/loginSlice'
 
 const SentimentTable = () => {
 
-    const [searchTag, setSearchTag] = useState([]);
-    const [searchBot, setSearchBot] = useState([]);
+    const [searchText, setSearchText] = useState("");
+    // const [searchBot, setSearchBot] = useState([]);
     const [searchDate, setSearchDate] = useState([]);
     const [searchType, setSearchType] = useState([]);
     const [pageSize, setPageSize] = useState(10);
@@ -26,14 +25,18 @@ const SentimentTable = () => {
     const [showLoading, setShowLoading] = useState(false);
     const [pageIndex, setPageIndex] = useState({ current: 1, pageSize: 10 });
 
-    const token = useSelector((state) => getLogin(state).token);
+    // const token = useSelector((state) => getLogin(state).token);
 
     const navigate = useNavigate();
 
     const fetchBotPost = async () => {
         try {
             setShowLoading(true);
-            const data = await botPostReportAPI.getBotPost(pageIndex.current);
+            const data = await botPostReportAPI.getBotPost(pageIndex.current,
+                searchType?.length > 0 ? searchType[0] : "",
+                searchDate?.length > 0 ? dayjs(searchDate[0]).format('YYYY-MM-DD') : "",
+                searchDate?.length > 0 ? dayjs(searchDate[1]).format('YYYY-MM-DD') : "",
+                searchText);
             setDisplayData(data);
         } catch (error) {
             console.error('Error fetching bot config:', error);
@@ -46,7 +49,7 @@ const SentimentTable = () => {
         console.log(pageIndex);
         fetchBotPost()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [pageIndex])
+    }, [pageIndex, searchType, searchText, searchDate])
 
 
     const { isTabletOrMobile, isPortrait } = useResponsive();
@@ -73,19 +76,7 @@ const SentimentTable = () => {
             align: "center",
             width: 100,
             className: 'tw-text-lime-600',
-            filteredValue: [searchDate],
-            onFilter: (value, record) => {
-                if (value != undefined && value != null && value != "" && value != 'undefined') {
-                    let startDate = String(value?.split(",")[0])
-                    let endDate = String(value?.split(",")[1])
-                    let recordDate = dayjs(record?.timestamp).format('YYYY-MM-DD')
-                    if (dayjs(recordDate).isSameOrBefore(endDate) && dayjs(recordDate).isSameOrAfter(startDate)) {
-                        return record?.timestamp
-                    }
-                } else {
-                    return record?.timestamp
-                }
-            },
+
         },
         {
             title: 'รายละเอียด',
@@ -102,21 +93,7 @@ const SentimentTable = () => {
             align: "center",
             width: 250,
             className: 'tw-text-violet-600',
-            filteredValue: [searchTag],
-            onFilter: (value, record) => (
-                (value.split(",")).every(tag => String(record?.tag).includes(tag))
-            ),
-            render: (text, record) => (
-                <div className="tw-grid tw-grid-cols-2 tw-gap-1 tw-w-full tw-h-full tw-content-start">
-                    {record?.tag.map(tag => (
-                        <Tooltip key={tag} title={tag}>
-                            <div className=" tw-w-max tw-rounded-md tw-p-2 tw-border-2 tw-border-black tw-text-center tw-text-white tw-bg-violet-600" >
-                                {tag}
-                            </div>
-                        </Tooltip>
-                    ))}
-                </div>
-            ),
+
         },
         {
             title: 'ผู้โพสต์',
@@ -126,14 +103,6 @@ const SentimentTable = () => {
             width: 100,
             className: 'tw-truncate',
         },
-        // {
-        //     title: 'บัญชี',
-        //     dataIndex: 'username',
-        //     key: 'username',
-        //     align: "center",
-        //     width: 100,
-        //     className: 'tw-truncate',
-        // },
         {
             title: 'หมวดหมู่',
             dataIndex: 'group',
@@ -141,21 +110,6 @@ const SentimentTable = () => {
             align: "center",
             width: 100,
             className: 'tw-text-amber-600',
-            filteredValue: [searchBot],
-            onFilter: (value, record) => (
-                (value.split(",")).some(group => String(record?.group).toLowerCase().includes(group.toLowerCase()))
-            ),
-            render: (text, record) => (
-                <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
-                    {record?.group.map(group => (
-                        <Tooltip key={group} title={group}>
-                            <div className="tw-rounded-md tw-border-2 tw-p-2 tw-border-black tw-w-max tw-text-center tw-text-white tw-bg-yellow-600" >
-                                {group}
-                            </div>
-                        </Tooltip>
-                    ))}
-                </div>
-            ),
         },
         {
             title: 'ความรู้สึก',
@@ -215,7 +169,7 @@ const SentimentTable = () => {
     return (
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-auto', {})}>
             <Loading isShown={showLoading} />
-            {displayData.posts?.length > 0 && (
+            {displayData?.posts && (
                 <div className={classNames("tw-flex tw-flex-row tw-max-w-full tw-justify-center tw-gap-2", {
                     "tw-flex-col": isTabletOrMobile && isPortrait,
                 })}>
@@ -223,11 +177,9 @@ const SentimentTable = () => {
                     })}>
                         <p className="tw-text-lg">หัวข้อ:</p>
                         <SearchBar
-                            useTagSearch={true}
-                            // data={newSentiment}
-                            data={displayData.posts}
-                            onChangeFilter={setSearchTag}
-                            keyName={"tag"}
+                            useTextSearch={true}
+                            // data={postMock}
+                            onChangeSearch={setSearchText}
                         />
                     </div>
                     <div className={classNames("tw-w-full", {
@@ -239,7 +191,7 @@ const SentimentTable = () => {
                             onChangeDate={setSearchDate}
                         />
                     </div>
-                    <div className={classNames("tw-w-full", {
+                    {/* <div className={classNames("tw-w-full", {
                     })}>
                         <p className="tw-text-lg">Bot:</p>
                         <SearchBar
@@ -249,7 +201,7 @@ const SentimentTable = () => {
                             onChangeFilter={setSearchBot}
                             keyName={"group"}
                         />
-                    </div>
+                    </div> */}
 
                     <div className={classNames("tw-w-full", {
                     })}>
@@ -257,16 +209,18 @@ const SentimentTable = () => {
                         <SearchBar
                             useTagSearch={true}
                             // data={newSentiment}
-                            data={[{ label: "โพสของฝ่ายเรา", type: "โพสของฝ่ายเรา" }, { label: "โพสทั่วไป", type: "โพสทั่วไป" }]}
+                            data={[{ label: "โพสของฝ่ายเรา", type: 'true' }, { label: "โพสทั่วไป", type: 'false' }]}
                             onChangeFilter={setSearchType}
-                            keyName={"type"}
+                            useOwnData={true}
+                            ownKeyNameLabel={"label"}
+                            ownKeyNameValue={"type"}
                         />
                     </div>
 
                 </div>
             )}
 
-            {displayData.posts?.length > 0 && (
+            {displayData?.posts && (
                 <div className={classNames("tw-border-2 tw-rounded-md", {})}>
                     <DataTable
                         columns={columns}

@@ -1,10 +1,14 @@
 import axios from "axios";
 
 const botPostReportAPI = {
-  getBotPost: async (page) => {
+  getBotPost: async (page, isbot, start, end, text) => {
     try {
       const response = await axios.get(
-        `http://192.168.10.122/getBotPost?current_page=${page}`
+        `http://192.168.10.122/getBotPost?current_page=${page}` +
+          `${isbot !== "" ? `&is_bot=${isbot}` : ""}` +
+          `${start !== "" ? `&start_date=${start}` : ""}` +
+          `${end !== "" ? `&end=${end}` : ""}` +
+          `${text !== "" ? `&search_text=${text}` : ""}`
       );
       return response.data; // Return the response data
     } catch (error) {

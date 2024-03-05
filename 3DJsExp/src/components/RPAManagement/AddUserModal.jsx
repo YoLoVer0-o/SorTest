@@ -146,15 +146,15 @@ const AddUserModal = props => {
                         })
 
                     } else if (param.platform == "X") {
-                        let twFormdata = {
-                            username: formData.username,
-                            password: formData.password,
-                            groups: [
-                                "string"
-                            ],
-                            botname: formData.botname
-                        }
-                        await RPAUserAPI.twAddUser(token, twFormdata).then(() => {
+                        // let twFormdata = {
+                        //     username: formData.username,
+                        //     password: formData.password,
+                        //     groups: [
+                        //         formData
+                        //     ],
+                        //     botname: formData.botname
+                        // }
+                        await RPAUserAPI.twAddUser(token, formData).then(() => {
                             MySwal.fire({
                                 title: "เรียบร้อย!",
                                 text: "บันทึกข้อมูลแล้ว!",
