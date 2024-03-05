@@ -17,23 +17,23 @@ import {
   PlusOutlined,
 } from "@ant-design/icons";
 import { FaSortDown } from "react-icons/fa";
-import profile from "../../assets/profile.png";
-import { BsEmojiSmile } from "react-icons/bs";
-import { LiaWindowClose } from "react-icons/lia";
-import { useResponsive } from "../../hooks";
-import { facebookAcc, emotionEmoji } from "../../mock";
+import Swal from "sweetalert2";
 import classNames from "classnames";
 import { useState, useRef, useEffect } from "react";
-import Image from "../../assets/PostImage";
-import FileUpLoader from "../../utilities/FileUpLoader";
-import PostTag from "../../assets/PostTag";
 import "./Trainsition.css";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import postCreateAPI from "../../service/postCreateAPI";
 import { getLogin } from "../../libs/loginSlice";
-import Swal from "sweetalert2";
-
+import profile from "../../assets/profile.png";
+import { BsEmojiSmile } from "react-icons/bs";
+import { LiaWindowClose } from "react-icons/lia";
+import { useResponsive } from "../../hooks";
+import { facebookAcc, emotionEmoji } from "../../mock";
+import Image from "../../assets/PostImage";
+import FileUpLoader from "../../utilities/FileUpLoader";
+import PostTag from "../../assets/PostTag";
+import TimeSetPost from "../../utilities/TimeSetPost";
 import {
   // Transition,
   CSSTransition,
@@ -41,7 +41,8 @@ import {
   // TransitionGroup,
 } from "react-transition-group";
 
-const FacebookPost = ({ selectUser }) => {
+const FacebookPost = (props) => {
+  const { selectUser, identifier, groupUrl } = props;
   const [message, setMessage] = useState("");
   const [showEmojiInput, setShowEmojiInput] = useState(false);
   const [openUpload, setOpenUpLoad] = useState(false);
@@ -67,6 +68,16 @@ const FacebookPost = ({ selectUser }) => {
     check_in: "string",
     gif: "string",
   });
+  const [postToGroup, setPostToGroup] = useState({
+    botname: "",
+    url: "",
+    text: "",
+    photo_video: [],
+    tag_people: "",
+    feeling: "",
+    check_in: "",
+    gif: "",
+  });
   const [url, setUrl] = useState([]);
   const selectedAcc = selectUser;
   const [receiveFile, setReceiveFile] = useState([
@@ -78,14 +89,12 @@ const FacebookPost = ({ selectUser }) => {
     },
   ]);
   const [filesName, setFilesName] = useState([]);
-
   const handelFile = (file) => {
     setReceiveFile(file);
   };
   console.log(receiveFile);
 
   console.log(url);
-  // console.log(tagFriends);
   const nodeRef = useRef(null);
   const { Search } = Input;
 
@@ -293,7 +302,6 @@ const FacebookPost = ({ selectUser }) => {
     }
   };
   const handleCompare = () => {
-    //   // alert("compareHandle");
     let sameData = selectedShare.filter((dataValue) =>
       selectedNotShare.includes(dataValue)
     );
@@ -333,7 +341,6 @@ const FacebookPost = ({ selectUser }) => {
   //////////////////////////////////API Part/////////////////////////////////
   const getToken = useSelector((state) => getLogin(state));
 
-  // console.log(tagFriends.first_name, tagFriends.last_name);
   useEffect(() => {
     const upLoadFile = async () => {
       const formData = new FormData();
@@ -341,7 +348,10 @@ const FacebookPost = ({ selectUser }) => {
         formData.append("files", file.file);
       });
       try {
-        const filesNamehandle = await postCreateAPI.fbUploadFile(formData);
+        const filesNamehandle = await postCreateAPI.fbUploadFile(
+          formData,
+          getToken
+        );
         setFilesName(filesNamehandle.file_name);
         // console.log(data);
       } catch (error) {
@@ -352,34 +362,105 @@ const FacebookPost = ({ selectUser }) => {
   }, [receiveFile]);
 
   useEffect(() => {
-    setPostAction({
-      botname: selectedAcc,
-      url: url,
-      group: null, /////////////////////รอ API group bot///////////////////
-      text: message,
-      photo_video: filesName, /////////////////////รอ API อัพโหลดไฟล์ แปลงเป็นBinary///////////////////////////////////////////
-      tag_people: JSON.stringify(tagFriends), /////////////////เอาเเค่ชื่อfacebook/////////////////////////
-      feeling: null,
-      check_in: null,
-      gif: null,
-    });
-  }, [message, tagFriends, emotionAct, selectedAcc, filesName, url]);
-  console.log(postAction);
+    if (identifier === "CreatePost") {
+      setPostAction({
+        botname: selectedAcc,
+        url: url,
+        group: null, /////////////////////รอ API group bot///////////////////
+        text: message,
+        photo_video: filesName, /////////////////////รอ API อัพโหลดไฟล์ แปลงเป็นBinary///////////////////////////////////////////
+        tag_people: JSON.stringify(tagFriends), /////////////////เอาเเค่ชื่อfacebook/////////////////////////
+        feeling: null,
+        check_in: null,
+        gif: null,
+      });
+    } else if (identifier === "CreateGroupPost") {
+      setPostToGroup({
+        botname: selectedAcc,
+        url: groupUrl,
+        group: null, /////////////////////รอ API group bot///////////////////
+        text: message,
+        photo_video: filesName, /////////////////////รอ API อัพโหลดไฟล์ แปลงเป็นBinary///////////////////////////////////////////
+        tag_people: JSON.stringify(tagFriends), /////////////////เอาเเค่ชื่อfacebook/////////////////////////
+        feeling: null,
+        check_in: null,
+        gif: null,
+      });
+    }
+  }, [message, tagFriends, emotionAct, selectedAcc, filesName, url, groupUrl]);
+
+  console.log(postToGroup);
   console.log(filesName);
   const handlePost = async () => {
-    try {
-      await postCreateAPI.fbPostAction(postAction, getToken);
-      Swal.fire({
-        title: "โพสต์สําเร็จ ",
-        icon: "success",
-      });
-    } catch (error) {
-      Swal.fire({
-        title: "เกิดข้อผิดพลาด",
-        text: error.message,
-        icon: "error",
-      });
-      console.error("Error posting data:", error);
+    if (identifier === "CreatePost") {
+      try {
+        await postCreateAPI.fbPostAction(postAction, getToken);
+        Swal.fire({
+          title: "โพสต์สําเร็จ ",
+          icon: "success",
+        });
+        setPostAction({
+          botname: "",
+          url: "",
+          group: "",
+          text: "",
+          photo_video: [],
+          tag_people: "",
+          feeling: "",
+          check_in: "",
+          gif: "",
+        });
+        setReceiveFile([
+          {
+            file: {
+              path: "",
+            },
+            previewUrl: "",
+          },
+        ]);
+      } catch (error) {
+        Swal.fire({
+          title: "เกิดข้อผิดพลาด",
+          text: error.message,
+          icon: "error",
+        });
+        console.error("Error posting data:", error);
+      }
+    } else if (identifier === "CreateGroupPost") {
+      try {
+        await postCreateAPI.fbPostActionToGroup(postToGroup, getToken);
+        Swal.fire({
+          title: "โพสต์สําเร็จ ",
+          icon: "success",
+        });
+        setPostToGroup({
+          botname: "",
+          url: "",
+          group: "", /////////////////////รอ API group bot///////////////////
+          text: "",
+          photo_video: [], /////////////////////รอ API อัพโหลดไฟล์ แปลงเป็นBinary///////////////////////////////////////////
+          tag_people: "", /////////////////เอาเเค่ชื่อfacebook/////////////////////////
+          feeling: "",
+          check_in: "",
+          gif: "",
+        });
+        setReceiveFile([
+          {
+            file: {
+              path: "",
+            },
+            previewUrl: "",
+          },
+        ]);
+        console.log("post to group:");
+      } catch (error) {
+        Swal.fire({
+          title: "เกิดข้อผิดพลาด",
+          text: error.message,
+          icon: "error",
+        });
+        console.error("Error posting data:", error);
+      }
     }
   };
 
@@ -880,7 +961,12 @@ const FacebookPost = ({ selectUser }) => {
       content: (
         <div className="tw-w-full tw-h-full tw-flex-col tw-flex ">
           <div className="">
-            <button onClick={reset}>Back</button>
+            <button
+              className="tw-bg-gray-200 hover:tw-bg-gray-300 tw-w-10 tw-h-6 tw-rounded-md"
+              onClick={reset}
+            >
+              Back
+            </button>
             <div className="tw-text-center">เท็กผู้คน</div>
             <div className="tw-w-full tw-flex tw-flex-row tw-gap-x-5  ">
               <Search placeholder="ค้นหา" allowClear onSearch={onSearch} />
@@ -1408,15 +1494,6 @@ const FacebookPost = ({ selectUser }) => {
                     </Form.Item>
                   </Form>
                 </div>
-
-                {/* <Tooltip title="ลบออกทั้งหมด">
-                  <button
-                    onClick={deleteUrl}
-                    className="tw-rounded-md hover:tw-bg-gray-100 tw-h-10 tw-w-10 tw-flex tw-justify-center tw-items-center"
-                  >
-                    <ImBin className="tw-w-6 tw-h-6 tw-text-gray-400" />
-                  </button>
-                </Tooltip> */}
               </div>
 
               <div>
@@ -1431,18 +1508,6 @@ const FacebookPost = ({ selectUser }) => {
                     {url}
                   </a>
                 ))}
-
-                {/* {url.map((url) => (
-                  <a
-                    key={url}
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="tw-w-full tw-flex"
-                  >
-                    {url}
-                  </a>
-                ))} */}
               </div>
             </div>
           </div>
@@ -1454,7 +1519,7 @@ const FacebookPost = ({ selectUser }) => {
   return (
     <div
       className={classNames(
-        "tw-w-full tw-h-full tw-p-5 tw-bg-white tw-rounded-md tw-flex tw-justify-center tw-justify-self-center tw-overflow-auto tw-shadow-[0_3px_10px_rgb(0,0,0,0.2)]",
+        "tw-w-full tw-h-full tw-p-5 tw-bg-white tw-rounded-md tw-flex tw-flex-col tw-justify-center tw-justify-self-center tw-overflow-auto tw-shadow-[0_3px_10px_rgb(0,0,0,0.2)]",
         {
           // "tw-h-[80%]": isBigScreen,
           // "tw-h-[70%]": isDesktopOrLaptop,
@@ -1464,6 +1529,8 @@ const FacebookPost = ({ selectUser }) => {
         }
       )}
     >
+      <div> <TimeSetPost /></div>
+  
       <SwitchTransition mode="out-in">
         <CSSTransition
           key={currentId}
@@ -1514,5 +1581,7 @@ const FacebookPost = ({ selectUser }) => {
 FacebookPost.propTypes = {
   handelBotData: PropTypes.any,
   selectUser: PropTypes.string,
+  identifier: PropTypes.string,
+  groupUrl: PropTypes.string,
 };
 export default FacebookPost;

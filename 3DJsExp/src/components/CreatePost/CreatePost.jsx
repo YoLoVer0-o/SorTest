@@ -36,11 +36,11 @@ const CreatePost = () => {
     selectedComponent = <TwitterPost />;
   } else if (selectedPlatform === "Facebook") {
     selectedComponent = (
-      <FacebookPost handelBotData={botData} selectUser={selectedBot} />
+      <FacebookPost handelBotData={botData} selectUser={selectedBot} identifier="CreatePost" />
     );
   } else {
     selectedComponent = (
-      <FacebookPost handelBotData={botData} selectUser={selectedBot} />
+      <FacebookPost handelBotData={botData} selectUser={selectedBot} identifier="CreatePost" />
     );
   }
 

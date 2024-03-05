@@ -10,11 +10,10 @@ import {
 } from "@ant-design/icons";
 import { ImBin } from "react-icons/im";
 import Swal from "sweetalert2";
-// import Slider from "react-slick";
-// import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
+import { Lightbox } from "react-modal-image";
+import ModalImage from "react-modal-image";
 
 const SeoWebSite = () => {
   const [webPosition, setWebPosition] = useState([]);
@@ -26,18 +25,15 @@ const SeoWebSite = () => {
   const [videoFile, setVideoFile] = useState([]);
   const [handelWebPositionResult, setHandelWebPositionResult] = useState();
   const [handelWebNameResult, setHandelWebNameResult] = useState();
-  const [handelPresetResult, setHandelPresetResult] = useState();
   const [countImg, setCountImg] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [modalImg, setModalImg] = useState("");
   const [contentTextArray, setContentTextArray] = useState({
     web_id: "",
     web_position: "",
     web_content: "",
   });
-  const [imageContentArray, setImageContentArray] = useState({
-    web_id: "สนับสนุนกองทัพ",
-    web_position: "1",
-    web_image: 1,
-  });
+
   const [imagePost, setImagePost] = useState({
     web_id: "สนับสนุนกองทัพ",
     web_position: "หมายเหตุ 1",
@@ -54,11 +50,6 @@ const SeoWebSite = () => {
   const handleChangePosi = (value) => {
     // console.log(`selected ${value}`);
     setHandelWebPositionResult(value);
-  };
-
-  const handlePreset = (value) => {
-    // console.log(`selected ${value}`);
-    setHandelPresetResult(value);
   };
 
   const handeltext = (e) => {
@@ -100,27 +91,6 @@ const SeoWebSite = () => {
     indexMatch();
   }, [webIndex, positionOfWeb]);
 
-  // useEffect(() => {
-  //   const picPreset = async () => {
-  //     try {
-  //       const response = await seoWebSiteAPI.imagePosition(imageContentArray);
-  //       console.log(response);
-  //       // const blob = new Blob([response.data], { type: "image/*" });
-  //       // const imageUrl = URL.createObjectURL(blob);
-  //       // setPicture(imageUrl);
-  //     } catch (error) {
-  //       console.error("Error", error);
-  //     }
-  //   };
-  //   picPreset();
-  //   return () => {
-  //     if (picture) {
-  //       URL.revokeObjectURL(picture);
-  //     }
-  //   };
-  // }, [imageContentArray]);
-  //  console.log(collectBinary)
-
   useEffect(() => {
     // const path = handlePic[0].file.path;
     setContentTextArray({
@@ -154,12 +124,6 @@ const SeoWebSite = () => {
         label: posi,
       }))
     : [];
-  // const presetImgOptions = presetImg
-  //   ? presetImg.map((preset) => ({
-  //       value: preset,
-  //       label: preset,
-  //     }))
-  //   : [];
 
   const onDrop = (acceptedFiles, inputType) => {
     const newFiles = acceptedFiles.map((file) => ({
@@ -185,7 +149,7 @@ const SeoWebSite = () => {
     };
 
     return (
-      <div className="tw-relative tw-border-dashed tw-border-2 tw-w-[40%] tw-h-full tw-overflow-y-auto tw-z-10 tw-border-blue-700  tw-rounded-md">
+      <div className="tw-relative tw-border-dashed tw-border-2 tw-w-full tw-h-full tw-overflow-y-auto tw-z-10 tw-border-blue-700  tw-rounded-md">
         <section className=" tw-w-full tw-h-full tw-relative">
           {filePic.length > 0 && (
             <button
@@ -261,7 +225,7 @@ const SeoWebSite = () => {
       setVideoFile([]);
     };
     return (
-      <div className="tw-relative tw-border-dashed tw-border-2 tw-w-[40%] tw-h-full tw-overflow-y-auto tw-z-10  tw-border-blue-700  tw-rounded-md">
+      <div className="tw-relative tw-border-dashed tw-border-2 tw-w-full tw-h-full tw-overflow-y-auto tw-z-10  tw-border-blue-700  tw-rounded-md">
         <section className=" tw-w-full tw-h-full tw-relative">
           {videoFile.length > 0 && (
             <button
@@ -326,9 +290,8 @@ const SeoWebSite = () => {
       </div>
     );
   };
-  console.log(imageContentArray);
+
   const submitData = async () => {
-    // const pic = await seoWebSiteAPI.imagePosition(imageContentArray);
     // setPicture(pic);
     // console.log(pic);
     if (contentTextArray.web_content.length !== 0) {
@@ -370,7 +333,20 @@ const SeoWebSite = () => {
     height: 40,
     cursor: "pointer",
   };
-  ////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////
+
+  const setModal = (e) => {
+    setModalImg(e);
+    closeLightbox();
+  };
+  console.log(modalImg);
+  const closeLightbox = () => {
+    if (open === true) {
+      setOpen(false);
+    } else {
+      setOpen(true);
+    }
+  };
 
   return (
     <div className="tw-w-full tw-h-full tw-flex tw-flex-col tw-items-center ">
@@ -397,26 +373,15 @@ const SeoWebSite = () => {
             />
           </div>
         </div>
-        {/* <div className="tw-w-full tw-flex tw-flex-col tw-text-lg">
-          <p className="tw-flex">Preset ภาพ:</p>
-          <Select
-            placeholder="กรุณาเลือกหน้าเว็บก่อน"
-            className="tw-w-full tw-outline-blue-500 tw-outline tw-rounded-md"
-            defaultValue={presetImgOptions}
-            onChange={handlePreset}
-            options={presetImgOptions}
-          />
-        </div> */}
       </div>
 
       <div className="tw-relative tw-w-full tw-h-full tw-flex tw-flex-col tw-items-center">
         <IoIosInformationCircleOutline className="tw-w-8 tw-h-8 tw-absolute tw-right-0 tw-text-blue-500" />
-
-        <div className="tw-h-[50%] tw-w-[50%] tw-items-center tw-flex tw-flex-col tw-gap-4">
+        <div className="tw-h-[60%] tw-w-full tw-items-center tw-flex tw-flex-col tw-gap-2">
           <Carousel
             // centerMode={true}
             showThumbs={false}
-            className="tw-w-full "
+            className="tw-w-[40%] tw-z-0"
             renderArrowPrev={(onClickHandler, hasPrev, label) =>
               hasPrev && (
                 <button
@@ -445,30 +410,40 @@ const SeoWebSite = () => {
             }
           >
             {countImg.map((e, i) => (
-              <div key={i} className="    tw-flex tw-justify-center">
-                <img
-                  src={`http://192.168.10.113:8000/SEO/website_position_image/?web_id=1&web_position=1&web_image=${e}`}
-                  className=" tw-w-max tw-h-72 tw-object-contain tw-z-30 "
+              <button key={i} className="" onClick={() => setModal(e)}>
+                <ModalImage
+                  className="tw-w-max tw-h-36 tw-object-contain tw-z-50 "
+                  small={`http://192.168.10.113:8000/SEO/website_position_image/?web_id=1&web_position=1&web_image=${e}`}
+                  large={`http://192.168.10.113:8000/SEO/website_position_image/?web_id=1&web_position=1&web_image=${e}`}
+                  // onClick={closeLightbox}
                 />
-              </div>
+              </button>
             ))}
           </Carousel>
+          <textarea
+            onChange={handeltext}
+            className=" tw-border-solid tw-border-2 tw-w-[50%] tw-h-[40%] tw-outline-blue-300 tw-outline tw-rounded-md"
+          ></textarea>
         </div>
-        <textarea
-          onChange={handeltext}
-          className=" tw-border-solid tw-border-2 tw-w-[80%] tw-h-[50%] tw-outline-blue-300 tw-outline tw-rounded-md"
-        ></textarea>
 
-        <div className="tw-w-full tw-h-[50%] tw-justify-center tw-flex tw-my-3 tw-flex-row tw-gap-4">
+        <div className="tw-w-[50%] tw-h-full tw-items-center tw-flex tw-my-3 tw-flex-col tw-gap-4">
           <ImageUpload />
           <VideoUpload />
         </div>
         <button
           onClick={submitData}
-          className="tw-bg-green-500  hover:tw-bg-green-400 tw-h-12 tw-w-24 tw-rounded-md tw-text-white"
+          className="tw-bg-green-500  hover:tw-bg-green-400 tw-h-16 tw-w-24 tw-rounded-md tw-text-white"
         >
           Submit
         </button>
+        {open === true && (
+          <Lightbox
+            medium={`http://192.168.10.113:8000/SEO/website_position_image/?web_id=1&web_position=1&web_image=${modalImg}`}
+            large={`http://192.168.10.113:8000/SEO/website_position_image/?web_id=1&web_position=1&web_image=${modalImg}`}
+            hideDownload={true}
+            onClose={closeLightbox}
+          />
+        )}
       </div>
     </div>
   );

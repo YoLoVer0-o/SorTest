@@ -33,7 +33,7 @@ const postCreateAPI = {
           headers: {
             Authorization: "Bearer " + token.token,
           },
-        },
+        }
       );
       return response.data;
     } catch (error) {
@@ -47,7 +47,7 @@ const postCreateAPI = {
     }
   },
 
-fbPostActionToGroup: async (post, token) => {
+  fbPostActionToGroup: async (post, token) => {
     try {
       const response = await axios.post(
         `http://192.168.10.111:8000/facebook/action_to_postGroup/`,
@@ -56,7 +56,7 @@ fbPostActionToGroup: async (post, token) => {
           headers: {
             Authorization: "Bearer " + token.token,
           },
-        },
+        }
       );
       return response.data;
     } catch (error) {
@@ -70,12 +70,16 @@ fbPostActionToGroup: async (post, token) => {
     }
   },
 
-
-  fbUploadFile: async (files, ) => {
+  fbUploadFile: async (files,token) => {
     try {
       const response = await axios.post(
         `http://192.168.10.111:8000/facebook/upload-image/`,
         files,
+        {
+          headers: {
+            Authorization: "Bearer " + token.token,
+          },
+        }
       );
       return response.data;
     } catch (error) {
@@ -88,7 +92,6 @@ fbPostActionToGroup: async (post, token) => {
       throw error;
     }
   },
-
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
 };
