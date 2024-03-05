@@ -105,8 +105,8 @@ const SentimentTable = () => {
         },
         {
             title: 'หมวดหมู่',
-            dataIndex: 'group',
-            key: 'group',
+            dataIndex: 'class',
+            key: 'class',
             align: "center",
             width: 100,
             className: 'tw-text-amber-600',
