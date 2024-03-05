@@ -110,6 +110,19 @@ const SentimentTable = () => {
             align: "center",
             width: 100,
             className: 'tw-text-amber-600',
+            render: (text, record) => (
+                <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
+                    {record?.class.map((bot_class, i) =>
+                        <Tooltip title={bot_class} key={i}>
+                            <div className={
+                                classNames("tw-rounded-md tw-border-2 tw-border-black tw-w-max tw-text-center tw-text-white tw-p-2 tw-bg-blue-600", {
+                                })} >
+                                {bot_class}
+                            </div>
+                        </Tooltip>
+                    )}
+                </div>
+            ),
         },
         {
             title: 'ความรู้สึก',
