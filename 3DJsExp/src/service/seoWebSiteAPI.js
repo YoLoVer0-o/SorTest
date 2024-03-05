@@ -55,7 +55,7 @@ const seoWebSiteAPI = {
   webSiteUploadFile: async (files, imagePost) => {
     try {
       const response = await axios.post(
-        `http://192.168.10.113:8000/SEO/website_uploadfile?web_id=${imagePost.web_id}&web_position=${imagePost.web_position}`,
+        `http://192.168.10.113:8000/SEO/website_uploadfile/?web_id=${imagePost.web_id}&web_position=${imagePost.web_position}`,
         files
       );
       return response.data;

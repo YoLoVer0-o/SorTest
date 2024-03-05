@@ -274,8 +274,8 @@ const TimeSetPost = () => {
           </div>
         </div>
       </div>
-      <p>เขตเวลา</p>
-      <p className=" tw-text-xl"> เวลาอินโดจีน</p>
+      {/* <p>เขตเวลา</p>
+      <p className=" tw-text-xl"> เวลาอินโดจีน</p> */}
     </div>
   );
 };

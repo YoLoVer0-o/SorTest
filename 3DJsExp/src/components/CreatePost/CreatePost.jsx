@@ -36,18 +36,25 @@ const CreatePost = () => {
     selectedComponent = <TwitterPost />;
   } else if (selectedPlatform === "Facebook") {
     selectedComponent = (
-      <FacebookPost handelBotData={botData} selectUser={selectedBot} />
+      <FacebookPost
+        handelBotData={botData}
+        selectUser={selectedBot}
+        identifier="CreatePost"
+      />
     );
   } else {
     selectedComponent = (
-      <FacebookPost handelBotData={botData} selectUser={selectedBot} />
+      <FacebookPost
+        handelBotData={botData}
+        selectUser={selectedBot}
+        identifier="CreatePost"
+      />
     );
   }
 
   const selectUser = (selectedOption) => {
     setSelectedBot(selectedOption);
   };
-
 
   const getToken = useSelector((state) => getLogin(state));
 
@@ -74,13 +81,12 @@ const CreatePost = () => {
       }))
     : [];
 
-
   return (
     <div className="tw-w-screen tw-h-full tw-max-h-full tw-gap-y-5 tw-p-4 tw-overflow-auto tw-flex tw-flex-col tw-items-center">
       <div className="tw-flex tw-justify-center ">Createpost</div>
       <div
         className={classNames(
-          "tw-flex tw-flex-row tw-w-full tw-h-40 tw-justify-center tw-items-center tw-gap-x-8 tw-bg-white tw-shadow-[0_3px_10px_rgb(0,0,0,0.2)]",
+          "tw-flex tw-flex-row tw-w-full tw-h-40 tw-justify-center tw-p-6 tw-items-center tw-gap-x-8 tw-bg-white tw-shadow-[0_3px_10px_rgb(0,0,0,0.2)]",
           {
             "tw-flex tw-flex-col tw-w-full tw-p-4 tw-h-36 ":
               isMobile && isPortrait,

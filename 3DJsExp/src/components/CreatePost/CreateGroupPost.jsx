@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import FacebookPost from "./FacebookPost";
 // import InstagramPost from "./InstagramPost";
 import TwitterPost from "./TwitterPost";
@@ -6,6 +6,7 @@ import { useResponsive } from "../../hooks";
 import classNames from "classnames";
 import { Input, Select, Button, Space, Divider } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import { useSelector } from "react-redux";
 import postCreateAPI from "../../service/postCreateAPI";
 import { getLogin } from "../../libs/loginSlice";
 
@@ -14,45 +15,32 @@ const CreateGroupPost = () => {
     useResponsive();
 
   const [selectedPlatform, setSelectedPlatform] = useState("");
-  const [selectedUser, setSelectedUser] = useState("");
-  const [allGroup, setAllGroup] = useState([
-    {
-      value: "John Doe",
-      label: "John Doe",
-    },
-    {
-      value: "Jane Doe",
-      label: "Jane Doe",
-    },
-    {
-      value: "Som Sak",
-      label: "Som Sak",
-    },
-  ]);
   const [selectedGroup, setSelectedGroup] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [items, setItems] = useState(["A", "B", "C"]);
-  const [name, setName] = useState("");
+  const [handleUrl, setHandleUrl] = useState("");
+  const [botData, setBotData] = useState("");
+  const [selectedBot, setSelectedBot] = useState("");
   const inputRef = useRef(null);
   const onNameChange = (event) => {
-    setName(event.target.value);
+    setHandleUrl(event.target.value);
   };
 
   const addItem = (e) => {
     e.preventDefault();
-    setItems([...items, name || `New item ${index++}`]);
-    setName("");
+    setItems([...items, handleUrl || `New item ${index++}`]);
+    setHandleUrl("");
     setTimeout(() => {
       inputRef.current?.focus();
     }, 0);
   };
-
+  console.log(handleUrl);
   const handlePlatformSelect = (platform) => {
     setSelectedPlatform(platform);
   };
 
   const handleUserSelect = (user) => {
-    setSelectedUser(user);
+    setSelectedBot(user);
   };
 
   const handleGroupSelect = (group) => {
@@ -64,10 +52,48 @@ const CreateGroupPost = () => {
   if (selectedPlatform === "Twitter") {
     selectedComponent = <TwitterPost />;
   } else if (selectedPlatform === "Facebook") {
-    selectedComponent = <FacebookPost />;
+    selectedComponent = (
+      <FacebookPost
+        handelBotData={botData}
+        selectUser={selectedBot}
+        groupUrl={handleUrl}
+        identifier="CreateGroupPost"
+      />
+    );
   } else {
-    selectedComponent = <FacebookPost />;
+    selectedComponent = (
+      <FacebookPost
+        handelBotData={botData}
+        selectUser={selectedBot}
+        groupUrl={handleUrl}
+        identifier="CreateGroupPost"
+      />
+    ); //////////////////////////ส่งprops /////////////////////////มา
   }
+
+  const getToken = useSelector((state) => getLogin(state));
+
+  useEffect(() => {
+    const fetchBotConfig = async () => {
+      try {
+        const data = await postCreateAPI.fbGetBotConfig(getToken);
+        setBotData(data);
+        setSelectedBot(data[0].botname);
+        setSelectedGroup(data[0].groups);
+      } catch (error) {
+        console.error("Error fetching bot config:", error);
+      }
+    };
+
+    fetchBotConfig();
+  }, [getToken]);
+
+  const userOptions = botData
+    ? botData.map((bot) => ({
+        value: bot.botname,
+        label: bot.botname,
+      }))
+    : [];
 
   return (
     <div className="tw-w-screen tw-h-full tw-max-h-full tw-gap-y-5 tw-p-4 tw-overflow-auto tw-flex tw-flex-col tw-items-center">
@@ -75,7 +101,7 @@ const CreateGroupPost = () => {
 
       <div
         className={classNames(
-          "tw-flex tw-flex-col tw-w-full tw-h-40 tw-justify-center tw-items-center tw-gap-x-8 tw-bg-white tw-shadow-[0_3px_10px_rgb(0,0,0,0.2)]",
+          "tw-flex tw-flex-col tw-w-full tw-h-40 tw-justify-center tw-items-center tw-p-6 tw-gap-x-8 tw-bg-white tw-shadow-[0_3px_10px_rgb(0,0,0,0.2)]",
           {
             "tw-flex tw-flex-col tw-w-full tw-p-4 tw-h-36 ":
               isMobile && isPortrait,
@@ -117,17 +143,17 @@ const CreateGroupPost = () => {
           >
             <p>บัญชีที่ใช้โพสต์ :</p>
             <Select
-              defaultValue="John Doe"
+              defaultValue={selectedBot}
               onChange={handleUserSelect}
               className="tw-w-full"
               options={
                 inputValue
-                  ? allGroup.filter((group) =>
-                      group.value
+                  ? userOptions.filter((user) =>
+                      user.value
                         .toLowerCase()
                         .includes(inputValue.toLowerCase())
                     )
-                  : allGroup
+                  : userOptions
               }
               dropdownRender={(menu) => (
                 <div className="tw-flex tw-flex-col">
@@ -169,9 +195,9 @@ const CreateGroupPost = () => {
                   }}
                 >
                   <Input
-                    placeholder="กรอกเพิ่มหัวข้อ"
+                    placeholder="กรอกเพิ่ม Url กลุ่ม"
                     ref={inputRef}
-                    value={name}
+                    value={handleUrl}
                     onChange={onNameChange}
                     onKeyDown={(e) => e.stopPropagation()}
                   />
