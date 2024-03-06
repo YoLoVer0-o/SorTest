@@ -1,5 +1,6 @@
-import { useRef } from "react";
-import { ListInput, ToTopButton, DataTable } from "../../utilities";
+import { useState, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
+import { ListInput, ToTopButton, Loading } from "../../utilities";
 import { useResponsive } from "../../hooks";
 import dayjs from "dayjs";
 import "dayjs/locale/th";
@@ -8,12 +9,24 @@ dayjs.extend(buddhistEra);
 import { FloatButton, Tooltip } from "antd";
 import { FormOutlined, MoreOutlined, FilePdfOutlined } from "@ant-design/icons";
 import classNames from "classnames";
-import iLaw from "../../assets/iLaw.png";
 import { pdfjs, Document, Page } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
+import postReportAPI from "../../service/postReportAPI";
 
 const PostReport = () => {
+
+  const [displayData, setDisplayData] = useState();
+  const [numPages, setNumPages] = useState(null);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [showLoading, setShowLoading] = useState(false);
+
+  const onDocumentLoadSuccess = ({ numPages }) => {
+    setNumPages(numPages);
+  };
+
+  const location = useLocation();
+  const id = location.state;
 
   const {
     isDesktopOrLaptop,
@@ -22,6 +35,7 @@ const PostReport = () => {
     isTablet,
     isMobile,
     isPortrait,
+    isLandscape
   } = useResponsive();
 
   //////////////////////////////////////////////focus ref ////////////////////////////////////////////////////////////
@@ -35,47 +49,79 @@ const PostReport = () => {
   };
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
   pdfjs.GlobalWorkerOptions.workerSrc = new URL(
     'pdfjs-dist/build/pdf.worker.min.js',
     import.meta.url,
   ).toString();
-
-  ////////////////////////////////////////////////table//////////////////////////////////////////////////////////
-  const columns = [
-    {
-      title: 'สื่อประกอบ',
-      dataIndex: 'post',
-      key: 'post',
-      align: "center",
-      width: 150,
-      className: 'tw-text-white tw-bg-[#303c6c]',
-    },
-    {
-      title: 'เนื้อหา',
-      dataIndex: 'creator',
-      key: 'creator',
-      align: "center",
-      width: 250,
-      className: 'tw-text-white tw-bg-[#303c6c]',
-    },
-    {
-      title: 'วันที่โพสต์ / อัปเดต',
-      dataIndex: 'link',
-      key: 'link',
-      align: "center",
-      width: 100,
-      className: 'tw-text-white tw-text-sky-700 tw-bg-[#303c6c]',
-    },
-    {
-      title: 'การมีส่วนร่วม',
-      dataIndex: 'update',
-      key: 'update',
-      align: "center",
-      width: 100,
-      className: 'tw-text-white tw-bg-[#303c6c]',
-    },
-  ];
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  const genReport = async () => {
+
+    try {
+      setShowLoading(true);
+      const data = await postReportAPI.genReport(id);
+      const file = new Blob([data], { type: 'application/pdf' });
+      const fileUrl = URL.createObjectURL(file);
+      setPageNumber(1); // Reset page number
+      setNumPages(null); // Reset number of pages
+      setDisplayData(fileUrl);
+    } catch (error) {
+      console.error('Error fetching bot config:', error);
+    }
+    finally {
+      setShowLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    genReport()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id])
+
+  useEffect(() => {
+    console.log(displayData);
+  }, [displayData])
+
+
+
+  // ////////////////////////////////////////////////table//////////////////////////////////////////////////////////
+  // const columns = [
+  //   {
+  //     title: 'สื่อประกอบ',
+  //     dataIndex: 'post',
+  //     key: 'post',
+  //     align: "center",
+  //     width: 150,
+  //     className: 'tw-text-white tw-bg-[#303c6c]',
+  //   },
+  //   {
+  //     title: 'เนื้อหา',
+  //     dataIndex: 'creator',
+  //     key: 'creator',
+  //     align: "center",
+  //     width: 250,
+  //     className: 'tw-text-white tw-bg-[#303c6c]',
+  //   },
+  //   {
+  //     title: 'วันที่โพสต์ / อัปเดต',
+  //     dataIndex: 'link',
+  //     key: 'link',
+  //     align: "center",
+  //     width: 100,
+  //     className: 'tw-text-white tw-text-sky-700 tw-bg-[#303c6c]',
+  //   },
+  //   {
+  //     title: 'การมีส่วนร่วม',
+  //     dataIndex: 'update',
+  //     key: 'update',
+  //     align: "center",
+  //     width: 100,
+  //     className: 'tw-text-white tw-bg-[#303c6c]',
+  //   },
+  // ];
+  // //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   return (
     <div className="tw-w-screen tw-h-full tw-p-2 tw-overflow-auto">
@@ -86,7 +132,7 @@ const PostReport = () => {
           "tw-overflow-auto": isTabletOrMobile && isPortrait,
         })} >
         <p>สรุปรายงานจากโพสต์:</p>
-        <div className={classNames("tw-flex tw-flex-row tw-mb-4 tw-w-full tw-h-full", {
+        {/* <div className={classNames("tw-flex tw-flex-row tw-mb-4 tw-w-full tw-h-full", {
           "tw-flex-col": isTabletOrMobile && isPortrait,
         })}>
           <div className="tw-w-20 tw-h-20 tw-border-2 tw-border-black tw-rounded-full">
@@ -142,35 +188,32 @@ const PostReport = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
 
-      <div className={classNames("", {
-        "tw-overflow-auto": isTabletOrMobile && isPortrait,
+      <div className={classNames("tw-flex tw-flex-col tw-h-fit tw-w-full tw-p-4", {
       })}>
-        {/* <DataTable
-          columns={columns}
-        /> */}
-        <div className="Example__container__document"
-        // ref={setContainerRef}
-        >
+        {displayData && !showLoading && (
           <Document
-          // file={file} 
-          // onLoadSuccess={onDocumentLoadSuccess} 
-          // options={options}
+            file={displayData}
+            onLoadSuccess={onDocumentLoadSuccess}
+            className="tw-w-full tw-h-full tw-border-2 tw-border-gray-300"
           >
-            {/* {Array.from(new Array(numPages), (el, index) => (
+
+            {Array.from(new Array(numPages), (el, index) => (
               <Page
                 key={`page_${index + 1}`}
                 pageNumber={index + 1}
-                width={containerWidth ? Math.min(containerWidth, maxWidth) : maxWidth}
+                width={isTabletOrMobile ? 800 : 1300}
+                className="tw-flex tw-w-full tw-h-full tw-justify-center"
               />
-            ))} */}
+            ))}
+
           </Document>
-        </div>
+        )}
       </div>
 
-      <div className="tw-p-4"
+      <div className="tw-p-4 tw-h-fit tw-w-full"
         ref={summarizeContent}
         tabIndex={0}
       >
@@ -209,6 +252,7 @@ const PostReport = () => {
           <ToTopButton topRef={topRef} />
         </FloatButton.Group>
       </Tooltip>
+      <Loading isShown={showLoading} />
     </div>
   );
 };
