@@ -153,22 +153,23 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "/usermanagement",
+    path: "/admin",
     element: <UserManagementPage />,
     children: [
       {
-        path: "",
+        path: "/admin/usermanagement",
         element: <UserManageTable />,
       },
     ],
   },
+
   {
     path: "/seowebsite",
     element: <SeoWebSitePage />,
     children: [
       {
-        path:"",
-        element: <SeoWebSite/>,
+        path: "",
+        element: <SeoWebSite />,
       }
     ]
   },

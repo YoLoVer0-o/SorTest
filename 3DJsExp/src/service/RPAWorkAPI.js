@@ -287,6 +287,153 @@ const RPAWorkAPI = {
   },
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  ////////////////////////////////////////tiktok/////////////////////////////////////////////////////////////////
+
+  ttGetAllWork: async (token, pageIndex) => {
+    try {
+      const response = await axios.get(
+        `http://192.168.10.112:8000/tiktok/status/?page=${pageIndex.current}&items_per_page=${pageIndex.pageSize}`
+        // {
+        //   headers: {
+        //     Authorization: "Bearer " + token,
+        //   },
+        // }
+      );
+      return response.data;
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
+    }
+  },
+
+  ttCreateURL: async (token, payload) => {
+    try {
+      const response = await axios.post(
+        `http://192.168.10.112:8000/tiktok/urls/`,
+        payload
+        // {
+        //   headers: {
+        //     Authorization: "Bearer " + token,
+        //   },
+        // }
+      );
+      return response;
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
+    }
+  },
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  ////////////////////////////////////////youtube/////////////////////////////////////////////////////////////////
+
+  ytGetAllWork: async (token, pageIndex) => {
+    try {
+      const response = await axios.get(
+        `http://192.168.10.112:8000/youtube/status/?page=${pageIndex.current}&items_per_page=${pageIndex.pageSize}`
+        // {
+        //   headers: {
+        //     Authorization: "Bearer " + token,
+        //   },
+        // }
+      );
+      return response.data;
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
+    }
+  },
+
+  ytCreateURL: async (token, payload) => {
+    try {
+      const response = await axios.post(
+        `http://192.168.10.112:8000/youtube/urls/`,
+        payload
+        // {
+        //   headers: {
+        //     Authorization: "Bearer " + token,
+        //   },
+        // }
+      );
+      return response;
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
+    }
+  },
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  ////////////////////////////////////////instagram/////////////////////////////////////////////////////////////////
+
+  igGetAllWork: async (token, pageIndex) => {
+    try {
+      const response = await axios.get(
+        `http://192.168.10.112:8000/ig/status/?page=${pageIndex.current}&items_per_page=${pageIndex.pageSize}`
+        // {
+        //   headers: {
+        //     Authorization: "Bearer " + token,
+        //   },
+        // }
+      );
+      return response.data;
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
+    }
+  },
+
+  igCreateURL: async (token, payload) => {
+    try {
+      const response = await axios.post(
+        `http://192.168.10.112:8000/ig/urls/`,
+        payload
+        // {
+        //   headers: {
+        //     Authorization: "Bearer " + token,
+        //   },
+        // }
+      );
+      return response;
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
+    }
+  },
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////
 };
 
 export default RPAWorkAPI;

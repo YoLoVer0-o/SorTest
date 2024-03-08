@@ -16,6 +16,8 @@ import {
   CloseOutlined,
   SlidersOutlined,
   TrademarkCircleOutlined,
+  CrownOutlined,
+  TeamOutlined,
 } from "@ant-design/icons";
 import classNames from "classnames";
 import PropTypes from "prop-types";
@@ -65,6 +67,8 @@ const MainLayout = (props) => {
     "/recommendation": "Recommendation",
     "/recommendation/similarpost": "ผลลัพธ์ของโพสต์ใกล้เคียง",
     "/recommendation/trending": "เนื้อหาที่กำลังได้รับความนิยม",
+    "/admin": "admin",
+    "/admin/usermanagement": "จัดการผู้ใช้งาน",
     "/seoWebSite": "SEO WebSite",
   };
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -120,11 +124,16 @@ const MainLayout = (props) => {
         // console.log("hit4");
         topLevelKeys.push("/postCreation");
         topLevelKeys.push(latestOpenKey);
-      } else if (latestOpenKey.startsWith("/seoWebSite")) {
-        // console.log("hit4");
-        topLevelKeys.push("/seoWebSite");
+      } else if (latestOpenKey.startsWith("/admin")) {
+        // console.log("hit5");
+        topLevelKeys.push("/admin");
         topLevelKeys.push(latestOpenKey);
-      } 
+      }
+      else if (latestOpenKey.startsWith("/account")) {
+        // console.log("hit6");
+        topLevelKeys.push("/account");
+        topLevelKeys.push(latestOpenKey);
+      }
       console.log(topLevelKeys);
       setOpenKeys(topLevelKeys);
     } else {
@@ -142,7 +151,8 @@ const MainLayout = (props) => {
       breadcrumbItems.some((item) => item.key.includes("/main")) ||
       breadcrumbItems.some((item) => item.key.includes("/recommendation")) ||
       breadcrumbItems.some((item) => item.key.includes("/postCreation")) ||
-      breadcrumbItems.some((item) => item.key.includes("/seowebsite"))
+      breadcrumbItems.some((item) => item.key.includes("/admin")) ||
+      breadcrumbItems.some((item) => item.key.includes("/account"))
     );
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -312,6 +322,17 @@ const MainLayout = (props) => {
                       key: "/postCreation/postStatus",
                       label: "สถานะการโพส",
                       className: "",
+                    },
+                  ],
+                },
+                {
+                  key: "/account",
+                  icon: <TeamOutlined />,
+                  label: "ข้อมูลบัญชี",
+                  children: [
+                    {
+                      key: "/account/manage",
+                      label: "ค้นหาและบริหารจัดการ",
                     },
                   ],
                 },
@@ -511,9 +532,15 @@ const MainLayout = (props) => {
                   ],
                 },
                 {
-                  key: "/usermanagement",
-                  icon: <SlidersOutlined />,
-                  label: "User Management",
+                  key: "/admin",
+                  icon: <CrownOutlined />,
+                  label: "Admin",
+                  children: [
+                    {
+                      key: "/admin/usermanagement",
+                      label: "User Management",
+                    },
+                  ],
                 },
                 {
                   key: "/seoWebSite",

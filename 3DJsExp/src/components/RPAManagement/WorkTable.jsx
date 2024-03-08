@@ -20,11 +20,12 @@ const WorkTable = () => {
 
     const [searchAccount, setSearchAccout] = useState("");
     const [searchTarget, setSearchTarget] = useState([]);
-    const [searchWork, setSearchWork] = useState([]);
+    const [searchWork, setSearchWork] = useState();
     const [modalToggle, setModalToggle] = useState(false);
     const [addModalToggle, setAddModalToggle] = useState(false);
     const [modalData, setModalData] = useState([]);
-    const [workData, setWorkData] = useState([]);
+    const [workData, setWorkData] = useState();
+    const [pageIndex, setPageIndex] = useState({ current: 1, pageSize: 10 });
 
     const [showLoading, setShowLoading] = useState(false);
 
@@ -68,6 +69,18 @@ const WorkTable = () => {
                 data = await RPAWorkAPI.fbGetActionLog(token)
                 setWorkData(data);
             }
+            else if (param.platform == "tiktok") {
+                data = await RPAWorkAPI.ttGetAllWork(token, pageIndex)
+                setWorkData(data);
+            }
+            else if (param.platform == "instagram") {
+                data = await RPAWorkAPI.igGetAllWork(token, pageIndex)
+                setWorkData(data);
+            }
+            else if (param.platform == "youtube") {
+                data = await RPAWorkAPI.ytGetAllWork(token, pageIndex)
+                setWorkData(data);
+            }
 
             // setBotData(data);
 
@@ -81,7 +94,12 @@ const WorkTable = () => {
     useEffect(() => {
         fetchWork()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [param.platform])
+
+    useEffect(() => {
+        console.log(columns);
+    }, [workData])
+
 
 
 
@@ -149,96 +167,148 @@ const WorkTable = () => {
 
 
     ////////////////////////////////////////////table//////////////////////////////////////////////////////////////
-    const columns = [
-        {
-            title: "",
-            dataIndex: "status",
-            key: "status",
-            align: "center",
-            width: 50,
-            className: "tw-text-amber-600",
-            render: (text, record) => (
-                <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
-                    <Tooltip title={record?.status}>
-                        <div className="tw-text-3xl">
-                            {record.status == "Done" ? <CheckCircleOutlined className="tw-text-green-600" /> : record.status == "Waiting" ? <PlayCircleOutlined className="tw-text-yellow-600" /> : <ExclamationCircleOutlined className="tw-text-red-600" />}
-                        </div>
-                    </Tooltip>
-                </div>
-            ),
-        },
-        // {
-        //     title: "id",
-        //     dataIndex: "id",
-        //     key: "id",
-        //     align: "center",
-        //     width: 50,
-        //     className: "tw-truncate",
-        // },
-        {
-            title: "botname",
-            dataIndex: "botname",
-            key: "botname",
-            align: "center",
-            width: 150,
-            className: "tw-truncate",
-            filteredValue: [searchAccount],
-            onFilter: (value, record) =>
-                String(record?.botname).toLowerCase().includes(value.toLowerCase()),
-        },
-        {
-            title: "actiontype",
-            dataIndex: "actiontype",
-            key: "actiontype",
-            align: "center",
-            width: 150,
-            className: "tw-text-amber-600",
-            filteredValue: [searchWork],
-            onFilter: (value, record) =>
-                value
-                    .split(",")
-                    .some((actiontype) => String(record?.actiontype).includes(actiontype)),
-        },
-        {
-            title: "post_url",
-            dataIndex: "post_url",
-            key: "post_url",
-            align: "center",
-            width: 150,
-            className: "tw-text-violet-600 tw-truncate",
-            filteredValue: [searchTarget],
-            onFilter: (value, record) =>
-                value
-                    .split(",")
-                    .every((target) => String(record?.target).includes(target)),
-        },
-        {
-            title: "timestamp",
-            dataIndex: "timestamp",
-            key: "timestamp",
-            align: "center",
-            width: 150,
-            className: "tw-truncate",
-        },
-        {
-            title: "",
-            dataIndex: "",
-            key: "",
-            align: "center",
-            width: 50,
-            className: "tw-text-blue-500 tw-text-2xl",
-            render: (text, record) => (
-                <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
-                    {
-                        param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" &&
-                        <Tooltip key={record.botname} title={"กดเพื่อแก้ไข"}>
-                            <EditOutlined onClick={() => showModal(record)} />
+    const columns = param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" ?
+        [
+            {
+                title: "",
+                dataIndex: "status",
+                key: "status",
+                align: "center",
+                width: 50,
+                className: "tw-text-amber-600",
+                render: (text, record) => (
+                    <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
+                        <Tooltip title={record?.status}>
+                            <div className="tw-text-3xl">
+                                {record.status == "Done" ? <CheckCircleOutlined className="tw-text-green-600" /> : record.status == "Waiting" ? <PlayCircleOutlined className="tw-text-yellow-600" /> : <ExclamationCircleOutlined className="tw-text-red-600" />}
+                            </div>
                         </Tooltip>
-                    }
-                </div>
-            ),
-        },
-    ];
+                    </div>
+                ),
+            },
+            // {
+            //     title: "id",
+            //     dataIndex: "id",
+            //     key: "id",
+            //     align: "center",
+            //     width: 50,
+            //     className: "tw-truncate",
+            // },
+            {
+                title: "botname",
+                dataIndex: "botname",
+                key: "botname",
+                align: "center",
+                width: 150,
+                className: "tw-truncate",
+                filteredValue: [searchAccount],
+                onFilter: (value, record) =>
+                    String(record?.botname).toLowerCase().includes(value.toLowerCase()),
+            },
+            {
+                title: "actiontype",
+                dataIndex: "actiontype",
+                key: "actiontype",
+                align: "center",
+                width: 150,
+                className: "tw-text-amber-600",
+                filteredValue: [searchWork],
+                onFilter: (value, record) =>
+                    value
+                        .split(",")
+                        .some((actiontype) => String(record?.actiontype).includes(actiontype)),
+            },
+            {
+                title: "post_url",
+                dataIndex: "post_url",
+                key: "post_url",
+                align: "center",
+                width: 150,
+                className: "tw-text-violet-600 tw-truncate",
+                filteredValue: [searchTarget],
+                onFilter: (value, record) =>
+                    value
+                        .split(",")
+                        .every((target) => String(record?.target).includes(target)),
+            },
+            {
+                title: "timestamp",
+                dataIndex: "timestamp",
+                key: "timestamp",
+                align: "center",
+                width: 150,
+                className: "tw-truncate",
+            },
+            {
+                title: "",
+                dataIndex: "",
+                key: "",
+                align: "center",
+                width: 50,
+                className: "tw-text-blue-500 tw-text-2xl",
+                render: (text, record) => (
+                    <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
+                        {
+                            param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" &&
+                            <Tooltip key={record.botname} title={"กดเพื่อแก้ไข"}>
+                                <EditOutlined onClick={() => showModal(record)} />
+                            </Tooltip>
+                        }
+                    </div>
+                ),
+            },
+        ] :
+        [
+            {
+                title: "status",
+                dataIndex: "status",
+                key: "status",
+                align: "center",
+                width: 150,
+                className: "tw-truncate",
+
+            },
+            {
+                title: "link",
+                dataIndex: "link",
+                key: "link",
+                align: "center",
+                width: 150,
+                className: "tw-text-violet-600 tw-truncate",
+                filteredValue: [searchTarget],
+                onFilter: (value, record) =>
+                    value
+                        .split(",")
+                        .every((target) => String(record?.link).includes(target)),
+            },
+            {
+                title: "datetime",
+                dataIndex: "datetime",
+                key: "datetime",
+                align: "center",
+                width: 150,
+                className: "tw-truncate",
+            },
+            {
+                title: "",
+                dataIndex: "",
+                key: "",
+                align: "center",
+                width: 50,
+                className: "tw-text-blue-500 tw-text-2xl",
+                render: (text, record) => (
+                    <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
+                        {
+                            param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" &&
+                            <Tooltip key={record.link} title={"กดเพื่อแก้ไข"}>
+                                <EditOutlined onClick={() => showModal(record)} />
+                            </Tooltip>
+                        }
+                    </div>
+                ),
+            },
+        ]
+        ;
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     return (
@@ -249,7 +319,7 @@ const WorkTable = () => {
             )}
         >
             <Loading isShown={showLoading} />
-            {workData.length > 0 &&
+            {workData?.bot_status?.length > 0 || workData?.length > 0 &&
                 <div
                     className={classNames(
                         "tw-flex tw-flex-row tw-max-w-full tw-justify-center tw-gap-2",
@@ -258,30 +328,34 @@ const WorkTable = () => {
                         }
                     )}
                 >
-                    <div className={classNames("tw-w-full", {})}>
-                        <p className="tw-text-lg">เลขบัญชี/ชื่อบัญชี:</p>
-                        <SearchBar
-                            useTextSearch={true}
-                            data={workData}
-                            onChangeSearch={setSearchAccout}
-                        />
-                    </div>
-                    <div className={classNames("tw-w-full", {})}>
-                        <p className="tw-text-lg">งาน:</p>
-                        <SearchBar
-                            useTagSearch={true}
-                            data={workData}
-                            onChangeFilter={setSearchWork}
-                            keyName={"actiontype"}
-                        />
-                    </div>
+                    {param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" &&
+                        <div className={classNames("tw-w-full", {})}>
+                            <p className="tw-text-lg">เลขบัญชี/ชื่อบัญชี:</p>
+                            <SearchBar
+                                useTextSearch={true}
+                                data={param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" ? workData : workData?.bot_status}
+                                onChangeSearch={setSearchAccout}
+                            />
+                        </div>
+                    }
+                    {param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" &&
+                        <div className={classNames("tw-w-full", {})}>
+                            <p className="tw-text-lg">งาน:</p>
+                            <SearchBar
+                                useTagSearch={true}
+                                data={param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" ? workData : workData?.bot_status}
+                                onChangeFilter={setSearchWork}
+                                keyName={"actiontype"}
+                            />
+                        </div>
+                    }
                     <div className={classNames("tw-w-full", {})}>
                         <p className="tw-text-lg">เป้าหมาย:</p>
                         <SearchBar
                             useTagSearch={true}
-                            data={workData}
+                            data={param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" ? workData : workData?.bot_status}
                             onChangeFilter={setSearchTarget}
-                            keyName={"post_url"}
+                            keyName={param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" ? "post_url" : "link"}
                         />
                     </div>
                 </div>
@@ -339,12 +413,12 @@ const WorkTable = () => {
                         "tw-overflow-auto tw-min-h-fit": isTabletOrMobile && isPortrait,
                     })}
                 >
-                    {workData.length > 0 &&
+                    {workData?.bot_status?.length > 0 || workData?.length > 0 &&
                         <DataTable
-                            columns={columns}
-                            data={workData}
-                            setPageSize={workMock.length}
-                            keyName={"timestamp"}
+                            columns={columns ? columns : columns}
+                            data={param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" ? workData : workData?.bot_status}
+                            setPageSize={param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" ? workData?.length : workData?.total_status}
+                            keyName={param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" ? "timestamp" : "datetime"}
                         />
                     }
                     {/* {modalToggle && (

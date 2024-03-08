@@ -1,18 +1,20 @@
 import { useState, useEffect } from "react";
 import { DataTable, Loading } from "../../utilities";
 import { useResponsive } from "../../hooks";
-import WordClouds from "../../assets/WordClouds";
 import classNames from "classnames";
 import { Tooltip } from 'antd';
-import { recmock } from "../../mock";
 import recommendAPI from "../../service/recommendAPI";
 import { useSelector } from 'react-redux'
 import { getLogin } from '../../libs/loginSlice'
+import dayjs from 'dayjs';
 
 const Trending = () => {
 
   const [displayData, setDisplayData] = useState([]);
+  const [dailyWordCloud, setDailyWordCloud] = useState("");
   const [showLoading, setShowLoading] = useState(false);
+  const [dailyHashTag, setDailyHashTag] = useState({});
+
 
   const {
     isTabletOrMobile,
@@ -22,6 +24,34 @@ const Trending = () => {
   } = useResponsive();
 
   const token = useSelector((state) => getLogin(state).token);
+
+  const fetchWordCloud = async () => {
+    try {
+      // setShowLoading(true);
+      const data = await recommendAPI.getWordCloud(dayjs().format('YYYY-MM-DD'), dayjs().format('YYYY-MM-DD'), "overall");
+      const blob = new Blob([data], { type: 'image/png' });
+      const url = URL.createObjectURL(blob);
+      setDailyWordCloud(url);
+    } catch (error) {
+      console.error('Error fetching bot config:', error);
+    }
+    // finally {
+    //     setShowLoading(false);
+    // }
+  }
+
+  const fetchHashTag = async () => {
+    try {
+      // setShowLoading(true);
+      const data = await recommendAPI.getHashTag();
+      setDailyHashTag(data);
+    } catch (error) {
+      console.error('Error fetching bot config:', error);
+    }
+    // finally {
+    //     setShowLoading(false);
+    // }
+  }
 
   const fetchEngagement = async () => {
     try {
@@ -37,10 +67,12 @@ const Trending = () => {
 
   useEffect(() => {
     fetchEngagement();
+    fetchWordCloud();
+    fetchHashTag();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const { ภาพรวม } = WordClouds;
   ///////////////////////////////////////////table///////////////////////////////////////////////////////////////
   const columns = [
     {
@@ -189,50 +221,53 @@ const Trending = () => {
       <Loading isShown={showLoading} />
       <div
         className={classNames("tw-flex tw-flex-row tw-border-2 tw-gap-4 tw-p-6 tw-my-4 ", {
-          "tw-overflow-auto": isTabletOrMobile && isPortrait,
+          // "tw-overflow-auto": isTabletOrMobile && isPortrait,
           "tw-flex-col": isTabletOrMobile,
+          "tw-h-4/5": !isMobile,
         })} >
-        <div className={classNames("tw-flex tw-flex-col tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
+        <div className={classNames("tw-flex tw-flex-col tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-2", {
           "tw-w-full": isTabletOrMobile,
           "tw-w-1/2": !isTabletOrMobile,
         })}>
           <p className="tw-text-lg">กลุ่มคำ</p>
-          <div className={classNames("", {
-            "tw-h-[16rem]": isMobile && isPortrait,
+          <div className={classNames("tw-w-fit", {
+            "tw-h-fit": isMobile && isPortrait,
             "tw-h-full": !isMobile || (isMobile && isLandscape),
           })}>
-            <img className="tw-object-fill tw-h-full tw-w-full" src={ภาพรวม} />
+            {dailyWordCloud && (
+              <img className="tw-h-full tw-object-contain"
+                src={dailyWordCloud}
+              />
+            )}
+            {!dailyWordCloud && <div className="tw-w-full tw-h-full">
+              <p className="tw-text-xl tw-font-bold">ไม่พบข้อมูล</p>
+            </div>
+            }
           </div>
         </div>
-        <div className="tw-flex tw-flex-col tw-w-full tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
+        <div
+          className={classNames("tw-flex tw-flex-col tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4",
+            {
+              "tw-w-full tw-h-1/2": isMobile && isPortrait,
+              "tw-w-1/2 tw-h-full": !isMobile,
+            })}>
           <p className="tw-text-lg">แฮชเเท็กที่ถูกใช้งานมากที่สุด</p>
-          <div className={classNames("tw-grid tw-w-full tw-h-full tw-justify-around tw-items-center tw-self-center tw-gap-4 tw-font-bold tw-text-blue-400", {
-            "tw-grid-cols-3 tw-text-xl": !(isMobile && isPortrait),
-            "tw-grid-cols-2 tw-text-md": isMobile && isPortrait,
+          <div className={classNames("tw-grid tw-h-full tw-w-full tw-justify-around tw-items-center tw-self-center tw-overflow-auto tw-gap-2", {
+            "tw-grid-cols-2": isMobile && isPortrait,
+            "tw-grid-cols-3": !isMobile || (isMobile && isLandscape),
           })}>
-            <p >#แอมมี่{ }</p>
-            <p >#คบกันตอนไหน{ }</p>
-            <p >#แบงค์ศุภณัฐ{ }</p>
-            <p >#แม่แตงโม</p>
-            <p >#สมุดหนังหมาHayDay{ }</p>
-            <p >#dek67{ }</p>
-            <p >#กรรมกรข่าวคุยนอกจอ{ }</p>
-            <p >#BuildJakapan{ }</p>
-            <p>#엔시티존{ }</p>
-            <p >#ทาลอนเก่งอะ{ }</p>
-            <p >#ตํานานวินเมธวิน</p>
-            <p >#อิงฟ้ามหาชน</p>
-            <p >#cnfact</p>
-            <p >#ชาล็อตออสติน</p>
-            <p >#นิทานพันดาว</p>
-            <p >#30บาทรักษาทุกที่</p>
-            <p >#เงินเฟ้อ</p>
-            <p >#ขอแจมอีกที</p>
+            {dailyHashTag?.hashtag?.length > 0 && dailyHashTag.hashtag.map((hashtag, i) =>
+              <p key={i} className="tw-text-lg tw-w-full tw-h-full tw-font-bold tw-text-blue-400">{hashtag}</p>
+            )}
           </div>
+          {dailyHashTag?.length < 1 && <div className="tw-w-full tw-h-full tw-items-center">
+            <p className="tw-text-xl tw-font-bold">ไม่พบข้อมูล</p>
+          </div>
+          }
         </div>
       </div>
 
-      <div className={classNames("", {
+      <div className={classNames("tw-h-full", {
         "tw-overflow-auto": isTabletOrMobile && isPortrait,
       })}>
         <DataTable
