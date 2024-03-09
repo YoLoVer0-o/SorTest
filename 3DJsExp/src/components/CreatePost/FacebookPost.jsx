@@ -344,18 +344,22 @@ const FacebookPost = (props) => {
   useEffect(() => {
     const upLoadFile = async () => {
       const formData = new FormData();
-      receiveFile.map((file) => {
-        formData.append("files", file.file);
-      });
-      try {
-        const filesNamehandle = await postCreateAPI.fbUploadFile(
-          formData,
-          getToken
-        );
-        setFilesName(filesNamehandle.file_name);
-        // console.log(data);
-      } catch (error) {
-        console.error("Error", error);
+      if (receiveFile.length > 0) {
+        receiveFile.map((file) => {
+          formData.append("files", file.file);
+        });
+        try {
+          const filesNamehandle = await postCreateAPI.fbUploadFile(
+            formData,
+            getToken
+          );
+          setFilesName(filesNamehandle.file_name);
+          // console.log(data);
+        } catch (error) {
+          console.error("Error", error);
+        }
+      } else {
+        return null;
       }
     };
     upLoadFile();
@@ -375,17 +379,18 @@ const FacebookPost = (props) => {
         gif: null,
       });
     } else if (identifier === "CreateGroupPost") {
-      setPostToGroup({
-        botname: selectedAcc,
-        url: groupUrl,
-        group: null, /////////////////////รอ API group bot///////////////////
-        text: message,
-        photo_video: filesName, /////////////////////รอ API อัพโหลดไฟล์ แปลงเป็นBinary///////////////////////////////////////////
-        tag_people: JSON.stringify(tagFriends), /////////////////เอาเเค่ชื่อfacebook/////////////////////////
-        feeling: null,
-        check_in: null,
-        gif: null,
-      });
+      setPostToGroup(
+        {
+          botname: selectedAcc,
+          url: groupUrl,
+          text: message,
+          photo_video: filesName,
+          tag_people: JSON.stringify(tagFriends),
+          feeling: null,
+          check_in: null,
+          gif: null,
+        }
+      );
     }
   }, [message, tagFriends, emotionAct, selectedAcc, filesName, url, groupUrl]);
 
@@ -1529,8 +1534,11 @@ const FacebookPost = (props) => {
         }
       )}
     >
-      <div> <TimeSetPost /></div>
-  
+      <div>
+        {" "}
+        <TimeSetPost />
+      </div>
+
       <SwitchTransition mode="out-in">
         <CSSTransition
           key={currentId}

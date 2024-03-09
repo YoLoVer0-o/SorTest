@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Select } from "antd";
+import { Select, Input } from "antd";
 import FacebookPost from "./FacebookPost";
 import TwitterPost from "./TwitterPost";
 import { useResponsive } from "../../hooks";
@@ -26,6 +26,7 @@ const CreatePost = () => {
   const [botData, setBotData] = useState("");
   const [selectedBot, setSelectedBot] = useState("");
   const [selectedGroup, setSelectedGroup] = useState("");
+  const [inputValue, setInputValue] = useState("");
 
   const handlePlatformSelect = (platform) => {
     setSelectedPlatform(platform);
@@ -116,72 +117,30 @@ const CreatePost = () => {
             ]}
           />
         </div>
-        {selectedGroupType === "Single User" && (
-          <div
-            className={classNames("tw-w-[30%]", {
-              "tw-w-full": isMobile && isPortrait,
-            })}
-          >
-            <p>บัญชีที่ใช้โพสต์ :</p>
-            <Select
-              showSearch
-              defaultValue={selectedBot}
-              onChange={selectUser}
-              className="tw-w-full"
-              value={selectedBot}
-              options={userOptions}
-              filterOption={(input, option) =>
-                (option?.label ?? "").includes(input)
-              }
-              filterSort={(optionA, optionB) =>
-                (optionA?.label ?? "")
-                  .toLowerCase()
-                  .localeCompare((optionB?.label ?? "").toLowerCase())
-              }
-            />
-          </div>
-        )}
 
-        {/* {selectedGroupType === "Group" && (
-          <div
-            className={classNames("tw-w-[30%]", {
-              "tw-w-full": isMobile && isPortrait,
-            })}
-          >
-            <p>กลุ่มที่ใช้โพสต์ :</p>
-            <Select
-              value={selectedGroup}
-              onChange={selectGrouptaget}
-              className="tw-w-full"
-              // value={}
-              options={groupOptions}
-            />
-          </div>
-        )} */}
-
-        {/* <div
-          className={classNames("tw-w-[20%]", {
+        <div
+          className={classNames("tw-w-[30%]", {
             "tw-w-full": isMobile && isPortrait,
           })}
         >
-          <p>เลื่อกกลุ่ม :</p>
+          <p>บัญชีที่ใช้โพสต์ :</p>
           <Select
-            defaultValue="Single User"
-            onChange={selectGroup}
+            showSearch
+            defaultValue={selectedBot}
+            onChange={selectUser}
             className="tw-w-full"
-            value={selectedGroupType}
-            options={[
-              {
-                value: "Single User",
-                label: "Single User",
-              },
-              {
-                value: "Group",
-                label: "Group",
-              },
-            ]}
+            value={selectedBot}
+            options={userOptions}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
+            filterSort={(optionA, optionB) =>
+              (optionA?.label ?? "")
+                .toLowerCase()
+                .localeCompare((optionB?.label ?? "").toLowerCase())
+            }
           />
-        </div> */}
+        </div>
       </div>
 
       <div

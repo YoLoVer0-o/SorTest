@@ -22,19 +22,7 @@ const CreateGroupPost = () => {
   const [botData, setBotData] = useState("");
   const [selectedBot, setSelectedBot] = useState("");
   const inputRef = useRef(null);
-  const onNameChange = (event) => {
-    setHandleUrl(event.target.value);
-  };
 
-  const addItem = (e) => {
-    e.preventDefault();
-    setItems([...items, handleUrl || `New item ${index++}`]);
-    setHandleUrl("");
-    setTimeout(() => {
-      inputRef.current?.focus();
-    }, 0);
-  };
-  console.log(handleUrl);
   const handlePlatformSelect = (platform) => {
     setSelectedPlatform(platform);
   };
@@ -43,10 +31,10 @@ const CreateGroupPost = () => {
     setSelectedBot(user);
   };
 
-  const handleGroupSelect = (group) => {
-    setSelectedGroup(group);
-  };
-
+  const handleSelectGroup = (urlGroup) => {
+    setSelectedGroup(urlGroup)
+  }
+console.log(selectedGroup)
   let selectedComponent;
 
   if (selectedPlatform === "Twitter") {
@@ -56,7 +44,7 @@ const CreateGroupPost = () => {
       <FacebookPost
         handelBotData={botData}
         selectUser={selectedBot}
-        groupUrl={handleUrl}
+        groupUrl={selectedGroup}
         identifier="CreateGroupPost"
       />
     );
@@ -65,7 +53,7 @@ const CreateGroupPost = () => {
       <FacebookPost
         handelBotData={botData}
         selectUser={selectedBot}
-        groupUrl={handleUrl}
+        groupUrl={selectedGroup}
         identifier="CreateGroupPost"
       />
     ); //////////////////////////ส่งprops /////////////////////////มา
@@ -79,7 +67,6 @@ const CreateGroupPost = () => {
         const data = await postCreateAPI.fbGetBotConfig(getToken);
         setBotData(data);
         setSelectedBot(data[0].botname);
-        setSelectedGroup(data[0].groups);
       } catch (error) {
         console.error("Error fetching bot config:", error);
       }
@@ -95,6 +82,13 @@ const CreateGroupPost = () => {
       }))
     : [];
 
+  console.log(handleUrl);
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      setItems([...items, handleUrl]);
+    }
+  };
+  console.log(items);
   return (
     <div className="tw-w-screen tw-h-full tw-max-h-full tw-gap-y-5 tw-p-4 tw-overflow-auto tw-flex tw-flex-col tw-items-center">
       <div className="tw-flex tw-justify-center ">CreateGroupPost</div>
@@ -128,10 +122,10 @@ const CreateGroupPost = () => {
                   value: "Facebook",
                   label: "Facebook",
                 },
-                {
-                  value: "Twitter",
-                  label: "Twitter",
-                },
+                // {
+                //   value: "Twitter",
+                //   label: "Twitter",
+                // },
               ]}
             />
           </div>
@@ -178,60 +172,26 @@ const CreateGroupPost = () => {
         >
           <p>โพสไปที่กลุ่ม :</p>
           <Select
+            showSearch
+            onSelect={handleSelectGroup}
+            onSearch={(e) => setHandleUrl(e)}
+            onKeyDown={handleKeyPress}
             className="tw-w-full"
             placeholder="กรอก Url กลุ่ม"
-            dropdownRender={(menu) => (
-              <>
-                {menu}
-                <Divider
-                  style={{
-                    margin: "8px 0",
-                  }}
-                />
-                <Space
-                  className="tw-"
-                  style={{
-                    padding: "0 8px 4px",
-                  }}
-                >
-                  <Input
-                    placeholder="กรอกเพิ่ม Url กลุ่ม"
-                    ref={inputRef}
-                    value={handleUrl}
-                    onChange={onNameChange}
-                    onKeyDown={(e) => e.stopPropagation()}
-                  />
-                  <Button type="text" icon={<PlusOutlined />} onClick={addItem}>
-                    เพิ่ม
-                  </Button>
-                </Space>
-              </>
-            )}
+            optionFilterProp="children"
+            filterOption={(input, option) =>
+              (option?.label ?? "").includes(input)
+            }
+            filterSort={(optionA, optionB) =>
+              (optionA?.label ?? "")
+                .toLowerCase()
+                .localeCompare((optionB?.label ?? "").toLowerCase())
+            }
             options={items.map((item) => ({
               label: item,
               value: item,
             }))}
           />
-          {/* <Select
-            defaultValue="A"
-            showSearch
-            onChange={handleGroupSelect}
-            className="tw-w-full"
-            options={[
-              {
-                value: "A",
-                label: "A",
-              },
-              {
-                value: "B",
-                label: "B",
-              },
-              {
-                value: "C",
-                label: "C",
-              },
-            ]}
-          /> */}
         </div>
       </div>
 

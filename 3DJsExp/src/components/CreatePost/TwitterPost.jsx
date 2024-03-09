@@ -6,15 +6,14 @@ import { useResponsive } from "../../hooks";
 import { BsGlobeAsiaAustralia, BsEmojiSmile } from "react-icons/bs";
 import { LuUserCheck2 } from "react-icons/lu";
 import { MdOutlineVerified } from "react-icons/md";
-import { HiOutlineAtSymbol, HiOutlineGif } from "react-icons/hi2";
+import { HiOutlineAtSymbol } from "react-icons/hi2";
 import { SlPicture } from "react-icons/sl";
 import { LiaPollHSolid, LiaWindowClose } from "react-icons/lia";
 import { TbCalendarTime } from "react-icons/tb";
-import { Select, Button, Form, Input, DatePicker, TimePicker } from "antd";
+import { Select, Button, Form, Input } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import FileUpLoader from "../../utilities/FileUpLoader";
 import TimeSetPost from "../../utilities/TimeSetPost";
-import locale from "antd/es/date-picker/locale/th_TH";
 import "dayjs/locale/th";
 import "./Trainsition.css";
 import {
@@ -349,7 +348,6 @@ const TwitterPost = () => {
                               {
                                 required: true,
                                 whitespace: true,
-                               
                               },
                             ]}
                             noStyle
@@ -401,7 +399,7 @@ const TwitterPost = () => {
                 options={dateOptionPole}
                 className="tw-w-full"
               />
-                
+
               <Select
                 defaultValue={hoursOptionPole[0]}
                 onChange={handleChange}
