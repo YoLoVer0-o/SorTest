@@ -1,17 +1,13 @@
 import { useState, useEffect } from "react";
 import { SearchBar, VerticalBarChart, HorizontalBarChart, DoughnutChart, Loading } from "../../utilities";
-import { sentimentAll, sentimentPos, socialPlatform } from "../../mock";
 import { useResponsive } from "../../hooks";
 import { Button, Tooltip } from "antd";
 import { FilePdfOutlined, SendOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-// import ReadMoreReact from 'read-more-react';
 import ClampLines from "react-clamp-line";
 import overallP from "../../assets/PostPic/overallP.jpg";
 import SocialIcons from "../../assets/SocialIcons";
-import PostPics from "../../assets/PostPics";
-import WordClouds from "../../assets/WordClouds";
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 dayjs.extend(isSameOrBefore)
@@ -20,17 +16,20 @@ dayjs.extend(isSameOrAfter)
 import dashBoardAPI from "../../service/dashBoardAPI";
 import { useSelector } from 'react-redux'
 import { getLogin } from '../../libs/loginSlice'
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from 'react-responsive-carousel';
 
 const Dashboard = () => {
 
     // const [searchTag, setSearchTag] = useState([]);
+
     const [searchDate, setSearchDate] = useState([dayjs().format('YYYY-MM-DD'), dayjs().format('YYYY-MM-DD')]);
 
     const [dailyPosts, setDailyPosts] = useState([]);
 
     const [dailySentiment, setDailySentiment] = useState([]);
 
-    const [postImage, setPostImage] = useState("");
+    const [postImage, setPostImage] = useState([]);
 
     const [dailyStat, setDailyStat] = useState({});
 
@@ -48,31 +47,33 @@ const Dashboard = () => {
 
     const fetchPost = async (start, end) => {
         try {
-            setShowLoading(true);
+            // setShowLoading(true);
             const data = await dashBoardAPI.getAllDailyPost(start, end);
             setDailyPosts(data);
         } catch (error) {
             console.error('Error fetching bot config:', error);
-        } finally {
-            setShowLoading(false);
         }
+        // finally {
+        //     setShowLoading(false);
+        // }
     }
 
     const fetchSentiment = async (start, end) => {
         try {
-            setShowLoading(true);
+            // setShowLoading(true);
             const data = await dashBoardAPI.getAllSentiment(start, end);
             setDailySentiment(data);
         } catch (error) {
             console.error('Error fetching bot config:', error);
-        } finally {
-            setShowLoading(false);
         }
+        // finally {
+        //     setShowLoading(false);
+        // }
     }
 
     const fetchStat = async (start, end) => {
         try {
-            setShowLoading(true);
+            // setShowLoading(true);
             const payload = {
                 date: [
                     start,
@@ -83,26 +84,28 @@ const Dashboard = () => {
             setDailyStat(data);
         } catch (error) {
             console.error('Error fetching bot config:', error);
-        } finally {
-            setShowLoading(false);
         }
+        // finally {
+        //     setShowLoading(false);
+        // }
     }
 
-    const fetchHashTag = async (start, end) => {
+    const fetchHashTag = async () => {
         try {
-            setShowLoading(true);
-            const data = await dashBoardAPI.getHashTag(start, end);
+            // setShowLoading(true);
+            const data = await dashBoardAPI.getHashTag();
             setDailyHashTag(data);
         } catch (error) {
             console.error('Error fetching bot config:', error);
-        } finally {
-            setShowLoading(false);
         }
+        // finally {
+        //     setShowLoading(false);
+        // }
     }
 
     const fetchSocial = async (start, end) => {
         try {
-            setShowLoading(true);
+            // setShowLoading(true);
             const payload = {
                 date: [
                     start,
@@ -113,40 +116,30 @@ const Dashboard = () => {
             setDailySocial(Object.entries(data).map(([key, value]) => ({ key, value })).sort((a, b) => b.value - a.value));
         } catch (error) {
             console.error('Error fetching bot config:', error);
-        } finally {
-            setShowLoading(false);
         }
+        // finally {
+        //     setShowLoading(false);
+        // }
     }
 
     const fetchWordCloud = async (start, end) => {
         try {
-            setShowLoading(true);
+            // setShowLoading(true);
             const data = await dashBoardAPI.getWordCloud(start, end, "overall");
             const blob = new Blob([data], { type: 'image/png' });
             const url = URL.createObjectURL(blob);
             setDailyWordCloud(url);
         } catch (error) {
             console.error('Error fetching bot config:', error);
-        } finally {
-            setShowLoading(false);
         }
-    }
-
-    const fetchPostImage = async (id) => {
-        try {
-            setShowLoading(true);
-            const data = await dashBoardAPI.getPostImage(id);
-            setPostImage(data);
-        } catch (error) {
-            console.error('Error fetching bot config:', error);
-        } finally {
-            setShowLoading(false);
-        }
+        // finally {
+        //     setShowLoading(false);
+        // }
     }
 
     const fetchMaxEngagement = async (start, end) => {
         try {
-            setShowLoading(true);
+            // setShowLoading(true);
             const payload = {
                 platform: "facebook",
                 date: [
@@ -156,44 +149,60 @@ const Dashboard = () => {
             }
             const data = await dashBoardAPI.getMaxEngagement(payload);
             setDailyMaxEngagement(data[0]);
+            if (data[0]?.pictures) {
+                fetchPostImage({ id: data[0].pictures })
+            }
         } catch (error) {
             console.error('Error fetching bot config:', error);
-        } finally {
-            setShowLoading(false);
         }
+        // finally {
+        //     setShowLoading(false);
+        // }
     }
+
+    const fetchPostImage = async (id) => {
+        try {
+            // setShowLoading(true);
+            const data = await dashBoardAPI.getPostImage(id);
+            setPostImage(data);
+        } catch (error) {
+            console.error('Error fetching bot config:', error);
+        }
+        // finally {
+        //     setShowLoading(false);
+        // }
+    }
+
+
 
     useEffect(() => {
         if (searchDate?.length > 0) {
-            fetchPost(searchDate[0], searchDate[1])
-            fetchSentiment(searchDate[0], searchDate[1])
-            fetchWordCloud(searchDate[0], searchDate[1])
-            fetchStat(searchDate[0], searchDate[1])
-            fetchHashTag(searchDate[0], searchDate[1])
-            fetchSocial(searchDate[0], searchDate[1])
-            fetchMaxEngagement(searchDate[0], searchDate[1])
+            setShowLoading(true);
+            Promise.all([
+                fetchPost(searchDate[0], searchDate[1]),
+                fetchSentiment(searchDate[0], searchDate[1]),
+                fetchWordCloud(searchDate[0], searchDate[1]),
+                fetchStat(searchDate[0], searchDate[1]),
+                fetchHashTag(),
+                fetchSocial(searchDate[0], searchDate[1]),
+                fetchMaxEngagement(searchDate[0], searchDate[1])
+            ]).then(() => {
+                setShowLoading(false);
+            }).catch((error) => {
+                console.error('Error during fetch:', error);
+            });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchDate])
 
-    useEffect(() => {
-        console.log(dailyMaxEngagement);
-        if (dailyMaxEngagement?.pictures) {
-            fetchPostImage(dailyMaxEngagement.pictures)
-        }
-    }, [dailyMaxEngagement])
-
-    useEffect(() => {
-        console.log(postImage);
-    }, [postImage]);
-
-
+    // useEffect(() => {
+    //     console.log(dailyMaxEngagement);
+    //     if (dailyMaxEngagement?.pictures) {
+    //         fetchPostImage(dailyMaxEngagement.pictures)
+    //     }
+    // }, [dailyMaxEngagement])
 
     const { isTabletOrMobile, isTablet, isMobile, isPortrait, isLandscape } = useResponsive();
-
-    const { ภาพรวม } = WordClouds;
-
-    const { overall } = PostPics;
-
 
     ///////////////////////////////////icons render logic///////////////////////////////////////////////////////////////////////
     const { facebook, instagram, twitter, tiktok, youtube, social_media } = SocialIcons;
@@ -292,11 +301,6 @@ const Dashboard = () => {
             return "#0284c7";
         }
     };
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    //////////////////////////////////////////////////read more////////////////////////////////////////////////////////
-    const testText = "เงินดิจิตอล 1 หมื่นบาท ยังไม่ถึงไหน!รมช.คลังบอกกฤษฎีกายังตีความร่างพ.ร.บ.เงินกู้ 5แสนล้านไม่เสร็จ คาดได้คำตอบช่วงเดือนม.ค.นี้#อนุวัตจัดให้"
-    // const readMore = <p className="tw-text-blue-500 tw-cursor-pointer">อ่านเพิ่มเติม</p>
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     //////////////////////////////////////////postBar////////////////////////////////////////////////////////////////
@@ -566,31 +570,15 @@ const Dashboard = () => {
                         </div>
                         <div className="tw-flex tw-flex-col tw-h-full tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
                             <p className="tw-text-lg">แฮชเเท็กที่ถูกใช้งานมากที่สุด</p>
-                            <div className="tw-grid tw-grid-cols-3 tw-w-full tw-h-full tw-justify-around tw-items-center tw-self-center tw-gap-4">
-                                {dailyHashTag.hashtag?.length > 0 && dailyHashTag.hashtag.map((hashtag, i) => <p key={i} className="tw-text-xl tw-font-bold tw-text-blue-400">{hashtag}</p>)}
-                                {/* <p className="tw-text-xl tw-font-bold tw-text-blue-400">#แอมมี่{ }</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#คบกันตอนไหน{ }</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#แบงค์ศุภณัฐ{ }</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#แม่แตงโม</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#สมุดหนังหมาHayDay{ }</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#dek67{ }</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#กรรมกรข่าวคุยนอกจอ{ }</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#BuildJakapan{ }</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#엔시티존{ }</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#ทาลอนเก่งอะ{ }</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#ตํานานวินเมธวิน</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#อิงฟ้ามหาชน</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#cnfact</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#ชาล็อตออสติน</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#นิทานพันดาว</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#30บาทรักษาทุกที่</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#เงินเฟ้อ</p>
-                                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#ขอแจมอีกที</p> */}
-                                {dailyHashTag.hashtag?.length < 1 && <div className="tw-w-full tw-h-full tw-items-center">
-                                    <p className="tw-text-xl tw-font-bold">ไม่พบข้อมูล</p>
-                                </div>
-                                }
+                            <div className="tw-grid tw-grid-cols-2 tw-w-full tw-h-full tw-justify-around tw-items-center tw-self-center tw-gap-2">
+                                {dailyHashTag?.length > 0 && dailyHashTag.map((hashtag, i) =>
+                                    <p key={i} className="tw-text-md tw-font-bold tw-text-blue-400">{hashtag.hashtag}</p>
+                                )}
                             </div>
+                            {dailyHashTag?.length < 1 && <div className="tw-w-full tw-h-full tw-items-center">
+                                <p className="tw-text-xl tw-font-bold">ไม่พบข้อมูล</p>
+                            </div>
+                            }
                         </div>
                     </div>
                 </div>
@@ -608,7 +596,6 @@ const Dashboard = () => {
                         })}>
                             {dailyWordCloud && (
                                 <img className="tw-object-fill tw-h-full tw-w-full"
-                                    // src={ภาพรวม}
                                     src={dailyWordCloud}
                                 />
                             )}
@@ -618,7 +605,6 @@ const Dashboard = () => {
                             }
                         </div>
                     </div>
-
                     <div className={classNames("tw-flex tw-flex-col tw-h-fit tw-object-contain tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
                         "tw-w-full": isTabletOrMobile,
                         "tw-w-1/2": !isTabletOrMobile,
@@ -647,18 +633,23 @@ const Dashboard = () => {
                                             text={dailyMaxEngagement?.post ? dailyMaxEngagement?.post : ""}
                                             id='really-unique-id'
                                             type='html'
-                                            lines={3}
+                                            lines={1}
                                             ellipsis='...'
                                             moreText={<p className="tw-text-blue-500">เพิ่มเติม</p>}
                                             lessText={<p className="tw-text-blue-500">น้อยลง</p>}
-                                            className=''
-                                            innerElement='p'
                                         />
                                     }
                                     <div className={classNames("tw-flex tw-justify-center tw-h-96", {
                                     })}>
-                                        {postImage &&
-                                            <img className="tw-object-scale-down" src={postImage} />
+                                        {postImage.length > 0 &&
+                                            <Carousel
+                                                className="tw-h-fit tw-w-fit"
+                                                showThumbs={false}
+                                            >
+                                                {postImage.map((image, i) =>
+                                                    <img key={i} className="tw-object-scale-down" src={image} />
+                                                )}
+                                            </Carousel>
                                         }
                                     </div>
                                 </div>
@@ -678,7 +669,6 @@ const Dashboard = () => {
                         </div>
                         }
                     </div>
-
                 </div>
             </div>
         </div >

@@ -20,6 +20,8 @@ const UserManageTable = () => {
     const [searchVal, setSearchVal] = useState('');
     const [userData, setUserData] = useState([]);
     const [editUser, setEditUser] = useState({});
+    const [allRoles, setAllRoles] = useState([]);
+    const [searchRoles, setSearchRoles] = useState([]);
     const [pageIndex, setPageIndex] = useState({ current: 1, pageSize: 5 });
     const [showLoading, setShowLoading] = useState(false);
 
@@ -39,6 +41,25 @@ const UserManageTable = () => {
             console.error('Error fetching bot config:', error);
         } finally {
             setShowLoading(false);
+        }
+    }
+
+    const fetchRole = async () => {
+        try {
+            // setShowLoading(true);
+
+            const data = await UserManageAPI.getAllRole(token)
+            setAllRoles(data.map((data) => (
+                {
+                    label: data.role_name,
+                    value: data.role_id,
+                }
+            )));
+
+        } catch (error) {
+            console.error('Error fetching bot config:', error);
+        } finally {
+            // setShowLoading(false);
         }
     }
 
@@ -151,7 +172,9 @@ const UserManageTable = () => {
             className: 'tw-text-amber-600',
             filteredValue: [searchVal],
             onFilter: (value, record) => (
-                String(record?.name).toLowerCase().includes(value.toLowerCase())
+                String(record?.firstname).toLowerCase().includes(value.toLowerCase()) ||
+                String(record?.lastname).toLowerCase().includes(value.toLowerCase()) ||
+                String(record?.username).toLowerCase().includes(value.toLowerCase())
             ),
             render: (text, record) => (
                 <p className="">
@@ -181,6 +204,11 @@ const UserManageTable = () => {
             align: "center",
             width: 100,
             className: 'tw-text-violet-600',
+            filteredValue: [searchRoles],
+            onFilter: (value, record) => (
+                value.split(`,`).some((roles) => String(record?.roles_name).toLowerCase().includes(roles.toLowerCase()))
+                // console.log(value)
+            ),
             render: (text, record) => (
                 <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
                     <div className="tw-text-3xl">
@@ -188,6 +216,7 @@ const UserManageTable = () => {
                     </div>
                 </div>
             ),
+
         },
         // {
         //     title: 'อนุญาติให้ใช้งาน',
@@ -253,20 +282,41 @@ const UserManageTable = () => {
 
     useEffect(() => {
         fetchUser();
+        fetchRole();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-y-auto', {})}>
             <Loading isShown={showLoading} />
-            <div className="tw-flex tw-flex-col tw-justify-center tw-w-full tw-px-4">
-                <p className="tw-text-lg">คำค้นหา:</p>
-                <SearchBar
-                    data={userManageMock}
-                    useTextSearch={true}
-                    onChangeSearch={setSearchVal}
-                    keyName={"userName"}
-                />
+            <div
+                className={classNames(
+                    "tw-flex tw-flex-row tw-max-w-full tw-justify-center tw-gap-2",
+                    {
+                        "tw-flex-col": isTabletOrMobile,
+                    }
+                )}
+            >
+                <div className="tw-flex tw-flex-col tw-justify-center tw-w-full tw-px-4">
+                    <p className="tw-text-lg">คำค้นหา:</p>
+                    <SearchBar
+                        data={userData}
+                        useTextSearch={true}
+                        onChangeSearch={setSearchVal}
+                        keyName={"userName"}
+                    />
+                </div>
+                <div className="tw-flex tw-flex-col tw-justify-center tw-w-full tw-px-4">
+                    <p className="tw-text-lg">บทบาท:</p>
+                    <SearchBar
+                        useTagSearch={true}
+                        data={allRoles}
+                        onChangeFilter={setSearchRoles}
+                        useOwnData={true}
+                        ownKeyNameLabel={"label"}
+                        ownKeyNameValue={"label"}
+                    />
+                </div>
             </div>
             <div className="tw-flex tw-flex-col tw-w-full tw-h-full tw-gap-4 tw-py-2">
                 <div className="tw-flex tw-w-full tw-h-fit tw-justify-end tw-px-8">

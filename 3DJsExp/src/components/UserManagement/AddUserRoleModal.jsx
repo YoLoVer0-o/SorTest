@@ -184,7 +184,7 @@ const AddUserRoleModal = (props) => {
                                     <Input.Password className='tw-h-full tw-w-full' placeholder="รหัสผ่าน" required={true} autoComplete='off' />
                                 </Form.Item>
                             </div>
-                            <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
+                            {/* <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
                                 "tw-w-56": isMobile,
                             })}>
                                 <p>Role:</p>
@@ -204,7 +204,7 @@ const AddUserRoleModal = (props) => {
                                         options={allRoles}
                                     />
                                 </Form.Item>
-                            </div>
+                            </div> */}
                         </div>
 
                         <div className='tw-flex tw-flex-row tw-w-full tw-h-full tw-gap-4'>

@@ -1,5 +1,5 @@
-import { useState, useRef } from "react";
-import { DataTable, SearchBar } from "../../utilities";
+import { useState, useRef, useEffect } from "react";
+import { DataTable, SearchBar, Loading } from "../../utilities";
 import { workMock } from "../../mock";
 import { useResponsive } from "../../hooks";
 import { AddWorkModal, EditWorkModal } from "..";
@@ -24,6 +24,9 @@ const WorkTable = () => {
     const [modalToggle, setModalToggle] = useState(false);
     const [addModalToggle, setAddModalToggle] = useState(false);
     const [modalData, setModalData] = useState([]);
+    const [workData, setWorkData] = useState([]);
+
+    const [showLoading, setShowLoading] = useState(false);
 
     const { isTabletOrMobile, isMobile, isPortrait, isLandscape } = useResponsive();
 
@@ -52,18 +55,74 @@ const WorkTable = () => {
 
     const param = useParams();
 
+    const fetchWork = async () => {
+        try {
+            setShowLoading(true);
+
+            let data
+            if (param.platform == "facebook") {
+                data = await RPAWorkAPI.fbGetActionLog(token)
+                setWorkData(data);
+            }
+            else if (param.platform == "X") {
+                data = await RPAWorkAPI.fbGetActionLog(token)
+                setWorkData(data);
+            }
+
+            // setBotData(data);
+
+        } catch (error) {
+            console.error('Error fetching bot config:', error);
+        } finally {
+            setShowLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        fetchWork()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+
+
     const downloadFile = async () => {
         try {
-            await RPAWorkAPI.fbDownloadWork().then((response) => {
-                const blobUrl = window.URL.createObjectURL(new Blob([response]));
-                const link = document.createElement('a');
-                link.href = blobUrl;
-                link.setAttribute('download', "work_format.xlsx");
-                document.body.appendChild(link);
-                link.click();
-                window.URL.revokeObjectURL(blobUrl);
-                // console.log(response);
-            })
+
+            if (param.platform == "facebook") {
+                await RPAWorkAPI.fbDownloadWork().then((response) => {
+                    const blobUrl = window.URL.createObjectURL(new Blob([response]));
+                    const link = document.createElement('a');
+                    link.href = blobUrl;
+                    link.setAttribute('download', "work_format.xlsx");
+                    document.body.appendChild(link);
+                    link.click();
+                    window.URL.revokeObjectURL(blobUrl);
+                    // console.log(response);
+                })
+            }
+            else if (param.platform == "X") {
+                await RPAWorkAPI.twDownloadWork().then((response) => {
+                    const blobUrl = window.URL.createObjectURL(new Blob([response]));
+                    const link = document.createElement('a');
+                    link.href = blobUrl;
+                    link.setAttribute('download', "work_format.xlsx");
+                    document.body.appendChild(link);
+                    link.click();
+                    window.URL.revokeObjectURL(blobUrl);
+                    // console.log(response);
+                })
+            }
+
+            // await RPAWorkAPI.fbDownloadWork().then((response) => {
+            //     const blobUrl = window.URL.createObjectURL(new Blob([response]));
+            //     const link = document.createElement('a');
+            //     link.href = blobUrl;
+            //     link.setAttribute('download', "work_format.xlsx");
+            //     document.body.appendChild(link);
+            //     link.click();
+            //     window.URL.revokeObjectURL(blobUrl);
+            //     // console.log(response);
+            // })
 
         } catch (error) {
             console.error('Error downloading file:', error);
@@ -79,7 +138,13 @@ const WorkTable = () => {
     const handleChange = async (event) => {
         const fileUploaded = event.target.files[0];
         // console.log(fileUploaded);
-        await RPAWorkAPI.fbUploadWork(fileUploaded).then((response) => { console.log(response); })
+        if (param.platform == "facebook") {
+            await RPAWorkAPI.fbUploadWork(fileUploaded).then((response) => { console.log(response); })
+        }
+        else if (param.platform == "X") {
+            await RPAWorkAPI.twUploadWork(fileUploaded).then((response) => { console.log(response); })
+        }
+        // await RPAWorkAPI.fbUploadWork(fileUploaded).then((response) => { console.log(response); })
     };
 
 
@@ -96,7 +161,7 @@ const WorkTable = () => {
                 <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
                     <Tooltip title={record?.status}>
                         <div className="tw-text-3xl">
-                            {record.status == "succeed" ? <CheckCircleOutlined className="tw-text-green-600" /> : record.status == "in progress" ? <PlayCircleOutlined className="tw-text-blue-600" /> : <ExclamationCircleOutlined className="tw-text-red-600" />}
+                            {record.status == "Done" ? <CheckCircleOutlined className="tw-text-green-600" /> : record.status == "Waiting" ? <PlayCircleOutlined className="tw-text-yellow-600" /> : <ExclamationCircleOutlined className="tw-text-red-600" />}
                         </div>
                     </Tooltip>
                 </div>
@@ -111,20 +176,20 @@ const WorkTable = () => {
         //     className: "tw-truncate",
         // },
         {
-            title: "accName",
-            dataIndex: "acc_name",
-            key: "acc_name",
+            title: "botname",
+            dataIndex: "botname",
+            key: "botname",
             align: "center",
             width: 150,
             className: "tw-truncate",
             filteredValue: [searchAccount],
             onFilter: (value, record) =>
-                String(record?.acc_name).toLowerCase().includes(value.toLowerCase()),
+                String(record?.botname).toLowerCase().includes(value.toLowerCase()),
         },
         {
-            title: "work",
-            dataIndex: "work",
-            key: "work",
+            title: "actiontype",
+            dataIndex: "actiontype",
+            key: "actiontype",
             align: "center",
             width: 150,
             className: "tw-text-amber-600",
@@ -132,12 +197,12 @@ const WorkTable = () => {
             onFilter: (value, record) =>
                 value
                     .split(",")
-                    .some((work) => String(record?.work).includes(work)),
+                    .some((actiontype) => String(record?.actiontype).includes(actiontype)),
         },
         {
-            title: "target",
-            dataIndex: "target",
-            key: "target",
+            title: "post_url",
+            dataIndex: "post_url",
+            key: "post_url",
             align: "center",
             width: 150,
             className: "tw-text-violet-600 tw-truncate",
@@ -148,17 +213,17 @@ const WorkTable = () => {
                     .every((target) => String(record?.target).includes(target)),
         },
         {
-            title: "succeed",
-            dataIndex: "succeed",
-            key: "succeed",
+            title: "timestamp",
+            dataIndex: "timestamp",
+            key: "timestamp",
             align: "center",
             width: 150,
             className: "tw-truncate",
         },
         {
             title: "",
-            dataIndex: "id",
-            key: "id",
+            dataIndex: "",
+            key: "",
             align: "center",
             width: 50,
             className: "tw-text-blue-500 tw-text-2xl",
@@ -166,7 +231,7 @@ const WorkTable = () => {
                 <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
                     {
                         param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" &&
-                        <Tooltip key={record.id} title={"กดเพื่อแก้ไข"}>
+                        <Tooltip key={record.botname} title={"กดเพื่อแก้ไข"}>
                             <EditOutlined onClick={() => showModal(record)} />
                         </Tooltip>
                     }
@@ -183,50 +248,53 @@ const WorkTable = () => {
                 {}
             )}
         >
-            <div
-                className={classNames(
-                    "tw-flex tw-flex-row tw-max-w-full tw-justify-center tw-gap-2",
-                    {
-                        "tw-flex-col": isTabletOrMobile,
-                    }
-                )}
-            >
-                <div className={classNames("tw-w-full", {})}>
-                    <p className="tw-text-lg">เลขบัญชี/ชื่อบัญชี:</p>
-                    <SearchBar
-                        useTextSearch={true}
-                        data={workMock}
-                        onChangeSearch={setSearchAccout}
-                    />
+            <Loading isShown={showLoading} />
+            {workData.length > 0 &&
+                <div
+                    className={classNames(
+                        "tw-flex tw-flex-row tw-max-w-full tw-justify-center tw-gap-2",
+                        {
+                            "tw-flex-col": isTabletOrMobile,
+                        }
+                    )}
+                >
+                    <div className={classNames("tw-w-full", {})}>
+                        <p className="tw-text-lg">เลขบัญชี/ชื่อบัญชี:</p>
+                        <SearchBar
+                            useTextSearch={true}
+                            data={workData}
+                            onChangeSearch={setSearchAccout}
+                        />
+                    </div>
+                    <div className={classNames("tw-w-full", {})}>
+                        <p className="tw-text-lg">งาน:</p>
+                        <SearchBar
+                            useTagSearch={true}
+                            data={workData}
+                            onChangeFilter={setSearchWork}
+                            keyName={"actiontype"}
+                        />
+                    </div>
+                    <div className={classNames("tw-w-full", {})}>
+                        <p className="tw-text-lg">เป้าหมาย:</p>
+                        <SearchBar
+                            useTagSearch={true}
+                            data={workData}
+                            onChangeFilter={setSearchTarget}
+                            keyName={"post_url"}
+                        />
+                    </div>
                 </div>
-                <div className={classNames("tw-w-full", {})}>
-                    <p className="tw-text-lg">งาน:</p>
-                    <SearchBar
-                        useTagSearch={true}
-                        data={workMock}
-                        onChangeFilter={setSearchWork}
-                        keyName={"work"}
-                    />
-                </div>
-                <div className={classNames("tw-w-full", {})}>
-                    <p className="tw-text-lg">เป้าหมาย:</p>
-                    <SearchBar
-                        useTagSearch={true}
-                        data={workMock}
-                        onChangeFilter={setSearchTarget}
-                        keyName={"target"}
-                    />
-                </div>
-            </div>
+            }
             <div className={classNames("tw-flex tw-flex-col tw-h-full tw-w-full tw-gap-2", {})}>
                 <div className={classNames("tw-flex tw-flex-row tw-h-fit tw-w-full tw-justify-between", {
                 })}>
-                    <Button
+                    {/* <Button
                         className={classNames("tw-self-center tw-text-white tw-border-black tw-border-2 tw-bg-blue-600 tw-drop-shadow-md hover:tw-bg-white hover:tw-border-blue-600 hover:tw-text-blue-600", {
                             "tw-w-full": isMobile && isPortrait,
                         })}>
                         ทำงานทั้งหมด
-                    </Button>
+                    </Button> */}
                     {param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" &&
                         <div className={classNames("tw-flex tw-flex-row tw-h-fit tw-my-2", {
                             "tw-flex-col tw-w-full tw-gap-2": isMobile && isPortrait,
@@ -271,20 +339,22 @@ const WorkTable = () => {
                         "tw-overflow-auto tw-min-h-fit": isTabletOrMobile && isPortrait,
                     })}
                 >
-                    <DataTable
-                        columns={columns}
-                        data={workMock}
-                        setPageSize={workMock.length}
-                        keyName={"id"}
-                    />
-                    {modalToggle && (
+                    {workData.length > 0 &&
+                        <DataTable
+                            columns={columns}
+                            data={workData}
+                            setPageSize={workMock.length}
+                            keyName={"timestamp"}
+                        />
+                    }
+                    {/* {modalToggle && (
                         <EditWorkModal
                             modalToggle={modalToggle}
                             handleCancel={handleCancel}
                             modalData={modalData}
                             token={token}
                         />
-                    )}
+                    )} */}
                     {addModalToggle && (
                         <AddWorkModal
                             modalToggle={addModalToggle}

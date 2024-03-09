@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { DataTable, SearchBar, Loading } from "../../utilities";
-import { postMock } from "../../mock";
 import { useResponsive } from "../../hooks";
 import { Button, Input, Switch, Tooltip, InputNumber, Select } from "antd";
 import {
@@ -50,27 +49,29 @@ const PostTable = () => {
     const fetchTags = async () => {
 
         try {
-            setShowLoading(true);
+            // setShowLoading(true);
             const data = await postReportAPI.getTags();
             setDisplayTag(data);
         } catch (error) {
             console.error('Error fetching bot config:', error);
-        } finally {
-            setShowLoading(false);
         }
+        // finally {
+        //     setShowLoading(false);
+        // }
     }
 
     const fetchFBid = async () => {
 
         try {
-            setShowLoading(true);
+            // setShowLoading(true);
             const data = await postReportAPI.getFB();
             setDisplayFBid(data);
         } catch (error) {
             console.error('Error fetching bot config:', error);
-        } finally {
-            setShowLoading(false);
         }
+        // finally {
+        //     setShowLoading(false);
+        // }
     }
 
     const fetchPost = async () => {
@@ -97,13 +98,17 @@ const PostTable = () => {
     }
 
     useEffect(() => {
+
         fetchPost()
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pageIndex])
 
     useEffect(() => {
+
         fetchTags()
         fetchFBid()
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -159,19 +164,6 @@ const PostTable = () => {
             align: "center",
             width: 150,
             className: 'tw-text-lime-600',
-            // filteredValue: [searchDate],
-            // onFilter: (value, record) => {
-            //     if (value != undefined && value != null && value != "" && value != 'undefined') {
-            //         let startDate = String(value?.split(",")[0])
-            //         let endDate = String(value?.split(",")[1])
-            //         let recordDate = dayjs(record?.update).format('YYYY-MM-DD')
-            //         if (dayjs(recordDate).isSameOrBefore(endDate) && dayjs(recordDate).isSameOrAfter(startDate)) {
-            //             return record?.update
-            //         }
-            //     } else {
-            //         return record?.update
-            //     }
-            // },
         },
         {
             title: 'รายละเอียด',
@@ -210,11 +202,24 @@ const PostTable = () => {
         },
         {
             title: 'หมวดหมู่',
-            dataIndex: '',
-            key: '',
+            dataIndex: 'class',
+            key: 'class',
             align: "center",
             width: 100,
-            className: 'tw-truncate',
+            className: 'tw-text-amber-600',
+            render: (text, record) => (
+                <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
+                    {record?.class.map((bot_class, i) =>
+                        <Tooltip title={bot_class} key={i}>
+                            <div className={
+                                classNames("tw-rounded-md tw-border-2 tw-border-black tw-w-max tw-text-center tw-text-white tw-p-2 tw-bg-blue-600", {
+                                })} >
+                                {bot_class}
+                            </div>
+                        </Tooltip>
+                    )}
+                </div>
+            ),
         },
         {
             title: 'Link',
@@ -240,10 +245,11 @@ const PostTable = () => {
 
     ////////////////////////////////////////to repot and gen report//////////////////////////////////////////////////////////////////
     const toReport = (data) => {
-        navigate("/postlog/report", { state: data })
+        navigate("/postlog/report", { state: data[0]?._id })
     }
 
     const genReport = async () => {
+        console.log(selectedRows);
         toReport(selectedRows);
     }
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -438,13 +444,13 @@ const PostTable = () => {
                 "tw-overflow-auto": isTabletOrMobile && isPortrait,
             })}>
                 <DataTable
-                    data={displayData.data}
+                    data={displayData.data?.length > 0 ? displayData.data : []}
                     columns={columns}
                     setPageSize={pageSize}
                     onRowsSelected={setSelectedRows}
                     useRowSelection={true}
-                    keyName={"_id"}
-                    totalPages={displayData.total}
+                    keyName={displayData.data?.length > 0 ? "_id" : ""}
+                    totalPages={displayData.data?.length > 0 ? displayData.total : 0}
                     sendPages={setPageIndex}
                 />
             </div>

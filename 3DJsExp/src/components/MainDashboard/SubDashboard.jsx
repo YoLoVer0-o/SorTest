@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { SearchBar, VerticalBarChart, DoughnutChart, Loading } from "../../utilities";
-import { sentimentAll, sentimentPos, dashboardMock } from "../../mock";
+import { dashboardMock } from "../../mock";
 import { useResponsive } from "../../hooks";
 import { Button, Tooltip } from "antd";
 import { FilePdfOutlined, SendOutlined } from "@ant-design/icons";
@@ -9,7 +9,6 @@ import classNames from "classnames";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 // import ReadMoreReact from 'read-more-react';
 import ClampLines from "react-clamp-line";
-import WordClouds from "../../assets/WordClouds";
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 dayjs.extend(isSameOrBefore)
@@ -18,10 +17,13 @@ dayjs.extend(isSameOrAfter)
 import dashBoardAPI from "../../service/dashBoardAPI";
 import { useSelector } from 'react-redux'
 import { getLogin } from '../../libs/loginSlice'
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from 'react-responsive-carousel';
 
 const SubDashboard = () => {
 
   // const [searchTag, setSearchTag] = useState([]);
+
   const [searchDate, setSearchDate] = useState([dayjs().format('YYYY-MM-DD'), dayjs().format('YYYY-MM-DD')]);
 
   const { isTabletOrMobile, isTablet, isMobile, isPortrait, isLandscape } = useResponsive();
@@ -32,7 +34,9 @@ const SubDashboard = () => {
 
   const [dailyWordCloud, setDailyWordCloud] = useState("");
 
-  const [postImage, setPostImage] = useState("");
+  const [dailyHashTag, setDailyHashTag] = useState({});
+
+  const [postImage, setPostImage] = useState([]);
 
   const [dailyStat, setDailyStat] = useState({});
 
@@ -44,45 +48,48 @@ const SubDashboard = () => {
 
   const fetchPost = async (start, end) => {
     try {
-      setShowLoading(true);
+      // setShowLoading(true);
       const data = await dashBoardAPI.getTopicDailyPost(start, end, param.topic.toLowerCase());
       setDailyPosts(data);
     } catch (error) {
       console.error('Error fetching bot config:', error);
-    } finally {
-      setShowLoading(false);
     }
+    // finally {
+    //   setShowLoading(false);
+    // }
   }
 
   const fetchSentiment = async (start, end) => {
     try {
-      setShowLoading(true);
+      // setShowLoading(true);
       const data = await dashBoardAPI.getTopicSentiment(start, end, param.topic.toLowerCase());
       setDailySentiment(data);
     } catch (error) {
       console.error('Error fetching bot config:', error);
-    } finally {
-      setShowLoading(false);
     }
+    // finally {
+    //   setShowLoading(false);
+    // }
   }
 
   const fetchWordCloud = async (start, end) => {
     try {
-      setShowLoading(true);
+      // setShowLoading(true);
       const data = await dashBoardAPI.getWordCloud(start, end, param.topic.toLowerCase());
       const blob = new Blob([data], { type: 'image/png' });
       const url = URL.createObjectURL(blob);
       setDailyWordCloud(url);
     } catch (error) {
       console.error('Error fetching bot config:', error);
-    } finally {
-      setShowLoading(false);
     }
+    // finally {
+    //   setShowLoading(false);
+    // }
   }
 
   const fetchStat = async (start, end) => {
     try {
-      setShowLoading(true);
+      // setShowLoading(true);
       const payload = {
         date: [
           start,
@@ -94,26 +101,28 @@ const SubDashboard = () => {
       setDailyStat(data);
     } catch (error) {
       console.error('Error fetching bot config:', error);
-    } finally {
-      setShowLoading(false);
     }
+    // finally {
+    //   setShowLoading(false);
+    // }
   }
 
   const fetchPostImage = async (id) => {
     try {
-      setShowLoading(true);
+      // setShowLoading(true);
       const data = await dashBoardAPI.getPostImage(id);
       setPostImage(data);
     } catch (error) {
       console.error('Error fetching bot config:', error);
-    } finally {
-      setShowLoading(false);
     }
+    // finally {
+    //   setShowLoading(false);
+    // }
   }
 
   const fetchMaxEngagement = async (start, end) => {
     try {
-      setShowLoading(true);
+      // setShowLoading(true);
       const payload = {
         platform: "facebook",
         topic: [param.topic.toLowerCase()],
@@ -124,33 +133,50 @@ const SubDashboard = () => {
       }
       const data = await dashBoardAPI.getMaxEngagement(payload);
       setDailyMaxEngagement(data[0]);
+      if (data[0]?.pictures) {
+        fetchPostImage({ id: data[0].pictures })
+      }
     } catch (error) {
       console.error('Error fetching bot config:', error);
     } finally {
-      setShowLoading(false);
+      // setShowLoading(false);
     }
+  }
+
+  const fetchHashTag = async () => {
+    try {
+      // setShowLoading(true);
+      const data = await dashBoardAPI.getHashTag();
+      setDailyHashTag(data);
+    } catch (error) {
+      console.error('Error fetching bot config:', error);
+    }
+    // finally {
+    //   setShowLoading(false);
+    // }
   }
 
   useEffect(() => {
     if (searchDate?.length > 0) {
-      fetchPost(searchDate[0], searchDate[1])
-      fetchSentiment(searchDate[0], searchDate[1])
-      fetchWordCloud(searchDate[0], searchDate[1])
-      fetchStat(searchDate[0], searchDate[1])
-      fetchMaxEngagement(searchDate[0], searchDate[1])
+      setShowLoading(true);
+      Promise.all([
+        fetchPost(searchDate[0], searchDate[1]),
+        fetchSentiment(searchDate[0], searchDate[1]),
+        fetchWordCloud(searchDate[0], searchDate[1]),
+        fetchStat(searchDate[0], searchDate[1]),
+        fetchMaxEngagement(searchDate[0], searchDate[1]),
+        fetchHashTag()
+      ]).then(() => {
+        setShowLoading(false);
+      }).catch((error) => {
+        console.error('Error during fetch:', error);
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchDate])
 
-  useEffect(() => {
-    console.log(dailyMaxEngagement);
-    if (dailyMaxEngagement?.pictures) {
-      fetchPostImage(dailyMaxEngagement.pictures)
-    }
-  }, [dailyMaxEngagement])
 
   ///////////////////////////////////WordClouds logic///////////////////////////////////////////////////////////////////////
-  const { กองทัพ, รัฐบาล, ชุมนุม, สถาบัน } = WordClouds;
 
   const param = useParams();
 
@@ -170,82 +196,9 @@ const SubDashboard = () => {
     }
   };
 
-  // const setData = () => {
-  //   let data = {
-  //     post: 0,
-  //     user: 0,
-  //     react: 0,
-  //     avg: 0
-  //   }
-  //   if (param.topic == "Army") {
-  //     data = {
-  //       post: 578,
-  //       user: 209,
-  //       react: 566000,
-  //       avg: 39000
-  //     }
-
-  //   }
-  //   else if (param.topic == "Government") {
-  //     data = {
-  //       post: 288,
-  //       user: 157,
-  //       react: 416000,
-  //       avg: 32000
-  //     }
-
-  //   }
-  //   else if (param.topic == "Rally") {
-  //     data = {
-  //       post: 147,
-  //       user: 105,
-  //       react: 112000,
-  //       avg: 12000
-  //     }
-
-  //   }
-  //   else if (param.topic == "Royal") {
-  //     data = {
-  //       post: 976,
-  //       user: 289,
-  //       react: 976000,
-  //       avg: 89000
-  //     }
-
-  //   }
-  //   setPageData(data)
-  // };
-
-
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   const dashboardData = dashboardMock.filter(data => data.topic == (param.topic))[0];
-
-  // const [displayData, setDisplayedData] = useState(dashboardData)
-
-  // useEffect(() => {
-  //   setData()
-  //   setDisplayedData(dashboardData)
-  // }, [dashboardData, param.topic])
-
-
-
-  // const sentWordClouds = () => {
-
-  //   if (param.topic == "Army") {
-  //     return กองทัพ
-  //   }
-  //   else if (param.topic == "Government") {
-  //     return รัฐบาล
-  //   }
-  //   else if (param.topic == "Rally") {
-  //     return ชุมนุม
-  //   }
-  //   else if (param.topic == "Royal") {
-  //     return สถาบัน
-  //   }
-  // };
-
 
   //////////////////////////////////////////color render////////////////////////////////////////////////////////////////
   const colorSet = (data) => {
@@ -456,26 +409,15 @@ const SubDashboard = () => {
           })}>
             <div className="tw-flex tw-flex-col tw-h-full tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
               <p className="tw-text-lg">แฮชเเท็กที่ถูกใช้งานมากที่สุด</p>
-              <div className="tw-grid tw-grid-cols-3 tw-w-full tw-h-full tw-justify-around tw-items-center tw-self-center tw-gap-4">
-                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#แอมมี่{ }</p>
-                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#คบกันตอนไหน{ }</p>
-                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#แบงค์ศุภณัฐ{ }</p>
-                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#แม่แตงโม</p>
-                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#สมุดหนังหมาHayDay{ }</p>
-                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#dek67{ }</p>
-                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#กรรมกรข่าวคุยนอกจอ{ }</p>
-                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#BuildJakapan{ }</p>
-                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#엔시티존{ }</p>
-                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#ทาลอนเก่งอะ{ }</p>
-                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#ตํานานวินเมธวิน</p>
-                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#อิงฟ้ามหาชน</p>
-                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#cnfact</p>
-                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#ชาล็อตออสติน</p>
-                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#นิทานพันดาว</p>
-                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#30บาทรักษาทุกที่</p>
-                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#เงินเฟ้อ</p>
-                <p className="tw-text-xl tw-font-bold tw-text-blue-400">#ขอแจมอีกที</p>
+              <div className="tw-grid tw-grid-cols-2 tw-w-full tw-h-full tw-justify-around tw-items-center tw-self-center tw-gap-2">
+                {dailyHashTag?.length > 0 && dailyHashTag.map((hashtag, i) =>
+                  <p key={i} className="tw-text-md tw-font-bold tw-text-blue-400">{hashtag.hashtag}</p>
+                )}
               </div>
+              {dailyHashTag?.length < 1 && <div className="tw-w-full tw-h-full tw-items-center">
+                <p className="tw-text-xl tw-font-bold">ไม่พบข้อมูล</p>
+              </div>
+              }
             </div>
           </div>
         </div>
@@ -530,18 +472,23 @@ const SubDashboard = () => {
                       text={dailyMaxEngagement?.post ? dailyMaxEngagement?.post : ""}
                       id='really-unique-id'
                       type='html'
-                      lines={3}
+                      lines={1}
                       ellipsis='...'
                       moreText={<p className="tw-text-blue-500">เพิ่มเติม</p>}
                       lessText={<p className="tw-text-blue-500">น้อยลง</p>}
-                      className=''
-                      innerElement='p'
                     />
                   }
                   <div className={classNames("tw-flex tw-justify-center tw-h-96", {
                   })}>
-                    {postImage &&
-                      <img className="tw-object-scale-down" src={postImage} />
+                    {postImage.length > 0 &&
+                      <Carousel
+                        className="tw-h-fit tw-w-fit"
+                        showThumbs={false}
+                      >
+                        {postImage.map((image, i) =>
+                          <img key={i} className="tw-object-scale-down" src={image} />
+                        )}
+                      </Carousel>
                     }
                   </div>
                 </div>
