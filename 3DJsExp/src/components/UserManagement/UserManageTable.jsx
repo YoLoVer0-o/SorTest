@@ -319,23 +319,28 @@ const UserManageTable = () => {
                 </div>
             </div>
             <div className="tw-flex tw-flex-col tw-w-full tw-h-full tw-gap-4 tw-py-2">
-                <div className="tw-flex tw-w-full tw-h-fit tw-justify-end tw-px-8">
-                    <Button
-                        className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
-                            "tw-w-full": isMobile && isPortrait,
-                        })}
-                        onClick={() => showModal()}
-                    >
-                        สร้างบทบาทใหม่
-                    </Button>
-                    <Button
-                        className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
-                            "tw-w-full": isMobile && isPortrait,
-                        })}
-                        onClick={() => showUserModal()}
-                    >
-                        เพิ่มผู้ใช้ใหม่
-                    </Button>
+                <div className="tw-flex tw-w-full tw-h-fit tw-justify-between">
+                    <div className="tw-w-full tw-h-fit">
+                        <p className="tw-font-bold tw-text-lg">จำนวนบัญชี: {userData?.length}</p>
+                    </div>
+                    <div className="tw-flex tw-w-full tw-h-fit tw-justify-end tw-px-8 tw-gap-2">
+                        <Button
+                            className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
+                                "tw-w-full": isMobile && isPortrait,
+                            })}
+                            onClick={() => showModal()}
+                        >
+                            สร้างบทบาทใหม่
+                        </Button>
+                        <Button
+                            className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
+                                "tw-w-full": isMobile && isPortrait,
+                            })}
+                            onClick={() => showUserModal()}
+                        >
+                            เพิ่มผู้ใช้ใหม่
+                        </Button>
+                    </div>
                 </div>
                 <div className={classNames("tw-border-2 tw-rounded-md", {
                     "tw-overflow-auto": isTabletOrMobile && isPortrait,

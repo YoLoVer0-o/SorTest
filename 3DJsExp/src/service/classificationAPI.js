@@ -24,7 +24,7 @@ const classificationAPI = {
         `http://192.168.10.121:8000/contentkeyword/categories/${cid}/keywords?page=${page}&items_per_page=${item}`
       );
       return response.data;
-    }  catch (error) {
+    } catch (error) {
       // console.log(error);
       if (error.response) {
         console.log(error.response.data);
@@ -42,7 +42,7 @@ const classificationAPI = {
         cat
       );
       return response;
-    }  catch (error) {
+    } catch (error) {
       // console.log(error);
       if (error.response) {
         console.log(error.response.data);
@@ -55,12 +55,12 @@ const classificationAPI = {
 
   addKeyWord: async (cid, keywords) => {
     try {
-      const response = await axios.put(
+      const response = await axios.post(
         `http://192.168.10.121:8000/contentkeyword/categories/${cid}/add_keyword`,
         keywords
       );
       return response;
-    }  catch (error) {
+    } catch (error) {
       // console.log(error);
       if (error.response) {
         console.log(error.response.data);
@@ -73,7 +73,7 @@ const classificationAPI = {
 
   removeKeyWord: async (cid, keywords) => {
     try {
-      const response = await axios.put(
+      const response = await axios.delete(
         `http://192.168.10.121:8000/contentkeyword/categories/${cid}/remove_keyword?keyword=${keywords}`
       );
       return response;
