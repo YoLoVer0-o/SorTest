@@ -91,7 +91,7 @@ console.log(selectedGroup)
   console.log(items);
   return (
     <div className="tw-w-screen tw-h-full tw-max-h-full tw-gap-y-5 tw-p-4 tw-overflow-auto tw-flex tw-flex-col tw-items-center">
-      <div className="tw-flex tw-justify-center ">CreateGroupPost</div>
+      {/* <div className="tw-flex tw-justify-center ">CreateGroupPost</div> */}
 
       <div
         className={classNames(

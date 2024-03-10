@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const twitterCreatePostAPI = {
-  ////////////////////////////////////////twitter/////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   twitterPostAction: async (post, token) => {
     try {
@@ -25,7 +25,6 @@ const twitterCreatePostAPI = {
       throw error;
     }
   },
-
 
   twitterUploadFile: async (files,token) => {
     try {
@@ -54,3 +53,7 @@ const twitterCreatePostAPI = {
 };
 
 export default twitterCreatePostAPI;
+
+
+
+

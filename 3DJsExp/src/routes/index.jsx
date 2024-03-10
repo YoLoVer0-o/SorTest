@@ -19,6 +19,7 @@ import {
   CreateGroupPost,
   UserManageTable,
   SeoWebSite,
+  AccountInfomation,
 } from "../components";
 import {
   LoginPage,
@@ -31,6 +32,7 @@ import {
   RecommendationPage,
   UserManagementPage,
   SeoWebSitePage,
+  AccountInfomationPage,
 } from "../pages";
 
 export const router = createBrowserRouter([
@@ -81,6 +83,16 @@ export const router = createBrowserRouter([
       {
         path: "/postCreation/postStatus",
         element: <StatusTable />,
+      },
+    ],
+  },
+  {
+    path: "/accountInfomation",
+    element: <AccountInfomationPage />,
+    children: [
+      {
+        path: "",
+        element: <AccountInfomation />,
       },
     ],
   },

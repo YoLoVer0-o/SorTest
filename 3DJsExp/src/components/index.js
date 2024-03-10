@@ -32,6 +32,7 @@ import AddRoleModal from "./UserManagement/AddRoleModal";
 import AddUserRoleModal from "./UserManagement/AddUserRoleModal";
 import EditUserRoleModal from "./UserManagement/EditUserRoleModal";
 import SeoWebSite from "./SeoWebSite/SeoWebSite";
+import AccountInfomation from "./AccountInfomation/AccountInfomation";
 
 export {
   MainLayout,
@@ -68,4 +69,5 @@ export {
   AddUserRoleModal,
   EditUserRoleModal,
   SeoWebSite,
+  AccountInfomation,
 };

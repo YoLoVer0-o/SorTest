@@ -168,11 +168,11 @@ const TwitterPost = (props) => {
         title: "โพสต์สําเร็จ ",
         icon: "success",
       });
-      setTwitterPostContent({
-        botname: "",
-        text: "",
-        photo_video: [],
-      });
+      // setTwitterPostContent({
+      //   botname: "",
+      //   text: "",
+      //   photo_video: [],
+      // });
     } catch (error) {
       Swal.fire({
         title: "เกิดข้อผิดพลาด",
@@ -183,8 +183,7 @@ const TwitterPost = (props) => {
     }
   };
 
-  console.log(fileName);
-  console.log(twitterPostContent);
+  // console.log(getToken.token);
   const contentArray = [
     {
       id: 1,

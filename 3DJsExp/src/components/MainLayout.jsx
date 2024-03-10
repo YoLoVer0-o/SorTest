@@ -16,6 +16,7 @@ import {
   CloseOutlined,
   SlidersOutlined,
   TrademarkCircleOutlined,
+  ReconciliationOutlined,
 } from "@ant-design/icons";
 import classNames from "classnames";
 import PropTypes from "prop-types";
@@ -66,6 +67,7 @@ const MainLayout = (props) => {
     "/recommendation/similarpost": "ผลลัพธ์ของโพสต์ใกล้เคียง",
     "/recommendation/trending": "เนื้อหาที่กำลังได้รับความนิยม",
     "/seoWebSite": "SEO WebSite",
+    "/accountInfomation": "ข้อมูลบัญชี/ค้นหาและบริหารจัดการ",
   };
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -121,10 +123,15 @@ const MainLayout = (props) => {
         topLevelKeys.push("/postCreation");
         topLevelKeys.push(latestOpenKey);
       } else if (latestOpenKey.startsWith("/seoWebSite")) {
-        // console.log("hit4");
+        // console.log("hit5");
         topLevelKeys.push("/seoWebSite");
         topLevelKeys.push(latestOpenKey);
+      } else if (latestOpenKey.startsWith("/accountInfomation")) {
+        // console.log("hit5");
+        topLevelKeys.push("/accountInfomation");
+        topLevelKeys.push(latestOpenKey);
       } 
+      
       console.log(topLevelKeys);
       setOpenKeys(topLevelKeys);
     } else {
@@ -142,7 +149,8 @@ const MainLayout = (props) => {
       breadcrumbItems.some((item) => item.key.includes("/main")) ||
       breadcrumbItems.some((item) => item.key.includes("/recommendation")) ||
       breadcrumbItems.some((item) => item.key.includes("/postCreation")) ||
-      breadcrumbItems.some((item) => item.key.includes("/seowebsite"))
+      breadcrumbItems.some((item) => item.key.includes("/seowebsite"))||
+      breadcrumbItems.some((item) => item.key.includes("/accountInfomation"))
     );
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -164,8 +172,6 @@ const MainLayout = (props) => {
     console.log(isLogin);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLogin]);
-
-
 
   return (
     <Layout
@@ -314,6 +320,12 @@ const MainLayout = (props) => {
                       className: "",
                     },
                   ],
+                },
+                {
+                  key: "/accountInfomation",
+                  icon: <ReconciliationOutlined />,
+                  label: "ข้อมูลบัญชี/ค้นหาและบริหารจัดการ",
+                  className: "",
                 },
                 {
                   key: "/RPA",

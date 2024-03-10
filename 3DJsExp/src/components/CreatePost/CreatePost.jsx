@@ -24,7 +24,7 @@ const CreatePost = () => {
   const [platform, setPlatform] = useState();
   const [botData, setBotData] = useState("");
   const [selectedBot, setSelectedBot] = useState("");
-// const [selectedGroup , setSelectedGroup] =useState()
+  // const [selectedGroup , setSelectedGroup] =useState()
 
   const handlePlatformSelect = (platform) => {
     setSelectedPlatform(platform);
@@ -82,7 +82,7 @@ const CreatePost = () => {
 
   return (
     <div className="tw-w-screen tw-h-full tw-max-h-full tw-gap-y-5 tw-p-4 tw-overflow-auto tw-flex tw-flex-col tw-items-center">
-      <div className="tw-flex tw-justify-center ">Createpost</div>
+      {/* <div className="tw-flex tw-justify-center ">Createpost</div> */}
       <div
         className={classNames(
           "tw-flex tw-flex-row tw-w-full tw-h-40 tw-justify-center tw-p-6 tw-items-center tw-gap-x-8 tw-bg-white tw-shadow-[0_3px_10px_rgb(0,0,0,0.2)]",

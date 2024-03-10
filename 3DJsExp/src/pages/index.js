@@ -8,6 +8,7 @@ import ClassConfigPage from "./ClassConfigPage";
 import RecommendationPage from "./RecommendationPage";
 import UserManagementPage from "./UserManagementPage";
 import SeoWebSitePage from "./SeoWepSitePage";
+import AccountInfomationPage from "./AccountInfomation";
 
 export {
   MainPage,
@@ -20,4 +21,5 @@ export {
   RecommendationPage,
   UserManagementPage,
   SeoWebSitePage,
+  AccountInfomationPage,
 };

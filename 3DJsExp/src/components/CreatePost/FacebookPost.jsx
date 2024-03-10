@@ -301,7 +301,7 @@ const FacebookPost = (props) => {
     setSelectedTheSame(sameData);
   };
   const customTagRender = (props) => {
-    const { label, value, closable, onClose } = props;
+    const { value, closable, onClose } = props;
     const option = facebookAcc.find((acc) => acc.id === value);
 
     return (
@@ -1588,5 +1588,8 @@ FacebookPost.propTypes = {
   selectUser: PropTypes.string,
   identifier: PropTypes.string,
   groupUrl: PropTypes.string,
+  value: PropTypes.any,
+  closable: PropTypes.any,
+  onClose: PropTypes.any,
 };
 export default FacebookPost;
