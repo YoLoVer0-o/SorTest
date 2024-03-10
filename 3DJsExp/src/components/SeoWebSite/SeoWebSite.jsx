@@ -39,7 +39,7 @@ const SeoWebSite = () => {
     web_position: "หมายเหตุ 1",
     files: "",
   });
-
+  console.log(imagePost);
   const handleChangeWeb = (value, e) => {
     const indexOfWeb = e.index;
     // console.log(`selected ${value} `);
@@ -61,38 +61,42 @@ const SeoWebSite = () => {
   // console.log(textContent);
   // console.log(filePic);
   // console.log(videoFile);
-
   useEffect(() => {
     const getWebSiteData = async () => {
       try {
         const data = await seoWebSiteAPI.getWebPosition();
-        setWebPosition(data.web_id);
-        setPositionOfWeb(data.web_position);
-        setCountImg(data.count_image);
-
-        // console.log(data);
+        const sortedData = data.sort((a, b) => a.image.length - b.image.length);
+        console.log(sortedData);
+        setWebPosition(sortedData);
       } catch (error) {
         console.error("Error", error);
       }
     };
     getWebSiteData();
   }, []);
-
+  const [picPreview, setPicPreview] = useState([]);
+  console.log(webPosition);
   useEffect(() => {
     const indexMatch = () => {
-      positionOfWeb.map((data, index) => {
-        if (webIndex == index) {
-          setWebPositionResult(data);
+      webPosition.map((data, index) => {
+        if (webIndex === index) {
+          setWebPositionResult(data.web_position);
+          setPicPreview(data.image);
         } else {
           return null;
         }
       });
     };
+
     indexMatch();
-  }, [webIndex, positionOfWeb]);
+  }, [webPosition, webIndex]);
+  console.log(
+    webPosition.map((e) => {
+      return e.web_position;
+    })
+  );
 
   useEffect(() => {
-    // const path = handlePic[0].file.path;
     setContentTextArray({
       web_id: handelWebNameResult,
       web_position: handelWebPositionResult,
@@ -103,27 +107,27 @@ const SeoWebSite = () => {
       web_position: handelWebPositionResult,
     });
   }, [handelWebNameResult, handelWebPositionResult, textContent, filePic]);
-  console.log(handelWebPositionResult);
-  useEffect(() => {
-    // console.log(formData);
-    // formData.append("files", filePic);
 
-    console.log(filePic);
-  }, [filePic]);
+  // useEffect(() => {
+  //   // console.log(formData);
+  //   // formData.append("files", filePic);
 
-  const webOptions = webPosition
-    ? webPosition.map((web, index) => ({
-        index: index,
-        value: web,
-        label: web,
-      }))
-    : [];
-  const positionOptions = webPositionResult
-    ? webPositionResult.map((posi) => ({
-        value: posi,
-        label: posi,
-      }))
-    : [];
+  //   console.log(filePic);
+  // }, [filePic]);
+  console.log(filePic);
+  const webOptions = webPosition.map((e, i) => {
+    return {
+      index: i,
+      value: e.web_id,
+      label: e.web_id,
+    };
+  });
+  const positionOptions = webPositionResult.map((e) => {
+    return {
+      value: e,
+      label: e,
+    };
+  });
 
   const onDrop = (acceptedFiles, inputType) => {
     const newFiles = acceptedFiles.map((file) => ({
@@ -133,7 +137,6 @@ const SeoWebSite = () => {
 
     if (inputType === "image") {
       setFilePic((prevFiles) => [...prevFiles, ...newFiles]);
-      // setFilePic(newFiles);
     } else if (inputType === "video") {
       setVideoFile((prevFiles) => [...prevFiles, ...newFiles]);
     }
@@ -294,37 +297,35 @@ const SeoWebSite = () => {
   const submitData = async () => {
     // setPicture(pic);
     // console.log(pic);
-    if (contentTextArray.web_content.length !== 0) {
-      try {
-        await seoWebSiteAPI.seoWebSiteContent(contentTextArray);
-      } catch (error) {
-        console.error("Error posting data:", error);
+    try {
+      if (filePic.length > 0 || videoFile.length > 0) {
+        
+          const formData = new FormData();
+          filePic.map((file) => {
+            formData.append("files", file.file);
+          });
+          videoFile.map((video) => {
+            formData.append("files", video.file);
+          });
+          await seoWebSiteAPI.webSiteUploadFile(formData, imagePost);
       }
-    } else if (filePic.length || videoFile.length) {
-      try {
-        const formData = new FormData();
-        filePic.map((file) => {
-          formData.append("files", file.file);
-        });
-        videoFile.map((video) => {
-          formData.append("files", video.file);
-        });
-        await seoWebSiteAPI.webSiteUploadFile(formData, imagePost);
-        Swal.fire({
-          title: "โพสต์สําเร็จ ",
-          icon: "success",
-        });
-      } catch (error) {
-        Swal.fire({
-          title: "เกิดข้อผิดพลาด",
-          text: error.message,
-          icon: "error",
-        });
-        console.error("Error posting data:", error);
+      if (contentTextArray.web_content.length !== 0) {
+          await seoWebSiteAPI.seoWebSiteContent(contentTextArray);
       }
+      Swal.fire({
+        title: "โพสต์สําเร็จ ",
+        icon: "success",
+      });
+    } catch (e) {
+      Swal.fire({
+        title: "เกิดข้อผิดพลาด",
+        text: e.message,
+        icon: "error",
+      });
+      console.error("Error posting data:", e);
     }
   };
-  console.log(countImg);
+
   const arrowStyles = {
     position: "absolute",
     zIndex: 2,
@@ -334,7 +335,6 @@ const SeoWebSite = () => {
     cursor: "pointer",
   };
   ///////////////////////////////////////////////////////////////
-
   const setModal = (e) => {
     setModalImg(e);
     closeLightbox();
@@ -367,7 +367,7 @@ const SeoWebSite = () => {
             <Select
               placeholder="กรุณาเลือกหน้าเว็บก่อน"
               className="tw-w-full tw-outline-blue-500 tw-outline tw-rounded-md"
-              defaultValue={positionOptions}
+              // defaultValue={positionOptions}
               onChange={handleChangePosi}
               options={positionOptions}
             />
@@ -409,15 +409,17 @@ const SeoWebSite = () => {
               )
             }
           >
-            {countImg.map((e, i) => (
-              <button key={i} className="" onClick={() => setModal(e)}>
-                <ModalImage
-                  className="tw-w-max tw-h-36 tw-object-contain tw-z-50 "
-                  small={`http://192.168.10.113:8000/SEO/website_position_image/?web_id=1&web_position=1&web_image=${e}`}
-                  large={`http://192.168.10.113:8000/SEO/website_position_image/?web_id=1&web_position=1&web_image=${e}`}
-                  // onClick={closeLightbox}
-                />
-              </button>
+            {picPreview.map((item, index) => (
+              <div key={index}>
+                <button className="" onClick={() => setModal(item)}>
+                  <ModalImage
+                    className="tw-w-max tw-h-36 tw-object-contain tw-z-50 "
+                    small={`http://192.168.10.113:8000/SEO/website_position_image/?web_id=${handelWebNameResult}&web_position=${handelWebPositionResult}&web_image=${item}`}
+                    large={`http://192.168.10.113:8000/SEO/website_position_image/?web_id=${handelWebNameResult}&web_position=${handelWebPositionResult}&web_image=${item}`}
+                    // onClick={closeLightbox}
+                  />
+                </button>
+              </div>
             ))}
           </Carousel>
           <textarea
@@ -438,8 +440,8 @@ const SeoWebSite = () => {
         </button>
         {open === true && (
           <Lightbox
-            medium={`http://192.168.10.113:8000/SEO/website_position_image/?web_id=1&web_position=1&web_image=${modalImg}`}
-            large={`http://192.168.10.113:8000/SEO/website_position_image/?web_id=1&web_position=1&web_image=${modalImg}`}
+            medium={`http://192.168.10.113:8000/SEO/website_position_image/?web_id=${handelWebNameResult}&web_position=${handelWebPositionResult}&web_image=${modalImg}`}
+            large={`http://192.168.10.113:8000/SEO/website_position_image/?web_id=${handelWebNameResult}&web_position=${handelWebPositionResult}&web_image=${modalImg}`}
             hideDownload={true}
             onClose={closeLightbox}
           />

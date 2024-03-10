@@ -26,9 +26,9 @@ const TimeSetPost = () => {
     } else if (type === 6) {
       setHandleAmPm(value);
     }
-    console.log(`selected ${value}`);
+    // console.log(`selected ${value}`);
   };
-  console.log(handleMonth);
+  // console.log(handleMonth);
   ////////////////////////Date//////////////////////////////////
   const date = new Date();
   const toDay = date.getDate();
@@ -52,9 +52,9 @@ const TimeSetPost = () => {
     value: `${index + 1}`,
     label: `${index + 1}`,
   }));
-  console.log("maxDateoftheMonth", daysInMonth);
-  console.log(toDay, thaiMonth, years);
-  console.log(date);
+  // console.log("maxDateoftheMonth", daysInMonth);
+  // console.log(toDay, thaiMonth, years);
+  // console.log(date);
 
   ///////////////////////////////Time////////////////////////////////////////
   // const toDayHours = date.getHours();
@@ -79,7 +79,7 @@ const TimeSetPost = () => {
 
   // Example usage:
   const { hours, amPm } = getAmPmHours();
-  console.log(`Current time: ${hours}:${new Date().getMinutes()} ${amPm}`);
+  // console.log(`Current time: ${hours}:${new Date().getMinutes()} ${amPm}`);
 
   return (
     <div className="tw-w-full tw-h-full tw-z-10 tw-bg-white">
