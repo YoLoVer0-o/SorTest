@@ -32,7 +32,7 @@ import {
   RecommendationPage,
   UserManagementPage,
   SeoWebSitePage,
-  AccountInfomationPage,
+  AccountManagePage,
 } from "../pages";
 
 export const router = createBrowserRouter([
@@ -87,11 +87,11 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "/accountInfomation",
-    element: <AccountInfomationPage />,
+    path: "/account",
+    element: <AccountManagePage />,
     children: [
       {
-        path: "",
+        path: "/account/manage",
         element: <AccountInfomation />,
       },
     ],

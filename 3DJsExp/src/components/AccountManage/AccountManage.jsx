@@ -57,7 +57,7 @@ const filterOption = (input, option) =>
    
 ];
 
-function AccountInfomation() {
+function AccountManage() {
   return (
     <div className="tw-w-full tw-h-full tw-flex tw-flex-col tw-items-center ">
       <div className=" tw-w-[80%] tw-max-h-full tw-flex-row tw-flex tw-gap-4 tw-justify-center">
@@ -116,4 +116,4 @@ function AccountInfomation() {
   );
 }
 
-export default AccountInfomation;
+export default AccountManage;
