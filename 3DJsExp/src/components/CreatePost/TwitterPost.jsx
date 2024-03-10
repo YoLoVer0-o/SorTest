@@ -1,6 +1,6 @@
 import profile from "../../assets/profile.png";
 import EmojiPicker, { EmojiStyle } from "emoji-picker-react";
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import classNames from "classnames";
 import { useResponsive } from "../../hooks";
 import { BsGlobeAsiaAustralia, BsEmojiSmile } from "react-icons/bs";
@@ -14,6 +14,11 @@ import { Select, Button, Form, Input } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import FileUpLoader from "../../utilities/FileUpLoader";
 import TimeSetPost from "../../utilities/TimeSetPost";
+import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
+import twitterCreatePostAPI from "../../service/twitterCreatePostAPI";
+import { getLogin } from "../../libs/loginSlice";
+import Swal from "sweetalert2";
 import "dayjs/locale/th";
 import "./Trainsition.css";
 import {
@@ -23,13 +28,22 @@ import {
   // TransitionGroup,
 } from "react-transition-group";
 
-const TwitterPost = () => {
+const TwitterPost = (props) => {
+  const { selectedUser } = props;
   const [message, setMessage] = useState("");
   const [openUpload, setOpenUpLoad] = useState(false);
   const [openTimeSet, setOpenTimeSet] = useState(false);
   const [showEmojiInput, setShowEmojiInput] = useState(false);
   const [currentId, setCurrentId] = useState(1);
-
+  const [selectedBot, setSelectedBot] = useState();
+  const [receiveFile, setReceiveFile] = useState([]);
+  const [fileName, setFileName] = useState([]);
+  const [twitterPostContent, setTwitterPostContent] = useState({
+    botname: "",
+    text: "",
+    photo_video: [],
+  });
+  console.log(selectedBot);
   const {
     isDesktopOrLaptop,
     isBigScreen,
@@ -85,9 +99,9 @@ const TwitterPost = () => {
     setCurrentId(2);
   };
   //////////////////////////PoleVotes///////////////////////////
-  const getDate = new Date();
+  // const getDate = new Date();
   const onFinish = (values) => {
-    console.log("Received values of form:", values);
+    // console.log("Received values of form:", values);
   };
   const handleChange = (value) => {
     console.log(`selected ${value}`);
@@ -104,8 +118,73 @@ const TwitterPost = () => {
     value: index,
     label: index,
   }));
+  //////////////////////////////////API Part/////////////////////////////////////////////
+  const getToken = useSelector((state) => getLogin(state));
+  const handelFiletwitter = (file) => {
+    setReceiveFile(file);
+  };
+  console.log(receiveFile);
+  useEffect(() => {
+    setSelectedBot(selectedUser);
+  }, [selectedUser]);
 
-  console.log(openTimeSet);
+  useEffect(() => {
+    if (receiveFile.length > 0) {
+      const formData = new FormData();
+      receiveFile.forEach((file) => {
+        formData.append("files", file.file);
+      });
+
+      try {
+        twitterCreatePostAPI
+          .twitterUploadFile(formData, getToken)
+          .then((filesName) => {
+            setFileName(filesName.file_name);
+          })
+          .catch((error) => {
+            console.log(error.message);
+          });
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+  }, [getToken, receiveFile]);
+
+  useEffect(() => {
+    setTwitterPostContent({
+      botname: selectedBot,
+      text: message,
+      photo_video: fileName,
+    });
+  }, [selectedBot, message, fileName]);
+
+  const submitPost = async () => {
+    try {
+      await twitterCreatePostAPI.twitterPostAction(
+        getToken,
+        twitterPostContent
+      );
+      Swal.fire({
+        title: "โพสต์สําเร็จ ",
+        icon: "success",
+      });
+      setTwitterPostContent({
+        botname: "",
+        text: "",
+        photo_video: [],
+      });
+    } catch (error) {
+      Swal.fire({
+        title: "เกิดข้อผิดพลาด",
+        text: error.message,
+        icon: "error",
+      });
+      console.log(error.message);
+    }
+  };
+
+  console.log(fileName);
+  console.log(twitterPostContent);
   const contentArray = [
     {
       id: 1,
@@ -192,7 +271,11 @@ const TwitterPost = () => {
             })}
           >
             {openUpload === true && (
-              <FileUpLoader isOpen={openUpload} isClose={closePicUpload} />
+              <FileUpLoader
+                isOpen={openUpload}
+                isClose={closePicUpload}
+                sentFiles={handelFiletwitter}
+              />
             )}
           </div>
 
@@ -291,7 +374,10 @@ const TwitterPost = () => {
                   />
                 </button>
               </div>
-              <button className="tw-justify-self-end tw-text-white tw-bg-blue-500 hover:tw-bg-blue-600 tw-rounded-full tw-w-16 tw-h-8">
+              <button
+                onClick={submitPost}
+                className="tw-justify-self-end tw-text-white tw-bg-blue-500 hover:tw-bg-blue-600 tw-rounded-full tw-w-16 tw-h-8"
+              >
                 โพสต์
               </button>
             </div>
@@ -485,5 +571,8 @@ const TwitterPost = () => {
       )}
     </div>
   );
+};
+TwitterPost.propTypes = {
+  selectedUser: PropTypes.string,
 };
 export default TwitterPost;

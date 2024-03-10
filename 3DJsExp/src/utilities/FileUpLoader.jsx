@@ -7,10 +7,10 @@ import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
 import { Modal, Input } from "antd";
 
 const FileUpLoader = (props) => {
-  const sentFiles = props.sentFiles;
-  const isOpen = props.isOpen;
-  const isClose = props.isClose;
-
+  // const sentFiles = props.sentFiles;
+  // const isOpen = props.isOpen;
+  // const isClose = props.isClose;
+  const { sentFiles, isOpen, isClose, } = props;
   // const [files, setFiles] = useState(null);
   const [selectedFile, setSelectedFile] = useState("");
   const [isOpenState, setIsOpenState] = useState(isOpen);
@@ -206,6 +206,7 @@ FileUpLoader.propTypes = {
   isOpen: PropTypes.bool,
   isClose: PropTypes.func,
   sentFiles: PropTypes.any,
+
 };
 
 export default FileUpLoader;

@@ -80,14 +80,7 @@ const FacebookPost = (props) => {
   });
   const [url, setUrl] = useState([]);
   const selectedAcc = selectUser;
-  const [receiveFile, setReceiveFile] = useState([
-    {
-      file: {
-        path: "",
-      },
-      previewUrl: "",
-    },
-  ]);
+  const [receiveFile, setReceiveFile] = useState([]);
   const [filesName, setFilesName] = useState([]);
   const handelFile = (file) => {
     setReceiveFile(file);
@@ -340,30 +333,27 @@ const FacebookPost = (props) => {
   };
   //////////////////////////////////API Part/////////////////////////////////
   const getToken = useSelector((state) => getLogin(state));
-
   useEffect(() => {
-    const upLoadFile = async () => {
+    if (receiveFile.length > 0) {
       const formData = new FormData();
-      if (receiveFile.length > 0) {
-        receiveFile.map((file) => {
-          formData.append("files", file.file);
-        });
-        try {
-          const filesNamehandle = await postCreateAPI.fbUploadFile(
-            formData,
-            getToken
-          );
-          setFilesName(filesNamehandle.file_name);
-          // console.log(data);
-        } catch (error) {
-          console.error("Error", error);
-        }
-      } else {
-        return null;
+      receiveFile.forEach((file) => {
+        formData.append("files", file.file);
+      });
+
+      try {
+        postCreateAPI
+          .fbUploadFile(formData, getToken)
+          .then((filesName) => {
+            setFilesName(filesName.file_name);
+          })
+          .catch((error) => {
+            console.log(error.message);
+          });
+      } catch (error) {
+        console.log(error.message);
       }
-    };
-    upLoadFile();
-  }, [receiveFile]);
+    }
+  }, [getToken, receiveFile]);
 
   useEffect(() => {
     if (identifier === "CreatePost") {
@@ -379,20 +369,27 @@ const FacebookPost = (props) => {
         gif: null,
       });
     } else if (identifier === "CreateGroupPost") {
-      setPostToGroup(
-        {
-          botname: selectedAcc,
-          url: groupUrl,
-          text: message,
-          photo_video: filesName,
-          tag_people: JSON.stringify(tagFriends),
-          feeling: null,
-          check_in: null,
-          gif: null,
-        }
-      );
+      setPostToGroup({
+        botname: selectedAcc,
+        url: groupUrl,
+        text: message,
+        photo_video: filesName,
+        tag_people: JSON.stringify(tagFriends),
+        feeling: null,
+        check_in: null,
+        gif: null,
+      });
     }
-  }, [message, tagFriends, emotionAct, selectedAcc, filesName, url, groupUrl]);
+  }, [
+    message,
+    tagFriends,
+    emotionAct,
+    selectedAcc,
+    filesName,
+    url,
+    groupUrl,
+    identifier,
+  ]);
 
   console.log(postToGroup);
   console.log(filesName);

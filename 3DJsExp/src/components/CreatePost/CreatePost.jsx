@@ -22,11 +22,9 @@ const CreatePost = () => {
   const [selectedPlatform, setSelectedPlatform] = useState("");
   // const { selected , sentBotData } = props;
   const [platform, setPlatform] = useState();
-  const [selectedGroupType, setSelectedGroupType] = useState("Single User");
   const [botData, setBotData] = useState("");
   const [selectedBot, setSelectedBot] = useState("");
-  const [selectedGroup, setSelectedGroup] = useState("");
-  const [inputValue, setInputValue] = useState("");
+// const [selectedGroup , setSelectedGroup] =useState()
 
   const handlePlatformSelect = (platform) => {
     setSelectedPlatform(platform);
@@ -34,7 +32,7 @@ const CreatePost = () => {
 
   let selectedComponent;
   if (selectedPlatform === "Twitter") {
-    selectedComponent = <TwitterPost />;
+    selectedComponent = <TwitterPost selectedUser={selectedBot} />;
   } else if (selectedPlatform === "Facebook") {
     selectedComponent = (
       <FacebookPost
@@ -65,7 +63,7 @@ const CreatePost = () => {
         const data = await postCreateAPI.fbGetBotConfig(getToken);
         setBotData(data);
         setSelectedBot(data[0].botname);
-        setSelectedGroup(data[0].groups);
+        // setSelectedGroup(data[0].groups);
       } catch (error) {
         console.error("Error fetching bot config:", error);
       }
