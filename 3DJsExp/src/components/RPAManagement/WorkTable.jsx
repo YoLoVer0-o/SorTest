@@ -20,7 +20,7 @@ const WorkTable = () => {
 
     const [searchAccount, setSearchAccout] = useState("");
     const [searchTarget, setSearchTarget] = useState([]);
-    const [searchWork, setSearchWork] = useState();
+    const [searchWork, setSearchWork] = useState([]);
     const [modalToggle, setModalToggle] = useState(false);
     const [addModalToggle, setAddModalToggle] = useState(false);
     const [modalData, setModalData] = useState([]);
@@ -96,9 +96,9 @@ const WorkTable = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [param.platform])
 
-    useEffect(() => {
-        console.log(columns);
-    }, [workData])
+    // useEffect(() => {
+    //     console.log(workData && workData?.bot_status?.length > 0 || workData?.length > 0);
+    // }, [workData])
 
 
 
@@ -277,9 +277,7 @@ const WorkTable = () => {
                 className: "tw-text-violet-600 tw-truncate",
                 filteredValue: [searchTarget],
                 onFilter: (value, record) =>
-                    value
-                        .split(",")
-                        .every((target) => String(record?.link).includes(target)),
+                    value.split(",").every((link) => String(record?.link).toLowerCase().includes(String(link)))
             },
             {
                 title: "datetime",
@@ -319,7 +317,8 @@ const WorkTable = () => {
             )}
         >
             <Loading isShown={showLoading} />
-            {workData?.bot_status?.length > 0 || workData?.length > 0 &&
+            {workData && (workData.bot_status?.length > 0 || workData.length > 0) &&
+
                 <div
                     className={classNames(
                         "tw-flex tw-flex-row tw-max-w-full tw-justify-center tw-gap-2",
@@ -328,12 +327,13 @@ const WorkTable = () => {
                         }
                     )}
                 >
+                    {console.log(workData && workData?.bot_status?.length > 0 || workData?.length > 0)}
                     {param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" &&
                         <div className={classNames("tw-w-full", {})}>
                             <p className="tw-text-lg">เลขบัญชี/ชื่อบัญชี:</p>
                             <SearchBar
                                 useTextSearch={true}
-                                data={param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" ? workData : workData?.bot_status}
+                                data={workData}
                                 onChangeSearch={setSearchAccout}
                             />
                         </div>
@@ -343,21 +343,34 @@ const WorkTable = () => {
                             <p className="tw-text-lg">งาน:</p>
                             <SearchBar
                                 useTagSearch={true}
-                                data={param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" ? workData : workData?.bot_status}
+                                data={workData}
                                 onChangeFilter={setSearchWork}
                                 keyName={"actiontype"}
                             />
                         </div>
                     }
-                    <div className={classNames("tw-w-full", {})}>
-                        <p className="tw-text-lg">เป้าหมาย:</p>
-                        <SearchBar
-                            useTagSearch={true}
-                            data={param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" ? workData : workData?.bot_status}
-                            onChangeFilter={setSearchTarget}
-                            keyName={param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" ? "post_url" : "link"}
-                        />
-                    </div>
+                    {param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" &&
+                        <div className={classNames("tw-w-full", {})}>
+                            <p className="tw-text-lg">เป้าหมาย:</p>
+                            <SearchBar
+                                useTagSearch={true}
+                                data={workData}
+                                onChangeFilter={setSearchTarget}
+                                keyName={"post_url"}
+                            />
+                        </div>
+                    }
+                    {param.platform !== "facebook" && param.platform !== "X" &&
+                        <div className={classNames("tw-w-full", {})}>
+                            <p className="tw-text-lg">เป้าหมาย:</p>
+                            <SearchBar
+                                useTagSearch={true}
+                                data={workData?.bot_status}
+                                onChangeFilter={setSearchTarget}
+                                keyName={"link"}
+                            />
+                        </div>
+                    }
                 </div>
             }
             <div className={classNames("tw-flex tw-flex-col tw-h-full tw-w-full tw-gap-2", {})}>
@@ -413,14 +426,24 @@ const WorkTable = () => {
                         "tw-overflow-auto tw-min-h-fit": isTabletOrMobile && isPortrait,
                     })}
                 >
-                    {workData?.bot_status?.length > 0 || workData?.length > 0 &&
+                    {workData?.bot_status?.length > 0 &&
                         <DataTable
-                            columns={columns ? columns : columns}
-                            data={param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" ? workData : workData?.bot_status}
-                            setPageSize={param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" ? workData?.length : workData?.total_status}
-                            keyName={param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" ? "timestamp" : "datetime"}
+                            columns={columns}
+                            data={workData?.bot_status}
+                            setPageSize={workData?.total_status}
+                            keyName={"datetime"}
                         />
                     }
+
+                    {workData?.length > 0 &&
+                        <DataTable
+                            columns={columns}
+                            data={workData}
+                            setPageSize={workData?.length}
+                            keyName={"timestamp"}
+                        />
+                    }
+
                     {/* {modalToggle && (
                         <EditWorkModal
                             modalToggle={modalToggle}
@@ -438,7 +461,7 @@ const WorkTable = () => {
                     )}
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 
