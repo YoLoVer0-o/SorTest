@@ -43,7 +43,7 @@ const TwitterPost = (props) => {
     text: "",
     photo_video: [],
   });
-  console.log(selectedBot);
+  // console.log(selectedBot);
   const {
     isDesktopOrLaptop,
     isBigScreen,
@@ -60,7 +60,7 @@ const TwitterPost = (props) => {
     const text = event.target.value;
     if (!text.emoji) {
       setMessage(text);
-      console.log(event.target.value);
+      // console.log(event.target.value);
     } else {
       setMessage(message + text.emoji);
     }
@@ -123,7 +123,7 @@ const TwitterPost = (props) => {
   const handelFiletwitter = (file) => {
     setReceiveFile(file);
   };
-  console.log(receiveFile);
+  // console.log(receiveFile);
   useEffect(() => {
     setSelectedBot(selectedUser);
   }, [selectedUser]);
@@ -159,10 +159,11 @@ const TwitterPost = (props) => {
   }, [selectedBot, message, fileName]);
 
   const submitPost = async () => {
+    // console.log(getToken)
     try {
       await twitterCreatePostAPI.twitterPostAction(
-        getToken,
-        twitterPostContent
+        twitterPostContent,
+        getToken
       );
       Swal.fire({
         title: "โพสต์สําเร็จ ",

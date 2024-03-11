@@ -26,7 +26,7 @@ const twitterCreatePostAPI = {
     }
   },
 
-  twitterUploadFile: async (files,token) => {
+  twitterUploadFile: async (files, token) => {
     try {
       const response = await axios.post(
         `http://192.168.10.111:8000/twitter/upload-image/`,
@@ -53,7 +53,3 @@ const twitterCreatePostAPI = {
 };
 
 export default twitterCreatePostAPI;
-
-
-
-
