@@ -304,12 +304,12 @@ const SubDashboard = () => {
             onChangeDate={setSearchDate}
           />
         </div>
-        <Tooltip placement="top" title={"สร้างรายงานPDF"} color="blue">
+        {/* <Tooltip placement="top" title={"สร้างรายงานPDF"} color="blue">
           <Button className="tw-h-max tw-flex tw-flex-row tw-self-end tw-m-3 tw-bg-white tw-border-2 tw-border-blue-300">
             <FilePdfOutlined />
             <p>สร้างรายงานPDF</p>
           </Button>
-        </Tooltip>
+        </Tooltip> */}
       </div>
 
       <div className={classNames("tw-flex tw-flex-col tw-justify-center tw-my-4 ", {})}>
