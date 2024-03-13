@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Select, Input } from "antd";
+import { Select, } from "antd";
 import FacebookPost from "./FacebookPost";
 import TwitterPost from "./TwitterPost";
 import { useResponsive } from "../../hooks";
@@ -7,6 +7,7 @@ import classNames from "classnames";
 import { useSelector } from "react-redux";
 import postCreateAPI from "../../service/postCreateAPI";
 import { getLogin } from "../../libs/loginSlice";
+import twitterCreatePostAPI from "../../service/twitterCreatePostAPI";
 
 const CreatePost = () => {
   const {
@@ -19,24 +20,25 @@ const CreatePost = () => {
     isLandscape,
   } = useResponsive();
 
-  const [selectedPlatform, setSelectedPlatform] = useState("");
+  const [selectedPlatform, setSelectedPlatform] = useState("Facebook");
   // const { selected , sentBotData } = props;
-  const [platform, setPlatform] = useState();
-  const [botData, setBotData] = useState("");
+  const [botDataFb, setBotDataFb] = useState("");
+  const [botDataTwitter, setBotDataTwitter] = useState("");
+
   const [selectedBot, setSelectedBot] = useState("");
   // const [selectedGroup , setSelectedGroup] =useState()
 
   const handlePlatformSelect = (platform) => {
     setSelectedPlatform(platform);
   };
-
+  // console.log(selectedPlatform);
   let selectedComponent;
   if (selectedPlatform === "Twitter") {
     selectedComponent = <TwitterPost selectedUser={selectedBot} />;
   } else if (selectedPlatform === "Facebook") {
     selectedComponent = (
       <FacebookPost
-        handelBotData={botData}
+        handelBotData={botDataFb}
         selectUser={selectedBot}
         identifier="CreatePost"
       />
@@ -44,7 +46,7 @@ const CreatePost = () => {
   } else {
     selectedComponent = (
       <FacebookPost
-        handelBotData={botData}
+        handelBotData={botDataFb}
         selectUser={selectedBot}
         identifier="CreatePost"
       />
@@ -61,20 +63,34 @@ const CreatePost = () => {
     const fetchBotConfig = async () => {
       try {
         const data = await postCreateAPI.fbGetBotConfig(getToken);
-        setBotData(data);
-        setSelectedBot(data[0].botname);
+        setBotDataFb(data);
+
         // setSelectedGroup(data[0].groups);
       } catch (error) {
         console.error("Error fetching bot config:", error);
       }
     };
-
+    const fetchBotTwitter = async () => {
+      try {
+        const data = await twitterCreatePostAPI.twitterGetBot(getToken);
+        setBotDataTwitter(data);
+      } catch (error) {
+        console.error("Error fetching bot config:", error);
+      }
+    };
+    fetchBotTwitter();
     fetchBotConfig();
   }, [getToken]);
 
   // Format Data into an array of objects with value and label properties
-  const userOptions = botData
-    ? botData.map((bot) => ({
+  const userOptions = botDataFb
+    ? botDataFb.map((bot) => ({
+        value: bot.botname,
+        label: bot.botname,
+      }))
+    : [];
+  const userTwitterOptions = botDataTwitter
+    ? botDataTwitter.map((bot) => ({
         value: bot.botname,
         label: bot.botname,
       }))
@@ -102,7 +118,7 @@ const CreatePost = () => {
             defaultValue="Facebook"
             onChange={handlePlatformSelect}
             className=" tw-w-full"
-            value={platform}
+            value={selectedPlatform}
             options={[
               {
                 value: "Facebook",
@@ -124,11 +140,14 @@ const CreatePost = () => {
           <p>บัญชีที่ใช้โพสต์ :</p>
           <Select
             showSearch
-            defaultValue={selectedBot}
+            // defaultValue={}
             onChange={selectUser}
             className="tw-w-full"
             value={selectedBot}
-            options={userOptions}
+            options={
+              (selectedPlatform === "Facebook" && userOptions) ||
+              (selectedPlatform === "Twitter" && userTwitterOptions)
+            }
             filterOption={(input, option) =>
               (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
             }
