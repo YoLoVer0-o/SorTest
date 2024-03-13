@@ -126,6 +126,7 @@ const UserManageTable = () => {
 
 
     const showEditUserModal = (value) => {
+        console.log(value);
         setEditUser(value)
         setEditUserModalToggle(true);
     };

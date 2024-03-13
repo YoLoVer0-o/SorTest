@@ -62,10 +62,11 @@ const EditUserRoleModal = (props) => {
     }, [form]);
 
     useEffect(() => {
-        if (user.permission && user.permission?.length > 0) {
-            setFeatureL(user.permission[0])
-            setFeatureC(user.permission[1])
-            setFeatureR(user.permission[2])
+        console.log(user.permissions[0]);
+        if (user.permissions && user.permissions?.length > 0) {
+            setFeatureL(user.permissions[0].enabled)
+            setFeatureC(user.permissions[1].disabled)
+            setFeatureR(user.permissions[2].viewonly)
         }
     }, [user]);
 
@@ -303,60 +304,66 @@ const EditUserRoleModal = (props) => {
                             <p className="tw-text-lg">สิทธิการใช้งาน</p>
                             <hr />
                             <div className="tw-w-full tw-h-full tw-flex tw-flex-row tw-gap-6">
-                                <div className="tw-flex tw-flex-col tw-w-full tw-h-full">
-                                    <p className="tw-text-lg tw-text-green-500">อนุญาติให้ใช้งาน:</p>
-                                    {/* <ReactSortable
+                                {featureL && featureL.length > 0 &&
+                                    <div className="tw-flex tw-flex-col tw-w-full tw-h-full">
+                                        <p className="tw-text-lg tw-text-green-500">อนุญาติให้ใช้งาน:</p>
+                                        {/* <ReactSortable
                                         list={featureL}
                                         setList={setFeatureL}
                                         group={'shared'}
                                         animation={150}
                                         className="tw-border-2 tw-border-green-500 tw-w-full tw-h-full tw-pb-4"
                                     > */}
-                                    <div className="tw-border-2 tw-border-green-500 tw-w-full tw-h-full tw-pb-4">
-                                        {featureL.map((item) => (
-                                            <div className="tw-flex tw-h-full tw-w-full tw-border-2 tw-border-black tw-p-4 tw-justify-center" key={item.id}>
-                                                <p className="tw-text-lg">{item.name}</p>
-                                            </div>
-                                        ))}
+                                        <div className="tw-border-2 tw-border-green-500 tw-w-full tw-h-full tw-pb-4">
+                                            {featureL.map((item) => (
+                                                <div className="tw-flex tw-h-full tw-w-full tw-border-2 tw-border-black tw-p-4 tw-justify-center" key={item.id}>
+                                                    <p className="tw-text-lg">{item.name}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        {/* </ReactSortable> */}
                                     </div>
-                                    {/* </ReactSortable> */}
-                                </div>
-                                <div className="tw-flex tw-flex-col tw-w-full tw-h-full">
-                                    <p className="tw-text-lg tw-text-red-500">ไม่อนุญาติให้ใช้งาน:</p>
-                                    {/* <ReactSortable
+                                }
+                                {featureC && featureC.length > 0 &&
+                                    <div className="tw-flex tw-flex-col tw-w-full tw-h-full">
+                                        <p className="tw-text-lg tw-text-red-500">ไม่อนุญาติให้ใช้งาน:</p>
+                                        {/* <ReactSortable
                                         list={featureC}
                                         setList={setFeatureC}
                                         group={'shared'}
                                         animation={150}
                                         className="tw-border-2 tw-border-red-500 tw-w-full tw-h-full tw-pb-4"
                                     > */}
-                                    <div className="tw-border-2 tw-border-red-500 tw-w-full tw-h-full tw-pb-4">
-                                        {featureC.map((item) => (
-                                            <div className="tw-flex tw-h-full tw-w-full tw-border-2 tw-border-black tw-p-4 tw-justify-center" key={item.id}>
-                                                <p className="tw-text-lg">{item.name}</p>
-                                            </div>
-                                        ))}
+                                        <div className="tw-border-2 tw-border-red-500 tw-w-full tw-h-full tw-pb-4">
+                                            {featureC.map((item) => (
+                                                <div className="tw-flex tw-h-full tw-w-full tw-border-2 tw-border-black tw-p-4 tw-justify-center" key={item.id}>
+                                                    <p className="tw-text-lg">{item.name}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        {/* </ReactSortable> */}
                                     </div>
-                                    {/* </ReactSortable> */}
-                                </div>
-                                <div className="tw-flex tw-flex-col tw-w-full tw-h-full">
-                                    <p className="tw-text-lg tw-text-blue-500">อนุญาติให้มองเห็น:</p>
-                                    {/* <ReactSortable
+                                }
+                                {featureR && featureR.length > 0 &&
+                                    <div className="tw-flex tw-flex-col tw-w-full tw-h-full">
+                                        <p className="tw-text-lg tw-text-blue-500">อนุญาติให้มองเห็น:</p>
+                                        {/* <ReactSortable
                                         list={featureR}
                                         setList={setFeatureR}
                                         group={'shared'}
                                         animation={150}
                                         className="tw-border-2 tw-border-blue-500 tw-w-full tw-h-full tw-pb-4"
                                     > */}
-                                    <div className="tw-border-2 tw-border-blue-500 tw-w-full tw-h-full tw-pb-4">
-                                        {featureR.map((item) => (
-                                            <div className="tw-flex tw-h-full tw-w-full tw-border-2 tw-border-black tw-p-4 tw-justify-center" key={item.id}>
-                                                <p className="tw-text-lg">{item.name}</p>
-                                            </div>
-                                        ))}
+                                        <div className="tw-border-2 tw-border-blue-500 tw-w-full tw-h-full tw-pb-4">
+                                            {featureR.map((item) => (
+                                                <div className="tw-flex tw-h-full tw-w-full tw-border-2 tw-border-black tw-p-4 tw-justify-center" key={item.id}>
+                                                    <p className="tw-text-lg">{item.name}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        {/* </ReactSortable> */}
                                     </div>
-                                    {/* </ReactSortable> */}
-                                </div>
+                                }
                             </div>
                         </div>
                     </Form>

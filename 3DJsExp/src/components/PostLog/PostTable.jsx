@@ -245,7 +245,9 @@ const PostTable = () => {
 
     ////////////////////////////////////////to repot and gen report//////////////////////////////////////////////////////////////////
     const toReport = (data) => {
-        navigate("/postlog/report", { state: data[0]?._id })
+        console.log(data.map(obj => obj._id));
+        // navigate("/postlog/report", { state: data[0]?._id })
+        navigate("/postlog/report", { state: data.map(obj => obj._id) })
     }
 
     const genReport = async () => {

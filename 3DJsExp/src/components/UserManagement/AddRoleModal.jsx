@@ -67,9 +67,10 @@ const AddRoleModal = (props) => {
 
         const payload = {
             role_name: formData.role_name,
-            enabled: featureL,
-            viewonly: featureC,
-            disabled: featureR
+            // enabled: featureL,
+            // viewonly: featureC,
+            // disabled: featureR
+            PagePermissions: [{ enabled: featureL }, { disabled: featureC }, { viewonly: featureR }]
         }
 
         console.log(payload);
