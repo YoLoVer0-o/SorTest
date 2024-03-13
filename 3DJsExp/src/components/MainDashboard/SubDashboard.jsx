@@ -24,7 +24,7 @@ const SubDashboard = () => {
 
   // const [searchTag, setSearchTag] = useState([]);
 
-  const [searchDate, setSearchDate] = useState([dayjs().format('YYYY-MM-DD'), dayjs().format('YYYY-MM-DD')]);
+  const [searchDate, setSearchDate] = useState([dayjs().subtract(14, 'day').format('YYYY-MM-DD'), dayjs().format('YYYY-MM-DD')]);
 
   const { isTabletOrMobile, isTablet, isMobile, isPortrait, isLandscape } = useResponsive();
 

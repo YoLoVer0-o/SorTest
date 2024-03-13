@@ -327,7 +327,7 @@ const WorkTable = () => {
                         }
                     )}
                 >
-                    {console.log(workData && workData?.bot_status?.length > 0 || workData?.length > 0)}
+                    {/* {console.log(workData && workData?.bot_status?.length > 0 || workData?.length > 0)} */}
                     {param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" &&
                         <div className={classNames("tw-w-full", {})}>
                             <p className="tw-text-lg">เลขบัญชี/ชื่อบัญชี:</p>
@@ -426,10 +426,10 @@ const WorkTable = () => {
                         "tw-overflow-auto tw-min-h-fit": isTabletOrMobile && isPortrait,
                     })}
                 >
-                    {workData?.bot_status?.length > 0 &&
+                    {param.platform !== "facebook" && param.platform !== "X" &&
                         <DataTable
                             columns={columns}
-                            data={workData?.bot_status}
+                            data={workData?.bot_status?.length > 0 ? workData?.bot_status : []}
                             setPageSize={workData?.total_status}
                             keyName={"datetime"}
                         />

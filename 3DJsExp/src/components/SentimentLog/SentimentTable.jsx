@@ -233,12 +233,12 @@ const SentimentTable = () => {
                 </div>
             )}
 
-            {displayData?.posts && (
+            {/* {displayData?.posts && ( */}
                 <div className={classNames("tw-border-2 tw-rounded-md", {})}>
                     <DataTable
                         columns={columns}
                         // data={newSentiment}
-                        data={displayData.posts}
+                        data={displayData?.posts ? displayData.posts : []}
                         setPageSize={pageSize}
                         useRowClick={true}
                         onRowClick={(selectedRows) => toReport(selectedRows)}
@@ -247,7 +247,7 @@ const SentimentTable = () => {
                         sendPages={setPageIndex}
                     />
                 </div>
-            )}
+            {/* )} */}
             <div className="tw-flex tw-flex-row tw-my-6 tw-gap-4">
                 {pageSize < 20 && (
                     <Tooltip title="แสดงเพิ่มเติม">
