@@ -1,13 +1,13 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, } from "react";
 import FacebookPost from "./FacebookPost";
 // import InstagramPost from "./InstagramPost";
 import TwitterPost from "./TwitterPost";
 import { useResponsive } from "../../hooks";
 import classNames from "classnames";
-import { Input, Select, Button, Space, Divider } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { Input, Select,   } from "antd";
 import { useSelector } from "react-redux";
 import postCreateAPI from "../../service/postCreateAPI";
+import AccountManageAPI from "../../service/AccountManageAPI";
 import { getLogin } from "../../libs/loginSlice";
 
 const CreateGroupPost = () => {
@@ -17,11 +17,10 @@ const CreateGroupPost = () => {
   const [selectedPlatform, setSelectedPlatform] = useState("");
   const [selectedGroup, setSelectedGroup] = useState("");
   const [inputValue, setInputValue] = useState("");
-  const [items, setItems] = useState(["A", "B", "C"]);
+  const [groupName, setGroupName] = useState();
   const [handleUrl, setHandleUrl] = useState("");
   const [botData, setBotData] = useState("");
   const [selectedBot, setSelectedBot] = useState("");
-  const inputRef = useRef(null);
 
   const handlePlatformSelect = (platform) => {
     setSelectedPlatform(platform);
@@ -30,11 +29,11 @@ const CreateGroupPost = () => {
   const handleUserSelect = (user) => {
     setSelectedBot(user);
   };
-
+  console.log(groupName);
   const handleSelectGroup = (urlGroup) => {
-    setSelectedGroup(urlGroup)
-  }
-console.log(selectedGroup)
+    console.log(urlGroup);
+    setSelectedGroup(urlGroup);
+  };
   let selectedComponent;
 
   if (selectedPlatform === "Twitter") {
@@ -71,7 +70,15 @@ console.log(selectedGroup)
         console.error("Error fetching bot config:", error);
       }
     };
-
+    const fetchGroupPost = async () => {
+      try {
+        const data = await AccountManageAPI.getGroupProfile(getToken);
+        setGroupName(data);
+      } catch (error) {
+        console.error("Error fetching bot config:", error);
+      }
+    };
+    fetchGroupPost();
     fetchBotConfig();
   }, [getToken]);
 
@@ -81,14 +88,20 @@ console.log(selectedGroup)
         label: bot.botname,
       }))
     : [];
+  const groupOptions = groupName
+    ? groupName.map((name) => ({
+        value: name.url,
+        label: name.title,
+      }))
+    : [];
 
-  console.log(handleUrl);
   const handleKeyPress = (event) => {
+   
     if (event.key === "Enter") {
-      setItems([...items, handleUrl]);
+      setGroupName([...groupName, handleUrl]);
     }
   };
-  console.log(items);
+
   return (
     <div className="tw-w-screen tw-h-full tw-max-h-full tw-gap-y-5 tw-p-4 tw-overflow-auto tw-flex tw-flex-col tw-items-center">
       {/* <div className="tw-flex tw-justify-center ">CreateGroupPost</div> */}
@@ -174,7 +187,9 @@ console.log(selectedGroup)
           <Select
             showSearch
             onSelect={handleSelectGroup}
-            onSearch={(e) => setHandleUrl(e)}
+            onSearch={(e) => setHandleUrl({
+              title: e,
+              url: e,})}
             onKeyDown={handleKeyPress}
             className="tw-w-full"
             placeholder="กรอก Url กลุ่ม"
@@ -187,10 +202,7 @@ console.log(selectedGroup)
                 .toLowerCase()
                 .localeCompare((optionB?.label ?? "").toLowerCase())
             }
-            options={items.map((item) => ({
-              label: item,
-              value: item,
-            }))}
+            options={groupOptions}
           />
         </div>
       </div>

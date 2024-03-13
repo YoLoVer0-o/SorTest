@@ -85,9 +85,7 @@ const FacebookPost = (props) => {
   const handelFile = (file) => {
     setReceiveFile(file);
   };
-  console.log(receiveFile);
 
-  console.log(url);
   const nodeRef = useRef(null);
   const { Search } = Input;
 
@@ -253,20 +251,20 @@ const FacebookPost = (props) => {
       setTagSpecificFriends((prevTag) => [...prevTag, item]);
     }
   };
-  console.log(tagFriends);
+  // console.log(tagFriends);
   const handleClose = (removedTag, button) => {
     if (button == 1) {
       const newTags = tagFriends.filter((tag) => tag !== removedTag);
       setTagFriends(newTags);
       setSelectedItems(newTags);
-      console.log(newTags);
+      // console.log(newTags);
     } else if (button == 2) {
       const newExceptTags = tagExceptFriends.filter(
         (tag) => tag !== removedTag
       );
       setSelectedItemsForExceptFriend(newExceptTags);
       setTagExceptFriends(newExceptTags);
-      console.log(newExceptTags, "TagExceptFriends");
+      // console.log(newExceptTags, "TagExceptFriends");
     } else if (button == 3) {
       const newSpecificTags = tagSpecifictFriends.filter(
         (tag) => tag !== removedTag
@@ -391,8 +389,8 @@ const FacebookPost = (props) => {
     identifier,
   ]);
 
-  console.log(postToGroup);
-  console.log(filesName);
+  // console.log(postToGroup);
+  // console.log(filesName);
   const handlePost = async () => {
     if (identifier === "CreatePost") {
       try {
