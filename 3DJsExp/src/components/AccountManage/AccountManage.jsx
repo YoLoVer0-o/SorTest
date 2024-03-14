@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 import { Select, Button, Input, Tooltip } from "antd";
-import { DataTable, Loading } from "../../utilities";
+import { DataTable, SearchBar, Loading } from "../../utilities";
 import classNames from "classnames";
 import { useResponsive } from "../../hooks";
 import Image from "../../assets/PostImage";
@@ -18,11 +18,13 @@ const AccountManage = () => {
   const [typeSelected, setTypeSelected] = useState("profile");
   const [isModalTarget, setIsModalTarget] = useState(false);
   const [isModalEdit, setIsModalEdit] = useState(false);
+  const [seachTitle, setSeachTitle] = useState("");
+  const [seachGroup, setSeachGroup] = useState("");
 
   const { isTabletOrMobile, isMobile, isPortrait, isLandscape } =
     useResponsive();
   const { Search } = Input;
-  console.log(accInfo);
+  // console.log(accInfo);
   const getToken = useSelector((state) => getLogin(state));
 
   const selectType = (value) => {
@@ -33,9 +35,6 @@ const AccountManage = () => {
     // } else if (value === "group" ) {
     //   getDataGroup()
     // }
-  };
-  const onSearch = (value) => {
-    console.log("search:", value);
   };
 
   const onChange = (value) => {
@@ -94,6 +93,9 @@ const AccountManage = () => {
       align: "center",
       width: 150,
       // className: "tw-text-lime-600",
+      filteredValue: [seachTitle],
+      onFilter: (value, record) =>
+        String(record?.title).toLowerCase().includes(value.toLowerCase()),
       render: (text, record) => <p>{record.title}</p>,
     },
     {
@@ -103,6 +105,9 @@ const AccountManage = () => {
       align: "center",
       width: 150,
       className: "tw-truncate",
+      filteredValue: [seachGroup],
+      onFilter: (value, record) => 
+        String(record?.label).toLowerCase().includes(value.toLowerCase()),
       render: (text, record) => {
         return (
           <div key={record} className="tw-flex tw-justify-center tw-gap-2">
@@ -189,7 +194,7 @@ const AccountManage = () => {
               value: "group",
               label: "group",
             },
-          ]}  
+          ]}
         />
         {/* ///////////////////////////////รอ Upadte ในอนาคต///////////////////////////////////////// */}
         {/* <Select
@@ -219,13 +224,13 @@ const AccountManage = () => {
           className="tw-w-full tw-outline-blue-500 tw-outline tw-rounded-md "
           placeholder="ค้นหาชื่อ"
           allowClear
-          onSearch={onSearch}
+          onChange={(e) => setSeachTitle(e.target.value)}
         />
         <Search
           className="tw-w-full tw-outline-blue-500 tw-outline tw-rounded-md "
           placeholder="ค้นหากลุ่ม"
           allowClear
-          onSearch={onSearch}
+          onChange={(e) => setSeachGroup(e.target.value)}
         />
         {/* <Select
           className="tw-w-full tw-outline-blue-500 tw-outline tw-rounded-md "

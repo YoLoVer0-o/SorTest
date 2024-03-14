@@ -299,22 +299,22 @@ const SeoWebSite = () => {
     // console.log(pic);
     try {
       if (filePic.length > 0 || videoFile.length > 0) {
-        
-          const formData = new FormData();
-          filePic.map((file) => {
-            formData.append("files", file.file);
-          });
-          videoFile.map((video) => {
-            formData.append("files", video.file);
-          });
-          await seoWebSiteAPI.webSiteUploadFile(formData, imagePost);
+        const formData = new FormData();
+        filePic.map((file) => {
+          formData.append("files", file.file);
+        });
+        videoFile.map((video) => {
+          formData.append("files", video.file);
+        });
+        await seoWebSiteAPI.webSiteUploadFile(formData, imagePost);
       }
       if (contentTextArray.web_content.length !== 0) {
-          await seoWebSiteAPI.seoWebSiteContent(contentTextArray);
+        await seoWebSiteAPI.seoWebSiteContent(contentTextArray);
       }
       Swal.fire({
         title: "โพสต์สําเร็จ ",
-        icon: "success",
+        text: contentTextArray.web_content,
+        icon: "none",
       });
     } catch (e) {
       Swal.fire({
