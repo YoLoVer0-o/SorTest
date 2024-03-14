@@ -46,6 +46,25 @@ const SubDashboard = () => {
 
   const token = useSelector((state) => getLogin(state).token);
 
+  const param = useParams();
+
+  const displayTopic = () => {
+
+    if (param.topic == "Army") {
+      return "กองทัพ"
+    }
+    else if (param.topic == "Government") {
+      return "รัฐบาล"
+    }
+    else if (param.topic == "Rally") {
+      return "ชุมนุม"
+    }
+    else if (param.topic == "Royal") {
+      return "สถาบัน"
+    }
+  };
+
+
   const fetchPost = async (start, end) => {
     try {
       // setShowLoading(true);
@@ -95,7 +114,7 @@ const SubDashboard = () => {
           start,
           end
         ],
-        topic: param.topic.toLowerCase()
+        topic: displayTopic()
       }
       const data = await dashBoardAPI.getStat(payload);
       setDailyStat(data);
@@ -125,7 +144,7 @@ const SubDashboard = () => {
       // setShowLoading(true);
       const payload = {
         platform: "facebook",
-        topic: [param.topic.toLowerCase()],
+        topic: [displayTopic()],
         date: [
           start,
           end
@@ -178,24 +197,7 @@ const SubDashboard = () => {
 
   ///////////////////////////////////WordClouds logic///////////////////////////////////////////////////////////////////////
 
-  const param = useParams();
-
-  const displayTopic = () => {
-
-    if (param.topic == "Army") {
-      return "กองทัพ"
-    }
-    else if (param.topic == "Government") {
-      return "รัฐบาล"
-    }
-    else if (param.topic == "Rally") {
-      return "ชุมนุม"
-    }
-    else if (param.topic == "Royal") {
-      return "สถาบัน"
-    }
-  };
-
+  
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   const dashboardData = dashboardMock.filter(data => data.topic == (param.topic))[0];
@@ -216,12 +218,12 @@ const SubDashboard = () => {
 
   //////////////////////////////////////////postBar////////////////////////////////////////////////////////////////
   const postBarData = {
-    labels: dailyPosts.map(item => item.commentType),
+    labels: dailyPosts.map(item => item.name),
     datasets: [
       {
         label: 'จำนวนโพสต์',
         data: dailyPosts.map(item => item.value),
-        backgroundColor: dailyPosts.map(item => colorSet(item.commentType)),
+        backgroundColor: dailyPosts.map(item => colorSet(item.name)),
         barThickness: isMobile ? 20 : 50,
       },
     ],
