@@ -67,10 +67,10 @@ const AccountManageAPI = {
       throw error;
     }
   },
-  upDateLabelGroupProfile: async (url,token) => {
+  upDateLabelGroupProfile: async (content,token) => {
     try {
       const response = await axios.post(
-        `http://192.168.10.111:8000/facebook/update_label_group_profile/?url=${url}`,
+        `http://192.168.10.111:8000/facebook/update_label_group_profile/?url=${content}`,
         {
           headers: {
             Authorization: "Bearer " + token.token,

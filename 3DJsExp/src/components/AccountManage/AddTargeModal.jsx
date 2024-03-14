@@ -2,9 +2,8 @@ import { useState, useEffect } from "react";
 import { Select, Modal, Button, Input, Tooltip } from "antd";
 import PropTypes from "prop-types";
 import TextArea from "antd/es/input/TextArea";
-import { useSelector } from "react-redux";
 import AccountManageAPI from "../../service/AccountManageAPI";
-import { getLogin } from "../../libs/loginSlice";
+
 
 const AddTargetModal = (props) => {
   const { isopen, isclose } = props;

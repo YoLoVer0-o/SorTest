@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import { Select, Modal, Button, Input, Tooltip } from "antd";
+import { Select, Button, Input, Tooltip } from "antd";
 import { DataTable, Loading } from "../../utilities";
 import classNames from "classnames";
 import { useResponsive } from "../../hooks";
@@ -21,6 +21,7 @@ const AccountManage = () => {
 
   const { isTabletOrMobile, isMobile, isPortrait, isLandscape } =
     useResponsive();
+  const { Search } = Input;
   console.log(accInfo);
   const getToken = useSelector((state) => getLogin(state));
 
@@ -126,10 +127,9 @@ const AccountManage = () => {
       align: "center",
       width: 200,
       className: "tw-text-violet-600",
-      // render: (text, record) =>
-      //   record.information.profile_tabs.map((val, index) => (
-      //     <p key={index}>{val} </p>
-      //   )),
+      render: (text, record) => (
+        <div dangerouslySetInnerHTML={{ __html: record.information }}></div>
+      ),
     },
     {
       title: "Link",
@@ -183,15 +183,16 @@ const AccountManage = () => {
           options={[
             {
               value: "profile",
-              label: "profile",
+              label: "profile&page",
             },
             {
               value: "group",
               label: "group",
             },
-          ]}
+          ]}  
         />
-        <Select
+        {/* ///////////////////////////////รอ Upadte ในอนาคต///////////////////////////////////////// */}
+        {/* <Select
           className="tw-w-full tw-outline-blue-500 tw-outline tw-rounded-md "
           showSearch
           placeholder="ชื่อ"
@@ -213,8 +214,20 @@ const AccountManage = () => {
               label: "Tom",
             },
           ]}
+        /> */}
+        <Search
+          className="tw-w-full tw-outline-blue-500 tw-outline tw-rounded-md "
+          placeholder="ค้นหาชื่อ"
+          allowClear
+          onSearch={onSearch}
         />
-        <Select
+        <Search
+          className="tw-w-full tw-outline-blue-500 tw-outline tw-rounded-md "
+          placeholder="ค้นหากลุ่ม"
+          allowClear
+          onSearch={onSearch}
+        />
+        {/* <Select
           className="tw-w-full tw-outline-blue-500 tw-outline tw-rounded-md "
           showSearch
           placeholder="กลุ่ม"
@@ -236,7 +249,7 @@ const AccountManage = () => {
               label: "C",
             },
           ]}
-        />
+        /> */}
         <button
           onClick={openTargetModal}
           className="tw-w-[50%] tw-h-8 tw-bg-green-500 tw-rounded-lg tw-items-center tw-text-white"
@@ -261,7 +274,11 @@ const AccountManage = () => {
         />
       </div>
       <AddTargetModal isopen={isModalTarget} isclose={closeTargetModal} />
-      <EditModal isopenEdit={isModalEdit} iscloseEdit={closeTargetModal} />
+      <EditModal
+        isopenEdit={isModalEdit}
+        iscloseEdit={closeTargetModal}
+        token={getToken}
+      />
     </div>
   );
 };

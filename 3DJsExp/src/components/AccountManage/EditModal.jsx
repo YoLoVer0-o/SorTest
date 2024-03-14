@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import { Select, Modal, Button, Input, Tooltip } from "antd";
 import PropTypes from "prop-types";
+import AccountManageAPI from "../../service/AccountManageAPI";
 
 const EditModal = (props) => {
-  const { isopenEdit, iscloseEdit } = props;
+  const { isopenEdit, iscloseEdit,token } = props;
   const [openState, setOpenState] = useState(false);
   const [handleUrl, setHandleUrl] = useState("");
+  const [updateContent , setUpdateContent] = useState("")
 
+// console.log(token)
   const closeModal = () => {
     setOpenState(false);
     if (iscloseEdit) {
@@ -20,9 +23,17 @@ const EditModal = (props) => {
     }
   };
 
-  const handleOk = () => {
+  const handleOk = async() => {
+    await AccountManageAPI.upDateLabelGroupProfile(updateContent ,token);
     setOpenState(false);
+
   };
+  useEffect(() => {
+    setUpdateContent({
+      url:handleUrl,
+
+    })
+  },[handleUrl])
   useEffect(() => {
     setOpenState(isopenEdit);
   }, [isopenEdit]);
@@ -56,7 +67,9 @@ const EditModal = (props) => {
         className="tw-w-full"
         placeholder="กรอก Url กลุ่ม"
         optionFilterProp="children"
-        filterOption={(input, option) => (option?.label ?? "").includes(input)}
+        filterOption={(input, option) =>
+          (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+        }
         filterSort={(optionA, optionB) =>
           (optionA?.label ?? "")
             .toLowerCase()
@@ -72,5 +85,6 @@ const EditModal = (props) => {
 EditModal.propTypes = {
   isopenEdit: PropTypes.bool,
   iscloseEdit: PropTypes.func,
+  token: PropTypes.string,
 };
 export default EditModal;
