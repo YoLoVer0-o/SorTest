@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import { DataTable, SearchBar, Loading } from "../../utilities";
-import { workMock } from "../../mock";
 import { useResponsive } from "../../hooks";
 import { AddWorkModal, EditWorkModal } from "..";
 import { Button, Tooltip } from "antd";
@@ -95,13 +94,6 @@ const WorkTable = () => {
         fetchWork()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [param.platform])
-
-    // useEffect(() => {
-    //     console.log(workData && workData?.bot_status?.length > 0 || workData?.length > 0);
-    // }, [workData])
-
-
-
 
     const downloadFile = async () => {
         try {
@@ -327,8 +319,8 @@ const WorkTable = () => {
                         }
                     )}
                 >
-                    {/* {console.log(workData && workData?.bot_status?.length > 0 || workData?.length > 0)} */}
-                    {param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" &&
+
+                    {(param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok") &&
                         <div className={classNames("tw-w-full", {})}>
                             <p className="tw-text-lg">เลขบัญชี/ชื่อบัญชี:</p>
                             <SearchBar
@@ -338,7 +330,8 @@ const WorkTable = () => {
                             />
                         </div>
                     }
-                    {param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" &&
+
+                    {(param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok") &&
                         <div className={classNames("tw-w-full", {})}>
                             <p className="tw-text-lg">งาน:</p>
                             <SearchBar
@@ -349,7 +342,8 @@ const WorkTable = () => {
                             />
                         </div>
                     }
-                    {param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" &&
+
+                    {(param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok") &&
                         <div className={classNames("tw-w-full", {})}>
                             <p className="tw-text-lg">เป้าหมาย:</p>
                             <SearchBar
@@ -360,12 +354,13 @@ const WorkTable = () => {
                             />
                         </div>
                     }
-                    {param.platform !== "facebook" && param.platform !== "X" &&
+
+                    {(param.platform !== "facebook" && param.platform !== "X") &&
                         <div className={classNames("tw-w-full", {})}>
                             <p className="tw-text-lg">เป้าหมาย:</p>
                             <SearchBar
                                 useTagSearch={true}
-                                data={workData?.bot_status}
+                                data={workData ? workData?.bot_status : []}
                                 onChangeFilter={setSearchTarget}
                                 keyName={"link"}
                             />
@@ -382,12 +377,12 @@ const WorkTable = () => {
                         })}>
                         ทำงานทั้งหมด
                     </Button> */}
-                    {param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" &&
-                        <div className={classNames("tw-flex tw-flex-row tw-h-fit tw-my-2", {
-                            "tw-flex-col tw-w-full tw-gap-2": isMobile && isPortrait,
-                            "tw-self-end tw-w-fit tw-gap-2": isMobile && isLandscape,
-                            "tw-gap-4 tw-self-end tw-w-fit": !isMobile,
-                        })}>
+                    <div className={classNames("tw-flex tw-flex-row tw-h-fit tw-my-2", {
+                        "tw-flex-col tw-w-full tw-gap-2": isMobile && isPortrait,
+                        "tw-self-end tw-w-fit tw-gap-2": isMobile && isLandscape,
+                        "tw-gap-4 tw-self-end tw-w-fit": !isMobile,
+                    })}>
+                        {param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" &&
                             <Button
                                 className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
                                     "tw-w-full": isMobile && isPortrait,
@@ -396,12 +391,14 @@ const WorkTable = () => {
                             >
                                 ดาวน์โหลด Format
                             </Button>
-                            <input
-                                type="file"
-                                onChange={handleChange}
-                                ref={hiddenFileInput}
-                                style={{ display: 'none' }}
-                            />
+                        }
+                        <input
+                            type="file"
+                            onChange={handleChange}
+                            ref={hiddenFileInput}
+                            style={{ display: 'none' }}
+                        />
+                        {param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok" &&
                             <Button
                                 className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
                                     "tw-w-full": isMobile && isPortrait,
@@ -410,16 +407,17 @@ const WorkTable = () => {
                             >
                                 เพิ่มงานจาก Excel
                             </Button>
-                            <Button
-                                className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
-                                    "tw-w-full": isMobile && isPortrait,
-                                })}
-                                onClick={() => showAddModal()}
-                            >
-                                เพิ่มงานใหม่
-                            </Button>
-                        </div>
-                    }
+                        }
+                        <Button
+                            className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
+                                "tw-w-full": isMobile && isPortrait,
+                            })}
+                            onClick={() => showAddModal()}
+                        >
+                            เพิ่มงานใหม่
+                        </Button>
+                    </div>
+
                 </div>
                 <div
                     className={classNames("tw-border-2 tw-rounded-md", {
