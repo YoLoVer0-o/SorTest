@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import { Select, Button, Input, Tooltip } from "antd";
+import { Select, Input, Tooltip, Modal, Button } from "antd";
 import { DataTable, SearchBar, Loading } from "../../utilities";
 import classNames from "classnames";
 import { useResponsive } from "../../hooks";
@@ -18,8 +18,11 @@ const AccountManage = () => {
   const [typeSelected, setTypeSelected] = useState("profile");
   const [isModalTarget, setIsModalTarget] = useState(false);
   const [isModalEdit, setIsModalEdit] = useState(false);
+  const [isModalDetail, setIsModalDetail] = useState(false);
   const [seachTitle, setSeachTitle] = useState("");
   const [seachGroup, setSeachGroup] = useState("");
+  const [detailData, setDetailData] = useState("");
+  const [editData, setEditData] = useState("");
 
   const { isTabletOrMobile, isMobile, isPortrait, isLandscape } =
     useResponsive();
@@ -43,13 +46,21 @@ const AccountManage = () => {
   const openTargetModal = () => {
     setIsModalTarget(true);
   };
-  const openTargetEdit = () => {
+  const openTargetEdit = (data) => {
+    setEditData(data);
     setIsModalEdit(true);
   };
 
   const closeTargetModal = () => {
     setIsModalTarget(false);
     setIsModalEdit(false);
+  };
+  const openDetailModal = (data) => {
+    setDetailData(data);
+    setIsModalDetail(true);
+  };
+  const closeDetailModal = () => {
+    setIsModalDetail(false);
   };
 
   useEffect(() => {
@@ -106,7 +117,7 @@ const AccountManage = () => {
       width: 150,
       className: "tw-truncate",
       filteredValue: [seachGroup],
-      onFilter: (value, record) => 
+      onFilter: (value, record) =>
         String(record?.label).toLowerCase().includes(value.toLowerCase()),
       render: (text, record) => {
         return (
@@ -131,9 +142,14 @@ const AccountManage = () => {
       key: "detail",
       align: "center",
       width: 200,
-      className: "tw-text-violet-600",
+      className: "tw-text-violet-600 tw-truncate  ",
       render: (text, record) => (
-        <div dangerouslySetInnerHTML={{ __html: record.information }}></div>
+        <button onClick={() => openDetailModal(record.information)}>
+          {/* <div dangerouslySetInnerHTML={{ __html: record.information }}></div> */}
+          <Tooltip placement="topLeft" title="คลิกเพื่อดูรายละเอียดเพิ่มเติม">
+            <div className="">{record.information.split("<br>")}...</div>
+          </Tooltip>
+        </button>
       ),
     },
     {
@@ -145,11 +161,13 @@ const AccountManage = () => {
       className: "tw-text-amber-600",
       render: (text, record) => (
         <div className="tw-flex tw-justify-center ">
-          <a href={record.url} target="blank">
-            <div className="hover:tw-bg-blue-200 tw-rounded-full tw-p-1">
-              <img className="tw-w-7 tw-h-7 " src={Image.link} />
-            </div>
-          </a>
+          <Tooltip title="กดเพื่อไปยังหน้าโปรไฟล์">
+            <a href={record.url} target="blank">
+              <div className="hover:tw-bg-blue-200 tw-rounded-full tw-p-1">
+                <img className="tw-w-7 tw-h-7 " src={Image.link} />
+              </div>
+            </a>
+          </Tooltip>
         </div>
       ),
     },
@@ -163,7 +181,7 @@ const AccountManage = () => {
       render: (text, record) => (
         <div className="tw-flex tw-justify-center ">
           <button
-            onClick={openTargetEdit}
+            onClick={() => openTargetEdit(record.url)}
             className="hover:tw-bg-blue-200 tw-rounded-full tw-p-1 tw-flex tw-justify-center"
           >
             <EditOutlined className="tw-w-7 tw-h-7 tw-text-2xl" />
@@ -283,7 +301,27 @@ const AccountManage = () => {
         isopenEdit={isModalEdit}
         iscloseEdit={closeTargetModal}
         token={getToken}
+        handleData={editData}
+        getType={typeSelected}
       />
+      <Modal
+        title="รายละเอียด"
+        centered={true}
+        open={isModalDetail}
+        onOk={closeDetailModal}
+        onCancel={closeDetailModal}
+        footer={[
+          <Button
+            key="submit"
+            className="tw-bg-blue-500 tw-text-white tw-border-white hover:tw-bg-white hover:tw-text-blue-500 hover:tw-border-blue-500"
+            onClick={closeDetailModal}
+          >
+            ตกลง
+          </Button>,
+        ]}
+      >
+        <div dangerouslySetInnerHTML={{ __html: detailData }}></div>
+      </Modal>
     </div>
   );
 };

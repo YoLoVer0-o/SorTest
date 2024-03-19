@@ -115,7 +115,7 @@ const AddTargetModal = (props) => {
         }
         onKeyDown={handleKeyPress}
         className="tw-w-full"
-        placeholder="กรอก Url กลุ่ม"
+        placeholder="เพิ่มกลุ่มเป้าหมาย"
         optionFilterProp="children"
         filterOption={(input, option) => (option?.label ?? "").includes(input)}
         filterSort={(optionA, optionB) =>

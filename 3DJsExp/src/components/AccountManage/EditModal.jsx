@@ -1,15 +1,30 @@
 import { useState, useEffect } from "react";
-import { Select, Modal, Button, Input, Tooltip } from "antd";
+import { Select, Modal, Button, Input } from "antd";
 import PropTypes from "prop-types";
+import Swal from "sweetalert2";
 import AccountManageAPI from "../../service/AccountManageAPI";
 
 const EditModal = (props) => {
-  const { isopenEdit, iscloseEdit,token } = props;
+  const { isopenEdit, iscloseEdit, token, handleData, getType } = props;
   const [openState, setOpenState] = useState(false);
-  const [handleUrl, setHandleUrl] = useState("");
-  const [updateContent , setUpdateContent] = useState("")
+  const [handelLable, setHandelLable] = useState([
+    {
+      value: "A",
+      label: "A",
+    },
+    {
+      value: "B",
+      label: "B",
+    },
+    {
+      value: "C",
+      label: "C",
+    },
+  ]);
+  const [selectedLabel, setSelectedLabel] = useState([]);
+  const [updateContent, setUpdateContent] = useState("");
 
-// console.log(token)
+  console.log(updateContent);
   const closeModal = () => {
     setOpenState(false);
     if (iscloseEdit) {
@@ -17,26 +32,72 @@ const EditModal = (props) => {
     }
   };
 
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
-      // setGroupName([...groupName, handleUrl]);
+  // const handleKeyPress = (event) => {
+  //   if (event.key === "Enter") {
+  //     setHandelLable([...handelLable, handelLable]);
+  //   }
+  // };
+  const updateLabel = (value) => {
+    console.log(`Selected: ${value}`);
+    setSelectedLabel(value);
+  };
+
+  const LabelOptions = handelLable.map((e) => {
+    return {
+      value: e.value,
+      label: e.label,
+    };
+  });
+
+  const handleOk = async () => {
+    let profileUpdate;
+    let groupUpdate;
+    try {
+      if (getType === "profile") {
+        const res = await AccountManageAPI.upDateLabelProfile(
+          updateContent,
+          token
+        );
+        profileUpdate = res;
+      } else if (getType === "group") {
+        const res = await AccountManageAPI.upDateLabelGroupProfile(
+          updateContent,
+          token
+        );
+        groupUpdate = res;
+      }
+      Swal.fire({
+        title: "สําเร็จ",
+        // text: groupUpdate.message,
+        icon: "success",
+      });
+    } catch (error) {
+      console.log(error.message);
+      Swal.fire({
+        title: "เกิดข้อผิดพลาด",
+        text: error.message,
+        icon: "error",
+      });
+    }
+
+    setOpenState(false);
+    if (iscloseEdit) {
+      iscloseEdit();
     }
   };
 
-  const handleOk = async() => {
-    await AccountManageAPI.upDateLabelGroupProfile(updateContent ,token);
-    setOpenState(false);
-
-  };
   useEffect(() => {
+    handleData;
     setUpdateContent({
-      url:handleUrl,
+      url: handleData,
+      label: selectedLabel,
+    });
+  }, [handleData, selectedLabel]);
 
-    })
-  },[handleUrl])
   useEffect(() => {
     setOpenState(isopenEdit);
   }, [isopenEdit]);
+
   return (
     <Modal
       title="เพิ่มเป้าหมายใหม่"
@@ -55,17 +116,25 @@ const EditModal = (props) => {
       ]}
     >
       <Select
+        mode="tags"
+        // size={size}
+        placeholder="เพิ่มกลุ่มเป้าหมาย"
+        onChange={updateLabel}
+        options={LabelOptions}
+        className="tw-w-full"
+      />
+      {/* <Select
         showSearch
         // onSelect={handleSelectGroup}
         onSearch={(e) =>
-          setHandleUrl({
-            title: e,
-            url: e,
+          setHandelLable({
+            value: e,
+            label: e,
           })
         }
         onKeyDown={handleKeyPress}
         className="tw-w-full"
-        placeholder="กรอก Url กลุ่ม"
+        placeholder="เพิ่มกลุ่มเป้าหมาย"
         optionFilterProp="children"
         filterOption={(input, option) =>
           (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
@@ -75,10 +144,16 @@ const EditModal = (props) => {
             .toLowerCase()
             .localeCompare((optionB?.label ?? "").toLowerCase())
         }
-        // options={groupOptions}
-      />
+        options={LabelOptions}
+      /> */}
       <p>Link:</p>
-      <Input className="tw-w-full tw-rounded-md " placeholder="กรอก link" />
+     
+      <Input
+       value={handleData}
+        disabled={true}
+        className="tw-w-full tw-text-black tw-rounded-md "
+        placeholder="link"
+      ></Input>
     </Modal>
   );
 };
@@ -86,5 +161,7 @@ EditModal.propTypes = {
   isopenEdit: PropTypes.bool,
   iscloseEdit: PropTypes.func,
   token: PropTypes.string,
+  handleData: PropTypes.string,
+  getType: PropTypes.string,
 };
 export default EditModal;
