@@ -1,10 +1,10 @@
-import { useState, useEffect, } from "react";
+import { useState, useEffect } from "react";
 import FacebookPost from "./FacebookPost";
 // import InstagramPost from "./InstagramPost";
 import TwitterPost from "./TwitterPost";
 import { useResponsive } from "../../hooks";
 import classNames from "classnames";
-import { Input, Select,   } from "antd";
+import { Input, Select } from "antd";
 import { useSelector } from "react-redux";
 import postCreateAPI from "../../service/postCreateAPI";
 import AccountManageAPI from "../../service/AccountManageAPI";
@@ -96,7 +96,6 @@ const CreateGroupPost = () => {
     : [];
 
   const handleKeyPress = (event) => {
-   
     if (event.key === "Enter") {
       setGroupName([...groupName, handleUrl]);
     }
@@ -187,15 +186,18 @@ const CreateGroupPost = () => {
           <Select
             showSearch
             onSelect={handleSelectGroup}
-            onSearch={(e) => setHandleUrl({
-              title: e,
-              url: e,})}
+            onSearch={(e) =>
+              setHandleUrl({
+                title: e,
+                url: e,
+              })
+            }
             onKeyDown={handleKeyPress}
             className="tw-w-full"
             placeholder="กรอก Url กลุ่ม"
             optionFilterProp="children"
             filterOption={(input, option) =>
-              (option?.label ?? "").includes(input)
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
             }
             filterSort={(optionA, optionB) =>
               (optionA?.label ?? "")

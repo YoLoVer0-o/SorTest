@@ -39,7 +39,7 @@ const SeoWebSite = () => {
     web_position: "หมายเหตุ 1",
     files: "",
   });
-  console.log(imagePost);
+
   const handleChangeWeb = (value, e) => {
     const indexOfWeb = e.index;
     // console.log(`selected ${value} `);
@@ -66,7 +66,6 @@ const SeoWebSite = () => {
       try {
         const data = await seoWebSiteAPI.getWebPosition();
         const sortedData = data.sort((a, b) => a.image.length - b.image.length);
-        console.log(sortedData);
         setWebPosition(sortedData);
       } catch (error) {
         console.error("Error", error);
@@ -75,7 +74,7 @@ const SeoWebSite = () => {
     getWebSiteData();
   }, []);
   const [picPreview, setPicPreview] = useState([]);
-  console.log(webPosition);
+
   useEffect(() => {
     const indexMatch = () => {
       webPosition.map((data, index) => {
@@ -90,11 +89,6 @@ const SeoWebSite = () => {
 
     indexMatch();
   }, [webPosition, webIndex]);
-  console.log(
-    webPosition.map((e) => {
-      return e.web_position;
-    })
-  );
 
   useEffect(() => {
     setContentTextArray({
@@ -108,13 +102,6 @@ const SeoWebSite = () => {
     });
   }, [handelWebNameResult, handelWebPositionResult, textContent, filePic]);
 
-  // useEffect(() => {
-  //   // console.log(formData);
-  //   // formData.append("files", filePic);
-
-  //   console.log(filePic);
-  // }, [filePic]);
-  console.log(filePic);
   const webOptions = webPosition.map((e, i) => {
     return {
       index: i,
@@ -141,7 +128,6 @@ const SeoWebSite = () => {
       setVideoFile((prevFiles) => [...prevFiles, ...newFiles]);
     }
   };
-  console.log(videoFile);
   const ImageUpload = () => {
     const { getRootProps, getInputProps } = useDropzone({
       accept: { "image/jpeg": [], "image/png": [] },
@@ -295,25 +281,29 @@ const SeoWebSite = () => {
   };
 
   const submitData = async () => {
-    // setPicture(pic);
-    // console.log(pic);
+    let resMassage;
+    let resUpload;
     try {
       if (filePic.length > 0 || videoFile.length > 0) {
-        
-          const formData = new FormData();
-          filePic.map((file) => {
-            formData.append("files", file.file);
-          });
-          videoFile.map((video) => {
-            formData.append("files", video.file);
-          });
-          await seoWebSiteAPI.webSiteUploadFile(formData, imagePost);
+        const formData = new FormData();
+        filePic.map((file) => {
+          formData.append("files", file.file);
+        });
+        videoFile.map((video) => {
+          formData.append("files", video.file);
+        });
+        const res = await seoWebSiteAPI.webSiteUploadFile(formData, imagePost);
+        resUpload = res.massage;
       }
       if (contentTextArray.web_content.length !== 0) {
-          await seoWebSiteAPI.seoWebSiteContent(contentTextArray);
+        const res = await seoWebSiteAPI.seoWebSiteContent(contentTextArray);
+        resMassage = res.message;
       }
+
       Swal.fire({
         title: "โพสต์สําเร็จ ",
+        html: `อัพโหลดรูป: ${resUpload}<br>ข้อความ: ${resMassage}`,
+        // text: "อัพโหลดรูป:" + resUpload "ข้อความ:" + resMassage,
         icon: "success",
       });
     } catch (e) {
@@ -339,7 +329,7 @@ const SeoWebSite = () => {
     setModalImg(e);
     closeLightbox();
   };
-  console.log(modalImg);
+
   const closeLightbox = () => {
     if (open === true) {
       setOpen(false);
