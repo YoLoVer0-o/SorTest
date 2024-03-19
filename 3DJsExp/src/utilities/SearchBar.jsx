@@ -25,7 +25,7 @@ const SearchBar = props => {
     const uniqueTagsSet = new Set();
 
     {
-        useTagSearch && !useOwnData && typeof receviedData[0][`${keyName}`] === "object" && (receviedData.forEach((receviedData) => {
+        useTagSearch && !useOwnData && receviedData && typeof receviedData[0][`${keyName}`] === "object" && (receviedData.forEach((receviedData) => {
             receviedData[`${keyName}`]?.forEach((tag) => {
                 uniqueTagsSet.add(tag);
             });
@@ -33,7 +33,7 @@ const SearchBar = props => {
     }
 
     {
-        useTagSearch && !useOwnData && typeof receviedData[0][`${keyName}`] === "string" && (receviedData.forEach((receviedData) => {
+        useTagSearch && !useOwnData && receviedData && typeof receviedData[0][`${keyName}`] === "string" && (receviedData.forEach((receviedData) => {
             uniqueTagsSet.add(receviedData[`${keyName}`]);
         }))
     }
@@ -61,7 +61,7 @@ const SearchBar = props => {
     const onTagChange = (value) => {
         console.log(value);
         const searchTag = value.map((e) => {
-            return e[0].toLowerCase();
+            return e[0];
         })
         onChangeFilter(searchTag);
     };

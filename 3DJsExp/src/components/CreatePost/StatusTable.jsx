@@ -1,68 +1,94 @@
 import { useState, useEffect, useRef } from "react";
-import { DataTable, SearchBar } from "../../utilities";
+import { DataTable, SearchBar, Loading } from "../../utilities";
 import { botStatus } from "../../mock";
 import { useResponsive } from "../../hooks";
 // import { AddUserModal, EditUserModal } from "..";
 import { Button, Tooltip } from "antd";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined, CheckCircleOutlined, PlayCircleOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 dayjs.extend(isSameOrBefore);
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 dayjs.extend(isSameOrAfter);
 import classNames from "classnames";
+import RPAWorkAPI from "../../service/RPAWorkAPI";
+
 import { useSelector } from 'react-redux'
 import { getLogin } from '../../libs/loginSlice'
 
+
 const StatusTable = () => {
-    // const [botData, setBotData] = useState([]);
+
+    const [workData, setWorkData] = useState();
+    const [searchPlatform, setSearchPlatform] = useState("facebook")
     const [searchAccount, setSearchAccout] = useState("");
     const [searchDate, setSearchDate] = useState([]);
     const [searchStatus, setSearchStatus] = useState([]);
-    // const [modalToggle, setModalToggle] = useState(false);
-    // const [addModalToggle, setAddModalToggle] = useState(false);
-    // const [modalData, setModalData] = useState([]);
+    const [showLoading, setShowLoading] = useState(false);
+    const [pageIndex, setPageIndex] = useState({ current: 1, pageSize: 10 });
+
 
     const { isTabletOrMobile, isMobile, isPortrait, isLandscape } = useResponsive();
 
-    //////////////////////////////////////////modal toggle logic////////////////////////////////////////////////////////////////
-    // const showModal = (data) => {
-    //     setModalData(data);
-    //     setModalToggle(true);
-    // };
+    const token = useSelector((state) => getLogin(state).token);
 
-    // const handleCancel = () => {
-    //     setModalToggle(false);
-    // };
+    const fetchWork = async () => {
+        try {
+            setShowLoading(true);
 
-    // const showAddModal = () => {
-    //     setAddModalToggle(true);
-    // };
+            let data
+            if (searchPlatform == "facebook") {
+                data = await RPAWorkAPI.fbGetActionLog(token)
+                setWorkData(data);
+            }
+            else if (searchPlatform == "X") {
+                data = await RPAWorkAPI.fbGetActionLog(token)
+                setWorkData(data);
+            }
+            else if (searchPlatform == "tiktok") {
+                data = await RPAWorkAPI.ttGetAllWork(token, pageIndex)
+                setWorkData(data);
+            }
+            else if (searchPlatform == "instagram") {
+                data = await RPAWorkAPI.igGetAllWork(token, pageIndex)
+                setWorkData(data);
+            }
+            else if (searchPlatform == "youtube") {
+                data = await RPAWorkAPI.ytGetAllWork(token, pageIndex)
+                setWorkData(data);
+            }
 
-    // const handleAddCancel = () => {
-    //     setAddModalToggle(false);
-    // };
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // setBotData(data);
 
-    // const token = useSelector((state) => getLogin(state).token);
+        } catch (error) {
+            console.error('Error fetching bot config:', error);
+        } finally {
+            setShowLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        fetchWork()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     ////////////////////////////////////////////table//////////////////////////////////////////////////////////////
     const columns = [
         {
             title: "ผู้ใช้งาน",
-            dataIndex: "accName",
-            key: "accName",
+            dataIndex: "botname",
+            key: "botname",
             align: "center",
             width: 150,
             className: "tw-truncate",
             filteredValue: [searchAccount],
             onFilter: (value, record) =>
-                String(record?.accName).toLowerCase().includes(value.toLowerCase()),
+                String(record?.botname).toLowerCase().includes(value.toLowerCase()),
         },
         {
             title: "รายละเอียด",
-            dataIndex: "details",
-            key: "details",
+            dataIndex: "actiontype",
+            key: "actiontype",
             align: "center",
             width: 150,
             className: "tw-truncate",
@@ -76,14 +102,11 @@ const StatusTable = () => {
             className: "tw-text-violet-600",
             render: (text, record) => (
                 <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
-                    {record?.group.map((group) => (
-                        <Tooltip key={group} title={group}>
-                            <div className="tw-w-max tw-rounded-md tw-p-2 tw-border-2 tw-border-black tw-text-center tw-text-white tw-bg-violet-600">
-                                {/* {botGroup?.find((botGroup) => botGroup.group_id == groups) ? botGroup?.find((botGroup) => botGroup.group_id == groups)?.group_name : "ไม่ระบุ"} */}
-                                {group}
-                            </div>
-                        </Tooltip>
-                    ))}
+                    <Tooltip title={record?.group}>
+                        <div className="tw-w-max tw-rounded-md tw-p-2 tw-border-2 tw-border-black tw-text-center tw-text-white tw-bg-violet-600">
+                            {record?.group}
+                        </div>
+                    </Tooltip>
                 </div>
             ),
         },
@@ -92,7 +115,7 @@ const StatusTable = () => {
             dataIndex: "status",
             key: "status",
             align: "center",
-            width: 100,
+            width: 50,
             className: "tw-text-amber-600",
             filteredValue: [searchStatus],
             onFilter: (value, record) =>
@@ -102,18 +125,8 @@ const StatusTable = () => {
             render: (text, record) => (
                 <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
                     <Tooltip title={record?.status}>
-                        <div
-                            className={classNames(
-                                "tw-rounded-md tw-border-2 tw-border-black tw-w-max tw-text-center tw-text-white tw-p-2",
-                                {
-                                    "tw-bg-green-600": record?.status == "finish",
-                                    "tw-bg-red-600": record?.status == "error",
-                                    "tw-bg-yellow-600": record?.status == "queue",
-                                    "tw-bg-blue-600": record?.status == "processing",
-                                }
-                            )}
-                        >
-                            {record?.status}
+                        <div className="tw-text-3xl">
+                            {record.status == "Done" ? <CheckCircleOutlined className="tw-text-green-600" /> : record.status == "Waiting" ? <PlayCircleOutlined className="tw-text-yellow-600" /> : <ExclamationCircleOutlined className="tw-text-red-600" />}
                         </div>
                     </Tooltip>
                 </div>
@@ -139,21 +152,24 @@ const StatusTable = () => {
                     return record?.timestamp
                 }
             },
+            render: (text, record) => (
+                <p className="tw-m-2">{dayjs(record?.timestamp).format('YYYY-MM-DD')}</p>
+            ),
         },
         {
             title: "Link",
-            dataIndex: "accName",
-            key: "accName",
+            dataIndex: "post_url",
+            key: "post_url",
             align: "center",
             width: 100,
             className: "tw-text-blue-500 tw-text-2xl",
             render: (text, record) => (
                 <Tooltip title="กดเพื่อไปที่โพสต์">
-                    {/* <a href={record?.post_url} target="blank"> */}
-                    <div className="tw-rounded-md tw-w-full tw-h-fit tw-border-2 tw-border-black tw-text-center tw-text-white tw-bg-sky-600" >
-                        <p className="tw-m-2">Link</p>
-                    </div>
-                    {/* </a> */}
+                    <a href={record?.post_url} target="blank">
+                        <div className="tw-rounded-md tw-w-full tw-h-fit tw-border-2 tw-border-black tw-text-center tw-text-white tw-bg-sky-600" >
+                            <p className="tw-m-2">Link</p>
+                        </div>
+                    </a>
                 </Tooltip>
             ),
         },
@@ -189,7 +205,7 @@ const StatusTable = () => {
                 )
             }
         >
-            {/* {botData.length > 0 && ( */}
+            <Loading isShown={showLoading} />
             <div
                 className={classNames(
                     "tw-flex tw-flex-row tw-max-w-full tw-justify-center tw-gap-2",
@@ -198,6 +214,15 @@ const StatusTable = () => {
                     }
                 )}
             >
+                <div className={classNames("tw-w-full", {})}>
+                    <p className="tw-text-lg">แพลตฟอร์ม:</p>
+                    <SearchBar
+                        useTagSearch={true}
+                        data={[{ platform: "facebook", }]}
+                        onChangeFilter={setSearchPlatform}
+                        keyName={"platform"}
+                    />
+                </div>
                 <div className={classNames("tw-w-full", {})}>
                     <p className="tw-text-lg">เลขบัญชี/ชื่อบัญชี:</p>
                     <SearchBar
@@ -218,81 +243,33 @@ const StatusTable = () => {
                     <p className="tw-text-lg">สถานะ:</p>
                     <SearchBar
                         useTagSearch={true}
-                        data={botStatus}
+                        data={workData}
                         onChangeFilter={setSearchStatus}
                         keyName={"status"}
                     />
                 </div>
             </div>
-            {/* )} */}
 
-            {/* {botData.length > 0 && ( */}
+
+
             <div className={classNames("tw-flex tw-flex-col tw-h-full tw-w-full tw-gap-2", {})}>
-                {/* <div className={classNames("tw-flex tw-flex-row tw-h-fit tw-my-2", {
-                    "tw-flex-col tw-w-full tw-gap-2": isMobile && isPortrait,
-                    "tw-self-end tw-w-fit tw-gap-2": isMobile && isLandscape,
-                    "tw-gap-4 tw-self-end tw-w-fit": !isMobile,
-                })}>
-                    <Button
-                        className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
-                            "tw-w-full": isMobile && isPortrait,
-                        })}
-                    >
-                        ดาวน์โหลด Format
-                    </Button>
-                    <input
-                        type="file"
-                        style={{ display: 'none' }}
-                    />
-                    <Button
-                        className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
-                            "tw-w-full": isMobile && isPortrait,
-                        })}
-                    >
-                        เพิ่มบัญชี Excel
-                    </Button>
-                    <Button
-                        className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
-                            "tw-w-full": isMobile && isPortrait,
-                        })}
-                    // onClick={() => showAddModal()}
-                    >
-                        เพิ่มบัญชีใหม่
-                    </Button>
-                </div> */}
+
                 <div
                     className={classNames("tw-border-2 tw-rounded-md", {
                         "tw-overflow-auto tw-min-h-fit": isTabletOrMobile && isPortrait,
                     })}
                 >
-                    <DataTable
-                        columns={columns}
-                        data={botStatus}
-                        setPageSize={botStatus.length}
-                        keyName={"id"}
-                    />
-                    {/* {modalToggle && (
-                                <EditUserModal
-                                    fetch={fetchAcc}
-                                    token={token}
-                                    modalToggle={modalToggle}
-                                    handleCancel={handleCancel}
-                                    modalData={modalData}
-                                    sentOwner={ownerGroup}
-                                />
-                            )}
-                            {addModalToggle && (
-                                <AddUserModal
-                                    fetch={fetchAcc}
-                                    token={token}
-                                    modalToggle={addModalToggle}
-                                    handleCancel={handleAddCancel}
-                                    sentOwner={ownerGroup}
-                                />
-                            )} */}
+                    {workData?.length > 0 &&
+                        <DataTable
+                            columns={columns}
+                            data={workData}
+                            setPageSize={workData?.length}
+                            keyName={"timestamp"}
+                        />
+                    }
+
                 </div>
             </div>
-            {/* )} */}
 
         </div >
 

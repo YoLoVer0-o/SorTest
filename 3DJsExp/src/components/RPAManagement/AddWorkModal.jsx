@@ -140,7 +140,56 @@ const AddWorkModal = props => {
                             })
                     }
                 }
+                else if (param.platform == "youtube") {
+                    let payload = {
+                        link: formData.link,
+                        description: formData.description,
+                    }
+
+                    await RPAWorkAPI.ytCreateURL(token, payload)
+                        .then(() => {
+                            MySwal.fire({
+                                title: "เรียบร้อย!",
+                                text: "บันทึกข้อมูลแล้ว!",
+                                icon: "success"
+                            });
+                        })
+
+                }
+                else if (param.platform == "instagram") {
+                    let payload = {
+                        link: formData.link,
+                        description: formData.description,
+                    }
+
+                    await RPAWorkAPI.igCreateURL(token, payload)
+                        .then(() => {
+                            MySwal.fire({
+                                title: "เรียบร้อย!",
+                                text: "บันทึกข้อมูลแล้ว!",
+                                icon: "success"
+                            });
+                        })
+
+                }
+                else if (param.platform == "tiktok") {
+                    let payload = {
+                        link: formData.link,
+                        description: formData.description,
+                    }
+
+                    await RPAWorkAPI.ttCreateURL(token, payload)
+                        .then(() => {
+                            MySwal.fire({
+                                title: "เรียบร้อย!",
+                                text: "บันทึกข้อมูลแล้ว!",
+                                icon: "success"
+                            });
+                        })
+
+                }
             }
+
         });
     }
 
@@ -179,67 +228,93 @@ const AddWorkModal = props => {
                 id="editForm"
                 onFinish={() => handleSave()}
             >
-                <div className='tw-overflow-y-auto tw-h-full tw-w-full tw-border-black tw-border-2 tw-rounded-md'>
-                    <div className='tw-flex tw-flex-col tw-w-full tw-h-full tw-p-4 tw-gap-4'>
-                        <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
-                            "tw-w-56": isMobile,
-                        })}>
-                            <p>เลขบัญชี/ชื่อบัญชี:</p>
-                            <Form.Item name="botname"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Please select an botname!',
-                                    },
-                                ]}>
-                                {/* <Input className='tw-h-full tw-w-full' placeholder="ชื่อบัญชี" autoComplete="username" /> */}
-                                <Select
-                                    allowClear
-                                    className='tw-w-full'
-                                    placeholder="Please select"
-                                    options={allBot ? allBot : []}
-                                />
-                            </Form.Item>
-                        </div>
-                        <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
-                            "tw-w-56": isMobile,
-                        })}>
-                            <p>งาน:</p>
-                            <Form.Item name="work"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Please select an work!',
-                                    },
-                                ]}>
-                                <Select
-                                    allowClear
-                                    className='tw-w-full'
-                                    placeholder="Please select"
-                                    options={param.platform == "facebook" ?
-                                        [
-                                            { label: "fbScrapTimeLineTask", value: "fbScrapTimeLineTask" },
-                                            { label: "fbScrapPostTask", value: "fbScrapPostTask" },
-                                            { label: "fbScrapProfileTask", value: "fbScrapProfileTask" },
-                                            { label: "fbScrapInteractionTask", value: "fbScrapInteractionTask" }
-                                        ] :
-                                        param.platform == "X" ?
+                {(param.platform !== "instagram" && param.platform !== "youtube" && param.platform !== "tiktok") &&
+                    <div className='tw-overflow-y-auto tw-h-full tw-w-full tw-border-black tw-border-2 tw-rounded-md'>
+                        <div className='tw-flex tw-flex-col tw-w-full tw-h-full tw-p-4 tw-gap-4'>
+                            <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
+                                "tw-w-56": isMobile,
+                            })}>
+                                <p>เลขบัญชี/ชื่อบัญชี:</p>
+                                <Form.Item name="botname"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please select an botname!',
+                                        },
+                                    ]}>
+                                    {/* <Input className='tw-h-full tw-w-full' placeholder="ชื่อบัญชี" autoComplete="username" /> */}
+                                    <Select
+                                        allowClear
+                                        className='tw-w-full'
+                                        placeholder="Please select"
+                                        options={allBot ? allBot : []}
+                                    />
+                                </Form.Item>
+                            </div>
+                            <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
+                                "tw-w-56": isMobile,
+                            })}>
+                                <p>งาน:</p>
+                                <Form.Item name="work"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please select an work!',
+                                        },
+                                    ]}>
+                                    <Select
+                                        allowClear
+                                        className='tw-w-full'
+                                        placeholder="Please select"
+                                        options={param.platform == "facebook" ?
                                             [
-                                                { label: "twScrapHastag", value: "twScrapHastag" }
-                                            ] : []}
-                                />
-                            </Form.Item>
-                        </div>
-                        <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
-                            "tw-w-56": isMobile,
-                        })}>
-                            <p>เป้าหมาย:</p>
-                            <Form.Item name="task">
-                                <Input className='tw-h-full tw-w-full' required={true} placeholder="เป้าหมาย" autoComplete="target" />
-                            </Form.Item>
+                                                { label: "fbScrapTimeLineTask", value: "fbScrapTimeLineTask" },
+                                                { label: "fbScrapPostTask", value: "fbScrapPostTask" },
+                                                { label: "fbScrapProfileTask", value: "fbScrapProfileTask" },
+                                                { label: "fbScrapInteractionTask", value: "fbScrapInteractionTask" }
+                                            ] :
+                                            param.platform == "X" ?
+                                                [
+                                                    { label: "twScrapHastag", value: "twScrapHastag" }
+                                                ] : []}
+                                    />
+                                </Form.Item>
+                            </div>
+                            <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
+                                "tw-w-56": isMobile,
+                            })}>
+                                <p>เป้าหมาย:</p>
+                                <Form.Item name="task">
+                                    <Input className='tw-h-full tw-w-full' required={true} placeholder="เป้าหมาย" autoComplete="target" />
+                                </Form.Item>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
+
+                {(param.platform == "instagram" || param.platform == "youtube" || param.platform == "tiktok") &&
+                    <div className='tw-overflow-y-auto tw-h-full tw-w-full tw-border-black tw-border-2 tw-rounded-md'>
+                        <div className='tw-flex tw-flex-col tw-w-full tw-h-full tw-p-4 tw-gap-4'>
+                            <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
+                                "tw-w-56": isMobile,
+                            })}>
+                                <p>Link:</p>
+                                <Form.Item name="link">
+                                    <Input className='tw-h-full tw-w-full' required={true} placeholder="link" autoComplete="false" />
+                                </Form.Item>
+                            </div>
+                            <div className={classNames('tw-flex tw-flex-col tw-w-96 tw-h-16', {
+                                "tw-w-56": isMobile,
+                            })}>
+                                <p>คำอธิบาย:</p>
+                                <Form.Item name="description">
+                                    <Input className='tw-h-full tw-w-full' required={true} placeholder="คำอธิบาย" autoComplete="false" />
+                                </Form.Item>
+                            </div>
+                        </div>
+                    </div>
+                }
+
             </Form>
         </Modal >
     );
