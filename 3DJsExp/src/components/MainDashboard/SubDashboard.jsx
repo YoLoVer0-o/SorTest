@@ -190,7 +190,7 @@ const SubDashboard = () => {
         fetchWordCloud(searchDate[0], searchDate[1]),
         fetchStat(searchDate[0], searchDate[1]),
         fetchMaxEngagement(searchDate[0], searchDate[1]),
-        fetchHashTag()
+        fetchHashTag(searchDate[0], searchDate[1])
       ]).then(() => {
         setShowLoading(false);
       }).catch((error) => {
