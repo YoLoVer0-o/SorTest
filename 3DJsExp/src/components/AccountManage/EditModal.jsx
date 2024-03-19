@@ -7,24 +7,10 @@ import AccountManageAPI from "../../service/AccountManageAPI";
 const EditModal = (props) => {
   const { isopenEdit, iscloseEdit, token, handleData, getType } = props;
   const [openState, setOpenState] = useState(false);
-  const [handelLable, setHandelLable] = useState([
-    {
-      value: "A",
-      label: "A",
-    },
-    {
-      value: "B",
-      label: "B",
-    },
-    {
-      value: "C",
-      label: "C",
-    },
-  ]);
+  const [handelLable, setHandelLable] = useState([]);
   const [selectedLabel, setSelectedLabel] = useState([]);
   const [updateContent, setUpdateContent] = useState("");
 
-  console.log(updateContent);
   const closeModal = () => {
     setOpenState(false);
     if (iscloseEdit) {
@@ -88,8 +74,18 @@ const EditModal = (props) => {
 
   useEffect(() => {
     handleData;
+    let currentlabel = handleData
+      ? handleData.label.map((label) => ({
+          value: label,
+          label: label,
+        }))
+      : [];
+    setHandelLable(currentlabel);
+  }, [handleData]);
+
+  useEffect(() => {
     setUpdateContent({
-      url: handleData,
+      url: handleData.url,
       label: selectedLabel,
     });
   }, [handleData, selectedLabel]);
@@ -117,7 +113,7 @@ const EditModal = (props) => {
     >
       <Select
         mode="tags"
-        // size={size}
+        value={handleData.label}
         placeholder="เพิ่มกลุ่มเป้าหมาย"
         onChange={updateLabel}
         options={LabelOptions}
@@ -147,9 +143,9 @@ const EditModal = (props) => {
         options={LabelOptions}
       /> */}
       <p>Link:</p>
-     
+
       <Input
-       value={handleData}
+        value={handleData.url}
         disabled={true}
         className="tw-w-full tw-text-black tw-rounded-md "
         placeholder="link"
@@ -161,7 +157,7 @@ EditModal.propTypes = {
   isopenEdit: PropTypes.bool,
   iscloseEdit: PropTypes.func,
   token: PropTypes.string,
-  handleData: PropTypes.string,
+  handleData: PropTypes.object,
   getType: PropTypes.string,
 };
 export default EditModal;

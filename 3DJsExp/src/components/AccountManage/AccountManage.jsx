@@ -179,14 +179,16 @@ const AccountManage = () => {
       width: 50,
       className: "tw-text-blue-600",
       render: (text, record) => (
-        <div className="tw-flex tw-justify-center ">
-          <button
-            onClick={() => openTargetEdit(record.url)}
-            className="hover:tw-bg-blue-200 tw-rounded-full tw-p-1 tw-flex tw-justify-center"
-          >
-            <EditOutlined className="tw-w-7 tw-h-7 tw-text-2xl" />
-          </button>
-        </div>
+        <Tooltip title="กดเพื่อเเก้ไข">
+          <div className="tw-flex tw-justify-center ">
+            <button
+              onClick={() => openTargetEdit(record)}
+              className="hover:tw-bg-blue-200 tw-rounded-full tw-p-1 tw-flex tw-justify-center"
+            >
+              <EditOutlined className="tw-w-7 tw-h-7 tw-text-2xl" />
+            </button>
+          </div>
+        </Tooltip>
       ),
     },
   ];
