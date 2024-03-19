@@ -162,10 +162,16 @@ const SubDashboard = () => {
     }
   }
 
-  const fetchHashTag = async () => {
+  const fetchHashTag = async (start, end) => {
     try {
       // setShowLoading(true);
-      const data = await dashBoardAPI.getHashTag();
+      const payload = {
+        date: [
+          start,
+          end
+        ]
+      }
+      const data = await dashBoardAPI.getHashTag(payload);
       setDailyHashTag(data);
     } catch (error) {
       console.error('Error fetching bot config:', error);
@@ -197,7 +203,7 @@ const SubDashboard = () => {
 
   ///////////////////////////////////WordClouds logic///////////////////////////////////////////////////////////////////////
 
-  
+
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   const dashboardData = dashboardMock.filter(data => data.topic == (param.topic))[0];

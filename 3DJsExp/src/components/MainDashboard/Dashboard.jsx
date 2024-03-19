@@ -90,10 +90,16 @@ const Dashboard = () => {
         // }
     }
 
-    const fetchHashTag = async () => {
+    const fetchHashTag = async (start, end) => {
         try {
             // setShowLoading(true);
-            const data = await dashBoardAPI.getHashTag();
+            const payload = {
+                date: [
+                    start,
+                    end
+                ]
+            }
+            const data = await dashBoardAPI.getHashTag(payload);
             setDailyHashTag(data);
         } catch (error) {
             console.error('Error fetching bot config:', error);
@@ -183,7 +189,7 @@ const Dashboard = () => {
                 fetchSentiment(searchDate[0], searchDate[1]),
                 fetchWordCloud(searchDate[0], searchDate[1]),
                 fetchStat(searchDate[0], searchDate[1]),
-                fetchHashTag(),
+                fetchHashTag(searchDate[0], searchDate[1]),
                 fetchSocial(searchDate[0], searchDate[1]),
                 fetchMaxEngagement(searchDate[0], searchDate[1])
             ]).then(() => {

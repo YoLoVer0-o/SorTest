@@ -165,10 +165,11 @@ const dashBoardAPI = {
     }
   },
 
-  getHashTag: async () => {
+  getHashTag: async (payload) => {
     try {
-      const response = await axios.get(
-        `http://192.168.10.121:8000/stat/gettrends`
+      const response = await axios.post(
+        `http://192.168.10.121:8000/stat/gettrends`,
+        payload
       );
       return response.data;
       // Return the response data
