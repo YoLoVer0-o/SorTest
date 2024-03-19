@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { DataTable, SearchBar, Loading } from "../../utilities";
 import { useResponsive } from "../../hooks";
-import { Button, Input, Switch, Tooltip, InputNumber, Select } from "antd";
+import { Button, Input, Switch, Tooltip, InputNumber, Select, Cascader } from "antd";
 import {
     ColumnHeightOutlined,
     VerticalAlignMiddleOutlined,
@@ -105,10 +105,8 @@ const PostTable = () => {
     }, [pageIndex])
 
     useEffect(() => {
-
         fetchTags()
         fetchFBid()
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -306,8 +304,8 @@ const PostTable = () => {
                     <div className="tw-flex tw-flex-col tw-justify-center tw-w-full tw-gap-6">
                         <div className='tw-flex tw-flex-col tw-justify-center tw-w-full'>
                             <p className="tw-text-lg">มีคำเหล่านี้:</p>
-                            <Select
-                                mode="multiple"
+                            <Cascader
+                                multiple
                                 allowClear
                                 className='tw-w-full'
                                 placeholder="Please select"
@@ -346,8 +344,8 @@ const PostTable = () => {
                         </div>
                         <div className='tw-flex tw-flex-col tw-justify-center tw-w-full'>
                             <p className="tw-text-lg">ไม่มีคำเหล่านี้:</p>
-                            <Select
-                                mode="multiple"
+                            <Cascader
+                                multiple
                                 allowClear
                                 className='tw-w-full'
                                 placeholder="Please select"
@@ -408,13 +406,24 @@ const PostTable = () => {
                             </div>
                             <div className='tw-flex tw-flex-col tw-justify-center tw-w-full'>
                                 <p className="tw-text-lg">ชื่อบัญชี:</p>
-                                <SearchBar
+                                {/* <SearchBar
                                     useTagSearch={true}
                                     data={displayFBid}
                                     onChangeFilter={setSearchFBid}
                                     useOwnData={true}
                                     ownKeyNameLabel={"profile_title"}
                                     ownKeyNameValue={"profile_url"}
+                                /> */}
+                                <Select
+                                    mode="multiple"
+                                    allowClear
+                                    className='tw-w-full'
+                                    placeholder="Please select"
+                                    options={displayFBid.length > 0 ? displayFBid.map((profile) => ({
+                                        label: profile.profile_title,
+                                        value: profile.profile_url,
+                                    })) : []}
+                                    onChange={setSearchFBid}
                                 />
                             </div>
                         </div>
