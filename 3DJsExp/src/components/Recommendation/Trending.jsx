@@ -174,21 +174,21 @@ const Trending = () => {
     },
     {
       title: 'ความรู้สึก',
-      dataIndex: 'post_comment_sentiment',
-      key: 'post_comment_sentiment',
+      dataIndex: 'post_sentiment',
+      key: 'post_sentiment',
       align: "center",
       width: 150,
       className: 'tw-text-violet-600',
       render: (text, record) => (
         <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
-          <Tooltip title={record?.post_comment_sentiment}>
+          <Tooltip title={record?.post_sentiment}>
             <div className={
               classNames("tw-rounded-md tw-border-2 tw-border-black tw-w-max tw-text-center tw-text-white tw-p-2", {
-                "tw-bg-green-600": record?.post_comment_sentiment == "positive",
-                "tw-bg-red-600": record?.post_comment_sentiment == "negative",
-                "tw-bg-sky-600": record?.post_comment_sentiment == "neutral",
+                "tw-bg-green-600": record?.post_sentiment == "positive",
+                "tw-bg-red-600": record?.post_sentiment == "negative",
+                "tw-bg-sky-600": record?.post_sentiment == "neutral",
               })} >
-              {record?.post_comment_sentiment}
+              {record?.post_sentiment}
             </div>
           </Tooltip>
         </div>
