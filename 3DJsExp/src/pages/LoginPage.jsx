@@ -45,34 +45,63 @@ function LoginPage() {
                 >
                     <Form.Item
                         name="username"
-                    // rules={[
-                    //     {
-                    //         required: true,
-                    //         message: 'Please input your Username!',
-                    //     },
-                    // ]}
-                    >
-                        {/* <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
-                    </Form.Item>
-                    <Form.Item
-                        name="email"
                         rules={[
                             {
                                 required: true,
-                                message: 'Please input your Email!',
+                                message: 'Please input your Username!',
                             },
                         ]}
-                    > */}
-                        <Input prefix={<MailOutlined className="site-form-item-icon" />} placeholder="Email" />
+                    >
+                        <Input prefix={<MailOutlined className="site-form-item-icon" />} placeholder="Username" />
                     </Form.Item>
                     <Form.Item
                         name="password"
-                    // rules={[
-                    //     {
-                    //         required: true,
-                    //         message: 'Please input your Password!',
-                    //     },
-                    // ]}
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input your Password!',
+                            },
+                            // {
+                            //     validator: (_, value) => {
+                            //         if (!/(?=.*[!@#$%^&*()_+])/.test(value)) {
+                            //             return Promise.reject('Password must contain at least 1 special character');
+                            //         }
+                            //         return Promise.resolve();
+                            //     },
+                            // },
+                            // {
+                            //     validator: (_, value) => {
+                            //         if (!/(?=.*\d)/.test(value)) {
+                            //             return Promise.reject('Password must contain at least 1 number');
+                            //         }
+                            //         return Promise.resolve();
+                            //     },
+                            // },
+                            // {
+                            //     validator: (_, value) => {
+                            //         if (!/(?=.*[A-Z])/.test(value)) {
+                            //             return Promise.reject('Password must contain at least 1 uppercase letter');
+                            //         }
+                            //         return Promise.resolve();
+                            //     },
+                            // },
+                            // {
+                            //     validator: (_, value) => {
+                            //         if (!/(?=.*[a-z])/.test(value)) {
+                            //             return Promise.reject('Password must contain at least 1 lowercase letter');
+                            //         }
+                            //         return Promise.resolve();
+                            //     },
+                            // },
+                            // {
+                            //     validator: (_, value) => {
+                            //         if (value.length < 6) {
+                            //             return Promise.reject('Password must be at least 6 characters long');
+                            //         }
+                            //         return Promise.resolve();
+                            //     },
+                            // },
+                        ]}
                     >
                         <Input
                             prefix={<LockOutlined className="site-form-item-icon" />}

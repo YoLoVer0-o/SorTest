@@ -182,7 +182,9 @@ const PostTable = () => {
                 <div className="tw-grid tw-grid-cols-2 tw-gap-1 tw-w-full tw-h-full tw-content-start">
                     {record?.hashtags.map((hashtags, i) => (
                         <Tooltip key={i} title={hashtags}>
-                            <div className="tw-rounded-md tw-p-2 tw-border-2 tw-border-black tw-w-fit tw-text-center tw-text-white tw-bg-violet-600" >
+                            <div
+                                className="tw-rounded-md tw-p-2 tw-border-2 tw-border-black tw-w-full tw-text-center tw-text-white tw-bg-violet-600 tw-truncate"
+                            >
                                 {hashtags}
                             </div>
                         </Tooltip>
@@ -406,14 +408,6 @@ const PostTable = () => {
                             </div>
                             <div className='tw-flex tw-flex-col tw-justify-center tw-w-full'>
                                 <p className="tw-text-lg">ชื่อบัญชี:</p>
-                                {/* <SearchBar
-                                    useTagSearch={true}
-                                    data={displayFBid}
-                                    onChangeFilter={setSearchFBid}
-                                    useOwnData={true}
-                                    ownKeyNameLabel={"profile_title"}
-                                    ownKeyNameValue={"profile_url"}
-                                /> */}
                                 <Select
                                     mode="multiple"
                                     allowClear

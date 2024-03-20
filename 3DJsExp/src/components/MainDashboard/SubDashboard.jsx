@@ -198,7 +198,7 @@ const SubDashboard = () => {
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchDate])
+  }, [searchDate, param])
 
 
   ///////////////////////////////////WordClouds logic///////////////////////////////////////////////////////////////////////
