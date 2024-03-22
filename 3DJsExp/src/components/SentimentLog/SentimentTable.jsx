@@ -92,7 +92,20 @@ const SentimentTable = () => {
             key: 'tag',
             align: "center",
             width: 250,
-            className: 'tw-text-violet-600',
+            className: 'tw-text-violet-600 ',
+            render: (text, record) => (
+                <div className="tw-grid tw-grid-cols-2 tw-gap-1 tw-w-full tw-h-full tw-content-start">
+                    {record?.tag.map((tag, i) => (
+                        <Tooltip key={i} title={tag}>
+                            <div
+                                className="tw-rounded-md tw-p-2 tw-border-2 tw-border-black tw-w-full tw-text-center tw-text-white tw-bg-violet-600 tw-truncate"
+                            >
+                                {tag}
+                            </div>
+                        </Tooltip>
+                    ))}
+                </div>
+            ),
 
         },
         {
@@ -234,19 +247,19 @@ const SentimentTable = () => {
             )}
 
             {/* {displayData?.posts && ( */}
-                <div className={classNames("tw-border-2 tw-rounded-md", {})}>
-                    <DataTable
-                        columns={columns}
-                        // data={newSentiment}
-                        data={displayData?.posts ? displayData.posts : []}
-                        setPageSize={pageSize}
-                        useRowClick={true}
-                        onRowClick={(selectedRows) => toReport(selectedRows)}
-                        keyName={"id"}
-                        totalPages={displayData.total_data}
-                        sendPages={setPageIndex}
-                    />
-                </div>
+            <div className={classNames("tw-border-2 tw-rounded-md", {})}>
+                <DataTable
+                    columns={columns}
+                    // data={newSentiment}
+                    data={displayData?.posts ? displayData.posts : []}
+                    setPageSize={pageSize}
+                    useRowClick={true}
+                    onRowClick={(selectedRows) => toReport(selectedRows)}
+                    keyName={"id"}
+                    totalPages={displayData.total_data}
+                    sendPages={setPageIndex}
+                />
+            </div>
             {/* )} */}
             <div className="tw-flex tw-flex-row tw-my-6 tw-gap-4">
                 {pageSize < 20 && (

@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { DataTable, SearchBar, Loading } from "../../utilities";
 import { useResponsive } from "../../hooks";
-import { Button, Input, Switch, Tooltip, InputNumber, Select, Cascader } from "antd";
+import { Button, Input, Switch, Tooltip, InputNumber, Select } from "antd";
 import {
     ColumnHeightOutlined,
     VerticalAlignMiddleOutlined,
     FileTextOutlined,
     MinusOutlined,
-    PlusOutlined
+    PlusOutlined,
+    CloseCircleOutlined
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
@@ -31,8 +32,9 @@ const PostTable = () => {
     const [pageSize, setPageSize] = useState(10);
     const [advancedSearch, setAdvancedSearch] = useState(false);
     const [includeWord, setIncludeWord] = useState([]);
-    const [inputValue, setInputValue] = useState('');
+    const [includeValue, setIncludeValue] = useState('');
     const [excludeWord, setExcludeWord] = useState([]);
+    const [excludeValue, setExcludeValue] = useState('');
     const [engagement, setEngagement] = useState();
     const [displayFBid, setDisplayFBid] = useState([]);
     const [searchFBid, setSearchFBid] = useState([]);
@@ -98,9 +100,7 @@ const PostTable = () => {
     }
 
     useEffect(() => {
-
         fetchPost()
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pageIndex])
 
@@ -110,30 +110,47 @@ const PostTable = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    useEffect(() => {
+        console.log(includeWord)
+    }, [includeWord])
+
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    const addWord = async (word, setData) => {
-
-        setData(prevItems => [...prevItems, {
-            label: word,
-            value: word,
-        }])
-        setInputValue(null)
-    };
-
-    const deleteWord = async (word, setData) => {
+    const addWord = async (wordTarget, setData, setInputValue) => {
 
 
         setData(prevItems => {
-            const indexToRemove = prevItems.findIndex(item => item.label === word);
+            const wordToAdd = prevItems?.find(item => item == wordTarget);
+            // If the item is not found
+            if (wordToAdd !== wordTarget && wordTarget) {
+                console.log("add")
+                return [...prevItems, wordTarget]
+            }
+            else {
+                console.log("found")
+                console.log(wordToAdd)
+                console.log(wordTarget)
+                return [...prevItems]
+            }
+        })
+        setInputValue(null)
+
+    };
+
+    const deleteWord = async (wordTarget, setData) => {
+
+        setData(prevItems => {
+            const wordToRemove = prevItems.find(item => item === wordTarget);
 
             // If the item is found
-            if (indexToRemove !== -1) {
+            if (wordToRemove) {
+                console.log("found word to remove")
                 // Create a copy of the current items array
                 const newItems = [...prevItems];
                 // Remove the item from the copied array
-                newItems.splice(indexToRemove, 1);
+                newItems.filter(word => word !== wordTarget)
                 // Update the state with the new array
-                return newItems
+                return newItems.filter(word => word !== wordTarget)
             }
         })
 
@@ -157,8 +174,8 @@ const PostTable = () => {
         },
         {
             title: 'วันที่',
-            dataIndex: 'postime',
-            key: 'postime',
+            dataIndex: 'time',
+            key: 'time',
             align: "center",
             width: 150,
             className: 'tw-text-lime-600',
@@ -182,7 +199,9 @@ const PostTable = () => {
                 <div className="tw-grid tw-grid-cols-2 tw-gap-1 tw-w-full tw-h-full tw-content-start">
                     {record?.hashtags.map((hashtags, i) => (
                         <Tooltip key={i} title={hashtags}>
-                            <div className="tw-rounded-md tw-p-2 tw-border-2 tw-border-black tw-w-fit tw-text-center tw-text-white tw-bg-violet-600" >
+                            <div
+                                className="tw-rounded-md tw-p-2 tw-border-2 tw-border-black tw-w-full tw-text-center tw-text-white tw-bg-violet-600 tw-truncate"
+                            >
                                 {hashtags}
                             </div>
                         </Tooltip>
@@ -192,8 +211,8 @@ const PostTable = () => {
         },
         {
             title: ' ผู้โพสต์',
-            dataIndex: 'poster_name',
-            key: 'poster_name',
+            dataIndex: 'name',
+            key: 'name',
             align: "center",
             width: 150,
             className: 'tw-text-amber-600',
@@ -207,7 +226,7 @@ const PostTable = () => {
             className: 'tw-text-amber-600',
             render: (text, record) => (
                 <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
-                    {record?.class.map((bot_class, i) =>
+                    {(record?.class && record?.class?.length > 0) && record?.class.map((bot_class, i) =>
                         <Tooltip title={bot_class} key={i}>
                             <div className={
                                 classNames("tw-rounded-md tw-border-2 tw-border-black tw-w-max tw-text-center tw-text-white tw-p-2 tw-bg-blue-600", {
@@ -221,15 +240,15 @@ const PostTable = () => {
         },
         {
             title: 'Link',
-            dataIndex: 'post_url',
-            key: 'post_url',
+            dataIndex: 'url',
+            key: 'url',
             align: "center",
             width: 50,
             className: 'tw-truncate tw-text-sky-700',
             render: (text, record) => (
                 <div className="tw-flex tw-justify-center">
                     <Tooltip title="กดเพื่อไปที่โพสต์">
-                        <a href={record?.post_url} target="blank">
+                        <a href={record?.url} target="blank">
                             <div className="tw-rounded-md tw-w-full tw-border-2 tw-border-black tw-text-center tw-text-white tw-bg-sky-600" >
                                 <p className="tw-m-2">Link</p>
                             </div>
@@ -257,7 +276,7 @@ const PostTable = () => {
     return (
         <div className={classNames('tw-flex tw-flex-col tw-max-w-full tw-max-h-full tw-overflow-y-auto', {})}>
             <Loading isShown={showLoading} />
-            <div className="tw-flex tw-flex-col tw-justify-center tw-w-full">
+            <div className="tw-flex tw-flex-col tw-justify-center tw-w-full tw-gap-4">
                 <div className={classNames("tw-w-full", {})}>
                     <p className="tw-text-lg">ค้นหา:</p>
                     <SearchBar
@@ -301,62 +320,89 @@ const PostTable = () => {
                     </div>
                 </div>
                 {advancedSearch && (
-                    <div className="tw-flex tw-flex-col tw-justify-center tw-w-full tw-gap-6">
-                        <div className='tw-flex tw-flex-col tw-justify-center tw-w-full'>
+                    <div className="tw-flex tw-flex-col tw-justify-center tw-w-full tw-gap-2">
+                        <div className='tw-flex tw-flex-col tw-justify-center tw-w-full tw-gap-2'>
                             <p className="tw-text-lg">มีคำเหล่านี้:</p>
-                            <Cascader
-                                multiple
-                                allowClear
-                                className='tw-w-full'
-                                placeholder="Please select"
-                                onFocus={() => setInputValue(null)}
-                                onDeselect={(value) => deleteWord(value, setIncludeWord)}
-                                options={includeWord.length > 0 ? includeWord : false}
-                                optionRender={(option) => (
-                                    <div className='tw-flex tw-flex-row tw-justify-between'>
-                                        {/* <CloseCircleOutlined className='tw-text-2xl tw-text-red-500' onClick={() => deleteWord(option.value, setIncludeWord)} /> */}
-                                        <p className='tw-font-bold'>{option.label}</p>
-                                    </div>
-                                )}
-                                dropdownRender={(menu) => (
-                                    <div className='tw-flex tw-flex-col'>
-                                        {menu}
-                                        <div className='tw-flex tw-flex-row tw-border-2 tw-border-black tw-rounded-md tw-p-1'>
-                                            <Input
-                                                placeholder="เพิ่มคำใหม่"
-                                                onKeyDown={(e) => e.stopPropagation()}
-                                                addonAfter={<Tooltip title={"กดเพื่อเพิ่ม(จำเป็นต้องกรอก)"}>
-                                                    <Button
-                                                        icon={<PlusOutlined />}
-                                                        className='tw-bg-green-500 tw-text-white tw-border-white hover:tw-bg-white hover:tw-text-green-500 hover:tw-border-green-500'
-                                                        onClick={() => addWord(inputValue, setIncludeWord)}
-                                                    >
-                                                        เพิ่มกลุ่ม
-                                                    </Button>
-                                                </Tooltip>}
-                                                value={inputValue}
-                                                onChange={(e) => setInputValue(e.target.value)}
+                            <div className='tw-flex tw-flex-row tw-border-2 tw-gap-2 tw-w-full tw-h-12 tw-border-sky-400 tw-rounded-md tw-p-1'>
+                                {includeWord?.length > 0 && includeWord?.map((word, i) => (
+                                    <Tooltip key={i} title={word}>
+                                        <div
+                                            className="tw-flex tw-flex-row tw-gap-3 tw-rounded-md tw-p-2 tw-border-2 tw-border-black tw-h-full tw-w-fit tw-align-middle  tw-bg-violet-300 tw-truncate"
+                                        >
+                                            <p className="tw-text-lg tw-h-full">{word}</p>
+                                            <CloseCircleOutlined
+                                                onClick={() => deleteWord(word, setIncludeWord)}
+                                                className="tw-text-red-600 tw-text-lg"
                                             />
                                         </div>
-                                    </div>
-                                )}
-                            />
+                                    </Tooltip>
+                                ))}
+                            </div>
+                            <div className='tw-flex tw-flex-row tw-p-1'>
+                                <Input
+                                    placeholder="เพิ่มคำใหม่"
+                                    onKeyDown={(e) => e.stopPropagation()}
+                                    addonAfter={<Tooltip title={"กดเพื่อเพิ่ม(จำเป็นต้องกรอก)"}>
+                                        <Button
+                                            icon={<PlusOutlined />}
+                                            className='tw-w-full tw-bg-green-500 tw-text-white tw-border-white hover:tw-bg-white hover:tw-text-green-500 hover:tw-border-green-500'
+                                            onClick={() => addWord(includeValue, setIncludeWord, setIncludeValue)}
+                                        >
+                                            เพิ่มคำ
+                                        </Button>
+                                    </Tooltip>}
+                                    value={includeValue}
+                                    onChange={(e) => setIncludeValue(e.target.value)}
+                                />
+                            </div>
                         </div>
-                        <div className='tw-flex tw-flex-col tw-justify-center tw-w-full'>
+                        <div className='tw-flex tw-flex-col tw-justify-center tw-w-full tw-gap-2'>
                             <p className="tw-text-lg">ไม่มีคำเหล่านี้:</p>
-                            <Cascader
+                            <div className='tw-flex tw-flex-row tw-border-2 tw-gap-2 tw-w-full tw-h-12 tw-border-sky-400 tw-rounded-md tw-p-1'>
+                                {excludeWord?.length > 0 && excludeWord?.map((word, i) => (
+                                    <Tooltip key={i} title={word}>
+                                        <div
+                                            className="tw-rounded-md tw-p-2 tw-border-2 tw-border-black tw-h-full tw-w-fit tw-gap-2 tw-text-white tw-text-justify tw-bg-violet-600 tw-truncate"
+                                        >
+                                            <p className="">{word}</p>
+                                            <CloseCircleOutlined
+                                                onClick={() => deleteWord(word, setExcludeWord)}
+                                                className="tw-text-red-600 tw-text-lg"
+                                            />
+                                        </div>
+                                    </Tooltip>
+                                ))}
+                            </div>
+                            <div className='tw-flex tw-flex-row tw-rounded-md tw-p-1'>
+                                <Input
+                                    placeholder="เพิ่มคำใหม่"
+                                    onKeyDown={(e) => e.stopPropagation()}
+                                    addonAfter={<Tooltip title={"กดเพื่อเพิ่ม(จำเป็นต้องกรอก)"}>
+                                        <Button
+                                            icon={<PlusOutlined />}
+                                            className='tw-w-full tw-bg-green-500 tw-text-white tw-border-white hover:tw-bg-white hover:tw-text-green-500 hover:tw-border-green-500'
+                                            onClick={() => addWord(excludeValue, setExcludeWord, setExcludeValue)}
+                                        >
+                                            เพิ่มคำ
+                                        </Button>
+                                    </Tooltip>}
+                                    value={excludeValue}
+                                    onChange={(e) => setExcludeValue(e.target.value)}
+                                />
+                            </div>
+                            {/* <Cascader
                                 multiple
                                 allowClear
                                 className='tw-w-full'
                                 placeholder="Please select"
                                 onFocus={() => setInputValue(null)}
-                                onDeselect={(value) => deleteWord(value, setExcludeWord)}
+                                // onDeselect={(value) => deleteWord(value, setExcludeWord)}
                                 options={excludeWord.length > 0 ? excludeWord : false}
-                                optionRender={(option) => (
-                                    <div className='tw-flex tw-flex-row tw-justify-between'>
-                                        <p className='tw-font-bold'>{option.label}</p>
-                                    </div>
-                                )}
+                                // optionRender={(option) => (
+                                //     <div className='tw-flex tw-flex-row tw-justify-between'>
+                                //         <p className='tw-font-bold'>{option.label}</p>
+                                //     </div>
+                                // )}
                                 dropdownRender={(menu) => (
                                     <div className='tw-flex tw-flex-col'>
                                         {menu}
@@ -379,7 +425,7 @@ const PostTable = () => {
                                         </div>
                                     </div>
                                 )}
-                            />
+                            /> */}
                         </div>
                         <div className='tw-flex tw-flex-row tw-justify-center tw-w-full tw-gap-6'>
                             <div className='tw-flex tw-flex-col tw-justify-center tw-w-full'>
@@ -406,14 +452,6 @@ const PostTable = () => {
                             </div>
                             <div className='tw-flex tw-flex-col tw-justify-center tw-w-full'>
                                 <p className="tw-text-lg">ชื่อบัญชี:</p>
-                                {/* <SearchBar
-                                    useTagSearch={true}
-                                    data={displayFBid}
-                                    onChangeFilter={setSearchFBid}
-                                    useOwnData={true}
-                                    ownKeyNameLabel={"profile_title"}
-                                    ownKeyNameValue={"profile_url"}
-                                /> */}
                                 <Select
                                     mode="multiple"
                                     allowClear

@@ -180,7 +180,54 @@ const AddUserRoleModal = (props) => {
                                 "tw-w-56": isMobile,
                             })}>
                                 <p>รหัสผ่าน:</p>
-                                <Form.Item name="password">
+                                <Form.Item name="password"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please input your Password!',
+                                        },
+                                        {
+                                            validator: (_, value) => {
+                                                if (!/(?=.*[!@#$%^&*()_+])/.test(value)) {
+                                                    return Promise.reject('Password must contain at least 1 special character');
+                                                }
+                                                return Promise.resolve();
+                                            },
+                                        },
+                                        {
+                                            validator: (_, value) => {
+                                                if (!/(?=.*\d)/.test(value)) {
+                                                    return Promise.reject('Password must contain at least 1 number');
+                                                }
+                                                return Promise.resolve();
+                                            },
+                                        },
+                                        {
+                                            validator: (_, value) => {
+                                                if (!/(?=.*[A-Z])/.test(value)) {
+                                                    return Promise.reject('Password must contain at least 1 uppercase letter');
+                                                }
+                                                return Promise.resolve();
+                                            },
+                                        },
+                                        {
+                                            validator: (_, value) => {
+                                                if (!/(?=.*[a-z])/.test(value)) {
+                                                    return Promise.reject('Password must contain at least 1 lowercase letter');
+                                                }
+                                                return Promise.resolve();
+                                            },
+                                        },
+                                        {
+                                            validator: (_, value) => {
+                                                if (value.length < 6) {
+                                                    return Promise.reject('Password must be at least 6 characters long');
+                                                }
+                                                return Promise.resolve();
+                                            },
+                                        },
+                                    ]}
+                                >
                                     <Input.Password className='tw-h-full tw-w-full' placeholder="รหัสผ่าน" required={true} autoComplete='off' />
                                 </Form.Item>
                             </div>

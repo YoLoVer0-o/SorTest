@@ -190,7 +190,7 @@ const SubDashboard = () => {
         fetchWordCloud(searchDate[0], searchDate[1]),
         fetchStat(searchDate[0], searchDate[1]),
         fetchMaxEngagement(searchDate[0], searchDate[1]),
-        fetchHashTag()
+        fetchHashTag(searchDate[0], searchDate[1])
       ]).then(() => {
         setShowLoading(false);
       }).catch((error) => {
@@ -198,7 +198,7 @@ const SubDashboard = () => {
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchDate])
+  }, [searchDate, param])
 
 
   ///////////////////////////////////WordClouds logic///////////////////////////////////////////////////////////////////////
@@ -418,11 +418,11 @@ const SubDashboard = () => {
             <div className="tw-flex tw-flex-col tw-h-full tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
               <p className="tw-text-lg">แฮชเเท็กที่ถูกใช้งานมากที่สุด</p>
               <div className="tw-grid tw-grid-cols-2 tw-w-full tw-h-full tw-justify-around tw-items-center tw-self-center tw-gap-2">
-                {dailyHashTag?.length > 0 && dailyHashTag.map((hashtag, i) =>
+                {dailyHashTag?.trending?.length > 0 && dailyHashTag?.trending.map((hashtag, i) =>
                   <p key={i} className="tw-text-md tw-font-bold tw-text-blue-400">{hashtag.hashtag}</p>
                 )}
               </div>
-              {dailyHashTag?.length < 1 && <div className="tw-w-full tw-h-full tw-items-center">
+              {dailyHashTag?.trending?.length < 1 && <div className="tw-w-full tw-h-full tw-items-center">
                 <p className="tw-text-xl tw-font-bold">ไม่พบข้อมูล</p>
               </div>
               }

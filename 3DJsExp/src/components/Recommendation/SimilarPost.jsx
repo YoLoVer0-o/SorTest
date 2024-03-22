@@ -50,33 +50,6 @@ const SimilarPost = () => {
       width: 150,
       className: 'tw-text-lime-600',
     },
-    // {
-    //   title: 'platform',
-    //   dataIndex: 'platform',
-    //   key: 'platform',
-    //   align: "center",
-    //   width: 150,
-    //   className: 'tw-truncate',
-    // },
-    // {
-    //   title: 'group',
-    //   dataIndex: 'group',
-    //   key: 'group',
-    //   align: "center",
-    //   width: 150,
-    //   className: 'tw-text-amber-600',
-    //   render: (text, record) => (
-    //     <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
-    //       {/* {record?.group.map(group => ( */}
-    //       <Tooltip key={record?.group} title={record?.group}>
-    //         <div className="tw-rounded-md tw-border-2 tw-p-2 tw-border-black tw-w-max tw-text-center tw-text-white tw-bg-yellow-600" >
-    //           {record?.group}
-    //         </div>
-    //       </Tooltip>
-    //       {/* ))} */}
-    //     </div>
-    //   ),
-    // },
     {
       title: 'ผู้โพสต์',
       dataIndex: 'post_author_name',
@@ -101,10 +74,12 @@ const SimilarPost = () => {
       width: 150,
       className: 'tw-text-amber-600',
       render: (text, record) => (
-        <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
+        <div className="tw-grid tw-grid-cols-2 tw-gap-1 tw-w-full tw-h-full tw-content-start">
           {record?.post_hashtags.map((hashtags, i) => (
             <Tooltip key={i} title={hashtags}>
-              <div className="tw-rounded-md tw-border-2 tw-p-2 tw-border-black tw-w-max tw-text-center tw-text-white tw-bg-purple-600" >
+              <div
+                className="tw-rounded-md tw-p-2 tw-border-2 tw-border-black tw-w-full tw-text-center tw-text-white tw-bg-violet-600 tw-truncate"
+              >
                 {hashtags}
               </div>
             </Tooltip>
@@ -141,27 +116,26 @@ const SimilarPost = () => {
     },
     {
       title: 'ความรู้สึก',
-      dataIndex: 'post_comment_sentiment',
-      key: 'post_comment_sentiment',
+      dataIndex: 'post_sentiment',
+      key: 'post_sentiment',
       align: "center",
       width: 150,
       className: 'tw-text-violet-600',
       render: (text, record) => (
         <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
-          <Tooltip title={record?.post_comment_sentiment}>
+          <Tooltip title={record?.post_sentiment}>
             <div className={
               classNames("tw-rounded-md tw-border-2 tw-border-black tw-w-max tw-text-center tw-text-white tw-p-2", {
-                "tw-bg-green-600": record?.post_comment_sentiment == "positive",
-                "tw-bg-red-600": record?.post_comment_sentiment == "negative",
-                "tw-bg-sky-600": record?.post_comment_sentiment == "neutral",
+                "tw-bg-green-600": record?.post_sentiment == "positive",
+                "tw-bg-red-600": record?.post_sentiment == "negative",
+                "tw-bg-sky-600": record?.post_sentiment == "neutral",
               })} >
-              {record?.post_comment_sentiment}
+              {record?.post_sentiment}
             </div>
           </Tooltip>
         </div>
       ),
     },
-
     {
       title: 'Link',
       dataIndex: 'post_url',

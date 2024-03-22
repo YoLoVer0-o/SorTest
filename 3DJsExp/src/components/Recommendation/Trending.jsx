@@ -134,16 +134,18 @@ const Trending = () => {
       width: 150,
       className: 'tw-text-amber-600',
       render: (text, record) => (
-        <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
-          {record?.post_hashtags.map((hashtags, i) => (
-            <Tooltip key={i} title={hashtags}>
-              <div className="tw-rounded-md tw-border-2 tw-p-2 tw-border-black tw-w-max tw-text-center tw-text-white tw-bg-purple-600" >
-                {hashtags}
-              </div>
-            </Tooltip>
-          ))}
+        <div className="tw-grid tw-grid-cols-2 tw-gap-1 tw-w-full tw-h-full tw-content-start">
+            {record?.post_hashtags.map((hashtags, i) => (
+                <Tooltip key={i} title={hashtags}>
+                    <div
+                        className="tw-rounded-md tw-p-2 tw-border-2 tw-border-black tw-w-full tw-text-center tw-text-white tw-bg-violet-600 tw-truncate"
+                    >
+                        {hashtags}
+                    </div>
+                </Tooltip>
+            ))}
         </div>
-      ),
+    ),
     },
     {
       title: 'การมีส่วนร่วม',
@@ -164,7 +166,7 @@ const Trending = () => {
         <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
           {record?.post_class.map((post, i) => (
             <Tooltip key={i} title={post}>
-              <div className="tw-rounded-md tw-border-2 tw-p-2 tw-border-black tw-w-max tw-text-center tw-text-white tw-bg-blue-600" >
+              <div className="tw-rounded-md tw-border-2 tw-p-2 tw-border-black tw-w-full tw-text-center tw-text-white tw-bg-blue-600 tw-truncate" >
                 {post}
               </div>
             </Tooltip>
@@ -174,21 +176,21 @@ const Trending = () => {
     },
     {
       title: 'ความรู้สึก',
-      dataIndex: 'post_comment_sentiment',
-      key: 'post_comment_sentiment',
+      dataIndex: 'post_sentiment',
+      key: 'post_sentiment',
       align: "center",
       width: 150,
       className: 'tw-text-violet-600',
       render: (text, record) => (
         <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
-          <Tooltip title={record?.post_comment_sentiment}>
+          <Tooltip title={record?.post_sentiment}>
             <div className={
               classNames("tw-rounded-md tw-border-2 tw-border-black tw-w-max tw-text-center tw-text-white tw-p-2", {
-                "tw-bg-green-600": record?.post_comment_sentiment == "positive",
-                "tw-bg-red-600": record?.post_comment_sentiment == "negative",
-                "tw-bg-sky-600": record?.post_comment_sentiment == "neutral",
+                "tw-bg-green-600": record?.post_sentiment == "positive",
+                "tw-bg-red-600": record?.post_sentiment == "negative",
+                "tw-bg-sky-600": record?.post_sentiment == "neutral",
               })} >
-              {record?.post_comment_sentiment}
+              {record?.post_sentiment}
             </div>
           </Tooltip>
         </div>
