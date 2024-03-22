@@ -76,39 +76,39 @@ const StatusTable = () => {
     const columns = [
         {
             title: "ผู้ใช้งาน",
-            dataIndex: "botname",
-            key: "botname",
+            dataIndex: "user",
+            key: "user",
             align: "center",
             width: 150,
             className: "tw-truncate",
             filteredValue: [searchAccount],
             onFilter: (value, record) =>
-                String(record?.botname).toLowerCase().includes(value.toLowerCase()),
+                String(record?.user).toLowerCase().includes(value.toLowerCase()),
         },
         {
             title: "รายละเอียด",
-            dataIndex: "actiontype",
-            key: "actiontype",
+            dataIndex: "text",
+            key: "text",
             align: "center",
             width: 150,
             className: "tw-truncate",
         },
         {
             title: "บัญชี",
-            dataIndex: "group",
-            key: "group",
+            dataIndex: "botname",
+            key: "botname",
             align: "center",
             width: 150,
             className: "tw-text-violet-600",
-            render: (text, record) => (
-                <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
-                    <Tooltip title={record?.group}>
-                        <div className="tw-w-max tw-rounded-md tw-p-2 tw-border-2 tw-border-black tw-text-center tw-text-white tw-bg-violet-600">
-                            {record?.group}
-                        </div>
-                    </Tooltip>
-                </div>
-            ),
+            // render: (text, record) => (
+            //     <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
+            //         <Tooltip title={record?.group}>
+            //             <div className="tw-w-max tw-rounded-md tw-p-2 tw-border-2 tw-border-black tw-text-center tw-text-white tw-bg-violet-600">
+            //                 {record?.group}
+            //             </div>
+            //         </Tooltip>
+            //     </div>
+            // ),
         },
         {
             title: "สถานะ",

@@ -68,8 +68,9 @@ const postReportAPI = {
 
   genReport: async (id) => {
     try {
-      const response = await axios.get(
-        `http://192.168.10.121:8000/report/gen/${id}`,
+      const response = await axios.post(
+        `http://192.168.10.121:8000/report/gen/`,
+        id,
         {
           responseType: "arraybuffer", // Important
         }

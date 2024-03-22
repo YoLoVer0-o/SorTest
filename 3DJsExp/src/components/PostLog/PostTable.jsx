@@ -174,8 +174,8 @@ const PostTable = () => {
         },
         {
             title: 'วันที่',
-            dataIndex: 'postime',
-            key: 'postime',
+            dataIndex: 'time',
+            key: 'time',
             align: "center",
             width: 150,
             className: 'tw-text-lime-600',
@@ -211,8 +211,8 @@ const PostTable = () => {
         },
         {
             title: ' ผู้โพสต์',
-            dataIndex: 'poster_name',
-            key: 'poster_name',
+            dataIndex: 'name',
+            key: 'name',
             align: "center",
             width: 150,
             className: 'tw-text-amber-600',
@@ -226,7 +226,7 @@ const PostTable = () => {
             className: 'tw-text-amber-600',
             render: (text, record) => (
                 <div className="tw-flex tw-flex-row tw-gap-1 tw-justify-center">
-                    {record?.class?.length > 0 && record?.class.map((bot_class, i) =>
+                    {(record?.class && record?.class?.length > 0) && record?.class.map((bot_class, i) =>
                         <Tooltip title={bot_class} key={i}>
                             <div className={
                                 classNames("tw-rounded-md tw-border-2 tw-border-black tw-w-max tw-text-center tw-text-white tw-p-2 tw-bg-blue-600", {
@@ -240,15 +240,15 @@ const PostTable = () => {
         },
         {
             title: 'Link',
-            dataIndex: 'post_url',
-            key: 'post_url',
+            dataIndex: 'url',
+            key: 'url',
             align: "center",
             width: 50,
             className: 'tw-truncate tw-text-sky-700',
             render: (text, record) => (
                 <div className="tw-flex tw-justify-center">
                     <Tooltip title="กดเพื่อไปที่โพสต์">
-                        <a href={record?.post_url} target="blank">
+                        <a href={record?.url} target="blank">
                             <div className="tw-rounded-md tw-w-full tw-border-2 tw-border-black tw-text-center tw-text-white tw-bg-sky-600" >
                                 <p className="tw-m-2">Link</p>
                             </div>
@@ -327,11 +327,12 @@ const PostTable = () => {
                                 {includeWord?.length > 0 && includeWord?.map((word, i) => (
                                     <Tooltip key={i} title={word}>
                                         <div
-                                            className="tw-flex tw-flex-row tw-gap-3 tw-rounded-md tw-p-2 tw-border-2 tw-border-black tw-h-full tw-w-fit  tw-text-white tw-bg-violet-600 tw-truncate"
+                                            className="tw-flex tw-flex-row tw-gap-3 tw-rounded-md tw-p-2 tw-border-2 tw-border-black tw-h-full tw-w-fit tw-align-middle  tw-bg-violet-300 tw-truncate"
                                         >
-                                            {word}
+                                            <p className="tw-text-lg tw-h-full">{word}</p>
                                             <CloseCircleOutlined
                                                 onClick={() => deleteWord(word, setIncludeWord)}
+                                                className="tw-text-red-600 tw-text-lg"
                                             />
                                         </div>
                                     </Tooltip>
@@ -347,7 +348,7 @@ const PostTable = () => {
                                             className='tw-w-full tw-bg-green-500 tw-text-white tw-border-white hover:tw-bg-white hover:tw-text-green-500 hover:tw-border-green-500'
                                             onClick={() => addWord(includeValue, setIncludeWord, setIncludeValue)}
                                         >
-                                            เพิ่มกลุ่ม
+                                            เพิ่มคำ
                                         </Button>
                                     </Tooltip>}
                                     value={includeValue}
@@ -361,11 +362,12 @@ const PostTable = () => {
                                 {excludeWord?.length > 0 && excludeWord?.map((word, i) => (
                                     <Tooltip key={i} title={word}>
                                         <div
-                                            className="tw-rounded-md tw-p-2 tw-border-2 tw-border-black tw-h-full tw-w-fit tw-gap-2 tw-text-center tw-text-white tw-bg-violet-600 tw-truncate"
+                                            className="tw-rounded-md tw-p-2 tw-border-2 tw-border-black tw-h-full tw-w-fit tw-gap-2 tw-text-white tw-text-justify tw-bg-violet-600 tw-truncate"
                                         >
-                                            {word}
+                                            <p className="">{word}</p>
                                             <CloseCircleOutlined
                                                 onClick={() => deleteWord(word, setExcludeWord)}
+                                                className="tw-text-red-600 tw-text-lg"
                                             />
                                         </div>
                                     </Tooltip>
@@ -381,7 +383,7 @@ const PostTable = () => {
                                             className='tw-w-full tw-bg-green-500 tw-text-white tw-border-white hover:tw-bg-white hover:tw-text-green-500 hover:tw-border-green-500'
                                             onClick={() => addWord(excludeValue, setExcludeWord, setExcludeValue)}
                                         >
-                                            เพิ่มกลุ่ม
+                                            เพิ่มคำ
                                         </Button>
                                     </Tooltip>}
                                     value={excludeValue}

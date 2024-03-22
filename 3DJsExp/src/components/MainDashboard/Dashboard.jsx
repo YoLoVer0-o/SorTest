@@ -649,11 +649,11 @@ const Dashboard = () => {
                                     })}>
                                         {postImage.length > 0 &&
                                             <Carousel
-                                                className="tw-h-fit tw-w-fit"
+                                                className=""
                                                 showThumbs={false}
                                             >
                                                 {postImage.map((image, i) =>
-                                                    <img key={i} className="tw-object-scale-down" src={image} />
+                                                    <img key={i} className="tw-object-scale-down tw-h-96" src={image} />
                                                 )}
                                             </Carousel>
                                         }

@@ -26,7 +26,7 @@ const PostReport = () => {
   };
 
   const location = useLocation();
-  const id = location.state;
+  const ids = location.state;
 
   const {
     isDesktopOrLaptop,
@@ -61,7 +61,7 @@ const PostReport = () => {
 
     try {
       setShowLoading(true);
-      const data = await postReportAPI.genReport(id);
+      const data = await postReportAPI.genReport({ id: ids });
       const file = new Blob([data], { type: 'application/pdf' });
       const fileUrl = URL.createObjectURL(file);
       setPageNumber(1); // Reset page number
@@ -76,9 +76,10 @@ const PostReport = () => {
   }
 
   useEffect(() => {
+    console.log(ids)
     genReport()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id])
+  }, [ids])
 
   useEffect(() => {
     console.log(displayData);
