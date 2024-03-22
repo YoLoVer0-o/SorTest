@@ -4,16 +4,22 @@ import PropTypes from "prop-types";
 import TextArea from "antd/es/input/TextArea";
 import AccountManageAPI from "../../service/AccountManageAPI";
 
-
 const AddTargetModal = (props) => {
-  const { isopen, isclose } = props;
-  const [editName, setEditName] = useState("");
-  const [editDetail, setEditDetail] = useState("");
+  const { isopen, isclose, token } = props;
+  const [handleName, setHandleName] = useState("");
+  const [handleDetail, setHandleDetail] = useState("");
   const [handleUrl, setHandleUrl] = useState("");
+  const [handleUserType, setHandleUserType] = useState("");
+  const [handleLabel, setHandleLabel] = useState([]);
+  const [addContent, setAddContent] = useState("");
   const [openState, setOpenState] = useState(false);
 
-  const onChange = (value) => {
+  const selectUserType = (value) => {
     console.log(value);
+    setHandleUserType(value);
+  };
+  const handleUrlFunc = (value) => {
+    setHandleUrl(value);
   };
 
   const filterOption = (input, option) =>
@@ -29,25 +35,40 @@ const AddTargetModal = (props) => {
       isclose();
     }
   };
+  const handleSelectedLabel = (value) => {
+    setHandleLabel((prevLabels) => [...prevLabels, value]);
+  };
 
-  const handleOk = () => {
+  const submit = async () => {
+    await AccountManageAPI.upDateLabelProfile(addContent, token);
+
     if (isclose) {
       isclose();
     }
   };
 
   useEffect(() => {
+    setAddContent([{
+      type: handleUserType,
+      url: handleUrl,
+      title: handleName,
+      information: handleDetail,
+      label: handleLabel,
+    }]);
+  }, [handleUserType, handleUrl, handleName, handleDetail, handleLabel]);
+  console.log(addContent);
+  useEffect(() => {
     setOpenState(isopen);
   }, [isopen, isclose]);
 
   const handleNameInput = (event) => {
     const inputValue = event.target.value;
-    setEditName(inputValue);
+    setHandleName(inputValue);
   };
 
   const handleDetailInput = (event) => {
     const inputValue = event.target.value;
-    setEditDetail(inputValue);
+    setHandleDetail(inputValue);
   };
 
   const handleKeyPress = (event) => {
@@ -60,14 +81,13 @@ const AddTargetModal = (props) => {
     <Modal
       title="เพิ่มเป้าหมายใหม่"
       open={openState}
-      onOk={handleOk}
       onCancel={closeModal}
       centered={true}
       footer={[
         <Button
           key="submit"
           className="tw-bg-blue-500 tw-text-white tw-border-white hover:tw-bg-white hover:tw-text-blue-500 hover:tw-border-blue-500"
-          onClick={handleOk}
+          onClick={submit}
         >
           บันทึก
         </Button>,
@@ -76,11 +96,11 @@ const AddTargetModal = (props) => {
       <p>ประเภท:</p>
       <Select
         className="tw-w-full  tw-rounded-md "
-        showSearch
+        // showSearch
         placeholder="ประเภท"
         optionFilterProp="children"
-        onChange={onChange}
-        onSearch={onSearch}
+        onChange={selectUserType}
+        // onSearch={onSearch}
         filterOption={filterOption}
         options={[
           {
@@ -92,7 +112,7 @@ const AddTargetModal = (props) => {
             label: "group",
           },
           {
-            value: "page",
+            value: "profile",
             label: "page",
           },
         ]}
@@ -106,14 +126,15 @@ const AddTargetModal = (props) => {
       <p>กลุ่ม:</p>
       <Select
         showSearch
-        // onSelect={handleSelectGroup}
-        onSearch={(e) =>
-          setHandleUrl({
-            title: e,
-            url: e,
-          })
-        }
+        onSelect={handleSelectedLabel}
+        // onSearch={(e) =>
+        //   setHandleUrl({
+        //     title: e,
+        //     url: e,
+        //   })
+        // }
         onKeyDown={handleKeyPress}
+        mode="tags"
         className="tw-w-full"
         placeholder="เพิ่มกลุ่มเป้าหมาย"
         optionFilterProp="children"
@@ -141,12 +162,18 @@ const AddTargetModal = (props) => {
       <p>รายละเอียด:</p>
       <TextArea rows={4} onChange={handleDetailInput} />
       <p>Link:</p>
-      <Input className="tw-w-full tw-rounded-md " placeholder="กรอก link" />
+      <Input
+        onChange={handleUrlFunc}
+        className="tw-w-full tw-rounded-md "
+        placeholder="กรอก link"
+        required
+      />
     </Modal>
   );
 };
 AddTargetModal.propTypes = {
   isopen: PropTypes.bool,
   isclose: PropTypes.func,
+  token: PropTypes.object,
 };
 export default AddTargetModal;

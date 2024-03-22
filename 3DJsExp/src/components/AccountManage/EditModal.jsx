@@ -65,7 +65,6 @@ const EditModal = (props) => {
         icon: "error",
       });
     }
-
     setOpenState(false);
     if (iscloseEdit) {
       iscloseEdit();
@@ -96,7 +95,7 @@ const EditModal = (props) => {
 
   return (
     <Modal
-      title="เพิ่มเป้าหมายใหม่"
+      title="เเก้ไข"
       open={openState}
       // onOk={handleOk}
       onCancel={closeModal}
@@ -111,6 +110,7 @@ const EditModal = (props) => {
         </Button>,
       ]}
     >
+      <p>เพิ่มเป้าหมายใหม่:</p>
       <Select
         mode="tags"
         value={handleData.label}
@@ -156,8 +156,8 @@ const EditModal = (props) => {
 EditModal.propTypes = {
   isopenEdit: PropTypes.bool,
   iscloseEdit: PropTypes.func,
-  token: PropTypes.string,
-  handleData: PropTypes.object,
+  token: PropTypes.object,
+  handleData: PropTypes.any,
   getType: PropTypes.string,
 };
 export default EditModal;
