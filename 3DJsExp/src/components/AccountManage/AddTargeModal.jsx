@@ -56,7 +56,7 @@ const AddTargetModal = (props) => {
       label: handleLabel,
     }]);
   }, [handleUserType, handleUrl, handleName, handleDetail, handleLabel]);
-  console.log(addContent);
+  // console.log(addContent);
   useEffect(() => {
     setOpenState(isopen);
   }, [isopen, isclose]);

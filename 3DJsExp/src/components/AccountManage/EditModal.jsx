@@ -18,11 +18,14 @@ const EditModal = (props) => {
     }
   };
 
-  // const handleKeyPress = (event) => {
-  //   if (event.key === "Enter") {
-  //     setHandelLable([...handelLable, handelLable]);
-  //   }
-  // };
+  const handleKeyPress = (event) => {
+    // console.log(event.target.value);
+    if (event.key === "Enter") {
+      let data = { value: event.target.value, label: event.target.value };
+      setHandelLable([data]);
+    }
+  };
+  console.log(handelLable);
   const updateLabel = (value) => {
     console.log(`Selected: ${value}`);
     setSelectedLabel(value);
@@ -80,8 +83,10 @@ const EditModal = (props) => {
         }))
       : [];
     setHandelLable(currentlabel);
+    setSelectedLabel(handleData.label);
   }, [handleData]);
 
+  // console.log(handelLable);
   useEffect(() => {
     setUpdateContent({
       url: handleData.url,
@@ -113,35 +118,14 @@ const EditModal = (props) => {
       <p>เพิ่มเป้าหมายใหม่:</p>
       <Select
         mode="tags"
-        value={handleData.label}
+        allowClear={true}
         placeholder="เพิ่มกลุ่มเป้าหมาย"
         onChange={updateLabel}
+        value={selectedLabel}
         options={LabelOptions}
-        className="tw-w-full"
-      />
-      {/* <Select
-        showSearch
-        // onSelect={handleSelectGroup}
-        onSearch={(e) =>
-          setHandelLable({
-            value: e,
-            label: e,
-          })
-        }
         onKeyDown={handleKeyPress}
         className="tw-w-full"
-        placeholder="เพิ่มกลุ่มเป้าหมาย"
-        optionFilterProp="children"
-        filterOption={(input, option) =>
-          (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-        }
-        filterSort={(optionA, optionB) =>
-          (optionA?.label ?? "")
-            .toLowerCase()
-            .localeCompare((optionB?.label ?? "").toLowerCase())
-        }
-        options={LabelOptions}
-      /> */}
+      />
       <p>Link:</p>
 
       <Input
