@@ -179,7 +179,7 @@ const MainLayout = (props) => {
   return (
     <Layout
       className={classNames(
-        "tw-w-screen tw-min-h-full tw-h-full tw-max-h-full",
+        "tw-w-full tw-min-h-full tw-h-full tw-max-h-full tw-max-w-full",
         {
           "tw-min-h-screen tw-h-screen tw-max-h-screen":
             isTabletOrMobile && isLandscape,
@@ -213,7 +213,7 @@ const MainLayout = (props) => {
         </div>
       </Header>
 
-      <Layout className={"tw-relative"}>
+      <Layout className={"tw-max-w-full tw-relative"}>
         <div
           className={classNames(
             "tw-flex tw-h-full tw-flex-row tw-absolute tw-z-40",
@@ -563,7 +563,7 @@ const MainLayout = (props) => {
           </Button>
         </div>
 
-        <Layout>
+        <Layout className="tw-max-w-full">
           <div className="tw-flex tw-flex-row tw-px-6 tw-my-4 tw-justify-between">
             <Breadcrumb
               className="tw-text-lg tw-font-bold"
@@ -583,7 +583,7 @@ const MainLayout = (props) => {
 
           <Content
             className={classNames(
-              "tw-flex tw-max-w-full tw-max-h-full tw-justify-center tw-bg-[#f8f4f4] tw-m-4 tw-object-contain tw-p-4",
+              "tw-flex tw-max-w-full tw-max-h-full tw-justify-center tw-bg-[#f8f4f4] tw-object-contain tw-p-4",
               {
                 "tw-overflow-auto": isTabletOrMobile && isLandscape,
                 " tw-bg-white  ": location.pathname != "/createPost",
@@ -592,7 +592,7 @@ const MainLayout = (props) => {
           >
             <Outlet
               className={classNames(
-                "tw-flex tw-min-h-fit tw-max-w-full tw-justify-center tw-object-contain",
+                "tw-flex tw-min-h-fit tw-w-full tw-max-w-full tw-justify-center tw-object-contain",
                 {}
               )}
             />

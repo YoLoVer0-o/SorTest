@@ -28,7 +28,7 @@ function LoginPage() {
     };
 
     return (
-        <div className="tw-grid tw-grid-flow-col tw-auto-cols-auto tw-h-full tw-w-full tw-max-w-full tw-max-h-full tw-bg-white">
+        <div className="tw-grid tw-grid-flow-col tw-auto-cols-auto tw-h-full tw-w-full tw-max-w-[100vw] tw-max-h-full tw-bg-white">
             <div className='tw-flex tw-h-full tw-w-full tw-max-w-full'>
                 <div className='tw-w-full tw-h-full tw-bg-fixed tw-bg-cover tw-bg-no-repeat' style={{ backgroundImage: `url(${background})` }}></div>
             </div>
