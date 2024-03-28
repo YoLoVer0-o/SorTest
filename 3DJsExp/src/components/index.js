@@ -31,6 +31,7 @@ import UserManageTable from "./UserManagement/UserManageTable";
 import AddRoleModal from "./UserManagement/AddRoleModal";
 import AddUserRoleModal from "./UserManagement/AddUserRoleModal";
 import EditUserRoleModal from "./UserManagement/EditUserRoleModal";
+import EditRoleModal from "./UserManagement/EditRoleModal";
 import SeoWebSite from "./SeoWebSite/SeoWebSite";
 import AccountInfomation from "./AccountManage/AccountManage";
 
@@ -68,6 +69,7 @@ export {
   AddRoleModal,
   AddUserRoleModal,
   EditUserRoleModal,
+  EditRoleModal,
   SeoWebSite,
   AccountInfomation,
 };

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { DataTable, SearchBar, Loading } from "../../utilities";
 import { userManageMock } from "../../mock";
-import { AddRoleModal, AddUserRoleModal, EditUserRoleModal } from "..";
+import { AddRoleModal, AddUserRoleModal, EditRoleModal, EditUserRoleModal } from "..";
 import { useResponsive } from "../../hooks";
 import { Button, Tooltip, Switch } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
@@ -17,6 +17,7 @@ const UserManageTable = () => {
     const [modalToggle, setModalToggle] = useState(false);
     const [userModalToggle, setUserModalToggle] = useState(false);
     const [editUserModalToggle, setEditUserModalToggle] = useState(false);
+    const [editRoleModalToggle, setEditRoleModalToggle] = useState(false);
     const [searchVal, setSearchVal] = useState('');
     const [userData, setUserData] = useState([]);
     const [editUser, setEditUser] = useState({});
@@ -124,6 +125,13 @@ const UserManageTable = () => {
         setUserModalToggle(false);
     };
 
+    const showEditRoleModal = () => {
+        setEditRoleModalToggle(true);
+    };
+
+    const handleEditRoleCancel = () => {
+        setEditRoleModalToggle(false);
+    };
 
     const showEditUserModal = (value) => {
         console.log(value);
@@ -337,6 +345,14 @@ const UserManageTable = () => {
                             className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
                                 "tw-w-full": isMobile && isPortrait,
                             })}
+                            onClick={() => showEditRoleModal()}
+                        >
+                            แก้ไขบทบาท
+                        </Button>
+                        <Button
+                            className={classNames("tw-self-center tw-text-blue-600 tw-border-blue-600 tw-border-2 tw-bg-white tw-drop-shadow-md hover:tw-bg-blue-600 hover:tw-border-black hover:tw-text-white", {
+                                "tw-w-full": isMobile && isPortrait,
+                            })}
                             onClick={() => showUserModal()}
                         >
                             เพิ่มผู้ใช้ใหม่
@@ -368,6 +384,13 @@ const UserManageTable = () => {
                     modalToggle={userModalToggle}
                     fetchData={fetchUser}
                     handleCancel={handleUserCancel}
+                    token={token}
+                />
+            )}
+            {editRoleModalToggle && (
+                <EditRoleModal
+                    modalToggle={editRoleModalToggle}
+                    handleCancel={handleEditRoleCancel}
                     token={token}
                 />
             )}

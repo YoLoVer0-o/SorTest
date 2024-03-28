@@ -162,6 +162,29 @@ const UserManageAPI = {
     }
   },
 
+  editRole: async (token, payload) => {
+    try {
+      const response = await axios.put(
+        "http://192.168.10.111:8000/auth/edit_role/",
+        payload,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      // console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      throw error;
+    }
+  },
+
   deleteRole: async (token, user) => {
     try {
       const response = await axios.delete(

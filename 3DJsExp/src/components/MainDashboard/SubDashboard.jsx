@@ -297,7 +297,7 @@ const SubDashboard = () => {
       <p className="tw-self-center tw-font-bold tw-text-xl tw-my-4">DashBoard หวดหมู่: {displayTopic()}</p>
       <div className={classNames("tw-flex tw-flex-row tw-max-w-full tw-bg-white tw-justify-center tw-gap-2 tw-border-stone-300 tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4", {
         "tw-flex-col": isTabletOrMobile && isPortrait,
-        "tw-sticky tw-top-0 tw-z-60": !isTabletOrMobile,
+        // "tw-sticky tw-top-0 tw-z-60": !isTabletOrMobile,
       })}>
         {/* <div className={classNames("tw-w-full", {})}>
                     <p className="tw-text-lg">ประเด็น:</p>
@@ -420,9 +420,14 @@ const SubDashboard = () => {
           })}>
             <div className="tw-flex tw-flex-col tw-h-full tw-text-center tw-gap-y-6 tw-border-white tw-shadow-xl tw-border-4 tw-rounded-lg tw-p-4">
               <p className="tw-text-lg">แฮชเเท็กที่ถูกใช้งานมากที่สุด</p>
-              <div className="tw-grid tw-grid-cols-2 tw-w-full tw-h-full tw-justify-around tw-items-center tw-self-center tw-gap-2">
-                {dailyHashTag?.trending?.length > 0 && dailyHashTag?.trending.map((hashtag, i) =>
-                  <p key={i} className="tw-text-md tw-font-bold tw-text-blue-400">{hashtag.hashtag}</p>
+              <div className={classNames("tw-grid  tw-w-full tw-h-full tw-justify-around tw-items-center tw-self-center tw-gap-2", {
+                "tw-grid-cols-1 tw-overflow-auto": isMobile,
+                "tw-grid-cols-2": !isMobile,
+              })}>
+                {dailyHashTag?.trending?.length > 0 && dailyHashTag?.trending?.map((hashtag, i) =>
+                  <p key={i} className={classNames("tw-text-lg tw-w-full tw-font-bold tw-text-blue-400", {})}>
+                    {hashtag.hashtag}
+                  </p>
                 )}
               </div>
               {(!dailyHashTag || dailyHashTag?.trending?.length < 1) && <div className="tw-w-full tw-h-full tw-items-center">
