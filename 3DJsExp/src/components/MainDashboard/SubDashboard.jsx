@@ -154,8 +154,11 @@ const SubDashboard = () => {
       setDailyMaxEngagement(data[0]);
       if (data[0]?.pictures) {
         fetchPostImage({ id: data[0].pictures })
+      } else {
+        setPostImage(null)
       }
     } catch (error) {
+      setDailyMaxEngagement(null)
       console.error('Error fetching bot config:', error);
     } finally {
       // setShowLoading(false);
@@ -422,7 +425,7 @@ const SubDashboard = () => {
                   <p key={i} className="tw-text-md tw-font-bold tw-text-blue-400">{hashtag.hashtag}</p>
                 )}
               </div>
-              {dailyHashTag?.trending?.length < 1 && <div className="tw-w-full tw-h-full tw-items-center">
+              {(!dailyHashTag || dailyHashTag?.trending?.length < 1) && <div className="tw-w-full tw-h-full tw-items-center">
                 <p className="tw-text-xl tw-font-bold">ไม่พบข้อมูล</p>
               </div>
               }
@@ -488,15 +491,19 @@ const SubDashboard = () => {
                   }
                   <div className={classNames("tw-flex tw-justify-center tw-h-96", {
                   })}>
-                    {postImage.length > 0 &&
+                    {postImage && postImage?.length > 0 &&
                       <Carousel
                         className="tw-h-fit tw-w-fit"
                         showThumbs={false}
                       >
-                        {postImage.map((image, i) =>
+                        {postImage?.map((image, i) =>
                           <img key={i} className="tw-object-scale-down" src={image} />
                         )}
                       </Carousel>
+                    }
+                    {(!postImage || postImage?.length == 0) && <div className="tw-flex tw-justify-center tw-items-center tw-w-full tw-h-full tw-text-center">
+                      <p className="tw-text-xl tw-font-bold">ไม่พบรูปภาพ</p>
+                    </div>
                     }
                   </div>
                 </div>
