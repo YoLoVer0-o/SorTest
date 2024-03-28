@@ -58,15 +58,14 @@ const FacebookPost = (props) => {
   const [tagSpecifictFriends, setTagSpecificFriends] = useState("");
   const [emotionAct, setEmotionAct] = useState([]);
   const [postAction, setPostAction] = useState({
-    botname: "string",
-    url: "string",
-    group: "string",
-    text: "string",
-    photo_video: "string",
-    tag_people: "string",
-    feeling: "emotionAct",
-    check_in: "string",
-    gif: "string",
+    botname: "",
+    group: "",
+    text: "",
+    photo_video: [],
+    tag_people: "",
+    feeling: "",
+    check_in: "",
+    gif: "",
   });
   const [postToGroup, setPostToGroup] = useState({
     botname: "",
@@ -357,7 +356,6 @@ const FacebookPost = (props) => {
     if (identifier === "CreatePost") {
       setPostAction({
         botname: selectedAcc,
-        url: url,
         group: null, /////////////////////รอ API group bot///////////////////
         text: message,
         photo_video: filesName, /////////////////////รอ API อัพโหลดไฟล์ แปลงเป็นBinary///////////////////////////////////////////
@@ -401,7 +399,6 @@ const FacebookPost = (props) => {
         });
         setPostAction({
           botname: "",
-          url: "",
           group: "",
           text: "",
           photo_video: [],

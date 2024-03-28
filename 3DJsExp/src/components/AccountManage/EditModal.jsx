@@ -18,11 +18,14 @@ const EditModal = (props) => {
     }
   };
 
-  // const handleKeyPress = (event) => {
-  //   if (event.key === "Enter") {
-  //     setHandelLable([...handelLable, handelLable]);
-  //   }
-  // };
+  const handleKeyPress = (event) => {
+    // console.log(event.target.value);
+    if (event.key === "Enter") {
+      let data = { value: event.target.value, label: event.target.value };
+      setHandelLable([data]);
+    }
+  };
+  console.log(handelLable);
   const updateLabel = (value) => {
     console.log(`Selected: ${value}`);
     setSelectedLabel(value);
@@ -65,7 +68,6 @@ const EditModal = (props) => {
         icon: "error",
       });
     }
-
     setOpenState(false);
     if (iscloseEdit) {
       iscloseEdit();
@@ -81,8 +83,10 @@ const EditModal = (props) => {
         }))
       : [];
     setHandelLable(currentlabel);
+    setSelectedLabel(handleData.label);
   }, [handleData]);
 
+  // console.log(handelLable);
   useEffect(() => {
     setUpdateContent({
       url: handleData.url,
@@ -96,7 +100,7 @@ const EditModal = (props) => {
 
   return (
     <Modal
-      title="เพิ่มเป้าหมายใหม่"
+      title="เเก้ไข"
       open={openState}
       // onOk={handleOk}
       onCancel={closeModal}
@@ -111,37 +115,17 @@ const EditModal = (props) => {
         </Button>,
       ]}
     >
+      <p>เพิ่มเป้าหมายใหม่:</p>
       <Select
         mode="tags"
-        value={handleData.label}
+        allowClear={true}
         placeholder="เพิ่มกลุ่มเป้าหมาย"
         onChange={updateLabel}
+        value={selectedLabel}
         options={LabelOptions}
-        className="tw-w-full"
-      />
-      {/* <Select
-        showSearch
-        // onSelect={handleSelectGroup}
-        onSearch={(e) =>
-          setHandelLable({
-            value: e,
-            label: e,
-          })
-        }
         onKeyDown={handleKeyPress}
         className="tw-w-full"
-        placeholder="เพิ่มกลุ่มเป้าหมาย"
-        optionFilterProp="children"
-        filterOption={(input, option) =>
-          (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-        }
-        filterSort={(optionA, optionB) =>
-          (optionA?.label ?? "")
-            .toLowerCase()
-            .localeCompare((optionB?.label ?? "").toLowerCase())
-        }
-        options={LabelOptions}
-      /> */}
+      />
       <p>Link:</p>
 
       <Input
@@ -156,8 +140,8 @@ const EditModal = (props) => {
 EditModal.propTypes = {
   isopenEdit: PropTypes.bool,
   iscloseEdit: PropTypes.func,
-  token: PropTypes.string,
-  handleData: PropTypes.object,
+  token: PropTypes.object,
+  handleData: PropTypes.any,
   getType: PropTypes.string,
 };
 export default EditModal;

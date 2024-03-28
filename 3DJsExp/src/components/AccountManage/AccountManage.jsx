@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 import { Select, Input, Tooltip, Modal, Button } from "antd";
-import { DataTable, SearchBar, Loading } from "../../utilities";
+import { DataTable, Loading } from "../../utilities";
 import classNames from "classnames";
 import { useResponsive } from "../../hooks";
 import Image from "../../assets/PostImage";
@@ -23,6 +23,7 @@ const AccountManage = () => {
   const [seachGroup, setSeachGroup] = useState("");
   const [detailData, setDetailData] = useState("");
   const [editData, setEditData] = useState("");
+  const [dataType, setDataType] = useState([]);
 
   const { isTabletOrMobile, isMobile, isPortrait, isLandscape } =
     useResponsive();
@@ -33,16 +34,20 @@ const AccountManage = () => {
   const selectType = (value) => {
     console.log(`selected ${value}`);
     setTypeSelected(value);
+    if (value === "profile") {
+      setDataType(accInfo);
+    } else if (value === "group") {
+      setDataType(groupInfo);
+    }
+    // (value === "profile" && accInfo) ||
+    // (value === "group" && groupInfo)
     // if(value === "profile"){
 
     // } else if (value === "group" ) {
     //   getDataGroup()
-    // }
+    // }xx
   };
 
-  const onChange = (value) => {
-    console.log(value);
-  };
   const openTargetModal = () => {
     setIsModalTarget(true);
   };
@@ -50,7 +55,6 @@ const AccountManage = () => {
     setEditData(data);
     setIsModalEdit(true);
   };
-
   const closeTargetModal = () => {
     setIsModalTarget(false);
     setIsModalEdit(false);
@@ -68,6 +72,7 @@ const AccountManage = () => {
       try {
         const dataProfile = await AccountManageAPI.getProfile(getToken);
         setAccInfo(dataProfile);
+        setDataType(dataProfile);
       } catch (error) {
         console.log(error.message);
       }
@@ -84,8 +89,8 @@ const AccountManage = () => {
     getDataProfile();
   }, [getToken]);
 
-  const filterOption = (input, option) =>
-    (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+  // const filterOption = (input, option) =>
+  //   (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
   const columns = [
     {
@@ -147,7 +152,7 @@ const AccountManage = () => {
         <button onClick={() => openDetailModal(record.information)}>
           {/* <div dangerouslySetInnerHTML={{ __html: record.information }}></div> */}
           <Tooltip placement="topLeft" title="คลิกเพื่อดูรายละเอียดเพิ่มเติม">
-            <div className="">{record.information.split("<br>")}...</div>
+            <div>{record.information.split("<br>")}...</div>
           </Tooltip>
         </button>
       ),
@@ -173,8 +178,8 @@ const AccountManage = () => {
     },
     {
       title: "",
-      dataIndex: "",
-      key: "",
+      dataIndex: "edit",
+      key: "edit",
       align: "center",
       width: 50,
       className: "tw-text-blue-600",
@@ -197,14 +202,10 @@ const AccountManage = () => {
     <div className="tw-w-full tw-h-full tw-flex tw-flex-col tw-items-center ">
       <div className=" tw-w-[80%] tw-max-h-full tw-flex-row tw-flex tw-gap-4 tw-justify-center">
         <Select
-          defaultValue={"profile"}
+          defaultValue={typeSelected}
           className="tw-w-[30%] tw-outline-blue-500 tw-outline tw-rounded-md "
-          // showSearch
           placeholder="ประเภท"
-          optionFilterProp="children"
           onChange={selectType}
-          // onSearch={onSearch}
-          filterOption={filterOption}
           options={[
             {
               value: "profile",
@@ -290,15 +291,13 @@ const AccountManage = () => {
           }
         )}
       >
-        <DataTable
-          columns={columns}
-          data={
-            (typeSelected === "profile" && accInfo) ||
-            (typeSelected === "group" && groupInfo)
-          }
-        />
+        <DataTable columns={columns} data={dataType} />
       </div>
-      <AddTargetModal isopen={isModalTarget} isclose={closeTargetModal} />
+      <AddTargetModal
+        isopen={isModalTarget}
+        isclose={closeTargetModal}
+        token={getToken}
+      />
       <EditModal
         isopenEdit={isModalEdit}
         iscloseEdit={closeTargetModal}
